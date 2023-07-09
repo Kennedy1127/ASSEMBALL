@@ -1,0 +1,21 @@
+// 變數名稱暫定而已，之後可以更改
+
+:root {
+  --shadow-light: 0px 0px 6px -1px rgba(16, 24, 40, 0.3);
+  --shadow-heavy: 0px 0px 15px -3px rgba(16, 24, 40, 0.1);
+}
+
+// .shadow_light {
+//   /* 淡陰影 */
+//   box-shadow: 0px 0px 6px -1px rgba(16, 24, 40, 0.3);
+// }
+
+// .shadow_heavy {
+//   /* 較深陰影 */
+//   box-shadow: 0px 0px 15px -3px rgba(16, 24, 40, 0.1);
+// }
+
+.overlay {
+  /* 彈窗陰影 */
+  background: rgba(50, 62, 81, 0.6);
+}
