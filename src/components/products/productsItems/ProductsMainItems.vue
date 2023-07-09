@@ -128,6 +128,8 @@ export default {
       padding: 0.5rem 1rem;
       border-radius: 8px;
       background-color: var(--secondary-blue-4);
+      position: relative;
+      z-index: 1;
 
       p {
         color: var(--secondary-gray-1);
@@ -135,6 +137,20 @@ export default {
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 20px;
+        left: -12px;
+
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 8px 16px 8px 0;
+        border-color: transparent var(--secondary-blue-4) transparent
+          transparent;
       }
     }
   }
