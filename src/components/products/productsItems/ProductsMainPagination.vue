@@ -11,7 +11,7 @@
         products_main_pagination: true,
         'products_main_pagination--active': num + temp === curPage,
       }"
-      @click="movePage('number', num)"
+      @click="movePage('number', num + temp)"
     >
       {{ num + temp }}
     </div>
