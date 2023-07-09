@@ -1,12 +1,24 @@
 <template>
   <div class="products_main_paginations">
-    <div class="products_main_pagination products_main_pagination--active">
-      1
+    <div class="icon" @click="movePage('prev')">
+      <img src="~@/assets/images/icons/arrow-left.png" alt="arrow-left icon" />
     </div>
-    <div class="products_main_pagination">2</div>
-    <div class="products_main_pagination">3</div>
-    <div class="products_main_pagination">...</div>
-    <div class="icon">
+
+    <div
+      v-for="num in 3"
+      :key="num"
+      :class="{
+        products_main_pagination: true,
+        'products_main_pagination--active': num + temp === curPage,
+      }"
+      @click="movePage('number', num)"
+    >
+      {{ num + temp }}
+    </div>
+
+    <div v-show="curPage != lastPage">...</div>
+
+    <div class="icon" @click="movePage('next')">
       <img
         src="~@/assets/images/icons/arrow-right.png"
         alt="arrow-right icon"
@@ -14,6 +26,55 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: ['totalPages'],
+
+  data() {
+    return {
+      curPage: 1,
+      lastPage: this.$props.totalPages,
+    };
+  },
+
+  computed: {
+    temp() {
+      if (this.curPage > 3) {
+        return this.curPage - 3;
+      }
+
+      return 0;
+    },
+  },
+
+  methods: {
+    prevPage() {
+      if (this.curPage === 1) return;
+      this.curPage--;
+    },
+
+    nextPage() {
+      if (this.curPage === this.$props.totalPages) return;
+      this.curPage++;
+    },
+
+    // 進行切換頁碼
+    movePage(feature, num = null) {
+      feature === 'number'
+        ? (this.curPage = num)
+        : feature === 'next'
+        ? this.nextPage()
+        : this.prevPage();
+
+      this.$emit('changePage', this.curPage);
+
+      // 更換頁碼時，滾動到頂端
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+  },
+};
+</script>
 
 <style scoped lang="scss">
 .products_main_paginations {
@@ -43,6 +104,10 @@
     background-color: var(--error-yellow);
   }
 
+  cursor: pointer;
+}
+
+.icon {
   cursor: pointer;
 }
 </style>

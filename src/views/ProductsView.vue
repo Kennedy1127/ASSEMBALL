@@ -24,7 +24,7 @@
 
         <main class="products_main">
           <ProductsMainHeader />
-          <ProductsMainItems :products="products" />
+          <ProductsMainItems :productsData="productsData" />
         </main>
       </section>
     </div>
@@ -36,6 +36,7 @@ import ProductsAsideSearch from '@/components/products/productsAside/ProductsAsi
 import ProductsAsideTags from '@/components/products/productsAside/ProductsAsideTags';
 import ProductsMainHeader from '@/components/products/productsItems/ProductsMainHeader';
 import ProductsMainItems from '@/components/products/productsItems/ProductsMainItems';
+import productsData from '@/composables/productsData';
 
 export default {
   components: {
@@ -54,175 +55,7 @@ export default {
         { name: '#打擊手套', type: 'batting glove' },
         { name: '#球帽', type: 'cap' },
       ],
-      products: [
-        {
-          pro_id: 11,
-          imgSrc: '',
-          typeName: '球棒',
-          type: 'bat',
-          title: '二手球棒販賣中',
-          date: '2023 / 02 / 13',
-          desc: '使用約2年過保固，盒單都齊全，在手把有小瑕疵但不影響整體外觀與使用，實際練習與比賽次數也不多',
-          price: 3500,
-          seller: {
-            icon: '',
-            msg: '再一次感謝親對小店的支持。',
-          },
-        },
-        {
-          product_id: 122,
-          imgSrc: '',
-          typeName: '球棒',
-          type: 'bat',
-          title: '二手球棒販賣中',
-          date: '2022 / 12 / 13',
-          desc: '使用約2年過保固，盒單都齊全，在手把有小瑕疵但不影響整體外觀與使用，實際練習與比賽次數也不多',
-          price: 1500,
-          seller: {
-            icon: '',
-            msg: '多麼焦急的等待就是為了看到現在的結果，親的好評對小店來說是多麼重要，它是對小店服務的肯定，更是對小店工作的默默支持，它不僅激發了小店追求更高標準的潛力，也是對小店最大的報酬，讓小店感覺到一切的付出都是那麼的值得，感謝親的支持，相信小店會做的更好，因為有親。也希望親時刻記得有小店這樣的一位期待者在期待親的再次光臨！',
-          },
-        },
-        {
-          product_id: 751,
-          imgSrc: '',
-          typeName: '手套',
-          type: 'glove',
-          title: '二手手套販賣中',
-          date: '2023 / 01 / 11',
-          desc: '使用約2年過保固，盒單都齊全，在手把有小瑕疵但不影響整體外觀與使用，實際練習與比賽次數也不多',
-          price: 15600,
-          seller: {
-            icon: '',
-            msg: '再一次感謝親對小店的支持。',
-          },
-        },
-        {
-          product_id: 351,
-          imgSrc: '',
-          typeName: '打擊手套',
-          type: 'batting glove',
-          title: '二手打擊手套販賣中',
-          date: '2023 / 05 / 13',
-          desc: '使用約2年過保固，盒單都齊全，在手把有小瑕疵但不影響整體外觀與使用，實際練習與比賽次數也不多',
-          price: 3500,
-          seller: {
-            icon: '',
-            msg: '希望親永遠記得小店陪伴在你的身邊。',
-          },
-        },
-        {
-          product_id: 461,
-          imgSrc: '',
-          typeName: '球衣',
-          type: 'jersey',
-          title: '球衣販賣中',
-          date: '2023 / 07 / 03',
-          desc: '使用約2年過保固，盒單都齊全，在手把有小瑕疵但不影響整體外觀與使用，實際練習與比賽次數也不多',
-          price: 2500,
-          seller: {
-            icon: '',
-            msg: '多麼焦急的等待就是為了看到現在的結果，親的好評對小店來說是多麼重要，它是對小店服務的肯定，更是對小店工作的默默支持，它不僅激發了小店追求更高標準的潛力，也是對小店最大的報酬，讓小店感覺到一切的付出都是那麼的值得，感謝親的支持，相信小店會做的更好，因為有親。也希望親時刻記得有小店這樣的一位期待者在期待親的再次光臨！',
-          },
-        },
-        {
-          product_id: 251,
-          imgSrc: '',
-          typeName: '球棒',
-          type: 'bat',
-          title: '二手球棒販賣中',
-          date: '2023 / 06 / 04',
-          desc: '使用約2年過保固，盒單都齊全，在手把有小瑕疵但不影響整體外觀與使用，實際練習與比賽次數也不多',
-          price: 450,
-          seller: {
-            icon: '',
-            msg: '希望親永遠記得小店陪伴在你的身邊。',
-          },
-        },
-        {
-          product_id: 1151,
-          typeName: '球棒',
-          type: 'bat',
-          title: '二手球棒販賣中',
-          date: '2023 / 02 / 13',
-          desc: '使用約2年過保固，盒單都齊全，在手把有小瑕疵但不影響整體外觀與使用，實際練習與比賽次數也不多',
-          price: 400,
-          seller: {
-            icon: '',
-            msg: '希望親永遠記得小店陪伴在你的身邊。。',
-          },
-        },
-        {
-          product_id: 1551,
-          imgSrc: '',
-          typeName: '球棒',
-          type: 'bat',
-          title: '二手球棒販賣中',
-          date: '2023 / 05 / 27',
-          desc: '使用約2年過保固，盒單都齊全，在手把有小瑕疵但不影響整體外觀與使用，實際練習與比賽次數也不多',
-          price: 500,
-          seller: {
-            icon: '',
-            msg: '多麼焦急的等待就是為了看到現在的結果，親的好評對小店來說是多麼重要，它是對小店服務的肯定，更是對小店工作的默默支持，它不僅激發了小店追求更高標準的潛力，也是對小店最大的報酬，讓小店感覺到一切的付出都是那麼的值得，感謝親的支持，相信小店會做的更好，因為有親。也希望親時刻記得有小店這樣的一位期待者在期待親的再次光臨！',
-          },
-        },
-        {
-          product_id: 755,
-          imgSrc: '',
-          typeName: '球棒',
-          type: 'bat',
-          title: '二手球棒販賣中',
-          date: '2023 / 03 / 17',
-          desc: '使用約2年過保固，盒單都齊全，在手把有小瑕疵但不影響整體外觀與使用，實際練習與比賽次數也不多',
-          price: 500,
-          seller: {
-            icon: '',
-            msg: '多麼焦急的等待就是為了看到現在的結果，親的好評對小店來說是多麼重要，它是對小店服務的肯定，更是對小店工作的默默支持，它不僅激發了小店追求更高標準的潛力，也是對小店最大的報酬，讓小店感覺到一切的付出都是那麼的值得，感謝親的支持，相信小店會做的更好，因為有親。也希望親時刻記得有小店這樣的一位期待者在期待親的再次光臨！',
-          },
-        },
-        {
-          product_id: 1181,
-          imgSrc: '',
-          typeName: '球棒',
-          type: 'bat',
-          title: '二手球棒販賣中',
-          date: '2023 / 03 / 15',
-          desc: '使用約2年過保固，盒單都齊全，在手把有小瑕疵但不影響整體外觀與使用，實際練習與比賽次數也不多',
-          price: 500,
-          seller: {
-            icon: '',
-            msg: '多麼焦急的等待就是為了看到現在的結果，親的好評對小店來說是多麼重要，它是對小店服務的肯定，更是對小店工作的默默支持，它不僅激發了小店追求更高標準的潛力，也是對小店最大的報酬，讓小店感覺到一切的付出都是那麼的值得，感謝親的支持，相信小店會做的更好，因為有親。也希望親時刻記得有小店這樣的一位期待者在期待親的再次光臨！',
-          },
-        },
-        {
-          product_id: 13,
-          imgSrc: '',
-          typeName: '球棒',
-          type: 'bat',
-          title: '二手球棒販賣中',
-          date: '2023 / 03 / 15',
-          desc: '使用約2年過保固，盒單都齊全，在手把有小瑕疵但不影響整體外觀與使用，實際練習與比賽次數也不多',
-          price: 500,
-          seller: {
-            icon: '',
-            msg: '多麼焦急的等待就是為了看到現在的結果，親的好評對小店來說是多麼重要，它是對小店服務的肯定，更是對小店工作的默默支持，它不僅激發了小店追求更高標準的潛力，也是對小店最大的報酬，讓小店感覺到一切的付出都是那麼的值得，感謝親的支持，相信小店會做的更好，因為有親。也希望親時刻記得有小店這樣的一位期待者在期待親的再次光臨！',
-          },
-        },
-        {
-          product_id: 1,
-          imgSrc: '',
-          typeName: '球棒',
-          type: 'bat',
-          title: '二手球棒販賣中',
-          date: '2023 / 03 / 15',
-          desc: '使用約2年過保固，盒單都齊全，在手把有小瑕疵但不影響整體外觀與使用，實際練習與比賽次數也不多',
-          price: 500,
-          seller: {
-            icon: '',
-            msg: '多麼焦急的等待就是為了看到現在的結果，親的好評對小店來說是多麼重要，它是對小店服務的肯定，更是對小店工作的默默支持，它不僅激發了小店追求更高標準的潛力，也是對小店最大的報酬，讓小店感覺到一切的付出都是那麼的值得，感謝親的支持，相信小店會做的更好，因為有親。也希望親時刻記得有小店這樣的一位期待者在期待親的再次光臨！',
-          },
-        },
-      ],
+      productsData: [...productsData],
     };
   },
 };

@@ -1,26 +1,20 @@
 <template>
   <div class="products_main_items">
-    <div
-      v-for="product in products"
-      :key="product.pro_id"
-      class="products_item"
-    >
+    <div v-for="item in productItems" :key="item.pro_id" class="products_item">
       <div class="products_item_header">
         <img src="~@/assets/images/products/bat.png" alt="product image" />
       </div>
       <div class="products_item_content">
-        <div class="products_item_tag">#{{ product.typeName }}</div>
-        <div class="products_item_date">{{ product.date }}</div>
-        <h2 class="products_item_title">{{ product.title }}</h2>
+        <div class="products_item_tag">#{{ item.typeName }}</div>
+        <div class="products_item_date">{{ item.date }}</div>
+        <h2 class="products_item_title">{{ item.title }}</h2>
         <div class="products_item_desc">
           商品使用說明： <br />
           <p>
-            {{ product.desc }}
+            {{ item.desc }}
           </p>
         </div>
-        <div class="products_item_price">
-          NT${{ convertPrice(product.price) }}
-        </div>
+        <div class="products_item_price">NT${{ convertPrice(item.price) }}</div>
         <div class="products_item_seller">
           <div class="products_item_seller_icon">
             <img src="~@/assets/images/icons/main-icon.png" alt="seller icon" />
@@ -28,7 +22,7 @@
           <div class="products_item_seller_msg">
             賣家留言： <br />
             <p>
-              {{ product.seller.msg }}
+              {{ item.seller.msg }}
             </p>
           </div>
         </div>
@@ -36,7 +30,10 @@
     </div>
   </div>
 
-  <ProductsMainPagination />
+  <ProductsMainPagination
+    :totalPages="totalPages"
+    @changePage="updateCurPage"
+  />
 </template>
 
 <script>
@@ -44,16 +41,42 @@ import ProductsMainPagination from '@/components/products/productsItems/Products
 
 export default {
   components: { ProductsMainPagination },
-  props: ['products'],
+  props: ['productsData'],
   data() {
     return {
-      products: this.$props.products,
+      products: this.$props.productsData,
+      curPage: 1,
     };
   },
 
+  computed: {
+    // 取得總頁數
+    totalPages() {
+      return this.products.length % 9 === 0
+        ? this.products.length > 9
+          ? this.products.length / 9
+          : 1
+        : Math.ceil(this.products.length / 9);
+    },
+
+    // 更具頁碼更新顯示商品
+    productItems() {
+      const startIndex = (this.curPage - 1) * 9;
+      const lastIndex = this.curPage * 9;
+
+      return this.products.slice(startIndex, lastIndex);
+    },
+  },
+
   methods: {
+    // 轉換數字，1000->1,000
     convertPrice(price) {
       return price.toLocaleString();
+    },
+
+    // 更新頁碼
+    updateCurPage(curPage) {
+      this.curPage = curPage;
     },
   },
 };
