@@ -14,7 +14,7 @@
 
     <div class="products_aside_search_filter">
       <div class="products_aside_search_filter_dropdown">
-        <span>上架日期 新-->舊</span>
+        <span>上架日期</span>
         <div class="icon">
           <img
             src="~@/assets/images/icons/arrow-down.png"

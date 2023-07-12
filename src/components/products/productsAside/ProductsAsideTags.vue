@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  props: ['productTags'],
+  props: ["productTags"],
   data() {
     return {
       tags: this.$props.productTags,
@@ -39,10 +39,11 @@ export default {
 
     .products_aside_tag {
       font-size: 14px;
-      padding: 3px 11px;
+      padding: 0.25rem 0.75rem;
       border-radius: 27px;
       background-color: var(--accent-yellow);
       cursor: pointer;
+      color: var(--primary-black);
     }
   }
 }
