@@ -18,7 +18,7 @@
   text-decoration: underline;
 }
 
-.test-detail{
+.test-detail {
   text-align: center;
   font-size: 60px;
   color: rgb(255, 0, 0);
