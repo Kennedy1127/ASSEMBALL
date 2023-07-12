@@ -1,11 +1,11 @@
 // 變數名稱暫定而已，之後可以更改
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap");
 
 body {
   line-height: 1.5;
   letter-spacing: 1.5px;
-  font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+  font-family: "Noto Sans TC", "Montserrat", sans-serif;
   color: var(--primary-black);
 }

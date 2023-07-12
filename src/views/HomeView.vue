@@ -3,6 +3,9 @@
   <div class="test">
     <router-link to="/products">go to products</router-link>
   </div>
+  <div class="test-detail">
+    <router-link to="/productsdetail">go to productsdetail</router-link>
+  </div>
 </template>
 
 <script></script>
@@ -12,6 +15,13 @@
   text-align: center;
   font-size: 60px;
   color: blue;
+  text-decoration: underline;
+}
+
+.test-detail{
+  text-align: center;
+  font-size: 60px;
+  color: rgb(255, 0, 0);
   text-decoration: underline;
 }
 </style>

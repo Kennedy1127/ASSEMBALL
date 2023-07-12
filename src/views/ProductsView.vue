@@ -32,11 +32,11 @@
 </template>
 
 <script>
-import ProductsAsideSearch from '@/components/products/productsAside/ProductsAsideSearch';
-import ProductsAsideTags from '@/components/products/productsAside/ProductsAsideTags';
-import ProductsMainHeader from '@/components/products/productsItems/ProductsMainHeader';
-import ProductsMainItems from '@/components/products/productsItems/ProductsMainItems';
-import productsData from '@/composables/productsData';
+import ProductsAsideSearch from "@/components/products/productsAside/ProductsAsideSearch";
+import ProductsAsideTags from "@/components/products/productsAside/ProductsAsideTags";
+import ProductsMainHeader from "@/components/products/productsItems/ProductsMainHeader";
+import ProductsMainItems from "@/components/products/productsItems/ProductsMainItems";
+import productsData from "@/composables/productsData";
 
 export default {
   components: {
@@ -48,12 +48,12 @@ export default {
   data() {
     return {
       productTags: [
-        { name: '#全部', type: 'all' },
-        { name: '#球棒', type: 'bat' },
-        { name: '#手套', type: 'glove' },
-        { name: '#球衣', type: 'jersey' },
-        { name: '#打擊手套', type: 'batting glove' },
-        { name: '#球帽', type: 'cap' },
+        { name: "#全部", type: "all" },
+        { name: "#球棒", type: "bat" },
+        { name: "#手套", type: "glove" },
+        { name: "#球衣", type: "jersey" },
+        { name: "#打擊手套", type: "batting glove" },
+        { name: "#球帽", type: "cap" },
       ],
       productsData: [...productsData],
     };
@@ -94,7 +94,7 @@ export default {
     gap: 1.5rem;
 
     .block {
-      width: 4px;
+      width: 8px;
       height: 26px;
       background-color: var(--primary-blue);
     }
