@@ -12,15 +12,9 @@ const routes = [
     component: () => import('@/views/ProductsView.vue'),
   },
   {
-<<<<<<< HEAD
-    path: '/login',
-    name: 'login',
-    component: () => import('@/views/LoginView.vue'),
-=======
-    path: '/productsdetail',
-    name: 'productsdetail',
-    component: () => import('@/views/ProductDetails.vue'),
->>>>>>> db83cc1c6a3193fc03a76ec82fe5381e26426a21
+    path: '/signin',
+    name: 'signin',
+    component: () => import('@/views/SigninView.vue'),
   },
 ];
 
