@@ -29,7 +29,7 @@
 
 <script>
 export default {
-  props: ['totalPages'],
+  props: ["totalPages"],
 
   data() {
     return {
@@ -61,16 +61,16 @@ export default {
 
     // 進行切換頁碼
     movePage(feature, num = null) {
-      feature === 'number'
+      feature === "number"
         ? (this.curPage = num)
-        : feature === 'next'
+        : feature === "next"
         ? this.nextPage()
         : this.prevPage();
 
-      this.$emit('changePage', this.curPage);
+      this.$emit("changePage", this.curPage);
 
       // 更換頁碼時，滾動到頂端
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     },
   },
 };
@@ -85,7 +85,7 @@ export default {
   align-items: center;
   gap: 1rem;
 
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: "Noto Sans TC", sans-serif;
 }
 
 .products_main_pagination {
