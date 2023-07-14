@@ -10,7 +10,7 @@
       <div class="products_main_header_feature">
         <router-link to="/">
           <div class="icon">
-            <img src="~@/assets/images/icons/plus.png" alt="plus icon" />
+            <font-awesome-icon icon="fa-solid fa-plus" />
           </div>
           刊登商品
         </router-link>
@@ -19,10 +19,7 @@
       <div class="products_main_header_feature">
         <router-link to="/">
           <div class="icon">
-            <img
-              src="~@/assets/images/icons/pencil-alt.png"
-              alt="pencil-alt icon"
-            />
+            <font-awesome-icon icon="fa-solid fa-pen-to-square" />
           </div>
           商品管理
         </router-link>
@@ -78,7 +75,7 @@
 
       transform: translate(50%, -50%);
 
-      width: 45px;
+      width: 55px;
       height: 30px;
       border-radius: 27px;
       background-color: var(--accent-red);
@@ -90,6 +87,7 @@
       font-size: 14px;
       font-weight: 600;
       color: #fff;
+      border: 3px solid #fff;
     }
   }
 }

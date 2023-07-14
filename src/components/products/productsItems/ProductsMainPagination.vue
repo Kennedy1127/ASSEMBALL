@@ -1,7 +1,7 @@
 <template>
   <div class="products_main_paginations">
     <div class="icon" @click="movePage('prev')">
-      <img src="~@/assets/images/icons/arrow-left.png" alt="arrow-left icon" />
+      <font-awesome-icon icon="fa-solid fa-chevron-left" />
     </div>
 
     <div
@@ -19,17 +19,14 @@
     <div v-show="curPage != lastPage">...</div>
 
     <div class="icon" @click="movePage('next')">
-      <img
-        src="~@/assets/images/icons/arrow-right.png"
-        alt="arrow-right icon"
-      />
+      <font-awesome-icon icon="fa-solid fa-chevron-right" />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['totalPages'],
+  props: ["totalPages"],
 
   data() {
     return {
@@ -61,16 +58,16 @@ export default {
 
     // 進行切換頁碼
     movePage(feature, num = null) {
-      feature === 'number'
+      feature === "number"
         ? (this.curPage = num)
-        : feature === 'next'
+        : feature === "next"
         ? this.nextPage()
         : this.prevPage();
 
-      this.$emit('changePage', this.curPage);
+      this.$emit("changePage", this.curPage);
 
       // 更換頁碼時，滾動到頂端
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     },
   },
 };
@@ -85,7 +82,7 @@ export default {
   align-items: center;
   gap: 1rem;
 
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family: "Noto Sans TC", sans-serif;
 }
 
 .products_main_pagination {
@@ -109,5 +106,7 @@ export default {
 
 .icon {
   cursor: pointer;
+  color: var(--primary-blue);
+  padding-right: 0.5rem;
 }
 </style>

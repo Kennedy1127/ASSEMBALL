@@ -6,10 +6,7 @@
           <router-link to="/">首頁</router-link>
         </span>
         <div class="icon">
-          <img
-            src="~@/assets/images/icons/arrow-right.png"
-            alt="breadcrumb arrow"
-          />
+          <font-awesome-icon icon="fa-solid fa-chevron-right" />
         </div>
         <span>
           <router-link to="/products">拍賣專區</router-link>
@@ -18,13 +15,13 @@
 
       <section class="products_content">
         <aside class="products_aside">
-          <ProductsAsideSearch />
+          <ProductsAsideSearch @productlist="productlist" />
           <ProductsAsideTags :productTags="productTags" />
         </aside>
 
         <main class="products_main">
           <ProductsMainHeader />
-          <ProductsMainItems :productsData="productsData" />
+          <ProductsMainItems :productsData="productitem" />
         </main>
       </section>
     </div>
@@ -55,8 +52,29 @@ export default {
         { name: "#打擊手套", type: "batting glove" },
         { name: "#球帽", type: "cap" },
       ],
+      // productsData: [...productsData],
+      searchText: "",
+      // 商品資料(僅在進入畫面時去取一次資料)
       productsData: [...productsData],
+      // 呈現的商品資料(針對productData來搜尋篩選)
+      productDisplay: [...productsData],
     };
+  },
+  methods: {
+    productlist(e) {
+      console.log(e);
+      const productlist = productsData.filter((el) => {
+        console.log(el.typeName);
+        return el.typeName === e;
+      });
+      console.log(productlist);
+      this.productsData = [...productlist];
+    },
+  },
+  computed: {
+    productitem() {
+      return this.productsData;
+    },
   },
 };
 </script>
@@ -85,6 +103,9 @@ export default {
       text-decoration: underline;
       text-underline-offset: 4px;
       // text-decoration-thickness: 2px;
+    }
+    .icon {
+      color: var(--primary-blue);
     }
   }
 

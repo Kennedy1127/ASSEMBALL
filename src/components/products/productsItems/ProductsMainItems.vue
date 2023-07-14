@@ -1,6 +1,6 @@
 <template>
   <div class="products_main_items">
-    <div v-for="item in productItems" :key="item.pro_id" class="products_item">
+    <div v-for="item in produst" :key="item.pro_id" class="products_item">
       <div class="products_item_header">
         <img src="~@/assets/images/products/bat.png" alt="product image" />
       </div>
@@ -20,7 +20,7 @@
             <img src="~@/assets/images/icons/main-icon.png" alt="seller icon" />
           </div>
           <div class="products_item_seller_msg">
-            賣家留言： <br />
+            <span>賣家留言：</span> <br />
             <p>
               {{ item.seller.msg }}
             </p>
@@ -37,35 +37,39 @@
 </template>
 
 <script>
-import ProductsMainPagination from '@/components/products/productsItems/ProductsMainPagination';
+import ProductsMainPagination from "@/components/products/productsItems/ProductsMainPagination";
 
 export default {
   components: { ProductsMainPagination },
-  props: ['productsData'],
+  props: ["productsData"],
   data() {
     return {
-      products: this.$props.productsData,
+      // products: this.$props.productsData,
       curPage: 1,
     };
   },
 
   computed: {
-    // 取得總頁數
-    totalPages() {
-      return this.products.length % 9 === 0
-        ? this.products.length > 9
-          ? this.products.length / 9
-          : 1
-        : Math.ceil(this.products.length / 9);
+    // // 取得總頁數
+    // totalPages() {
+    //   return this.products.length % 9 === 0
+    //     ? this.products.length > 9
+    //       ? this.products.length / 9
+    //       : 1
+    //     : Math.ceil(this.products.length / 9);
+    // },
+
+    produst() {
+      return this.$props.productsData;
     },
 
-    // 更具頁碼更新顯示商品
-    productItems() {
-      const startIndex = (this.curPage - 1) * 9;
-      const lastIndex = this.curPage * 9;
+    // // 更具頁碼更新顯示商品
+    // productItems() {
+    //   const startIndex = (this.curPage - 1) * 9;
+    //   const lastIndex = this.curPage * 9;
 
-      return this.products.slice(startIndex, lastIndex);
-    },
+    //   return this.products.slice(startIndex, lastIndex);
+    // },
   },
 
   methods: {
@@ -78,6 +82,17 @@ export default {
     updateCurPage(curPage) {
       this.curPage = curPage;
     },
+
+    //搜尋框
+    updateDisplay() {
+      if (this.searchText === "") {
+        this.productDisplay = this.productsData;
+      } else {
+        this.productDisplay = this.productsData.filter((item) =>
+          item.title.includes(this.searchText)
+        );
+      }
+    },
   },
 };
 </script>
@@ -85,7 +100,6 @@ export default {
 <style scoped lang="scss">
 .products_main_items {
   margin-top: 1.5rem;
-
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   column-gap: 1.5rem;
@@ -93,14 +107,16 @@ export default {
 }
 
 .products_item {
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  transition: all 0.15s ease-in-out;
 
   &_header {
     width: 315px;
     height: 195px;
-    background-color: #eaeaea;
+    // background-color: #eaeaea;
     border-radius: 8px;
     overflow: hidden;
   }
@@ -112,16 +128,23 @@ export default {
     border-radius: 27px;
     background-color: var(--accent-yellow);
     cursor: pointer;
+    transition: all 0.15s ease-in-out;
+  }
+
+  &_tag:hover {
+    background-color: var(--error-yellow);
   }
 
   &_date {
     margin: 0.5rem 0;
+    color: var(--secondary-gray-1);
+    font-size: 0.875rem;
   }
 
   &_title {
     font-size: 1.25rem;
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   &_desc {
@@ -139,7 +162,7 @@ export default {
     font-size: 1.25rem;
     font-weight: 500;
     color: var(--error-red);
-    font-family: 'Noto Sans TC', sans-serif;
+    font-family: "Noto Sans TC", sans-serif;
     margin: 1rem 0;
   }
 
@@ -153,17 +176,23 @@ export default {
       background-color: var(--secondary-blue-4);
       position: relative;
       z-index: 1;
-
+      font-family: "Noto Sans TC";
+      letter-spacing: 1.5px;
+      & span {
+        font-weight: 500;
+        color: var(--primary-black);
+      }
       p {
         color: var(--secondary-gray-1);
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        font-size: 0.875rem;
       }
 
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         bottom: 20px;
         left: -12px;
@@ -176,6 +205,11 @@ export default {
           transparent;
       }
     }
+  }
+  &:hover {
+    background-color: var(--secondary-blue-4);
+    border-radius: var(--round);
+    cursor: pointer;
   }
 }
 </style>
