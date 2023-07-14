@@ -11,6 +11,11 @@ const routes = [
     name: 'products',
     component: () => import('@/views/ProductsView.vue'),
   },
+  {
+    path: '/products/products-manage',
+    name: 'productsManage',
+    component: () => import('@/views/ProductManageView.vue'),
+  }
 ];
 
 const router = createRouter({
