@@ -6,6 +6,9 @@
   <div class="test-detail">
     <router-link to="/productsdetail">go to productsdetail</router-link>
   </div>
+  <div class="signin">
+    <router-link to="/authentication">go to signup </router-link>
+  </div>
 </template>
 
 <script></script>
@@ -18,10 +21,16 @@
   text-decoration: underline;
 }
 
-.test-detail{
+.test-detail {
   text-align: center;
   font-size: 60px;
   color: rgb(255, 0, 0);
+  text-decoration: underline;
+}
+.signin {
+  text-align: center;
+  font-size: 60px;
+  color: green;
   text-decoration: underline;
 }
 </style>
