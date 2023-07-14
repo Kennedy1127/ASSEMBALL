@@ -2,7 +2,7 @@
   <div class="products_aside_tags">
     <div class="products_aside_tags_title">
       <div class="icon">
-        <img src="@/assets/images/icons/paper-clip.png" alt="paper-clip icon" />
+        <font-awesome-icon icon="fa-solid fa-paperclip" />
       </div>
       <div>類別</div>
     </div>
@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  props: ['productTags'],
+  props: ["productTags"],
   data() {
     return {
       tags: this.$props.productTags,
@@ -27,6 +27,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.icon {
+  color: var(--primary-blue);
+  font-size: 1.3rem;
+}
 .products_aside_tags {
   margin-top: 8rem;
 
@@ -39,10 +43,15 @@ export default {
 
     .products_aside_tag {
       font-size: 14px;
-      padding: 3px 11px;
+      padding: 0.25rem 0.75rem;
       border-radius: 27px;
       background-color: var(--accent-yellow);
       cursor: pointer;
+      color: var(--primary-black);
+      transition: all 0.15s ease-in-out;
+      &:hover {
+        background-color: var(--error-yellow);
+      }
     }
   }
 }
