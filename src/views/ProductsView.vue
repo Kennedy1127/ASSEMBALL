@@ -15,13 +15,13 @@
 
       <section class="products_content">
         <aside class="products_aside">
-          <ProductsAsideSearch @productlist="productlist" />
-          <ProductsAsideTags :productTags="productTags" />
+          <ProductsAsideSearch @filterProducts="filterByInput" />
+          <ProductsAsideTags @filterProducts="filterByTag" />
         </aside>
 
         <main class="products_main">
           <ProductsMainHeader />
-          <ProductsMainItems :productsData="productitem" />
+          <ProductsMainItems :products="products" />
         </main>
       </section>
     </div>
@@ -33,7 +33,7 @@ import ProductsAsideSearch from "@/components/products/productsAside/ProductsAsi
 import ProductsAsideTags from "@/components/products/productsAside/ProductsAsideTags";
 import ProductsMainHeader from "@/components/products/productsItems/ProductsMainHeader";
 import ProductsMainItems from "@/components/products/productsItems/ProductsMainItems";
-import productsData from "@/composables/productsData";
+import productsFakeData from "@/composables/productsData";
 
 export default {
   components: {
@@ -44,35 +44,31 @@ export default {
   },
   data() {
     return {
-      productTags: [
-        { name: "#全部", type: "all" },
-        { name: "#球棒", type: "bat" },
-        { name: "#手套", type: "glove" },
-        { name: "#球衣", type: "jersey" },
-        { name: "#打擊手套", type: "batting glove" },
-        { name: "#球帽", type: "cap" },
-      ],
-      // productsData: [...productsData],
-      searchText: "",
       // 商品資料(僅在進入畫面時去取一次資料)
-      productsData: [...productsData],
-      // 呈現的商品資料(針對productData來搜尋篩選)
-      productDisplay: [...productsData],
+      productsData: [...productsFakeData],
     };
   },
   methods: {
-    productlist(e) {
-      console.log(e);
-      const productlist = productsData.filter((el) => {
-        console.log(el.typeName);
-        return el.typeName === e;
-      });
-      console.log(productlist);
-      this.productsData = [...productlist];
+    // 搜尋欄過濾
+    filterByInput(input) {
+      this.$store.commit("resetProductsCurPage");
+      this.productsData = productsFakeData.filter((el) =>
+        el.product_title.includes(input)
+      );
+    },
+
+    // tag 過濾
+    filterByTag(type) {
+      this.$store.commit("resetProductsCurPage");
+      if (type === 7) return (this.productsData = [...productsFakeData]);
+
+      this.productsData = productsFakeData.filter(
+        (el) => el.product_type === type
+      );
     },
   },
   computed: {
-    productitem() {
+    products() {
       return this.productsData;
     },
   },

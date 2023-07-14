@@ -14,7 +14,7 @@ const routes = [
   {
     path: "/product-detail",
     name: "productDetail",
-    component: () => import("@/views/ProductDetails.vue"),
+    component: () => import("@/views/ProductsDetails.vue"),
   },
   {
     path: "/authentication",

@@ -4,7 +4,7 @@
     <router-link to="/products">go to products</router-link>
   </div>
   <div class="test-detail">
-    <router-link to="/productsdetail">go to productsdetail</router-link>
+    <router-link to="/product-detail">go to productsdetail</router-link>
   </div>
   <div class="signin">
     <router-link to="/authentication">go to signup </router-link>

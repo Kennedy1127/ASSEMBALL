@@ -23,127 +23,8 @@
         </aside>
 
         <main class="products_main">
-          <section class="product_main_detail">
-            <div class="product_main_detail_pic">
-              <img
-                src="~@/assets/images/products/productdetail_pic1.png"
-                alt="productdetail_pic1"
-              />
-              <div class="product_main_detail_pic_all">
-                <div class="product_main_detail_pic_all_small">
-                  <img
-                    src="~@/assets/images/products/productdetail_smallpic1.png"
-                    alt="productdetail_pic1"
-                  />
-                </div>
-                <div class="product_main_detail_pic_all_small">
-                  <img
-                    src="~@/assets/images/products/productdetail_smallpic1.png"
-                    alt="productdetail_pic1"
-                  />
-                </div>
-                <div class="product_main_detail_pic_all_small">
-                  <img
-                    src="~@/assets/images/products/productdetail_smallpic1.png"
-                    alt="productdetail_pic1"
-                  />
-                </div>
-                <div class="product_main_detail_pic_all_small">
-                  <img
-                    src="~@/assets/images/products/productdetail_smallpic1.png"
-                    alt="productdetail_pic1"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="product_main_detail_content">
-              <div class="product_main_detail_content_title">
-                <span>{{ productDetail.Title }}</span>
-              </div>
-              <div
-                class="product_main_detail_content_body"
-                v-for="item in productDetailBody"
-                :key="item"
-              >
-                {{ item.title }}{{ item.text }}
-              </div>
-              <div class="detail_footer">
-                <div class="detail_price">{{ productDetail.Price }}</div>
-                <button>我要購買</button>
-              </div>
-            </div>
-          </section>
-          <section class="product_message">
-            <div class="product_message_title">
-              <div class="product_message_title_block"></div>
-              <span>{{ productMessage.Title }}</span>
-            </div>
-            <div class="product_message_area">
-              <div
-                class="product_message_area_all"
-                v-for="item in messageArea"
-                :key="item"
-              >
-                <div class="product_message_area_all_pic">
-                  <img
-                    class="product_message_area_all_pic_mark"
-                    src="~@/assets/images/products/mark.png"
-                    alt="mark"
-                  />
-                  <img
-                    class="product_message_area_all_pic_user"
-                    src="~@/assets/images/products/message_pic01.png"
-                    alt="message_pic01"
-                  />
-                </div>
-                <div class="product_message_area_all_text">
-                  <div class="product_message_area_all_text_name">
-                    {{ item.name }}
-                  </div>
-                  <div class="product_message_area_all_text_all">
-                    {{ item.textAll }}
-                  </div>
-                  <div class="product_message_area_all_text_date">
-                    <img src="~@/assets/images/products/edit.png" alt="edit" />
-                    {{ item.date }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="product_message_importing">
-              <div class="product_message_importing_user_pic">
-                <img
-                  src="~@/assets/images/products/importing_pic.png"
-                  alt="importing_pic"
-                />
-              </div>
-              <div class="product_message_importing_text">
-                <textarea
-                  placeholder="請輸入留言內容......"
-                  name="comment"
-                  form="usrform"
-                ></textarea>
-                <button>送出</button>
-              </div>
-            </div>
-            <div class="product_message_notice">
-              <div class="product_message_notice_icon">
-                <img src="~@/assets/images/products/notice.png" alt="notice" />
-              </div>
-              <div class="product_message_notice_text">
-                <div class="product_message_notice_text_title">
-                  {{ noticeText.Title }}
-                </div>
-                <div class="product_message_notice_text_detail">
-                  {{ noticeText.Text }}
-                  <br />
-                  {{ noticeText.TextTwo }}
-                  <br />
-                  {{ noticeText.TextThree }}
-                </div>
-              </div>
-            </div>
-          </section>
+          <ProductsMainItem />
+          <ProductsMainItemMsg />>
         </main>
       </section>
     </div>
@@ -154,11 +35,15 @@
 import ProductsAsideSearch from "@/components/products/productsAside/ProductsAsideSearch";
 import ProductsAsideTags from "@/components/products/productsAside/ProductsAsideTags";
 import productsData from "@/composables/productsData";
+import ProductsMainItem from "@/components/products/productsItem/ProductsMainItem";
+import ProductsMainItemMsg from "@/components/products/productsItem/ProductsMainItemMsg";
 
 export default {
   components: {
     ProductsAsideSearch,
     ProductsAsideTags,
+    ProductsMainItem,
+    ProductsMainItemMsg,
   },
   data() {
     return {

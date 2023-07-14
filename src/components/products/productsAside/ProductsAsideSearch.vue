@@ -23,7 +23,7 @@
     </div>
 
     <div class="products_aside_search_button">
-      <button @click="updateDisplay" id="Button">
+      <button @click="emitFilterProducts" id="Button">
         <div class="icon">
           <font-awesome-icon
             icon="fa-solid fa-arrow-right"
@@ -41,15 +41,11 @@ export default {
   data() {
     return {
       searchText: "",
-      // 商品資料(僅在進入畫面時去取一次資料)
-      productsData: [],
-      // 呈現的商品資料(針對productData來搜尋篩選)
-      productDisplay: [],
     };
   },
   methods: {
-    updateDisplay() {
-      this.$emit("productlist", this.searchText);
+    emitFilterProducts() {
+      this.$emit("filterProducts", this.searchText);
     },
   },
 };
