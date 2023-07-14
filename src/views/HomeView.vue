@@ -7,7 +7,7 @@
     <router-link to="/productsdetail">go to productsdetail</router-link>
   </div>
   <div class="signin">
-    <router-link to="/signin">go to signin </router-link>
+    <router-link to="/authentication">go to signup </router-link>
   </div>
 </template>
 
