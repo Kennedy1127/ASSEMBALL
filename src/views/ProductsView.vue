@@ -8,9 +8,7 @@
         <div class="icon">
           <font-awesome-icon icon="fa-solid fa-chevron-right" />
         </div>
-        <span>
-          <router-link to="/products">拍賣專區</router-link>
-        </span>
+        <span>拍賣專區</span>
       </section>
 
       <section class="products_content">
@@ -33,6 +31,8 @@ import ProductsAsideSearch from "@/components/products/productsAside/ProductsAsi
 import ProductsAsideTags from "@/components/products/productsAside/ProductsAsideTags";
 import ProductsMainHeader from "@/components/products/productsItems/ProductsMainHeader";
 import ProductsMainItems from "@/components/products/productsItems/ProductsMainItems";
+import ProductsMainItem from "@/components/products/productsItem/ProductsMainItem";
+import ProductsMainItemMsg from "@/components/products/productsItem/ProductsMainItemMsg";
 import productsFakeData from "@/composables/productsData";
 
 export default {
@@ -42,12 +42,23 @@ export default {
     ProductsMainHeader,
     ProductsMainItems,
   },
+
   data() {
     return {
       // 商品資料(僅在進入畫面時去取一次資料)
       productsData: [...productsFakeData],
+
+      // 進入商品詳情
+      isInProductDetail: false,
     };
   },
+
+  computed: {
+    products() {
+      return this.productsData;
+    },
+  },
+
   methods: {
     // 搜尋欄過濾
     filterByInput(input) {
@@ -67,10 +78,10 @@ export default {
       );
     },
   },
-  computed: {
-    products() {
-      return this.productsData;
-    },
+
+  mounted() {
+    if (this.$route.query.tag) this.filterByTag(Number(this.$route.query.tag));
+    if (this.$route.query.search) this.filterByInput(this.$route.query.search);
   },
 };
 </script>
@@ -98,7 +109,6 @@ export default {
       color: var(--primary-blue);
       text-decoration: underline;
       text-underline-offset: 4px;
-      // text-decoration-thickness: 2px;
     }
     .icon {
       color: var(--primary-blue);

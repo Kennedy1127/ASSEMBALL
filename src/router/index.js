@@ -12,9 +12,9 @@ const routes = [
     component: () => import("@/views/ProductsView.vue"),
   },
   {
-    path: "/product-detail",
+    path: "/products/:id",
     name: "productDetail",
-    component: () => import("@/views/ProductsDetails.vue"),
+    component: () => import("@/views/ProductDetail.vue"),
   },
   {
     path: "/authentication",
@@ -22,10 +22,10 @@ const routes = [
     component: () => import("@/views/AuthenticationView.vue"),
   },
   {
-    path: '/products/products-manage',
-    name: 'productsManage',
-    component: () => import('@/views/ProductManageView.vue'),
-  }
+    path: "/products/products-manage",
+    name: "productsManage",
+    component: () => import("@/views/ProductManageView.vue"),
+  },
 ];
 
 const router = createRouter({

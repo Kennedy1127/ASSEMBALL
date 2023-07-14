@@ -4,6 +4,7 @@
       v-for="item in productItems"
       :key="item.product_id"
       class="products_item"
+      @click="goToProductDetail(item.product_id)"
     >
       <div class="product_item_header">
         <img src="~@/assets/images/products/bat.png" alt="product image" />
@@ -45,6 +46,7 @@ import productTags from "@/composables/productTags";
 export default {
   components: { ProductsMainPagination },
   props: ["products"],
+  emits: ["enterProductDetail"],
   data() {
     return {
       productTags: { ...productTags },
@@ -83,6 +85,14 @@ export default {
     // 轉換數字，1000->1,000
     convertPrice(price) {
       return price.toLocaleString();
+    },
+
+    goToProductDetail(id) {
+      this.$router.push({
+        name: "productDetail",
+        params: { id },
+      });
+      window.scrollTo({ top: 0 });
     },
   },
 };

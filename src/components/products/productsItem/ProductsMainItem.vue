@@ -72,4 +72,76 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.product_main {
+  &_detail {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    &_pic {
+      width: 60%;
+      display: flex;
+      flex-direction: column;
+      padding-left: 2rem;
+      &_all {
+        width: 100%;
+        display: flex;
+        padding-top: 1rem;
+        gap: 0.75rem;
+        &_small {
+          width: 25%;
+          & img {
+            width: 100%;
+          }
+        }
+      }
+    }
+    &_content {
+      width: 80%;
+      margin-left: 2rem;
+      &_title {
+        padding-bottom: 2rem;
+        & span {
+          color: var(--primary-black);
+          font-size: 2rem;
+          font-weight: 500;
+          letter-spacing: 1.5px;
+        }
+      }
+      &_body {
+        color: var(--secondary-gray-1);
+        padding: 0.75rem 0.75rem 0.75rem 0;
+        border-bottom: 1px solid var(--secondary-gray-3);
+        letter-spacing: 1.5px;
+      }
+    }
+    .detail_footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      .detail_price {
+        font-weight: 500;
+        letter-spacing: 1.5px;
+        font-size: 1.75rem;
+        color: var(--error-red);
+        padding-top: 3rem;
+      }
+      & button {
+        width: 150px;
+        height: 50px;
+        font-size: 1.25rem;
+        font-weight: 500;
+        letter-spacing: 6px;
+        border-radius: var(--round);
+        color: #ffffff;
+        background-color: var(--error-yellow);
+        transition: all 0.2s ease-in-out;
+      }
+      & button:hover {
+        background-color: var(--error-red);
+      }
+    }
+  }
+}
+</style>
