@@ -14,12 +14,17 @@ const routes = [
   {
     path: "/product-detail",
     name: "productDetail",
-    component: () => import("@/views/ProductDetails.vue"),
+    component: () => import("@/views/ProductsDetails.vue"),
   },
   {
     path: "/authentication",
     name: "authentication",
     component: () => import("@/views/AuthenticationView.vue"),
+  },
+  {
+    path: "/product-post", //url- 網址的文字
+    name: "productPost",
+    component: () => import("@/views/ProductPost.vue"), // 檔名
   },
 ];
 

@@ -6,6 +6,9 @@
   <div class="test-detail">
     <router-link to="/productsdetail">go to productsdetail</router-link>
   </div>
+  <div class="test-detail">
+    <router-link to="/product-post">go to productpost</router-link>
+  </div>
   <div class="signin">
     <router-link to="/authentication">go to signup </router-link>
   </div>
