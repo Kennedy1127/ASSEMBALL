@@ -1,7 +1,18 @@
 <template>
   <header>
     <nav>
-      <div class="wrapper"></div>
+      <div class="wrapper">
+        <div>home</div>
+        <div class="test">
+          <router-link to="/products">go to products</router-link>
+        </div>
+        <div class="test-detail">
+          <router-link to="/product-detail">go to productsdetail</router-link>
+        </div>
+        <div class="signin">
+          <router-link to="/authentication">go to signup </router-link>
+        </div>
+      </div>
     </nav>
   </header>
 </template>

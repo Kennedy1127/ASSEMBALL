@@ -8,20 +8,18 @@
         <div class="icon">
           <font-awesome-icon icon="fa-solid fa-chevron-right" />
         </div>
-        <span>
-          <router-link to="/products">拍賣專區</router-link>
-        </span>
+        <span>拍賣專區</span>
       </section>
 
       <section class="products_content">
         <aside class="products_aside">
-          <ProductsAsideSearch @productlist="productlist" />
-          <ProductsAsideTags :productTags="productTags" />
+          <ProductsAsideSearch @filterProducts="filterByInput" />
+          <ProductsAsideTags @filterProducts="filterByTag" />
         </aside>
 
         <main class="products_main">
           <ProductsMainHeader />
-          <ProductsMainItems :productsData="productitem" />
+          <ProductsMainItems :products="products" />
         </main>
       </section>
     </div>
@@ -33,7 +31,9 @@ import ProductsAsideSearch from "@/components/products/productsAside/ProductsAsi
 import ProductsAsideTags from "@/components/products/productsAside/ProductsAsideTags";
 import ProductsMainHeader from "@/components/products/productsItems/ProductsMainHeader";
 import ProductsMainItems from "@/components/products/productsItems/ProductsMainItems";
-import productsData from "@/composables/productsData";
+import ProductsMainItem from "@/components/products/productsItem/ProductsMainItem";
+import ProductsMainItemMsg from "@/components/products/productsItem/ProductsMainItemMsg";
+import productsFakeData from "@/composables/productsData";
 
 export default {
   components: {
@@ -42,39 +42,46 @@ export default {
     ProductsMainHeader,
     ProductsMainItems,
   },
+
   data() {
     return {
-      productTags: [
-        { name: "#全部", type: "all" },
-        { name: "#球棒", type: "bat" },
-        { name: "#手套", type: "glove" },
-        { name: "#球衣", type: "jersey" },
-        { name: "#打擊手套", type: "batting glove" },
-        { name: "#球帽", type: "cap" },
-      ],
-      // productsData: [...productsData],
-      searchText: "",
       // 商品資料(僅在進入畫面時去取一次資料)
-      productsData: [...productsData],
-      // 呈現的商品資料(針對productData來搜尋篩選)
-      productDisplay: [...productsData],
+      productsData: [...productsFakeData],
+
+      // 進入商品詳情
+      isInProductDetail: false,
     };
   },
-  methods: {
-    productlist(e) {
-      console.log(e);
-      const productlist = productsData.filter((el) => {
-        console.log(el.typeName);
-        return el.typeName === e;
-      });
-      console.log(productlist);
-      this.productsData = [...productlist];
-    },
-  },
+
   computed: {
-    productitem() {
+    products() {
       return this.productsData;
     },
+  },
+
+  methods: {
+    // 搜尋欄過濾
+    filterByInput(input) {
+      this.$store.commit("resetProductsCurPage");
+      this.productsData = productsFakeData.filter((el) =>
+        el.product_title.includes(input)
+      );
+    },
+
+    // tag 過濾
+    filterByTag(type) {
+      this.$store.commit("resetProductsCurPage");
+      if (type === 7) return (this.productsData = [...productsFakeData]);
+
+      this.productsData = productsFakeData.filter(
+        (el) => el.product_type === type
+      );
+    },
+  },
+
+  mounted() {
+    if (this.$route.query.tag) this.filterByTag(Number(this.$route.query.tag));
+    if (this.$route.query.search) this.filterByInput(this.$route.query.search);
   },
 };
 </script>
@@ -102,7 +109,6 @@ export default {
       color: var(--primary-blue);
       text-decoration: underline;
       text-underline-offset: 4px;
-      // text-decoration-thickness: 2px;
     }
     .icon {
       color: var(--primary-blue);

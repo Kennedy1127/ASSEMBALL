@@ -12,9 +12,9 @@ const routes = [
     component: () => import("@/views/ProductsView.vue"),
   },
   {
-    path: "/product-detail",
+    path: "/products/:id",
     name: "productDetail",
-    component: () => import("@/views/ProductsDetails.vue"),
+    component: () => import("@/views/ProductDetail.vue"),
   },
   {
     path: "/authentication",
@@ -25,6 +25,11 @@ const routes = [
     path: "/product-post", //url- 網址的文字
     name: "productPost",
     component: () => import("@/views/ProductPost.vue"), // 檔名
+  },
+  {
+    path: "/products/products-manage",
+    name: "productsManage",
+    component: () => import("@/views/ProductManageView.vue"),
   },
 ];
 
