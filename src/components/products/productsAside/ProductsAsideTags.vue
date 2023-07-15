@@ -2,31 +2,46 @@
   <div class="products_aside_tags">
     <div class="products_aside_tags_title">
       <div class="icon">
-        <img src="@/assets/images/icons/paper-clip.png" alt="paper-clip icon" />
+        <font-awesome-icon icon="fa-solid fa-paperclip" />
       </div>
       <div>類別</div>
     </div>
 
     <div class="products_aside_tags_content">
-      <div v-for="tag in tags" :key="tag.type" class="products_aside_tag">
-        {{ tag.name }}
+      <div
+        v-for="(tag, index) in tags"
+        :key="tag"
+        class="products_aside_tag"
+        @click="emitFilterProducts(index)"
+      >
+        #{{ tag }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import productTags from "@/composables/productTags";
+
 export default {
-  props: ["productTags"],
   data() {
     return {
-      tags: this.$props.productTags,
+      tags: { ...productTags, 7: "全部商品" },
     };
+  },
+  methods: {
+    emitFilterProducts(type) {
+      this.$emit("filterProducts", Number(type));
+    },
   },
 };
 </script>
 
 <style scoped lang="scss">
+.icon {
+  color: var(--primary-blue);
+  font-size: 1.3rem;
+}
 .products_aside_tags {
   margin-top: 8rem;
 
@@ -44,6 +59,10 @@ export default {
       background-color: var(--accent-yellow);
       cursor: pointer;
       color: var(--primary-black);
+      transition: all 0.15s ease-in-out;
+      &:hover {
+        background-color: var(--error-yellow);
+      }
     }
   }
 }

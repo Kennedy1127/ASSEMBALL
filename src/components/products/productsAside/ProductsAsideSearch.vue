@@ -6,9 +6,9 @@
     </div>
 
     <div class="products_aside_search_input">
-      <input type="text" placeholder="輸入關鍵字" />
+      <input type="text" placeholder="輸入關鍵字" v-model="searchText" />
       <div class="icon">
-        <img src="~@/assets/images/icons/search.png" alt="search icon" />
+        <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
       </div>
     </div>
 
@@ -16,21 +16,18 @@
       <div class="products_aside_search_filter_dropdown">
         <span>上架日期</span>
         <div class="icon">
-          <img
-            src="~@/assets/images/icons/arrow-down.png"
-            alt="arrow-down icon"
-          />
+          <font-awesome-icon icon="fa-solid fa-chevron-down" />
         </div>
       </div>
       <!-- <div class="products_aside_search_filter_content"></div> -->
     </div>
 
     <div class="products_aside_search_button">
-      <button>
+      <button @click="emitFilterProducts" id="Button">
         <div class="icon">
-          <img
-            src="~@/assets/images/icons/arrow-circle-right.png"
-            alt="arrow-circle-right icon"
+          <font-awesome-icon
+            icon="fa-solid fa-arrow-right"
+            style="color: #ffffff"
           />
         </div>
         搜索
@@ -38,6 +35,21 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      searchText: "",
+    };
+  },
+  methods: {
+    emitFilterProducts() {
+      this.$emit("filterProducts", this.searchText);
+    },
+  },
+};
+</script>
 
 <style scoped lang="scss">
 .products_aside_search {
@@ -59,8 +71,13 @@
         color: var(--secondary-gray-3);
       }
     }
+    input:checked {
+      border: var(--primary-blue);
+    }
 
     .icon {
+      font-size: 1.3rem;
+      color: var(--primary-blue);
       position: absolute;
       top: 50%;
       right: 1.25rem;
@@ -88,6 +105,8 @@
         top: 50%;
         right: 1rem;
         transform: translateY(-50%);
+        color: var(--primary-blue);
+        font-size: 1.3rem;
       }
     }
   }
