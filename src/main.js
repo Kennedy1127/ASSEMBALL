@@ -2,6 +2,8 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import ViewUIPlus from "view-ui-plus";
+import "view-ui-plus/dist/styles/viewuiplus.css";
 
 //icon 設定
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -36,4 +38,5 @@ createApp(App)
   .use(store)
   .use(router)
   .component("font-awesome-icon", FontAwesomeIcon) //icon 設定
+  .use(ViewUIPlus)
   .mount("#app");
