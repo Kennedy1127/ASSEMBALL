@@ -117,19 +117,6 @@
       </section>
     </div>
   </main>
-  <div>home</div>
-  <div class="test">
-    <router-link to="/products">go to products</router-link>
-  </div>
-  <div class="test-detail">
-    <router-link to="/productsdetail">go to productsdetail</router-link>
-  </div>
-  <div class="signin">
-    <router-link to="/authentication">go to signup </router-link>
-  </div>
-  <div class="rookie">
-    <router-link to="/rookie">go to rookie </router-link>
-  </div>
 </template>
 
 <script>

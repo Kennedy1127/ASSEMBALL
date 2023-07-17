@@ -2,15 +2,23 @@
   <header>
     <nav>
       <div class="wrapper">
-        <div>home</div>
+        <div>
+          <router-link to="/">home</router-link>
+        </div>
         <div class="test">
           <router-link to="/products">go to products</router-link>
         </div>
-        <div class="test-detail">
-          <router-link to="/product-detail">go to productsdetail</router-link>
-        </div>
         <div class="signin">
           <router-link to="/authentication">go to signup </router-link>
+        </div>
+        <div>
+          <router-link to="/recruitment">recruitment</router-link>
+        </div>
+        <div>
+          <router-link to="/recruitment/copywriting/1">copywriting</router-link>
+        </div>
+        <div class="rookie">
+          <router-link to="/rookie">go to rookie </router-link>
         </div>
       </div>
     </nav>
