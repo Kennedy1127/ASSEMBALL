@@ -9,77 +9,22 @@
 </template>
 
 <script>
+import roles from "@/composables/tables/roles";
+import area from "@/composables/tables/area";
+
 export default {
   props: ["placeholder", "type"],
   data() {
     return {
-      role: [
-        {
-          value: 0,
-          label: "投手",
-        },
-        {
-          value: 1,
-          label: "捕手",
-        },
-        {
-          value: 2,
-          label: "一壘手",
-        },
-        {
-          value: 3,
-          label: "二壘手",
-        },
-        {
-          value: 4,
-          label: "游擊手",
-        },
-        {
-          value: 5,
-          label: "三壘手",
-        },
-        {
-          value: 6,
-          label: "左外野手",
-        },
-        {
-          value: 7,
-          label: "中外野手",
-        },
-        {
-          value: 8,
-          label: "右外野手",
-        },
-      ],
-      area: [
-        {
-          value: 0,
-          label: "北部地區",
-        },
-        {
-          value: 1,
-          label: "中部地區",
-        },
-        {
-          value: 2,
-          label: "南部地區",
-        },
-        {
-          value: 3,
-          label: "東部地區",
-        },
-        {
-          value: 4,
-          label: "離島地區",
-        },
-      ],
+      roles,
+      area,
       model: "",
     };
   },
 
   computed: {
     items() {
-      return this.$props.type === "role" ? [...this.role] : [...this.area];
+      return this.$props.type === "role" ? [...this.roles] : [...this.area];
     },
   },
 };
