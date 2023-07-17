@@ -7,30 +7,35 @@ const routes = [
     component: () => import("@/views/HomeView.vue"),
   },
   {
-    path: "/products",
-    name: "products",
-    component: () => import("@/views/ProductsView.vue"),
-  },
-  {
-    path: "/product-detail",
-    name: "productDetail",
-    component: () => import("@/views/ProductsDetails.vue"),
-  },
-  {
     path: "/authentication",
     name: "authentication",
     component: () => import("@/views/AuthenticationView.vue"),
   },
   {
-    path: '/products/products-manage',
-    name: 'productsManage',
-    component: () => import('@/views/ProductManageView.vue'),
+    path: "/products",
+    name: "products",
+    component: () => import("@/views/ProductsView.vue"),
   },
   {
-    path: '/rookie',
-    name: 'rookie',
-    component: () => import('@/views/rookie.vue'),
-  }
+    path: "/products/:id",
+    name: "productDetail",
+    component: () => import("@/views/ProductDetail.vue"),
+  },
+  {
+    path: "/product-post", //url- 網址的文字
+    name: "productPost",
+    component: () => import("@/views/ProductPost.vue"), // 檔名
+  },
+  {
+    path: "/products/products-manage",
+    name: "productsManage",
+    component: () => import("@/views/ProductManageView.vue"),
+  },
+  {
+    path: "/recruitment",
+    name: "recruitment",
+    component: () => import("@/views/recruitment/RecruitmentView.vue"),
+  },
 ];
 
 const router = createRouter({
