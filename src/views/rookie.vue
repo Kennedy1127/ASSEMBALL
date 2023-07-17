@@ -1,0 +1,320 @@
+<template>
+    <main class="rookie">
+        <div class="wrapper"><!--網頁白色部分 -->
+            <div class="background_baseball">
+                <img src="~@/assets/images/rookie/backgroundBaseball.png">
+
+            </div>
+            <div class="bread_crumbs"><!--麵包屑 -->
+                <a href="#">
+                    首頁
+                </a>
+                <div class="bread_crumbs_arrow">
+                    <img src="~@/assets/images/icons/arrow-right.png">
+                </div>
+
+                新手上路
+
+            </div>
+            <div class="rookie_title">
+                <div class="color_block"></div>
+                新手上路
+            </div>
+
+            <div class="rookie_area"><!-- 新手上路區域 -->
+
+                <div class="rookie_decorate"><!-- 左邊圖跟標題 -->
+                    <div class="rookie_area_poster">
+                        <!-- 新手上路大字報 -->
+                        Rookie
+                        <span> Area</span>
+                    </div>
+                    <div class="hitter_img">
+                        <img src="~@/assets/images/rookie/hitter.png">
+                    </div>
+                </div>
+                <!-- 教學清單區域--------------------------------- -->
+                <div class="rookie_teaching_container">
+                    <button @click="pageup" class="change_page_btn_up">
+                        <img src="~@/assets/images/icons/arrow-right.png">
+                    </button>
+                    <div v-for="item in currentList" :key="item.index" class="rookie_teaching"><!-- 教學清單 -->
+                        <div class="rookie_teaching_list">
+                            <div class="rookie_teaching_list_title"> <!-- 清單標題 -->
+                                <div class="rookie_teaching_list_title_arrow">
+                                    <img src="~@/assets/images/icons/arrow-right.png">
+                                </div>
+                                {{ item.type }} - {{ item.title }}
+                            </div>
+
+
+
+                            <div class="rookie_teaching_list_content"> <!-- 清單內文 -->
+                                {{ item.content }}
+                            </div>
+
+                            <button class="rookie_teaching_list_more_btn">More
+
+                            </button>
+
+                        </div>
+                    </div>
+                    <button @click="pagedown" class="change_page_btn_down">
+                        <img src="~@/assets/images/icons/arrow-right.png">
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+    </main>
+</template>
+<script>
+export default {
+    data() {
+        return {
+            page: 1,//存放現在頁碼
+            perPage: 3,//一頁顯示幾筆
+            teaching: [
+                {
+                    type: "投手教學系列",
+                    title: "曲球",
+                    content: "握球時食指與中指握在球的外側縫線處，出手時藉著手腕的順時針方向旋轉與手指的向下施力，使球造成旋轉，進而產生水平向分力，加上重力的作用，球會像畫出一道弧線般向打者的外角下墜。 "
+                },
+                {
+                    type: "投手教學系列",
+                    title: "滑球",
+                    content: "食指與中指放在球的外側，手掌稍微轉向側面，放球時手指向下扣。產生向外側急速下墜的位移。著名的滑球投手有三振率紀錄保持人蘭迪．強森（Randy Johnson）、2012年進軍美國職棒的臺灣投手陳偉殷和中華職棒的陽建福。 "
+                },
+                {
+                    type: "投手教學系列",
+                    title: "指叉球",
+                    content: "將食指和中指叉開，夾住球的兩側，拇指握住球的下方，降低球的轉速，帶來較大幅度的下沉。日本人將這種球稱為「20世紀最後的魔球」。此球路最具代表的人物是以龍捲風式投法享譽棒球界的野茂英雄，此外2012年再度復出的克萊門斯（Roger Clemens）、旅日選手郭李建夫、郭源治等，也都是此球路的佼佼者。"
+                },
+                {
+                    type: "打者教學系列",
+                    title: "如何挑選一支適合自己的球棒",
+                    content: "喜歡從事棒壘球運動的朋友或許都有過買球棒的經驗，球棒分不同長度、重量、木頭材質、品牌，根據國外網站統計，多數 MLB 球員使用的球棒品牌便多達 11 種以上，一支動輒好幾千元的球棒，要如何在琳瑯滿目的選擇中選擇一支最適合自己的呢？....."
+                },
+                {
+                    type: "投手教學系列",
+                    title: "如何投球",
+                    content: "想要投出有力量的球，放球(球離開手)的瞬間要將最大的力量傳達到手指。因此在球離開手的瞬間之前，手腕、手指不要放入多餘的力道。握球並不是緊緊握住，而是要想像是抓著雞蛋一樣，輕輕地拿著它。只要球不會從手掉落的力道就行了。 "
+                },
+                {
+                    type: "投手教學系列",
+                    title: "四縫線快速球",
+                    content: "將食指和中指放在縫線上，拇指放在正下方，投出時手指向下扣，使球產生向內的旋轉。球在作用力合成下，會產生向右下角的位移。美國棒球三振紀錄保持人諾蘭．萊恩（Nolan Ryan）、芝加哥小熊隊的投手麥可．鮑登（Michael Bowden）和臺灣棒球好手王建民都相當擅長此種球路。 "
+                },
+                {
+                    type: "投手教學系列",
+                    title: "卡特球",
+                    content: "食指與中指握在縫線最窄的地方，手指偏離中心部位，投出球路偏斜的快速球。在作用力影響下，球會向左下角飄移。使用此種球路的球員有洋基隊的守護神李維拉（Mariano Rivera）、安迪．派提特（Andy Pettitte）、達比修有和中職的潘威倫。"
+                },
+                {
+                    type: "投手教學系列",
+                    title: "伸卡球",
+                    content: "法類似2縫線快速球，食指和中指放在縫線最窄的地方，食指發出較多的力，產生更大幅度的側移與下沉。這就是王建民最有名的球路，此外，曾在美聯和國聯皆獲得賽揚獎殊榮的哈勒戴（Roy Halladay）也相當擅於此球路。 "
+                },
+                {
+                    type: "投手教學系列",
+                    title: "變速球",
+                    content: "食指與拇指指間接觸成圓形，再用剩下的3指握住球，投出快速球的球路。但是由於球的轉速降低，而出現指叉球的效果。有名的投手有旅美的日籍投手井川慶和張誌家。"
+                },
+            ]
+        }
+    },
+    computed: {
+        currentList() {//回傳頁碼對應的三筆索引值的資料組成的陣列
+            return this.teaching.slice((this.page - 1) * this.perPage, this.page * this.perPage);
+        },
+    },
+    methods: {
+        pageup() {
+            if (this.page != 1) {
+                this.page--;
+            }
+        },
+        pagedown() {
+            if (this.page != ((this.teaching.length) / this.perPage)) {
+                console.log("陣列長度", (this.teaching.length) / this.perPage);
+                this.page++;
+            }
+        },
+    },
+}
+
+</script>
+<style scoped lang="scss">
+.rookie {
+    background-color: var(--secondary-blue-4);
+    padding: 4rem 0;
+
+    .wrapper {
+        background-color: #fff;
+        box-shadow: var(--shadow-heavy);
+        border-radius: var(--round);
+        padding: 4rem 5rem;
+        position: relative;
+    }
+}
+
+.bread_crumbs {
+    //麵包屑
+    display: flex;
+    align-content: center;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.25rem;
+    color: var(--primary-black);
+
+    a {
+        display: block;
+        font-size: 1.25rem;
+        color: var(--primary-blue);
+    }
+
+    .bread_crumbs_arrow {
+        margin-top: 0.5rem;
+    }
+
+
+
+}
+
+.rookie_title {
+    //新手上路標題
+    margin-top: 3rem;
+    display: flex;
+    align-items: end;
+    align-content: end;
+    gap: 2rem;
+    font-size: 2rem;
+    color: var(--primary-blue);
+    font-weight: 600;
+
+    .color_block {
+        width: 15px;
+        height: 50px;
+        background-color: var(--primary-blue);
+    }
+}
+
+.rookie_area {
+    //新手上路區域
+    display: flex;
+    margin-top: 3rem;
+}
+
+.rookie_area_poster {
+    //新手上路大字報
+    margin-top: 3rem;
+    font-size: 4rem;
+    position: relative;
+    color: var(--primary-blue);
+    font-weight: 600;
+
+    span {
+        bottom: -6rem;
+        right: 2rem;
+        position: absolute;
+
+    }
+
+    margin-bottom: 3rem;
+}
+
+.hitter_img {
+    margin-top: 8rem;
+}
+
+.rookie_teaching_container {
+    //教學清單容器
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    margin-left: 10rem;
+
+    position: relative;
+}
+
+.change_page_btn_up {
+    //教學清單頁面向上切換按鈕
+    width: 15px;
+    background-color: var(--pale-white);
+    transform: rotate(-90deg);
+    position: absolute;
+    top: -2rem;
+    right: 1.5rem;
+
+    img {
+        width: 100%;
+    }
+}
+
+.change_page_btn_down {
+    //教學清單頁面向下切換按鈕
+    width: 15px;
+    background-color: var(--pale-white);
+    transform: rotate(90deg);
+    position: absolute;
+    bottom: -1rem;
+    right: 1.5rem;
+
+    img {
+        width: 100%;
+    }
+}
+
+
+.rookie_teaching_list {
+    //教學清單
+    padding-bottom: 2rem;
+    position: relative;
+    margin-bottom: 3rem;
+    border-bottom: var(--secondary-gray-3) solid;
+
+    &_title {
+        //清單標題
+        color: var(--primary-blue);
+        font-size: 1.5rem;
+        position: relative;
+        font-weight: 600;
+
+        &_arrow {
+            position: absolute;
+            left: -1.5rem;
+        }
+    }
+
+    &_content {
+        font-size: 1.25rem;
+        color: var(--secondary-gray-1);
+        width: 80%;
+        margin-top: 1rem;
+        max-height: 6rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+    }
+
+    //內文
+    &_more_btn {
+        position: absolute;
+        right: 0;
+        font-size: 1rem;
+        color: var(--primary-blue);
+        font-weight: 600;
+        background-color: #fff;
+    }
+}
+
+.background_baseball {
+    z-index: 0;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+}
+</style>

@@ -41,6 +41,15 @@ const routes = [
     name: "recruitmentCopywriting",
     component: () => import("@/views/recruitment/RecruitmentCopywriting.vue"),
   },
+  {
+    path: "/rookie",
+    name: "rookie",
+    component: () => import("@/views/rookie.vue"),
+  },{
+    path: "/myplayer_team",
+    name: "myplayer_team",
+    component: () => import("@/views/MyPlayer_Team.vue"),
+  },
 ];
 
 const router = createRouter({
