@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
   <main class="home">
     <div class="wrapper">
       <section class="home_landing">
@@ -112,20 +111,12 @@
           />
         </div>
       </section>
+      <section class="home_recruit">
+        <div class="home_recruit_title"></div>
+        <div class="home_recruit_carousel"></div>
+      </section>
     </div>
   </main>
-=======
-  <div>home</div>
-  <div class="test">
-    <router-link to="/products">go to products</router-link>
-  </div>
-  <div class="test-detail">
-    <router-link to="/products/0">go to productsdetail</router-link>
-  </div>
-  <div class="signin">
-    <router-link to="/authentication">go to signup </router-link>
-  </div>
->>>>>>> d017ccec61cdad134ff28e4887ae9d590e07b397
 </template>
 
 <script>
