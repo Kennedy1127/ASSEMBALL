@@ -7,6 +7,11 @@ const routes = [
     component: () => import("@/views/HomeView.vue"),
   },
   {
+    path: "/authentication",
+    name: "authentication",
+    component: () => import("@/views/AuthenticationView.vue"),
+  },
+  {
     path: "/products",
     name: "products",
     component: () => import("@/views/ProductsView.vue"),
@@ -17,14 +22,19 @@ const routes = [
     component: () => import("@/views/ProductDetail.vue"),
   },
   {
-    path: "/authentication",
-    name: "authentication",
-    component: () => import("@/views/AuthenticationView.vue"),
+    path: "/product-post", //url- 網址的文字
+    name: "productPost",
+    component: () => import("@/views/ProductPost.vue"), // 檔名
   },
   {
     path: "/products/products-manage",
     name: "productsManage",
     component: () => import("@/views/ProductManageView.vue"),
+  },
+  {
+    path: "/recruitment",
+    name: "recruitment",
+    component: () => import("@/views/recruitment/RecruitmentView.vue"),
   },
 ];
 
