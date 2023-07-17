@@ -9,6 +9,10 @@
   <div class="signin">
     <router-link to="/authentication">go to signup </router-link>
   </div>
+  <div class="rookie">
+    <router-link to="/rookie">go to rookie </router-link>
+  </div>
+
 </template>
 
 <script></script>
@@ -32,5 +36,12 @@
   font-size: 60px;
   color: green;
   text-decoration: underline;
+}
+.rookie{
+  text-align: center;
+  font-size: 60px;
+  color: rgb(228, 27, 188);
+  text-decoration: underline;
+
 }
 </style>
