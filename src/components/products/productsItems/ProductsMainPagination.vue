@@ -5,18 +5,23 @@
     </div>
 
     <div
-      v-for="num in 3"
+      v-for="num in renderPagesCount"
       :key="num"
       :class="{
         products_main_pagination: true,
-        'products_main_pagination--active': num + temp === curPage,
+        'products_main_pagination--active':
+          num + temp === $store.state.productsCurPage,
       }"
       @click="movePage('number', num + temp)"
     >
       {{ num + temp }}
     </div>
 
-    <div v-show="curPage != lastPage">...</div>
+    <div
+      v-show="$props.totalPages > 3 && $store.state.productsCurPage != lastPage"
+    >
+      ...
+    </div>
 
     <div class="icon" @click="movePage('next')">
       <font-awesome-icon icon="fa-solid fa-chevron-right" />
@@ -30,15 +35,18 @@ export default {
 
   data() {
     return {
-      curPage: 1,
       lastPage: this.$props.totalPages,
     };
   },
 
   computed: {
+    renderPagesCount() {
+      return this.$props.totalPages > 3 ? 3 : this.$props.totalPages;
+    },
+
     temp() {
-      if (this.curPage > 3) {
-        return this.curPage - 3;
+      if (this.$store.state.productsCurPage > 3) {
+        return this.$store.state.productsCurPage - 3;
       }
 
       return 0;
@@ -47,24 +55,22 @@ export default {
 
   methods: {
     prevPage() {
-      if (this.curPage === 1) return;
-      this.curPage--;
+      if (this.$store.state.productsCurPage === 1) return;
+      this.$store.commit("productsPrevPage");
     },
 
     nextPage() {
-      if (this.curPage === this.$props.totalPages) return;
-      this.curPage++;
+      if (this.$store.state.productsCurPage === this.$props.totalPages) return;
+      this.$store.commit("productsNextPage");
     },
 
     // 進行切換頁碼
     movePage(feature, num = null) {
       feature === "number"
-        ? (this.curPage = num)
+        ? this.$store.commit("productsGoToPage", num)
         : feature === "next"
         ? this.nextPage()
         : this.prevPage();
-
-      this.$emit("changePage", this.curPage);
 
       // 更換頁碼時，滾動到頂端
       window.scrollTo({ top: 0, behavior: "smooth" });
