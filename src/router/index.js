@@ -12,6 +12,7 @@ const routes = [
     name: "Authentication",
     component: () => import("@/views/AuthenticationView.vue"),
   },
+  /////////////////////////////////////////
   {
     path: "/products",
     name: "Products",
@@ -32,6 +33,7 @@ const routes = [
     name: "ProductsManage",
     component: () => import("@/views/ProductManageView.vue"),
   },
+  /////////////////////////////////////////
   {
     path: "/recruitments",
     name: "Recruitments",
@@ -47,14 +49,32 @@ const routes = [
     component: () => import("@/views/recruitments/CopywritingView.vue"),
   },
   {
+    path: "/recruitments/recruitment-post",
+    name: "recruitmentPost",
+    component: () => import("@/views/recruitments/RecruitmentPostView.vue"),
+  },
+  /////////////////////////////////////////
+  {
+    path: "/myplayer_team",
+    name: "myplayer_team",
+    component: () => import("@/views/MyPlayer_Team.vue"),
+  },
+  /////////////////////////////////////////
+  {
     path: "/rookie",
     name: "rookie",
     component: () => import("@/views/rookie.vue"),
   },
   {
-    path: "/myplayer_team",
-    name: "myplayer_team",
-    component: () => import("@/views/MyPlayer_Team.vue"),
+    path: "/rookie/rookieListCurve",
+    name: "rookieListCurve",
+    component: () => import("@/views/rookieListCurve.vue"),
+  },
+  /////////////////////////////////////////
+  {
+    path: "/Backstage",
+    name: "Backstage",
+    component: () => import("@/views/Backstage.vue"),
   },
 ];
 

@@ -1,4 +1,5 @@
 <template>
+    
     <main class="rookie">
         <div class="wrapper"><!--網頁白色部分 -->
             <div class="background_baseball">
@@ -6,9 +7,10 @@
 
             </div>
             <div class="bread_crumbs"><!--麵包屑 -->
-                <a href="#">
+                <router-link to="/">首頁 </router-link>
+                <!-- <a href="#">
                     首頁
-                </a>
+                </a> -->
                 <div class="bread_crumbs_arrow">
                     <img src="~@/assets/images/icons/arrow-right.png">
                 </div>
@@ -40,6 +42,7 @@
                     </button>
                     <div v-for="item in currentList" :key="item.index" class="rookie_teaching"><!-- 教學清單 -->
                         <div class="rookie_teaching_list">
+                            <router-link to="rookie/rookieListCurve"> 
                             <div class="rookie_teaching_list_title"> <!-- 清單標題 -->
                                 <div class="rookie_teaching_list_title_arrow">
                                     <img src="~@/assets/images/icons/arrow-right.png">
@@ -56,7 +59,7 @@
                             <button class="rookie_teaching_list_more_btn">More
 
                             </button>
-
+                        </router-link>
                         </div>
                     </div>
                     <button @click="pagedown" class="change_page_btn_down">
@@ -79,7 +82,7 @@ export default {
                 {
                     type: "投手教學系列",
                     title: "曲球",
-                    content: "握球時食指與中指握在球的外側縫線處，出手時藉著手腕的順時針方向旋轉與手指的向下施力，使球造成旋轉，進而產生水平向分力，加上重力的作用，球會像畫出一道弧線般向打者的外角下墜。 "
+                    content: "握球時食指與中指握在球的外側縫線處，出手時藉著手腕的順時針方向旋轉與手指的向下施力，使球造成旋轉，進而產生水平向分力，加上重力的作用，球會像畫出一道弧線般向打者的外角下墜。 曲球的旋轉，幾乎是與直球相反；直球是讓球由下往上旋轉，而曲球則是讓球從上往下旋轉。在姆指壓住四線快速球投法的一條縫線後，食指與中指去扣住正對面的縫線。球在出手時，就像栓緊汽水的瓶蓋一般旋轉，在球離手前，姆指應該要高過食指，讓球由上往下轉。 對於1.上肩、2.四分之三投法、3.側投、4.下勾等不同放球點(出手的位置)，曲球分別是由1.上往下快速地掉落、2.往右打者的外角下墜、3.往右打者的外角大幅度水平偏移、4.在變化路徑中會有一段具有真正的上飄但最後又會因為受到地心引力影響而下墜，在投曲球的時候，手腕旋轉的力量怎麼轉移到球的旋轉上，是曲球投得成功與否的關鍵。 但是在投手投出曲球時，常會在握球的深淺與放球點做一些變化，讓曲球也出現球速差異，通常變化幅度越大的曲球，球速會越慢，出現失投球的機會也會較高。在放球點上改變，也會讓曲球的變化路徑在橫向與下墜比例上不同。 "
                 },
                 {
                     type: "投手教學系列",
@@ -172,6 +175,7 @@ export default {
         display: block;
         font-size: 1.25rem;
         color: var(--primary-blue);
+       
     }
 
     .bread_crumbs_arrow {

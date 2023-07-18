@@ -1,0 +1,12 @@
+diff a/src/main.js b/src/main.js	(rejected hunks)
+@@ -33,7 +33,9 @@
+   faPenToSquare,
+   faChevronLeft,
+   faArrowRight,
+-  faCircleExclamation
++  faCircleExclamation,
++  faImage,
++  faCirclePlus
+ );
+ 
+ createApp(App)

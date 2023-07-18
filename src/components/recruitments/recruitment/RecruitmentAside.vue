@@ -47,10 +47,8 @@
       </div>
     </div>
 
-    <div class="recruit_copywritings_aside_btns">
-      <div class="recruit_copywritings_aside_btn">
-        <button>招募球員</button>
-      </div>
+    <div class="recruit_copywritings_aside_btn">
+      <router-link :to="{ name: 'recruitmentPost' }">招募球員</router-link>
     </div>
   </div>
 </template>
@@ -190,12 +188,12 @@ export default {
       }
     }
 
-    &_btns {
+    &_btn {
       margin-top: 2rem;
       display: flex;
       justify-content: space-between;
 
-      button {
+      a {
         width: 140px;
         height: 50px;
         border-radius: 24px;
@@ -207,6 +205,10 @@ export default {
         color: #fff;
 
         background-color: var(--primary-blue);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
   }
