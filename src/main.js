@@ -19,6 +19,8 @@ import {
   faChevronLeft,
   faArrowRight,
   faCircleExclamation,
+  faImage,
+  faCirclePlus,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -31,7 +33,9 @@ library.add(
   faPenToSquare,
   faChevronLeft,
   faArrowRight,
-  faCircleExclamation
+  faCircleExclamation,
+  faImage,
+  faCirclePlus
 );
 
 createApp(App)
