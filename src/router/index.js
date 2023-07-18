@@ -37,6 +37,7 @@ const routes = [
     component: () => import("@/views/recruitment/RecruitmentView.vue"),
   },
   {
+<<<<<<< HEAD
     path: "/recruitment/copywriting/:id",
     name: "recruitmentCopywriting",
     component: () => import("@/views/recruitment/RecruitmentCopywriting.vue"),
@@ -59,6 +60,11 @@ const routes = [
     path: "/Backstage",
     name: "Backstage",
     component: () => import("@/views/Backstage.vue"),
+=======
+    path: "/recruitment/recruitment-post",
+    name: "recruitmentPost",
+    component: () => import("@/views/recruitment/RecruitmentPostView.vue"),
+>>>>>>> Sherry
   },
 ];
 
