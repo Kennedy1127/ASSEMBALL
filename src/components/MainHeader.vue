@@ -12,6 +12,9 @@
         <div class="signin">
           <router-link to="/authentication">go to signup </router-link>
         </div>
+        <div class="rookie">
+          <router-link to="/rookie">go to rookie </router-link>
+        </div>
       </div>
     </nav>
   </header>
