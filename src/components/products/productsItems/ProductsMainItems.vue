@@ -89,7 +89,7 @@ export default {
 
     goToProductDetail(id) {
       this.$router.push({
-        name: "productDetail",
+        name: "ProductDetail",
         params: { id },
       });
       window.scrollTo({ top: 0 });

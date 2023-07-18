@@ -3,38 +3,52 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   {
     path: "/",
-    name: "home",
+    name: "Home",
     component: () => import("@/views/HomeView.vue"),
   },
   {
     path: "/authentication",
-    name: "authentication",
+    name: "Authentication",
     component: () => import("@/views/AuthenticationView.vue"),
   },
   {
     path: "/products",
-    name: "products",
+    name: "Products",
     component: () => import("@/views/ProductsView.vue"),
   },
   {
     path: "/products/:id",
-    name: "productDetail",
+    name: "ProductDetail",
     component: () => import("@/views/ProductDetail.vue"),
   },
   {
     path: "/product-post", //url- 網址的文字
-    name: "productPost",
+    name: "ProductPost",
     component: () => import("@/views/ProductPost.vue"), // 檔名
   },
   {
     path: "/products/products-manage",
-    name: "productsManage",
+    name: "ProductsManage",
     component: () => import("@/views/ProductManageView.vue"),
   },
   {
     path: "/recruitment",
-    name: "recruitment",
+    name: "Recruitment",
     component: () => import("@/views/recruitment/RecruitmentView.vue"),
+  },
+  {
+    path: "/recruitment/copywriting/:id",
+    name: "recruitmentCopywriting",
+    component: () => import("@/views/recruitment/RecruitmentCopywriting.vue"),
+  },
+  {
+    path: "/rookie",
+    name: "rookie",
+    component: () => import("@/views/rookie.vue"),
+  },{
+    path: "/myplayer_team",
+    name: "myplayer_team",
+    component: () => import("@/views/MyPlayer_Team.vue"),
   },
 ];
 
