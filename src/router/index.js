@@ -36,6 +36,11 @@ const routes = [
     name: "recruitment",
     component: () => import("@/views/recruitment/RecruitmentView.vue"),
   },
+  {
+    path: "/recruitment/recruitment-post",
+    name: "recruitmentPost",
+    component: () => import("@/views/recruitment/RecruitmentPostView.vue"),
+  },
 ];
 
 const router = createRouter({

@@ -160,7 +160,11 @@
 
             <div class="recruit_copywritings_aside_btns">
               <div class="recruit_copywritings_aside_btn">
-                <button>招募球員</button>
+                <button>
+                  <router-link to="/recruitment/recruitment-post"
+                    >招募球員</router-link
+                  >
+                </button>
               </div>
             </div>
           </div>
