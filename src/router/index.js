@@ -50,6 +50,11 @@ const routes = [
     name: "myplayer_team",
     component: () => import("@/views/MyPlayer_Team.vue"),
   },
+  {
+    path: "/rookie/rookieListCurve",
+    name: "rookieListCurve",
+    component: () => import("@/views/rookieListCurve.vue"),
+  },
 ];
 
 const router = createRouter({
