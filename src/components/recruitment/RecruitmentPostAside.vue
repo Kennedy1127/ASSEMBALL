@@ -1,15 +1,13 @@
 <template>
   <div class="recruitment_aside">
     <div class="recruitment_aside_userpic">
-      <<<<<<< HEAD
       <img src="" alt="" class="recruitment_aside_pic_userphoto" />
-      =======
+
       <img
         src="~@/assets/images/recruitment/team-icons/team-icon-1-lg.png"
         alt="userphoto"
         class="recruitment_aside_userpic_userphoto"
       />
-      >>>>>>> Sherry
     </div>
     <div class="recruitment_aside_list">
       <li><router-link to="/"></router-link>新增職缺</li>
@@ -18,15 +16,13 @@
       <li><router-link to="/"></router-link>記錄管理</li>
     </div>
     <div class="recruitment_aside_hitterpic">
-      <<<<<<< HEAD
       <img class="recruitment_aside_hitterpic_img" />
-      =======
+
       <img
         src="~@/assets/images/recruitment/hitter.png"
         alt="hitter"
         class="recruitment_aside_hitterpic_img"
       />
-      >>>>>>> Sherry
     </div>
   </div>
 </template>
