@@ -12,10 +12,12 @@
           <router-link to="/authentication">go to signup </router-link>
         </div>
         <div>
-          <router-link to="/recruitment">recruitment</router-link>
+          <router-link to="/recruitments">recruitment</router-link>
         </div>
         <div>
-          <router-link to="/recruitment/copywriting/1">copywriting</router-link>
+          <router-link to="/recruitments/copywriting/1"
+            >copywriting</router-link
+          >
         </div>
         <div class="rookie">
           <router-link to="/rookie">go to rookie </router-link>
