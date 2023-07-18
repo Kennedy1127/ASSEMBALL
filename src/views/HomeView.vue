@@ -822,4 +822,10 @@ export default {
     }
   }
 }
+.rookie {
+  text-align: center;
+  font-size: 60px;
+  color: rgb(228, 27, 188);
+  text-decoration: underline;
+}
 </style>
