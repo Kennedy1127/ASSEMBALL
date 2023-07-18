@@ -20,6 +20,9 @@
         <div class="rookie">
           <router-link to="/rookie">go to rookie </router-link>
         </div>
+        <div class="BackstageHomePage">
+          <router-link to="/Backstage">go to Backstage </router-link>
+        </div>
       </div>
     </nav>
   </header>
