@@ -55,6 +55,11 @@ const routes = [
     name: "rookieListCurve",
     component: () => import("@/views/rookieListCurve.vue"),
   },
+  {
+    path: "/Backstage",
+    name: "Backstage",
+    component: () => import("@/views/Backstage.vue"),
+  },
 ];
 
 const router = createRouter({
