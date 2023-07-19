@@ -51,7 +51,7 @@ export default {
 .home {
   width: 100%;
   background-color: var(--primary-blue);
-  padding-top: 16rem;
+  padding-top: 2rem;
   .wrapper {
     width: 100%;
     max-width: 1600px;
@@ -61,7 +61,6 @@ export default {
       height: 1650px;
       color: #fff;
       padding: 2rem;
-      padding-top: 8rem;
       position: relative;
     }
     // 跑馬燈
