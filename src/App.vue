@@ -1,7 +1,7 @@
 <template>
-  <MainHeader />
+  <MainHeader v-if="$route.name !='Backstage'" />
   <router-view />
-  <MainFooter />
+  <MainFooter  v-if="$route.name !='Backstage'"/>
 </template>
 
 <script>
