@@ -5,7 +5,7 @@
     </div>
 
     <div
-      v-for="num in computedCopywritingsPages"
+      v-for="num in renderPages"
       :key="num"
       :class="{
         recruit_copywritings_pagination: true,
@@ -18,10 +18,7 @@
     </div>
 
     <div
-      v-show="
-        computedTotalCopywritingsPages > 3 &&
-        $store.state.copywritingsCurPage != computedTotalCopywritingsPages
-      "
+      v-show="totalPages > 3 && $store.state.copywritingsCurPage != totalPages"
     >
       ...
     </div>
@@ -33,37 +30,14 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
-  async mounted() {
-    try {
-      const res = await axios.get("http://localhost:3000/copywritings");
-      const copywritingsCount = res.data.length;
-      this.copywritingsPages =
-        copywritingsCount % 6 === 0
-          ? copywritingsCount > 6
-            ? copywritingsCount / 6
-            : 1
-          : Math.ceil(copywritingsCount / 6);
-    } catch (err) {
-      console.error(err);
-    }
-  },
-
-  data() {
-    return {
-      copywritingsPages: 0,
-    };
-  },
-
   computed: {
-    computedTotalCopywritingsPages() {
-      return this.copywritingsPages;
+    totalPages() {
+      return this.$store.getters.copywritingsPages;
     },
 
-    computedCopywritingsPages() {
-      return this.copywritingsPages > 3 ? 3 : this.copywritingsPages;
+    renderPages() {
+      return this.totalPages > 3 ? 3 : this.totalPages;
     },
 
     temp() {
@@ -82,24 +56,16 @@ export default {
     },
 
     nextPage() {
-      if (
-        this.$store.state.copywritingsCurPage ===
-        this.computedTotalCopywritingsPages
-      )
-        return;
+      if (this.$store.state.copywritingsCurPage === this.totalPages) return;
       this.$store.commit("copywritingsNextPage");
     },
 
-    // 進行切換頁碼
     movePage(feature, num = null) {
       feature === "number"
         ? this.$store.commit("copywritingsGoToPage", num)
         : feature === "next"
         ? this.nextPage()
         : this.prevPage();
-
-      // 更換頁碼時，滾動到頂端
-      // window.scrollTo({ top: 0, behavior: "smooth" });
     },
   },
 };
@@ -109,6 +75,7 @@ export default {
 .recruit_copywritings {
   &_paginations {
     grid-column: 1/-1;
+    align-self: end;
 
     display: flex;
     justify-content: flex-end;

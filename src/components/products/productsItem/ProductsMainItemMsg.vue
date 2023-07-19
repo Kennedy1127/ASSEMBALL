@@ -13,7 +13,7 @@
         <div class="product_message_area_all_pic">
           <img
             class="product_message_area_all_pic_mark"
-            src="~@/assets/images/products/mark.png"
+            src=""
             alt="mark"
           />
           <img

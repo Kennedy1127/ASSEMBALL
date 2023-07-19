@@ -28,10 +28,10 @@
 </template>
 
 <script>
-import RecruitmentLanding from "@/components/recruitment/RecruitmentLanding.vue";
-import RecruitmentCards from "@/components/recruitment/RecruitmentCards.vue";
-import RecruitmentAside from "@/components/recruitment/RecruitmentAside.vue";
-import RecruitmentSwiper from "@/components/recruitment/RecruitmentSwiper.vue";
+import RecruitmentLanding from "@/components/recruitments/recruitment/RecruitmentLanding.vue";
+import RecruitmentCards from "@/components/recruitments/recruitment/RecruitmentCards.vue";
+import RecruitmentAside from "@/components/recruitments/recruitment/RecruitmentAside.vue";
+import RecruitmentSwiper from "@/components/recruitments/recruitment/RecruitmentSwiper.vue";
 
 export default {
   components: {
@@ -42,8 +42,10 @@ export default {
   },
 
   beforeMount() {
-    if (this.$store.state.copywritings.length !== 0) return;
+    // 掛載後撈資料
     this.$store.dispatch("getCopywritings");
+    this.$store.commit("resetCopywritingsCurPage");
+    this.$store.commit("resetFiltersAndSearch");
   },
 
   data() {
@@ -51,9 +53,9 @@ export default {
   },
 
   computed: {
-    // 撈資料後更新
+    // 渲染用資料
     computedCopywritings() {
-      return this.$store.getters.copywritingsFilteredBy;
+      return this.$store.getters.dateSortedFilteredCopywritings;
     },
   },
 };
@@ -75,6 +77,7 @@ export default {
     margin: 4rem auto 0;
 
     &_header {
+      width: fit-content;
       position: relative;
       .block {
         position: absolute;

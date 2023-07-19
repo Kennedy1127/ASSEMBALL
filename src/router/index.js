@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from "@/store/index";
 
 const routes = [
   {
@@ -11,6 +12,7 @@ const routes = [
     name: "Authentication",
     component: () => import("@/views/AuthenticationView.vue"),
   },
+  /////////////////////////////////////////
   {
     path: "/products",
     name: "Products",
@@ -31,29 +33,48 @@ const routes = [
     name: "ProductsManage",
     component: () => import("@/views/ProductManageView.vue"),
   },
+  /////////////////////////////////////////
   {
-    path: "/recruitment",
-    name: "Recruitment",
-    component: () => import("@/views/recruitment/RecruitmentView.vue"),
+    path: "/recruitments",
+    name: "Recruitments",
+    component: () => import("@/views/recruitments/RecruitmentsView.vue"),
+    beforeEnter: (to, from, next) => {
+      store.commit("resetFiltersAndSearch");
+      next();
+    },
   },
   {
-    path: "/recruitment/copywriting/:id",
-    name: "recruitmentCopywriting",
-    component: () => import("@/views/recruitment/RecruitmentCopywriting.vue"),
+    path: "/recruitments/copywriting/:id",
+    name: "Copywriting",
+    component: () => import("@/views/recruitments/CopywritingView.vue"),
   },
+  {
+    path: "/recruitments/recruitment-post",
+    name: "recruitmentPost",
+    component: () => import("@/views/recruitments/RecruitmentPostView.vue"),
+  },
+  /////////////////////////////////////////
+  {
+    path: "/myplayer_team",
+    name: "myplayer_team",
+    component: () => import("@/views/MyPlayer_Team.vue"),
+  },
+  /////////////////////////////////////////
   {
     path: "/rookie",
     name: "rookie",
     component: () => import("@/views/rookie.vue"),
-  },{
-    path: "/myplayer_team",
-    name: "myplayer_team",
-    component: () => import("@/views/MyPlayer_Team.vue"),
   },
   {
     path: "/rookie/rookieListCurve",
     name: "rookieListCurve",
     component: () => import("@/views/rookieListCurve.vue"),
+  },
+  /////////////////////////////////////////
+  {
+    path: "/Backstage",
+    name: "Backstage",
+    component: () => import("@/views/Backstage.vue"),
   },
 ];
 

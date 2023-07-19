@@ -1,7 +1,7 @@
 <template>
   <div class="recruit_copywritings_cards">
     <div
-      v-for="(item, index) in $props.copywritings"
+      v-for="(item, index) in renderCopywritings"
       :key="index"
       class="recruit_copywritings_card"
     >
@@ -51,12 +51,12 @@
       </div>
     </div>
 
-    <!-- <RecruitmentCardsPaginations /> -->
+    <RecruitmentCardsPaginations />
   </div>
 </template>
 
 <script>
-import RecruitmentCardsPaginations from "@/components/recruitment/RecruitmentCardsPaginations.vue";
+import RecruitmentCardsPaginations from "@/components/recruitments/recruitment/RecruitmentCardsPaginations.vue";
 import roles from "@/composables/tables/roles";
 import exps from "@/composables/tables/exps";
 
@@ -68,7 +68,13 @@ export default {
     return {};
   },
 
-  computed: {},
+  computed: {
+    renderCopywritings() {
+      const start = (this.$store.state.copywritingsCurPage - 1) * 6;
+      const end = this.$store.state.copywritingsCurPage * 6;
+      return this.$props.copywritings.slice(start, end);
+    },
+  },
 
   methods: {
     convertRole(role) {
@@ -94,8 +100,10 @@ export default {
 .recruit_copywritings {
   &_cards {
     flex: 1;
+    min-height: 950px;
 
     display: grid;
+    align-items: start;
     grid-template-columns: repeat(3, 1fr);
     column-gap: 1.5rem;
     row-gap: 3rem;

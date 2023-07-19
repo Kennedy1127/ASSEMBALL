@@ -6,27 +6,47 @@
           :icon="['fas', 'magnifying-glass']"
           class="magnifying-glass"
         />
-        <input type="text" name="" id="" />
+        <input type="text" v-model="searchText" />
       </div>
+
       <div class="recruit_landing_filter recruit_landing_filter--role">
-        <RecruitmentSelect placeholder="守備位置" type="role" />
+        <RecruitmentSelect v-model="role" placeholder="守備位置" type="role" />
       </div>
+
       <div class="recruit_landing_filter recruit_landing_filter--area">
-        <RecruitmentSelect placeholder="地區" type="area" />
+        <RecruitmentSelect v-model="area" placeholder="地區" type="area" />
       </div>
     </div>
 
     <div class="recruit_landing_filters_btn">
-      <button>搜尋</button>
+      <button @click="submitFilters">搜尋</button>
     </div>
   </div>
 </template>
 
 <script>
-import RecruitmentSelect from "@/components/recruitment/RecruitmentSelect.vue";
+import RecruitmentSelect from "@/components/recruitments/recruitment/RecruitmentSelect.vue";
 
 export default {
   components: { RecruitmentSelect },
+  data() {
+    return {
+      searchText: "",
+      role: -1,
+      area: "",
+    };
+  },
+
+  methods: {
+    submitFilters() {
+      const searchObj = {
+        searchText: this.searchText,
+        role: this.role,
+        area: this.area,
+      };
+      this.$store.commit("selectCopywritingsSearch", searchObj);
+    },
+  },
 };
 </script>
 
@@ -60,6 +80,7 @@ export default {
       width: 200px;
       height: 60px;
       border-radius: var(--round);
+      background-color: #fff;
 
       font-family: "Noto Sans TC", sans-serif;
       font-size: 1.5rem;

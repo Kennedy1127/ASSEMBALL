@@ -5,8 +5,8 @@
         <div class="header_logo">
           <router-link to="/">
             <img
-              src="~@/assets/images/icons/header_logo_light.svg"
-              alt="nav_logo_light"
+              src="~@/assets/images/icons/header_logo_dark.svg"
+              alt="nav_logo"
             />
           </router-link>
         </div>
@@ -63,6 +63,12 @@ export default {
   data() {
     return {
       notify: "1",
+      navList: {
+        recruitment: "球隊徵人",
+        shopping: "拍賣專區",
+        team: "我的球隊",
+        novice: "新手上路",
+      },
     };
   },
   methods: {
@@ -82,10 +88,11 @@ export default {
   top: 0;
   width: 100%;
   height: 6rem;
-  background-color: var(--primary-blue);
+  background-color: var(--pale-white);
   display: flex;
   justify-content: center;
   z-index: 100;
+  box-shadow: var(--shadow-heavy);
   .wrapper {
     width: 95%;
     height: 100%;
@@ -115,31 +122,27 @@ export default {
         align-items: center;
         & > a {
           font-size: 1rem;
+          font-weight: 500;
           padding: 1.25rem;
           border-radius: 0.5rem;
-          color: var(--pale-white);
+          color: var(--primary-black);
           cursor: pointer;
-          transition: all 0.15s ease-in-out;
+          transition: all 0.09s ease-in-out;
           & font-awesome-icon {
             font-size: 2rem;
-            transition: all 0.15s ease-in-out;
+            transition: all 0.09s ease-in-out;
           }
           & > span {
             padding-right: 1rem;
+            color: var(--primary-blue);
           }
         }
-        & > a::after {
-          content: "";
-          position: absolute;
-          width: 15px;
-          height: 15px;
-          background-color: var(--accent-yellow);
-          border-radius: 50%;
-          transform: scale(0);
-          transition: all 0.15s ease-in-out;
+        & > a:hover {
+          background-color: var(--secondary-blue-3);
+          color: var(--primary-blue);
         }
-        & > a:hover::after {
-          transform: scale(1);
+        & > a:hover font-awesome-icon {
+          color: var(--primary-blue);
         }
       }
     }
@@ -153,11 +156,11 @@ export default {
         padding: 1rem 1.5rem;
         border-radius: 50%;
         cursor: pointer;
-        transition: all 0.15s ease-in;
+        transition: all 0.09s ease-in;
         position: relative;
         & > span {
           font-size: 1.5rem;
-          color: var(--pale-white);
+          color: var(--primary-blue);
         }
       }
       &_notify {
@@ -175,19 +178,11 @@ export default {
         background-color: var(--accent-red);
         font-family: "Montserrat";
       }
-      & > div::after {
-        content: "";
-        position: absolute;
-        width: 15px;
-        height: 15px;
-        background-color: var(--accent-yellow);
-        border-radius: 50%;
-        transform: scale(0);
-        transition: all 0.15s ease-in-out;
-        z-index: -1;
+      & > div:hover {
+        background-color: var(--secondary-blue-3);
       }
-      & > div:hover::after {
-        transform: scale(1);
+      & > div:hover span {
+        color: var(--primary-blue);
       }
     }
   }

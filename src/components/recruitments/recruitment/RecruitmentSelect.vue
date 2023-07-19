@@ -1,6 +1,10 @@
 <template>
   <div class="recruitmentSelect-select">
-    <Select v-model="model" :placeholder="$props.placeholder">
+    <Select
+      :value="modelValue"
+      @on-change="onChange"
+      :placeholder="$props.placeholder"
+    >
       <Option v-for="item in items" :value="item.value" :key="item.value">{{
         item.label
       }}</Option>
@@ -13,18 +17,24 @@ import roles from "@/composables/tables/roles";
 import area from "@/composables/tables/area";
 
 export default {
-  props: ["placeholder", "type"],
+  props: ["placeholder", "type", "modelValue"],
+
   data() {
     return {
       roles,
       area,
-      model: "",
     };
   },
 
   computed: {
     items() {
       return this.$props.type === "role" ? [...this.roles] : [...this.area];
+    },
+  },
+
+  methods: {
+    onChange(e) {
+      this.$emit("update:modelValue", e);
     },
   },
 };
@@ -60,7 +70,7 @@ export default {
           font-family: "Noto Sans TC", "Montserrat", sans-serif;
           font-size: 1.5rem;
           font-weight: 400;
-          color: var(--secondary-gray-3);
+          // color: var(--secondary-gray-3);
         }
 
         i {

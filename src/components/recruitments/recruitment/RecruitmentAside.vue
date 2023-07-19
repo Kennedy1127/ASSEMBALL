@@ -1,22 +1,26 @@
 <template>
   <div class="recruit_copywritings_aside">
-    <h2 class="recruit_copywritings_aside_header">招募篩選</h2>
+    <h2 class="recruit_copywritings_aside_header">條件篩選</h2>
 
     <div class="recruit_copywritings_aside_filter">
       <div class="recruit_copywritings_aside_filter_title">接觸經歷</div>
 
       <div class="recruit_copywritings_aside_filter_groups">
         <div
-          v-for="index in 3"
-          :key="index"
+          v-for="exp in exps"
+          :key="exp"
           class="recruit_copywritings_aside_filter_group"
         >
           <div class="recruit_copywritings_aside_filter_checkbox">
-            <input type="checkbox" id="inexperienced" />
-            <label for="inexperienced"></label>
+            <input type="checkbox" :id="exp.typeName" />
+            <label :for="exp.typeName" @click="filterExp(exp.type)"></label>
           </div>
-          <div class="recruit_copywritings_aside_filter_type">初心者</div>
-          <div class="recruit_copywritings_aside_filter_count">7</div>
+          <div class="recruit_copywritings_aside_filter_type">
+            {{ exp.name }}
+          </div>
+          <div class="recruit_copywritings_aside_filter_count">
+            {{ exp.typeCount }}
+          </div>
         </div>
       </div>
     </div>
@@ -27,29 +31,80 @@
       <div class="recruit_copywritings_aside_filter_groups border-none">
         <div class="recruit_copywritings_aside_filter_group">
           <div class="recruit_copywritings_aside_filter_checkbox">
-            <input type="checkbox" id="new" />
-            <label for="new"></label>
+            <input type="radio" id="new" name="date" checked />
+            <label for="new" @click="filterDate(0)"></label>
           </div>
           <div class="recruit_copywritings_aside_filter_type">由新到舊</div>
         </div>
 
         <div class="recruit_copywritings_aside_filter_group">
           <div class="recruit_copywritings_aside_filter_checkbox">
-            <input type="checkbox" id="old" />
-            <label for="old"></label>
+            <input type="radio" id="old" name="date" />
+            <label for="old" @click="filterDate(1)"></label>
           </div>
           <div class="recruit_copywritings_aside_filter_type">由舊到新</div>
         </div>
       </div>
     </div>
 
-    <div class="recruit_copywritings_aside_btns">
-      <div class="recruit_copywritings_aside_btn">
-        <button>招募球員</button>
-      </div>
+    <div class="recruit_copywritings_aside_btn">
+      <router-link :to="{ name: 'recruitmentPost' }">招募球員</router-link>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {};
+  },
+
+  computed: {
+    exps() {
+      const exps = [
+        {
+          type: 0,
+          typeName: "inexperenced",
+          typeCount: this.$store.getters.inexperencedCount,
+          name: "初心者",
+        },
+        {
+          type: 1,
+          typeName: "entry",
+          typeCount: this.$store.getters.entryCount,
+          name: "新手",
+        },
+        {
+          type: 2,
+          typeName: "intermediate",
+          typeCount: this.$store.getters.intermediateCount,
+          name: "老手",
+        },
+        {
+          type: 3,
+          typeName: "free",
+          typeCount: this.$store.getters.freeCount,
+          name: "經歷不拘",
+        },
+      ];
+
+      return exps;
+    },
+  },
+
+  methods: {
+    filterExp(type) {
+      this.$store.commit("selectCopywritingsExp", type);
+      this.$store.commit("resetCopywritingsCurPage");
+    },
+
+    filterDate(type) {
+      this.$store.commit("selectCopywritingsDate", type);
+      this.$store.commit("resetCopywritingsCurPage");
+    },
+  },
+};
+</script>
 
 <style scoped lang="scss">
 .recruit_copywritings {
@@ -133,12 +188,12 @@
       }
     }
 
-    &_btns {
+    &_btn {
       margin-top: 2rem;
       display: flex;
       justify-content: space-between;
 
-      button {
+      a {
         width: 140px;
         height: 50px;
         border-radius: 24px;
@@ -150,6 +205,10 @@
         color: #fff;
 
         background-color: var(--primary-blue);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
   }

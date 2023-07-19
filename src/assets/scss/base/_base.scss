@@ -20,3 +20,28 @@ button {
   border: none;
   cursor: pointer;
 }
+
+*::placeholder {
+  color: var(--secondary-gray-3);
+  font-family: "Noto Sans TC";
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  line-height: 1.5;
+}
+
+/* 滑桿調整 */
+
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: var(--pale-white);
+  border-radius: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--secondary-blue-2);
+  width: 5px;
+  border-radius: 8px;
+}
