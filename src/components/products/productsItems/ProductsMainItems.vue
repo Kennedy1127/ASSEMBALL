@@ -1,20 +1,26 @@
 <template>
   <div class="products_main_items">
-    <div v-for="item in produst" :key="item.pro_id" class="products_item">
-      <div class="products_item_header">
+    <div
+      v-for="item in productItems"
+      :key="item.product_id"
+      class="products_item"
+      @click="goToProductDetail(item.product_id)"
+    >
+      <div class="product_item_header">
         <img src="~@/assets/images/products/bat.png" alt="product image" />
+        <!-- <img :src="item.product_pic" alt="product image" /> -->
       </div>
       <div class="products_item_content">
-        <div class="products_item_tag">#{{ item.typeName }}</div>
-        <div class="products_item_date">{{ item.date }}</div>
-        <h2 class="products_item_title">{{ item.title }}</h2>
-        <div class="products_item_desc">
-          商品使用說明： <br />
-          <p>
-            {{ item.desc }}
-          </p>
+        <div class="products_item_tag">
+          #{{ productTags[item.product_type] }}
         </div>
-        <div class="products_item_price">NT${{ convertPrice(item.price) }}</div>
+        <div class="products_item_date">
+          {{ convertDate(item.product_date) }}
+        </div>
+        <h2 class="products_item_title">{{ item.product_title }}</h2>
+        <div class="products_item_price">
+          NT${{ convertPrice(item.product_price) }}
+        </div>
         <div class="products_item_seller">
           <div class="products_item_seller_icon">
             <img src="~@/assets/images/icons/main-icon.png" alt="seller icon" />
@@ -22,7 +28,7 @@
           <div class="products_item_seller_msg">
             <span>賣家留言：</span> <br />
             <p>
-              {{ item.seller.msg }}
+              {{ item.product_seller.msg }}
             </p>
           </div>
         </div>
@@ -30,68 +36,63 @@
     </div>
   </div>
 
-  <ProductsMainPagination
-    :totalPages="totalPages"
-    @changePage="updateCurPage"
-  />
+  <ProductsMainPagination :totalPages="totalPages" />
 </template>
 
 <script>
 import ProductsMainPagination from "@/components/products/productsItems/ProductsMainPagination";
+import productTags from "@/composables/productTags";
 
 export default {
   components: { ProductsMainPagination },
-  props: ["productsData"],
+  props: ["products"],
+  emits: ["enterProductDetail"],
   data() {
     return {
-      // products: this.$props.productsData,
-      curPage: 1,
+      productTags: { ...productTags },
     };
   },
 
   computed: {
-    // // 取得總頁數
-    // totalPages() {
-    //   return this.products.length % 9 === 0
-    //     ? this.products.length > 9
-    //       ? this.products.length / 9
-    //       : 1
-    //     : Math.ceil(this.products.length / 9);
-    // },
-
-    produst() {
-      return this.$props.productsData;
+    // 取得總頁數
+    totalPages() {
+      return this.$props.products.length % 9 === 0
+        ? this.$props.products.length > 9
+          ? this.$props.products.length / 9
+          : 1
+        : Math.ceil(this.$props.products.length / 9);
     },
 
-    // // 更具頁碼更新顯示商品
-    // productItems() {
-    //   const startIndex = (this.curPage - 1) * 9;
-    //   const lastIndex = this.curPage * 9;
-
-    //   return this.products.slice(startIndex, lastIndex);
-    // },
+    // 更具頁碼更新顯示商品
+    productItems() {
+      const startIndex = (this.$store.state.productsCurPage - 1) * 9;
+      const lastIndex = this.$store.state.productsCurPage * 9;
+      return this.$props.products.slice(startIndex, lastIndex);
+    },
   },
 
   methods: {
+    // 日期轉換
+    convertDate(inputDate) {
+      const date = new Date(inputDate);
+
+      return `${date.getFullYear()} / ${String(date.getMonth() + 1).padStart(
+        2,
+        0
+      )} / ${String(date.getDate()).padStart(2, 0)}`;
+    },
+
     // 轉換數字，1000->1,000
     convertPrice(price) {
       return price.toLocaleString();
     },
 
-    // 更新頁碼
-    updateCurPage(curPage) {
-      this.curPage = curPage;
-    },
-
-    //搜尋框
-    updateDisplay() {
-      if (this.searchText === "") {
-        this.productDisplay = this.productsData;
-      } else {
-        this.productDisplay = this.productsData.filter((item) =>
-          item.title.includes(this.searchText)
-        );
-      }
+    goToProductDetail(id) {
+      this.$router.push({
+        name: "ProductDetail",
+        params: { id },
+      });
+      window.scrollTo({ top: 0 });
     },
   },
 };
@@ -102,23 +103,37 @@ export default {
   margin-top: 1.5rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  column-gap: 1.5rem;
   row-gap: 4rem;
 }
 
 .products_item {
-  padding: 1rem;
+  padding: 0 0.5rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   transition: all 0.15s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--secondary-blue-4);
+    border-radius: var(--round);
+  }
 
   &_header {
     width: 315px;
     height: 195px;
-    // background-color: #eaeaea;
+    background-color: #eaeaea;
     border-radius: 8px;
     overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &_content {
+    margin-top: 0.5rem;
   }
 
   &_tag {
@@ -145,17 +160,6 @@ export default {
     font-size: 1.25rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
-  }
-
-  &_desc {
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--secondary-gray-1);
-
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 
   &_price {
@@ -205,11 +209,6 @@ export default {
           transparent;
       }
     }
-  }
-  &:hover {
-    background-color: var(--secondary-blue-4);
-    border-radius: var(--round);
-    cursor: pointer;
   }
 }
 </style>

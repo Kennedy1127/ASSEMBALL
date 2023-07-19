@@ -8,7 +8,7 @@
 
     <div class="products_main_header_features">
       <div class="products_main_header_feature">
-        <router-link to="/">
+        <router-link to="/product-post">
           <div class="icon">
             <font-awesome-icon icon="fa-solid fa-plus" />
           </div>
@@ -34,6 +34,7 @@
 .products_main_header {
   display: flex;
   justify-content: space-between;
+  padding: 0 0.5rem;
 
   &_features {
     display: flex;

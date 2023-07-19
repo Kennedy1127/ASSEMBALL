@@ -8,20 +8,31 @@
     </div>
 
     <div class="products_aside_tags_content">
-      <div v-for="tag in tags" :key="tag.type" class="products_aside_tag">
-        {{ tag.name }}
+      <div
+        v-for="(tag, index) in tags"
+        :key="tag"
+        class="products_aside_tag"
+        @click="emitFilterProducts(index)"
+      >
+        #{{ tag }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import productTags from "@/composables/productTags";
+
 export default {
-  props: ["productTags"],
   data() {
     return {
-      tags: this.$props.productTags,
+      tags: { ...productTags, 7: "全部商品" },
     };
+  },
+  methods: {
+    emitFilterProducts(type) {
+      this.$emit("filterProducts", Number(type));
+    },
   },
 };
 </script>

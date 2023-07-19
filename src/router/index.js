@@ -1,25 +1,80 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from "@/store/index";
 
 const routes = [
   {
     path: "/",
-    name: "home",
+    name: "Home",
     component: () => import("@/views/HomeView.vue"),
   },
   {
+    path: "/authentication",
+    name: "Authentication",
+    component: () => import("@/views/AuthenticationView.vue"),
+  },
+  /////////////////////////////////////////
+  {
     path: "/products",
-    name: "products",
+    name: "Products",
     component: () => import("@/views/ProductsView.vue"),
   },
   {
-    path: "/productsdetail",
-    name: "productDetails",
-    component: () => import("@/views/ProductsDetails.vue"),
+    path: "/products/:id",
+    name: "ProductDetail",
+    component: () => import("@/views/ProductDetail.vue"),
   },
   {
-    path: "/authentication",
-    name: "authentication",
-    component: () => import("@/views/AuthenticationView.vue"),
+    path: "/product-post", //url- 網址的文字
+    name: "ProductPost",
+    component: () => import("@/views/ProductPost.vue"), // 檔名
+  },
+  {
+    path: "/products/products-manage",
+    name: "ProductsManage",
+    component: () => import("@/views/ProductManageView.vue"),
+  },
+  /////////////////////////////////////////
+  {
+    path: "/recruitments",
+    name: "Recruitments",
+    component: () => import("@/views/recruitments/RecruitmentsView.vue"),
+    beforeEnter: (to, from, next) => {
+      store.commit("resetFiltersAndSearch");
+      next();
+    },
+  },
+  {
+    path: "/recruitments/copywriting/:id",
+    name: "Copywriting",
+    component: () => import("@/views/recruitments/CopywritingView.vue"),
+  },
+  {
+    path: "/recruitments/recruitment-post",
+    name: "recruitmentPost",
+    component: () => import("@/views/recruitments/RecruitmentPostView.vue"),
+  },
+  /////////////////////////////////////////
+  {
+    path: "/myplayer_team",
+    name: "myplayer_team",
+    component: () => import("@/views/MyPlayer_Team.vue"),
+  },
+  /////////////////////////////////////////
+  {
+    path: "/rookie",
+    name: "rookie",
+    component: () => import("@/views/rookie.vue"),
+  },
+  {
+    path: "/rookie/rookieListCurve",
+    name: "rookieListCurve",
+    component: () => import("@/views/rookieListCurve.vue"),
+  },
+  /////////////////////////////////////////
+  {
+    path: "/Backstage",
+    name: "Backstage",
+    component: () => import("@/views/Backstage.vue"),
   },
 ];
 
