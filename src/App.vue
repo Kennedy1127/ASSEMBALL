@@ -15,9 +15,9 @@
     />
   </transition>
   <!-- 通知視窗內容 -->
-  <MemberNotify v-if="isNotifyVisible" :show="showNotify" />
+  <MemberNotify v-if="$store.state.isNotifyVisible" :show="showNotify" />
   <!-- 會員中心內容 -->
-  <MemberCenter v-if="isMemberVisible" :show="showMember" />
+  <MemberCenter v-if="$store.state.isMemberVisible" :show="showMember" />
   <router-view />
   <MainFooter />
 </template>
@@ -85,7 +85,7 @@ export default {
     handleScroll() {
       const scrollPosition =
         document.documentElement.scrollTop || document.body.scrollTop;
-      if (scrollPosition >= 80) {
+      if (scrollPosition > 80) {
         this.MainHeaderLight = true;
         this.MainHeader = false;
       } else {
@@ -93,22 +93,14 @@ export default {
         this.MainHeader = true;
       }
     },
-    //點擊和關閉_通知視窗
+    //切換通知頁面
     toggleNotify() {
-      this.isNotifyVisible = !this.isNotifyVisible;
-      this.isMemberVisible = false;
+      this.$store.commit("NotifyToggle");
     },
-    //點擊和關閉_會員視窗
+    //切換會員頁面
     toggleMember() {
-      this.isMemberVisible = !this.isMemberVisible;
-      this.isNotifyVisible = false;
+      this.$store.commit("MemberToggle");
     },
-    // // 在路由跳转前关闭页面(失敗QQ)
-    // closePage(next) {
-    //   this.isMemberVisible = false;
-    //   this.isNotifyVisible = false;
-    //   next();
-    // },
   },
 };
 </script>
