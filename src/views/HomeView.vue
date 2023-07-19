@@ -204,7 +204,25 @@
             走進綠色棒球世界：延續價值的環保二手拍賣專區，讓棒球用品循環再利用
           </p>
         </div>
-        <div class="home_auction_all"></div>
+        <div class="home_auction_all">
+          <ul>
+            <li
+              v-for="(artist, i) in artists"
+              :style="`background-image: url(${artist.backgroundUrl});`"
+              role="button"
+              :class="active === i ? 'active' : ''"
+              @click="() => (active = i)"
+            >
+              <h2>{{ artist.classigicationName }}</h2>
+              <button>
+                <Icon type="ios-baseball-outline" />{{
+                  artist.classigicationBtn
+                }}
+              </button>
+              <div class="content"></div>
+            </li>
+          </ul>
+        </div>
       </section>
     </div>
   </main>
@@ -214,6 +232,51 @@
 export default {
   data() {
     return {
+      active: 0,
+      artists: [
+        {
+          backgroundUrl: require("@/assets/images/index/classification_bat.jpg"),
+          classigicationName: "Bat",
+          classigicationBtn: "VIEW MORE",
+        },
+        {
+          backgroundUrl: require("@/assets/images/index/classification_baseball.jpg"),
+          classigicationName: "Baseball",
+          classigicationBtn: "VIEW MORE",
+        },
+        {
+          backgroundUrl: require("@/assets/images/index/classification_catcher_gear.jpg"),
+          classigicationName: "Catcher's Gear",
+          classigicationBtn: "VIEW MORE",
+        },
+        {
+          backgroundUrl: require("@/assets/images/index/classification_hitter_gear.jpg"),
+          classigicationName: "Hitter's Gear",
+          classigicationBtn: "VIEW MORE",
+        },
+        {
+          backgroundUrl: require("@/assets/images/index/classification_pitcher_gear.jpg"),
+          classigicationName: "Pitcher's Gear",
+          classigicationBtn: "VIEW MORE",
+        },
+        {
+          backgroundUrl: require("@/assets/images/index/classification_accessories.jpg"),
+          classigicationName: "Accessories",
+          classigicationBtn: "VIEW MORE",
+        },
+      ],
+      methods: {
+        nextSlide() {
+          if (this.active <= this.artists.length) {
+            this.active = this.active += 1;
+          }
+        },
+        prevSlide() {
+          if (this.active > 0) {
+            this.active = this.active + -1;
+          }
+        },
+      },
       homeLandingTitle: {
         title: "ABOUT ASSEMBALL",
         about: "- BASEBALL -",
@@ -560,30 +623,30 @@ export default {
           position: absolute;
           bottom: 2.25rem;
           left: 3rem;
-          animation: recruit 2s linear infinite;
+          // animation: recruit 2s linear infinite;
           & img {
             width: 100%;
           }
-          @keyframes recruit {
-            10% {
-              transform: rotate(15deg);
-            }
-            20% {
-              transform: rotate(-10deg);
-            }
-            30% {
-              transform: rotate(5deg);
-            }
-            40% {
-              transform: rotate(-5deg);
-            }
-            50% {
-              transform: rotate(0deg);
-            }
-            100% {
-              transform: rotate(0deg);
-            }
-          }
+          // @keyframes recruit {
+          //   10% {
+          //     transform: rotate(15deg);
+          //   }
+          //   20% {
+          //     transform: rotate(-10deg);
+          //   }
+          //   30% {
+          //     transform: rotate(5deg);
+          //   }
+          //   40% {
+          //     transform: rotate(-5deg);
+          //   }
+          //   50% {
+          //     transform: rotate(0deg);
+          //   }
+          //   100% {
+          //     transform: rotate(0deg);
+          //   }
+          // }
         }
         &_text {
           display: flex;
@@ -818,14 +881,102 @@ export default {
         }
       }
       &_all {
+        ul {
+          display: flex;
+          min-height: 600px;
+          height: 50vh;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          list-style-type: none;
+          width: 100%;
+          min-width: 100%;
+          flex-direction: column;
+
+          @media only screen and (min-width: 1280px) {
+            flex-direction: row;
+          }
+        }
+
+        li {
+          flex: 1;
+          display: flex;
+          align-items: stretch;
+          cursor: pointer;
+          transition: all 0.35s ease;
+          cursor: pointer;
+          position: relative;
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: top center;
+          overflow: hidden;
+          position: relative;
+          & h2 {
+            color: var(--secondary-blue-4);
+            margin: auto;
+            z-index: 21;
+            writing-mode: vertical-lr;
+            font-family: "Montserrat";
+            font-size: 2.5rem;
+          }
+          & button {
+            position: absolute;
+            top: 90%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 21;
+            width: 13rem;
+            font-size: 1.25rem;
+            font-family: "Montserrat";
+            border-radius: 30px;
+            padding: 0.5rem;
+            background-color: var(--primary-blue);
+            color: #fff;
+            border: 1px solid var(--primary-blue);
+            display: none;
+            & i {
+              font-size: 1.75rem;
+              font-weight: 500;
+              margin-right: 0.5rem;
+              vertical-align: sub;
+            }
+          }
+          & button:hover {
+            border: 1px solid var(--primary-blue);
+            background-color: #fff;
+            color: var(--primary-blue);
+          }
+          &:before {
+            content: "";
+            position: absolute;
+            z-index: 20;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 15, 15, 0.75);
+          }
+
+          &.active {
+            flex: 6;
+            cursor: default;
+            & h2 {
+              margin-right: 5%;
+            }
+            & button {
+              display: block;
+            }
+            &:before {
+              background: linear-gradient(
+                180deg,
+                rgba(195, 195, 195, 0) 40%,
+                #111111 100%
+              );
+            }
+          }
+        }
       }
     }
   }
-}
-.rookie {
-  text-align: center;
-  font-size: 60px;
-  color: rgb(228, 27, 188);
-  text-decoration: underline;
 }
 </style>
