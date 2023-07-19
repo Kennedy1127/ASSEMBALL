@@ -77,6 +77,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// header {
+//   height: 12rem;
+// }
 .header {
   position: fixed;
   top: 0;

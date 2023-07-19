@@ -113,6 +113,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.copywriting.wrapper {
+  padding-top: 3rem;
+}
 .copywriting {
   color: var(--primary-blue);
   .block {
