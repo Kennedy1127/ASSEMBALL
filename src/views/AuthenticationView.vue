@@ -61,6 +61,7 @@
 .authentication_wrap {
   background-color: var(--primary-blue);
   padding: 12rem 0rem;
+  padding-top: 16rem;
 }
 .authentication {
   display: flex;

@@ -3,43 +3,42 @@
     <div class="footer">
       <div class="wrapper">
         <div class="footer_logo">
-          <img
-            src="~@/assets/images/icons/footer_logo_light.svg"
-            alt="footer_logo_light"
-          />
-          <router-link to="/"></router-link>
+          <router-link to="/">
+            <img
+              src="~@/assets/images/icons/footer_logo_light.svg"
+              alt="footer_logo_light"
+            />
+          </router-link>
         </div>
         <div class="footer_list">
           <ul>
             <li>
-              <div>
-                <span><font-awesome-icon icon="fa-solid fa-flag" /></span>
-                <router-link to="/"> {{ navList.recruitment }}</router-link>
-              </div>
+              <router-link to="/"
+                ><span><font-awesome-icon icon="fa-solid fa-flag" /></span>
+                球隊徵人</router-link
+              >
             </li>
             <li>
-              <div>
-                <span>
-                  <font-awesome-icon icon="fa-solid fa-bag-shopping"
+              <router-link to="/products"
+                ><span
+                  ><font-awesome-icon icon="fa-solid fa-bag-shopping"
                 /></span>
-                <router-link to="/products">
-                  {{ navList.shopping }}</router-link
-                >
-              </div>
+                拍賣專區</router-link
+              >
             </li>
             <li>
-              <div>
-                <span>
-                  <font-awesome-icon icon="fa-solid fa-user-group"
+              <router-link to="/"
+                ><span
+                  ><font-awesome-icon icon="fa-solid fa-user-group"
                 /></span>
-                <router-link to="/"> {{ navList.team }}</router-link>
-              </div>
+                我的球隊</router-link
+              >
             </li>
             <li>
-              <div>
-                <span><font-awesome-icon icon="fa-solid fa-map" /></span>
-                <router-link to="/"> {{ navList.novice }}</router-link>
-              </div>
+              <router-link to="/"
+                ><span><font-awesome-icon icon="fa-solid fa-map" /></span>
+                新手上路</router-link
+              >
             </li>
           </ul>
           <div class="footer_list_followicon">
@@ -102,19 +101,18 @@ export default {
     padding-bottom: 2rem;
     & ul {
       display: flex;
-      gap: 2rem;
+      gap: 1rem;
       & li {
         display: flex;
         align-items: center;
         padding: 1rem;
-        & > div {
+        & > a {
           font-size: 1rem;
-          padding: 0.5rem;
+          padding: 1.25rem;
           border-radius: 0.5rem;
           color: var(--pale-white);
           cursor: pointer;
           transition: all 0.15s ease-in-out;
-          position: relative;
           & font-awesome-icon {
             font-size: 2rem;
             transition: all 0.15s ease-in-out;
@@ -123,7 +121,7 @@ export default {
             padding-right: 1rem;
           }
         }
-        & > div::after {
+        & > a::after {
           content: "";
           position: absolute;
           width: 15px;
@@ -133,7 +131,7 @@ export default {
           transform: scale(0);
           transition: all 0.15s ease-in-out;
         }
-        & > div:hover::after {
+        & > a:hover::after {
           transform: scale(1);
         }
       }

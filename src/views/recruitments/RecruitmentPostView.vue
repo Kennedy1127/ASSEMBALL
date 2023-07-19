@@ -34,6 +34,7 @@ export default {
 .recruitment_post {
   .wrapper {
     display: flex;
+    padding-top: 6rem;
   }
   // &_aside{
 

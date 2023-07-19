@@ -132,6 +132,7 @@
 .product_post_wrap {
   background-color: var(--secondary-blue-4);
   padding: 4rem 0;
+  padding-top: 8rem;
   .goback {
     font-size: 1.5rem;
     color: var(--primary-blue);
