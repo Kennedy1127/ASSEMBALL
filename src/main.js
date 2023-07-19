@@ -16,6 +16,22 @@ import {
   faPenToSquare,
   faChevronLeft,
   faArrowRight,
+  faBell,
+  faUser,
+  faFlag,
+  faBagShopping,
+  faUserGroup,
+  faMap,
+  faCircleExclamation,
+  faPen,
+  faEnvelope,
+  faPhone,
+  faCalendarDays,
+  faFilePen,
+  faCommentDots,
+  faFileLines,
+  faAddressCard,
+  faArrowUpRightFromSquare,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -27,7 +43,23 @@ library.add(
   faPlus,
   faPenToSquare,
   faChevronLeft,
-  faArrowRight
+  faArrowRight,
+  faBell,
+  faUser,
+  faFlag,
+  faBagShopping,
+  faUserGroup,
+  faMap,
+  faCircleExclamation,
+  faPen,
+  faEnvelope,
+  faPhone,
+  faCalendarDays,
+  faFilePen,
+  faCommentDots,
+  faFileLines,
+  faAddressCard,
+  faArrowUpRightFromSquare
 );
 
 createApp(App)

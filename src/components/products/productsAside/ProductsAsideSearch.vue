@@ -70,13 +70,10 @@ export default {
 
       font-size: 1rem;
       font-weight: 400;
-
-      &::placeholder {
-        color: var(--secondary-gray-3);
-      }
     }
-    input:checked {
-      border: var(--primary-blue);
+    input:focus {
+      background-color: var(--pale-white);
+      outline: 2px solid var(--secondary-blue-1);
     }
 
     .icon {

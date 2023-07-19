@@ -87,7 +87,7 @@
                 <div class="product_message_area_all_pic">
                   <img
                     class="product_message_area_all_pic_mark"
-                    src="~@/assets/images/products/mark.png"
+                    src="~@/assets/images/products/mark.svg"
                     alt="mark"
                   />
                   <img
@@ -98,13 +98,13 @@
                 </div>
                 <div class="product_message_area_all_text">
                   <div class="product_message_area_all_text_name">
-                    {{ item.name }}
+                    <span>{{ item.name }}</span>
                   </div>
                   <div class="product_message_area_all_text_all">
                     {{ item.textAll }}
                   </div>
                   <div class="product_message_area_all_text_date">
-                    <img src="~@/assets/images/products/edit.png" alt="edit" />
+                    <span><font-awesome-icon icon="fa-solid fa-pen" /></span>
                     {{ item.date }}
                   </div>
                 </div>
@@ -128,7 +128,9 @@
             </div>
             <div class="product_message_notice">
               <div class="product_message_notice_icon">
-                <img src="~@/assets/images/products/notice.png" alt="notice" />
+                <span>
+                  <font-awesome-icon icon="fa-solid fa-circle-exclamation"
+                /></span>
               </div>
               <div class="product_message_notice_text">
                 <div class="product_message_notice_text_title">
@@ -215,12 +217,14 @@ export default {
 .products {
   background-color: var(--secondary-blue-4);
   padding: 4rem 0;
+  padding-top: 6rem;
 
   .wrapper {
     background-color: #fff;
     box-shadow: var(--shadow-heavy);
     border-radius: var(--round);
     padding: 3rem 12rem;
+    margin-top: 4rem;
   }
 
   &_breadcrumb {
@@ -283,15 +287,17 @@ export default {
         display: flex;
         flex-direction: column;
         padding-left: 2rem;
+        justify-content: space-between;
         &_all {
           width: 100%;
           display: flex;
-          padding-top: 1rem;
+          // padding-top: 1rem;
           gap: 0.75rem;
           &_small {
             width: 25%;
             & img {
               width: 100%;
+              display: block;
             }
           }
         }
@@ -311,7 +317,7 @@ export default {
         &_body {
           color: var(--secondary-gray-1);
           padding: 0.75rem 0.75rem 0.75rem 0;
-          border-bottom: 1px solid var(--secondary-gray-3);
+          border-bottom: 2px solid var(--secondary-gray-2);
           letter-spacing: 1.5px;
         }
       }
@@ -330,8 +336,8 @@ export default {
           width: 150px;
           height: 50px;
           font-size: 1.25rem;
-          font-weight: 500;
-          letter-spacing: 6px;
+          font-weight: 600;
+          letter-spacing: 3px;
           border-radius: var(--round);
           color: #ffffff;
           background-color: var(--error-yellow);
@@ -388,6 +394,7 @@ export default {
           margin-left: 2rem;
           &_name {
             font-size: 1.25rem;
+            font-weight: 500;
           }
           &_all {
             margin-top: 1rem;
@@ -398,8 +405,10 @@ export default {
             text-align: right;
             color: var(--secondary-gray-1);
             font-size: 0.875rem;
-            & img {
-              margin-right: 1rem;
+            & span {
+              margin-right: 0.5rem;
+              color: var(--secondary-gray-3);
+              cursor: pointer;
             }
           }
         }
@@ -418,7 +427,7 @@ export default {
       &_text {
         width: 100%;
         & textarea {
-          width: 90%;
+          width: 96%;
           display: block;
           margin: 0 2rem 0 2rem;
           min-height: 192px;
@@ -430,6 +439,10 @@ export default {
           &::placeholder {
             color: var(--secondary-gray-3);
           }
+        }
+        & textarea:focus {
+          background-color: var(--pale-white);
+          outline: 2px solid var(--secondary-blue-1);
         }
       }
       & button {
@@ -445,7 +458,6 @@ export default {
         border: none;
         margin-left: auto;
         margin-top: 2rem;
-        margin-right: 2rem;
       }
     }
     &_notice {
@@ -457,9 +469,11 @@ export default {
       padding: 3rem 1rem;
       margin-bottom: 2rem;
       &_icon {
-        width: 5%;
-        & img {
-          width: 100%;
+        & span {
+          font-size: 2rem;
+          position: relative;
+          top: 0;
+          color: var(--primary-blue);
         }
       }
       &_text {
@@ -470,6 +484,7 @@ export default {
         &_title {
           font-size: 1.25rem;
           color: var(--error-red);
+          font-weight: 500;
         }
         &_detail {
           margin-top: 1rem;

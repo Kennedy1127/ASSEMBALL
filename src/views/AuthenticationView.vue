@@ -9,7 +9,9 @@
           to unleash the power of baseball?
         </div>
 
-        <button class="authentication_btn">登入</button>
+        <button class="authentication_btn">
+          登入 <font-awesome-icon icon="fa-solid fa-chevron-right" />
+        </button>
       </div>
 
       <form class="authentication_text">
@@ -42,7 +44,9 @@
         </div>
 
         <div class="authentication_text_btn">
-          <button>註冊</button>
+          <button>
+            註冊 <font-awesome-icon icon="fa-solid fa-chevron-right" />
+          </button>
 
           <div class="authentication_psw_error">輸入錯誤!</div>
         </div>

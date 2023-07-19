@@ -19,6 +19,7 @@
   font-size: 60px;
   color: blue;
   text-decoration: underline;
+  padding-top: 6rem;
 }
 
 .test-detail {
