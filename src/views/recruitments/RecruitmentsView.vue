@@ -44,8 +44,6 @@ export default {
   beforeMount() {
     // 掛載後撈資料
     this.$store.dispatch("getCopywritings");
-    this.$store.commit("resetCopywritingsCurPage");
-    this.$store.commit("resetFiltersAndSearch");
   },
 
   data() {

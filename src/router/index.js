@@ -39,6 +39,11 @@ const routes = [
     name: "Recruitments",
     component: () => import("@/views/recruitments/RecruitmentsView.vue"),
     beforeEnter: (to, from, next) => {
+      if (from.name === "Copywriting") {
+        next();
+        return;
+      }
+      store.commit("resetCopywritingsCurPage");
       store.commit("resetFiltersAndSearch");
       next();
     },

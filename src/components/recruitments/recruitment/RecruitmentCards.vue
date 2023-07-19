@@ -5,50 +5,54 @@
       :key="index"
       class="recruit_copywritings_card"
     >
-      <h2 class="recruit_copywritings_card_header">
-        召募{{ convertRole(item.copywriting_role) }}
-      </h2>
+      <router-link
+        :to="{ name: 'Copywriting', params: { id: item.copywriting_id } }"
+      >
+        <h2 class="recruit_copywritings_card_header">
+          召募{{ convertRole(item.copywriting_role) }}
+        </h2>
 
-      <div class="recruit_copywritings_card_content">
-        <div class="recruit_copywritings_card_title">
-          {{ item.copywriting_title }}
-        </div>
-        <div class="recruit_copywritings_card_exp">
-          <div class="recruit_copywritings_card_exp_block"></div>
-          {{ convertExp(item.copywriting_exp) }}
-        </div>
-        <div class="recruit_copywritings_card_area">
-          <div class="recruit_copywritings_card_area_block"></div>
-          {{ item.copywriting_area }}
-        </div>
-      </div>
-
-      <div class="recruit_copywritings_card_border"></div>
-
-      <div class="recruit_copywritings_card_footer">
-        <div class="recruit_copywritings_card_team">
-          <div class="recruit_copywritings_card_team_icon">
-            <img
-              src="~@/assets/images/recruitment/team-icons/team-icon-1.png"
-              alt="team icon"
-            />
+        <div class="recruit_copywritings_card_content">
+          <div class="recruit_copywritings_card_title">
+            {{ item.copywriting_title }}
           </div>
-          <div class="recruit_copywritings_card_team_name">
-            {{ item.copywriting_team_name }}
+          <div class="recruit_copywritings_card_exp">
+            <div class="recruit_copywritings_card_exp_block"></div>
+            {{ convertExp(item.copywriting_exp) }}
+          </div>
+          <div class="recruit_copywritings_card_area">
+            <div class="recruit_copywritings_card_area_block"></div>
+            {{ item.copywriting_area }}
           </div>
         </div>
 
-        <div class="recruit_copywritings_card_intro">
-          <div class="recruit_copywritings_card_intro_title">球隊簡介：</div>
-          <p class="recruit_copywritings_card_intro_text">
-            {{ item.copywriting_team_intro }}
-          </p>
-        </div>
-      </div>
+        <div class="recruit_copywritings_card_border"></div>
 
-      <div class="recruit_copywritings_card_date">
-        刊登日期：{{ convertDate(item.copywriting_date) }}
-      </div>
+        <div class="recruit_copywritings_card_footer">
+          <div class="recruit_copywritings_card_team">
+            <div class="recruit_copywritings_card_team_icon">
+              <img
+                src="~@/assets/images/recruitment/team-icons/team-icon-1.png"
+                alt="team icon"
+              />
+            </div>
+            <div class="recruit_copywritings_card_team_name">
+              {{ item.copywriting_team_name }}
+            </div>
+          </div>
+
+          <div class="recruit_copywritings_card_intro">
+            <div class="recruit_copywritings_card_intro_title">球隊簡介：</div>
+            <p class="recruit_copywritings_card_intro_text">
+              {{ item.copywriting_team_intro }}
+            </p>
+          </div>
+        </div>
+
+        <div class="recruit_copywritings_card_date">
+          刊登日期：{{ convertDate(item.copywriting_date) }}
+        </div>
+      </router-link>
     </div>
 
     <RecruitmentCardsPaginations />

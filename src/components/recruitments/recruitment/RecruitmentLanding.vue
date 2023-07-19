@@ -31,9 +31,9 @@ export default {
   components: { RecruitmentSelect },
   data() {
     return {
-      searchText: "",
-      role: -1,
-      area: "",
+      searchText: this.$store.state.selectedCopywritingsText,
+      role: this.$store.state.selectedCopywritingsRole,
+      area: this.$store.state.selectedCopywritingsArea,
     };
   },
 

@@ -59,7 +59,7 @@ export default createStore({
 
     // 如果守備位置條件符合的話或為-1時，return true
     includedCopywritingsByRole: (state) => (copywriting) => {
-      if (state.selectedCopywritingsRole === -1) return true;
+      if (state.selectedCopywritingsRole < 0) return true;
 
       return state.selectedCopywritingsRole === copywriting.copywriting_role;
     },
