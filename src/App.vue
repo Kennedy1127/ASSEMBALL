@@ -24,15 +24,15 @@
 
 <style>
 .fade-enter-active {
-  animation: fade-in 0.1s;
+  animation: fade-in 0.01s;
 }
 .fade-leave-active {
-  animation: fade-out 0.1s;
+  animation: fade-out 0.01s;
 }
 
 @keyframes fade-in {
   from {
-    opacity: 0;
+    opacity: 1;
   }
   to {
     opacity: 1;
@@ -44,7 +44,7 @@
     opacity: 1;
   }
   to {
-    opacity: 0;
+    opacity: 1;
   }
 }
 </style>
@@ -85,7 +85,7 @@ export default {
     handleScroll() {
       const scrollPosition =
         document.documentElement.scrollTop || document.body.scrollTop;
-      if (scrollPosition > 80) {
+      if (scrollPosition > 40) {
         this.MainHeaderLight = true;
         this.MainHeader = false;
       } else {

@@ -431,6 +431,7 @@ export default {
 .home {
   width: 100%;
   background-color: var(--primary-blue);
+  padding-top: 16rem;
   .wrapper {
     width: 100%;
     max-width: 1600px;
