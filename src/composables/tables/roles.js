@@ -1,5 +1,9 @@
 export default [
   {
+    value: -1,
+    label: "全部位置",
+  },
+  {
     value: 0,
     label: "投手",
   },

@@ -64,9 +64,13 @@ export default createStore({
       return state.selectedCopywritingsRole === copywriting.copywriting_role;
     },
 
-    // 如果地區條件符合的話或不為空字串時，return true
+    // 如果地區條件符合的話或為空字串、-1時，return true
     includedCopywritingsByArea: (state) => (copywriting) => {
-      if (!state.selectedCopywritingsArea) return true;
+      if (
+        !state.selectedCopywritingsArea ||
+        state.selectedCopywritingsArea === -1
+      )
+        return true;
 
       return state.selectedCopywritingsArea.includes(
         copywriting.copywriting_area
@@ -147,6 +151,7 @@ export default createStore({
 
     // 更新招募文案搜尋條件
     selectCopywritingsSearch(state, payload) {
+      console.log(payload);
       state.selectedCopywritingsText = payload.searchText;
       state.selectedCopywritingsRole = payload.role;
       state.selectedCopywritingsArea = payload.area;

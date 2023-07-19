@@ -78,7 +78,7 @@ export default {
 
   methods: {
     convertRole(role) {
-      return roles[Number(role)].label;
+      return roles[Number(role) + 1].label;
     },
 
     convertExp(exp) {
