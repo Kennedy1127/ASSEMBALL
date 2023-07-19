@@ -365,13 +365,33 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.test {
-  text-align: center;
-  font-size: 60px;
-  color: blue;
-  text-decoration: underline;
-  padding-top: 6rem;
-}
+.home {
+  width: 100%;
+  background-color: var(--primary-blue);
+  .wrapper {
+    width: 100%;
+    max-width: 1600px;
+    // 網站故事
+    .home_landing {
+      width: 100%;
+      height: 1650px;
+      color: #fff;
+      padding: 2rem;
+      position: relative;
+      &_video {
+        width: 80%;
+        margin-left: auto;
+        position: sticky;
+        top: 2rem;
+        & video {
+          width: 100%;
+        }
+      }
+      &_all {
+        position: absolute;
+        top: 0;
+        left: 2rem;
+        right: 2.5rem;
 
         &_title {
           margin-top: 4rem;
@@ -398,9 +418,10 @@ export default {
           &_last {
             margin-top: 12rem;
             text-align: right;
-          };
+          }
         }
-
+      }
+    }
     // 跑馬燈
     .home_marquee {
       text-align: center;
@@ -799,7 +820,8 @@ export default {
       &_all {
       }
     }
-
+  }
+}
 .rookie {
   text-align: center;
   font-size: 60px;
