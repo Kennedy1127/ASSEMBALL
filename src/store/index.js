@@ -151,7 +151,6 @@ export default createStore({
 
     // 更新招募文案搜尋條件
     selectCopywritingsSearch(state, payload) {
-      console.log(payload);
       state.selectedCopywritingsText = payload.searchText;
       state.selectedCopywritingsRole = payload.role;
       state.selectedCopywritingsArea = payload.area;
@@ -159,19 +158,11 @@ export default createStore({
 
     // 更新招募文案過濾條件
     selectCopywritingsExp(state, payload) {
-      if (state.selectedCopywritingsExp.includes(payload)) {
-        const index = state.selectedCopywritingsExp.findIndex(
-          (el) => el === payload
-        );
-
-        return state.selectedCopywritingsExp.splice(index, 1);
-      }
-      state.selectedCopywritingsExp.push(payload);
+      state.selectedCopywritingsExp = [...payload];
     },
 
     // 更新招募文案時間過濾條件
     selectCopywritingsDate(state, payload) {
-      if (state.selectedCopywritingsDate === payload) return;
       state.selectedCopywritingsDate = payload;
     },
 
