@@ -49,13 +49,9 @@ const routes = [
     },
   },
   {
-    path: "/recruitments/copywriting/:id:curHeight",
+    path: "/recruitments/copywriting/:id",
     name: "Copywriting",
     component: () => import("@/views/recruitments/CopywritingView.vue"),
-    props: (route) => ({
-      id: route.params.id,
-      curHeight: route.params.curHeight,
-    }),
   },
   {
     path: "/recruitments/recruitment-post",
@@ -92,7 +88,7 @@ const router = createRouter({
   routes,
   scrollBehavior(to, from) {
     if (from.name === "Copywriting" && to.name === "Recruitments") {
-      return { top: Number(from.params.curHeight) };
+      return { top: Number(from.query.h) };
     }
     return { top: 0 };
   },

@@ -20,7 +20,14 @@
   </div>
 </template>
 
-<script></script>
+<script>
+import exps from "@/composables/tables/exps";
+import roles from "@/composables/tables/roles";
+
+export default {
+  setup() {},
+};
+</script>
 
 <style scoped lang="scss">
 .copywriting_card {
