@@ -53,6 +53,22 @@ const routes = [
     name: "recruitmentPost",
     component: () => import("@/views/recruitments/RecruitmentPostView.vue"),
   },
+  {
+    path: "/recruitments/recruitment-manage",
+    name: "recruitmentManage",
+    component: () => import("@/views/recruitments/RecruitmentManageView.vue"),
+  },
+  {
+    path: "/recruitments/recruitment-verify",
+    name: "recruitmentVerify",
+    component: () => import("@/views/recruitments/RecruitmentVerifyView.vue"),
+  },
+  {
+    path: "/recruitments/recruitment-verify-detail",
+    name: "recruitmentVerifyDetail",
+    component: () =>
+      import("@/views/recruitments/RecruitmentVerifyDetailView.vue"),
+  },
   /////////////////////////////////////////
   {
     path: "/myplayer_team",
