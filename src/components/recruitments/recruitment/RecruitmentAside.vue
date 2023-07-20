@@ -12,8 +12,15 @@
           class="recruit_copywritings_aside_filter_group"
         >
           <div class="recruit_copywritings_aside_filter_checkbox">
-            <input type="checkbox" :id="exp.typeName" />
-            <label :for="exp.typeName" @click="filterExp(exp.type)"></label>
+            <input
+              type="checkbox"
+              v-model="selectedExp"
+              :id="exp.typeName"
+              :value="exp.type"
+              ref="expInput"
+              @change="filterExp"
+            />
+            <label :for="exp.typeName"></label>
           </div>
           <div class="recruit_copywritings_aside_filter_type">
             {{ exp.name }}
@@ -31,16 +38,29 @@
       <div class="recruit_copywritings_aside_filter_groups border-none">
         <div class="recruit_copywritings_aside_filter_group">
           <div class="recruit_copywritings_aside_filter_checkbox">
-            <input type="radio" id="new" name="date" checked />
-            <label for="new" @click="filterDate(0)"></label>
+            <input
+              type="radio"
+              id="new"
+              v-model="selectedDate"
+              :value="0"
+              checked
+              @change="filterDate"
+            />
+            <label for="new"></label>
           </div>
           <div class="recruit_copywritings_aside_filter_type">由新到舊</div>
         </div>
 
         <div class="recruit_copywritings_aside_filter_group">
           <div class="recruit_copywritings_aside_filter_checkbox">
-            <input type="radio" id="old" name="date" />
-            <label for="old" @click="filterDate(1)"></label>
+            <input
+              type="radio"
+              id="old"
+              v-model="selectedDate"
+              :value="1"
+              @change="filterDate"
+            />
+            <label for="old"></label>
           </div>
           <div class="recruit_copywritings_aside_filter_type">由舊到新</div>
         </div>
@@ -55,8 +75,15 @@
 
 <script>
 export default {
+  mounted() {
+    this.selectedExp = [...this.$store.state.selectedCopywritingsExp];
+  },
+
   data() {
-    return {};
+    return {
+      selectedExp: [],
+      selectedDate: 0,
+    };
   },
 
   computed: {
@@ -93,13 +120,13 @@ export default {
   },
 
   methods: {
-    filterExp(type) {
-      this.$store.commit("selectCopywritingsExp", type);
+    filterExp() {
+      this.$store.commit("selectCopywritingsExp", this.selectedExp);
       this.$store.commit("resetCopywritingsCurPage");
     },
 
-    filterDate(type) {
-      this.$store.commit("selectCopywritingsDate", type);
+    filterDate() {
+      this.$store.commit("selectCopywritingsDate", this.selectedDate);
       this.$store.commit("resetCopywritingsCurPage");
     },
   },

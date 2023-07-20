@@ -1,14 +1,6 @@
 <template>
   <div class="recruit_landing_filters wrapper">
     <div class="recruit_landing_filters_bar">
-      <div class="recruit_landing_filter recruit_landing_filter--search">
-        <font-awesome-icon
-          :icon="['fas', 'magnifying-glass']"
-          class="magnifying-glass"
-        />
-        <input type="text" v-model="searchText" />
-      </div>
-
       <div class="recruit_landing_filter recruit_landing_filter--role">
         <RecruitmentSelect v-model="role" placeholder="守備位置" type="role" />
       </div>
@@ -31,9 +23,9 @@ export default {
   components: { RecruitmentSelect },
   data() {
     return {
-      searchText: this.$store.state.selectedCopywritingsText,
-      role: this.$store.state.selectedCopywritingsRole,
-      area: this.$store.state.selectedCopywritingsArea,
+      searchText: "",
+      role: -1,
+      area: "",
     };
   },
 
@@ -53,17 +45,18 @@ export default {
 <style scoped lang="scss">
 .recruit_landing {
   &_filters {
-    max-width: 1400px; // 1600? 1400? 1200?
+    width: 100%;
+    // max-width: 1400px; // 1600? 1400? 1200?
 
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1.25rem;
 
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
+    // position: absolute;
+    // bottom: 2rem;
+    // left: 50%;
+    // transform: translateX(-50%);
 
     &_bar {
       flex: 1;
@@ -80,13 +73,13 @@ export default {
       width: 200px;
       height: 60px;
       border-radius: var(--round);
-      background-color: #fff;
+      background-color: var(--primary-blue);
 
       font-family: "Noto Sans TC", sans-serif;
       font-size: 1.5rem;
       font-weight: 500;
       letter-spacing: 10.5px;
-      color: var(--primary-blue);
+      color: var(--pale-white);
     }
   }
 

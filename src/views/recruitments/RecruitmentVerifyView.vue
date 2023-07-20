@@ -1,5 +1,5 @@
 <template>
-  <main class="recruitment_post">
+  <div class="recruitment_post">
     <section class="recruitment_post_aside">
       <!-- <aside class="recruitment_post_aside"> -->
       <RecruitmentPostAside />
@@ -13,32 +13,42 @@
         <div class="icon">
           <font-awesome-icon icon="fa-solid fa-chevron-right" />
         </div>
-        <span>新增職缺</span>
+        <span>verify</span>
       </section>
 
       <div class="recruitment_post_main_title">
         <div class="block"></div>
-        <div>新增職缺</div>
+        <div>verify</div>
+        <router-link :to="{ name: 'recruitmentVerifyDetail' }"
+          >審核詳細頁</router-link
+        >
       </div>
-      <div class="recruitment_post_main_formItem">
-        <label for=""></label>
-        <input type="text" />
+      <div class="recruitment_post_main_filter">
+        <!--RecruitmentSearchbar.vue  -->
+        <RecruitmentSearchbar />
       </div>
-      <!-- 組件 -->
-      <!-- slot -->
-      <!-- <template #title></template> -->
-
-      <!-- 組件 -->
+      <div class="recruitment_post_main_table">
+        <RecruitmentTable />
+      </div>
+      <div class="recruitment_post_main_page">
+        <ProductsMainPagination />頁碼待補
+      </div>
     </main>
-  </main>
+  </div>
 </template>
 
 <script>
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
-import ProductPost from "@/views/ProductPost";
-
+import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
+import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";
+import ProductsMainPagination from "@/components/products/productsItems/ProductsMainPagination";
 export default {
-  components: { RecruitmentPostAside, ProductPost },
+  components: {
+    RecruitmentPostAside,
+    RecruitmentSearchbar,
+    RecruitmentTable,
+    ProductsMainPagination,
+  },
 };
 </script>
 
@@ -50,7 +60,7 @@ export default {
 
   // }
   &_breadcrumb {
-    margin-bottom: 4rem;
+    // margin-bottom: 4rem;
     display: flex;
     gap: 1.5rem;
 
@@ -67,6 +77,9 @@ export default {
     width: 100%;
     padding: 2rem 5rem;
     // background-color: red;
+    & > div {
+      margin-bottom: 3rem;
+    }
     &_title {
       display: flex;
       gap: 1.5rem;
@@ -77,6 +90,12 @@ export default {
         width: 1rem;
         background-color: var(--primary-blue);
       }
+    }
+    &_filter {
+      width: 50%;
+    }
+    &_page {
+      margin-right: 0;
     }
   }
 }

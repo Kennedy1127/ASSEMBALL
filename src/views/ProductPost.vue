@@ -20,10 +20,13 @@
       </div>
 
       <div class="product_post_info">
-        <div class="product_post_info_title">
-          <div class="block"></div>
-          <div>上傳基本資訊</div>
-        </div>
+        <slot name="bluelinetitle">
+          <div class="product_post_info_title">
+            <div class="block"></div>
+            <div>上傳基本資訊</div>
+          </div>
+        </slot>
+
         <div class="product_post_info_splitline"></div>
         <div class="product_post_info_content">
           <div class="product_post_info_content_formlist">
@@ -132,6 +135,7 @@
 .product_post_wrap {
   background-color: var(--secondary-blue-4);
   padding: 4rem 0;
+  padding-top: 8rem;
   .goback {
     font-size: 1.5rem;
     color: var(--primary-blue);

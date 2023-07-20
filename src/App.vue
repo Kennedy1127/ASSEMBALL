@@ -15,25 +15,29 @@
     />
   </transition>
   <!-- 通知視窗內容 -->
-  <MemberNotify v-if="isNotifyVisible" :show="showNotify" />
+  <MemberNotify v-if="$store.state.isNotifyVisible" :show="showNotify" />
   <!-- 會員中心內容 -->
+<<<<<<< HEAD
   <MemberCenter v-if="isMemberVisible" :show="showMember" />
   <MainHeader v-if="$route.name !='Backstage'" />
+=======
+  <MemberCenter v-if="$store.state.isMemberVisible" :show="showMember" />
+>>>>>>> 09537cf63d37c2e7117ebdc1b053cc931f2a86c1
   <router-view />
   <MainFooter  v-if="$route.name !='Backstage'"/>
 </template>
 
 <style>
 .fade-enter-active {
-  animation: fade-in 0.1s;
+  animation: fade-in 0.01s;
 }
 .fade-leave-active {
-  animation: fade-out 0.1s;
+  animation: fade-out 0.01s;
 }
 
 @keyframes fade-in {
   from {
-    opacity: 0;
+    opacity: 1;
   }
   to {
     opacity: 1;
@@ -45,7 +49,7 @@
     opacity: 1;
   }
   to {
-    opacity: 0;
+    opacity: 1;
   }
 }
 </style>
@@ -86,7 +90,7 @@ export default {
     handleScroll() {
       const scrollPosition =
         document.documentElement.scrollTop || document.body.scrollTop;
-      if (scrollPosition >= 80) {
+      if (scrollPosition > 40) {
         this.MainHeaderLight = true;
         this.MainHeader = false;
       } else {
@@ -94,22 +98,14 @@ export default {
         this.MainHeader = true;
       }
     },
-    //點擊和關閉_通知視窗
+    //切換通知頁面
     toggleNotify() {
-      this.isNotifyVisible = !this.isNotifyVisible;
-      this.isMemberVisible = false;
+      this.$store.commit("NotifyToggle");
     },
-    //點擊和關閉_會員視窗
+    //切換會員頁面
     toggleMember() {
-      this.isMemberVisible = !this.isMemberVisible;
-      this.isNotifyVisible = false;
+      this.$store.commit("MemberToggle");
     },
-    // // 在路由跳转前关闭页面(失敗QQ)
-    // closePage(next) {
-    //   this.isMemberVisible = false;
-    //   this.isNotifyVisible = false;
-    //   next();
-    // },
   },
 };
 </script>
