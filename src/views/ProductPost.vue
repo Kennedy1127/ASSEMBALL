@@ -20,10 +20,13 @@
       </div>
 
       <div class="product_post_info">
-        <div class="product_post_info_title">
-          <div class="block"></div>
-          <div>上傳基本資訊</div>
-        </div>
+        <slot name="bluelinetitle">
+          <div class="product_post_info_title">
+            <div class="block"></div>
+            <div>上傳基本資訊</div>
+          </div>
+        </slot>
+
         <div class="product_post_info_splitline"></div>
         <div class="product_post_info_content">
           <div class="product_post_info_content_formlist">
