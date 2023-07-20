@@ -17,12 +17,9 @@
   <!-- 通知視窗內容 -->
   <MemberNotify v-if="$store.state.isNotifyVisible" :show="showNotify" />
   <!-- 會員中心內容 -->
-<<<<<<< HEAD
   <MemberCenter v-if="isMemberVisible" :show="showMember" />
   <MainHeader v-if="$route.name !='Backstage'" />
-=======
   <MemberCenter v-if="$store.state.isMemberVisible" :show="showMember" />
->>>>>>> 09537cf63d37c2e7117ebdc1b053cc931f2a86c1
   <router-view />
   <MainFooter  v-if="$route.name !='Backstage'"/>
 </template>
