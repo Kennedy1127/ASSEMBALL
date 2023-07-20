@@ -6,7 +6,10 @@
       class="recruit_copywritings_card"
     >
       <router-link
-        :to="{ name: 'Copywriting', params: { id: item.copywriting_id } }"
+        :to="{
+          name: 'Copywriting',
+          params: { id: item.copywriting_id, curHeight: windowTop },
+        }"
       >
         <h2 class="recruit_copywritings_card_header">
           召募{{ convertRole(item.copywriting_role) }}
@@ -68,8 +71,17 @@ export default {
   components: { RecruitmentCardsPaginations },
   props: ["copywritings"],
 
+  mounted() {
+    window.addEventListener("scroll", this.onScroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.onScroll);
+  },
+
   data() {
-    return {};
+    return {
+      windowTop: window.top.scrollY,
+    };
   },
 
   computed: {
@@ -81,6 +93,11 @@ export default {
   },
 
   methods: {
+    onScroll(e) {
+      this.windowTop =
+        window.top.scrollY; /* or: e.target.documentElement.scrollTop */
+    },
+
     convertRole(role) {
       return roles[Number(role) + 1].label;
     },
@@ -109,13 +126,22 @@ export default {
     display: grid;
     align-items: start;
     grid-template-columns: repeat(3, 1fr);
-    column-gap: 1.5rem;
+    // column-gap: 1rem;
     row-gap: 3rem;
   }
 
   &_card {
     min-height: 400px;
-    border: 3px solid var(--primary-blue);
+    padding: 0 0.5rem;
+    transition: all 0.15s ease-in-out;
+
+    &:hover {
+      background-color: var(--secondary-blue-4);
+    }
+
+    a {
+      border: 3px solid var(--primary-blue);
+    }
 
     &_header {
       padding: 0.5rem 1rem;

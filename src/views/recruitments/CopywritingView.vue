@@ -108,7 +108,7 @@ import copywritingSwiper from "@/components/recruitments/copywriting/copywriting
 
 export default {
   components: { copywritingSwiper },
-  mounted() {},
+  props: ["curHeight", "id"],
 };
 </script>
 

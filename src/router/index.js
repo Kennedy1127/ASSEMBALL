@@ -49,9 +49,13 @@ const routes = [
     },
   },
   {
-    path: "/recruitments/copywriting/:id",
+    path: "/recruitments/copywriting/:id:curHeight",
     name: "Copywriting",
     component: () => import("@/views/recruitments/CopywritingView.vue"),
+    props: (route) => ({
+      id: route.params.id,
+      curHeight: route.params.curHeight,
+    }),
   },
   {
     path: "/recruitments/recruitment-post",
@@ -86,6 +90,12 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+  scrollBehavior(to, from) {
+    if (from.name === "Copywriting" && to.name === "Recruitments") {
+      return { top: Number(from.params.curHeight) };
+    }
+    return { top: 0 };
+  },
 });
 
 router.beforeEach(() => {
