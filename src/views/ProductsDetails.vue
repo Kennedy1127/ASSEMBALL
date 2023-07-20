@@ -217,14 +217,13 @@ export default {
 .products {
   background-color: var(--secondary-blue-4);
   padding: 4rem 0;
-  padding-top: 6rem;
 
   .wrapper {
     background-color: #fff;
     box-shadow: var(--shadow-heavy);
     border-radius: var(--round);
     padding: 3rem 12rem;
-    margin-top: 4rem;
+    margin-top: 10rem;
   }
 
   &_breadcrumb {

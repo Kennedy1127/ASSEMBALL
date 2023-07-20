@@ -5,50 +5,57 @@
       :key="index"
       class="recruit_copywritings_card"
     >
-      <h2 class="recruit_copywritings_card_header">
-        召募{{ convertRole(item.copywriting_role) }}
-      </h2>
+      <router-link
+        :to="{
+          name: 'Copywriting',
+          params: { id: item.copywriting_id, curHeight: windowTop },
+        }"
+      >
+        <h2 class="recruit_copywritings_card_header">
+          召募{{ convertRole(item.copywriting_role) }}
+        </h2>
 
-      <div class="recruit_copywritings_card_content">
-        <div class="recruit_copywritings_card_title">
-          {{ item.copywriting_title }}
-        </div>
-        <div class="recruit_copywritings_card_exp">
-          <div class="recruit_copywritings_card_exp_block"></div>
-          {{ convertExp(item.copywriting_exp) }}
-        </div>
-        <div class="recruit_copywritings_card_area">
-          <div class="recruit_copywritings_card_area_block"></div>
-          {{ item.copywriting_area }}
-        </div>
-      </div>
-
-      <div class="recruit_copywritings_card_border"></div>
-
-      <div class="recruit_copywritings_card_footer">
-        <div class="recruit_copywritings_card_team">
-          <div class="recruit_copywritings_card_team_icon">
-            <img
-              src="~@/assets/images/recruitment/team-icons/team-icon-1.png"
-              alt="team icon"
-            />
+        <div class="recruit_copywritings_card_content">
+          <div class="recruit_copywritings_card_title">
+            {{ item.copywriting_title }}
           </div>
-          <div class="recruit_copywritings_card_team_name">
-            {{ item.copywriting_team_name }}
+          <div class="recruit_copywritings_card_exp">
+            <div class="recruit_copywritings_card_exp_block"></div>
+            {{ convertExp(item.copywriting_exp) }}
+          </div>
+          <div class="recruit_copywritings_card_area">
+            <div class="recruit_copywritings_card_area_block"></div>
+            {{ item.copywriting_area }}
           </div>
         </div>
 
-        <div class="recruit_copywritings_card_intro">
-          <div class="recruit_copywritings_card_intro_title">球隊簡介：</div>
-          <p class="recruit_copywritings_card_intro_text">
-            {{ item.copywriting_team_intro }}
-          </p>
-        </div>
-      </div>
+        <div class="recruit_copywritings_card_border"></div>
 
-      <div class="recruit_copywritings_card_date">
-        刊登日期：{{ convertDate(item.copywriting_date) }}
-      </div>
+        <div class="recruit_copywritings_card_footer">
+          <div class="recruit_copywritings_card_team">
+            <div class="recruit_copywritings_card_team_icon">
+              <img
+                src="~@/assets/images/recruitment/team-icons/team-icon-1.png"
+                alt="team icon"
+              />
+            </div>
+            <div class="recruit_copywritings_card_team_name">
+              {{ item.copywriting_team_name }}
+            </div>
+          </div>
+
+          <div class="recruit_copywritings_card_intro">
+            <div class="recruit_copywritings_card_intro_title">球隊簡介：</div>
+            <p class="recruit_copywritings_card_intro_text">
+              {{ item.copywriting_team_intro }}
+            </p>
+          </div>
+        </div>
+
+        <div class="recruit_copywritings_card_date">
+          刊登日期：{{ convertDate(item.copywriting_date) }}
+        </div>
+      </router-link>
     </div>
 
     <RecruitmentCardsPaginations />
@@ -64,8 +71,17 @@ export default {
   components: { RecruitmentCardsPaginations },
   props: ["copywritings"],
 
+  mounted() {
+    window.addEventListener("scroll", this.onScroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.onScroll);
+  },
+
   data() {
-    return {};
+    return {
+      windowTop: window.top.scrollY,
+    };
   },
 
   computed: {
@@ -77,8 +93,13 @@ export default {
   },
 
   methods: {
+    onScroll(e) {
+      this.windowTop =
+        window.top.scrollY; /* or: e.target.documentElement.scrollTop */
+    },
+
     convertRole(role) {
-      return roles[Number(role)].label;
+      return roles[Number(role) + 1].label;
     },
 
     convertExp(exp) {
@@ -105,13 +126,22 @@ export default {
     display: grid;
     align-items: start;
     grid-template-columns: repeat(3, 1fr);
-    column-gap: 1.5rem;
+    // column-gap: 1rem;
     row-gap: 3rem;
   }
 
   &_card {
     min-height: 400px;
-    border: 3px solid var(--primary-blue);
+    padding: 0 0.5rem;
+    transition: all 0.15s ease-in-out;
+
+    &:hover {
+      background-color: var(--secondary-blue-4);
+    }
+
+    a {
+      border: 3px solid var(--primary-blue);
+    }
 
     &_header {
       padding: 0.5rem 1rem;

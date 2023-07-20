@@ -78,6 +78,7 @@ export default {
     box-shadow: var(--shadow-heavy);
     border-radius: var(--round);
     padding: 3rem 12rem;
+    margin-top: 6rem;
   }
 
   &_breadcrumb {

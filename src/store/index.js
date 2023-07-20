@@ -4,6 +4,10 @@ import axios from "axios";
 export default createStore({
   state: {
     //////////////////////////////////////////////////////
+    // 通知、會員頁面
+    isNotifyVisible: 0,
+    isMemberVisible: 0,
+    //////////////////////////////////////////////////////
     // 商品區塊
     productsCurPage: 1,
 
@@ -59,14 +63,18 @@ export default createStore({
 
     // 如果守備位置條件符合的話或為-1時，return true
     includedCopywritingsByRole: (state) => (copywriting) => {
-      if (state.selectedCopywritingsRole === -1) return true;
+      if (state.selectedCopywritingsRole < 0) return true;
 
       return state.selectedCopywritingsRole === copywriting.copywriting_role;
     },
 
-    // 如果地區條件符合的話或不為空字串時，return true
+    // 如果地區條件符合的話或為空字串、-1時，return true
     includedCopywritingsByArea: (state) => (copywriting) => {
-      if (!state.selectedCopywritingsArea) return true;
+      if (
+        !state.selectedCopywritingsArea ||
+        state.selectedCopywritingsArea === -1
+      )
+        return true;
 
       return state.selectedCopywritingsArea.includes(
         copywriting.copywriting_area
@@ -123,6 +131,17 @@ export default createStore({
 
   mutations: {
     //////////////////////////////////////////////////////
+    // 通知頁面切換
+    NotifyToggle(state) {
+      state.isNotifyVisible = !state.isNotifyVisible;
+      state.isMemberVisible = false;
+    },
+    // 會員頁面切換
+    MemberToggle(state) {
+      state.isMemberVisible = !state.isMemberVisible;
+      state.isNotifyVisible = false;
+    },
+    //////////////////////////////////////////////////////
     // 商品區塊
     // 商品頁碼切換
     productsPrevPage(state) {
@@ -154,19 +173,11 @@ export default createStore({
 
     // 更新招募文案過濾條件
     selectCopywritingsExp(state, payload) {
-      if (state.selectedCopywritingsExp.includes(payload)) {
-        const index = state.selectedCopywritingsExp.findIndex(
-          (el) => el === payload
-        );
-
-        return state.selectedCopywritingsExp.splice(index, 1);
-      }
-      state.selectedCopywritingsExp.push(payload);
+      state.selectedCopywritingsExp = [...payload];
     },
 
     // 更新招募文案時間過濾條件
     selectCopywritingsDate(state, payload) {
-      if (state.selectedCopywritingsDate === payload) return;
       state.selectedCopywritingsDate = payload;
     },
 

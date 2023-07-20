@@ -88,6 +88,7 @@ export default {
 .products {
   background-color: var(--secondary-blue-4);
   padding: 4rem 0;
+  padding-top: 10rem;
 
   .wrapper {
     background-color: #fff;

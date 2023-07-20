@@ -39,14 +39,23 @@ const routes = [
     name: "Recruitments",
     component: () => import("@/views/recruitments/RecruitmentsView.vue"),
     beforeEnter: (to, from, next) => {
+      if (from.name === "Copywriting") {
+        next();
+        return;
+      }
+      store.commit("resetCopywritingsCurPage");
       store.commit("resetFiltersAndSearch");
       next();
     },
   },
   {
-    path: "/recruitments/copywriting/:id",
+    path: "/recruitments/copywriting/:id:curHeight",
     name: "Copywriting",
     component: () => import("@/views/recruitments/CopywritingView.vue"),
+    props: (route) => ({
+      id: route.params.id,
+      curHeight: route.params.curHeight,
+    }),
   },
   {
     path: "/recruitments/recruitment-post",
@@ -97,6 +106,18 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+  scrollBehavior(to, from) {
+    if (from.name === "Copywriting" && to.name === "Recruitments") {
+      return { top: Number(from.params.curHeight) };
+    }
+    return { top: 0 };
+  },
+});
+
+router.beforeEach(() => {
+  // 在每次路由跳轉前關閉通知、會員頁面
+  store.state.isNotifyVisible = 0;
+  store.state.isMemberVisible = 0;
 });
 
 export default router;

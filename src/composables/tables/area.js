@@ -1,5 +1,9 @@
 export default [
   {
+    value: -1,
+    label: "全部地區",
+  },
+  {
     value: "基隆市",
     label: "基隆市",
   },
