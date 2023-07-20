@@ -1,39 +1,61 @@
 <template>
   <div class="copywriting_card">
-    <div class="copywriting_card_header">
-      <div class="copywriting_card_role">招募右外野手</div>
-    </div>
-
-    <div class="copywriting_card_content">
-      <div class="copywriting_card_exp">初心者</div>
-      <div class="copywriting_card_info">
-        <div class="copywriting_card_icon">
-          <img
-            src="~@/assets/images/recruitment/team-icons/team-icon-1.png"
-            alt="team icon"
-          />
+    <router-link
+      :to="{ name: 'Copywriting', params: { id: copywriting.copywriting_id } }"
+    >
+      <div class="copywriting_card_header">
+        <div class="copywriting_card_role">
+          招募{{ convertRole(copywriting.copywriting_role) }}
         </div>
-        <div class="copywriting_card_team">黃蜂隊</div>
-        <div class="copywriting_card_area">台東縣</div>
       </div>
-    </div>
+
+      <div class="copywriting_card_content">
+        <div class="copywriting_card_exp">
+          {{ convertExp(copywriting.copywriting_exp) }}
+        </div>
+        <div class="copywriting_card_info">
+          <div class="copywriting_card_icon">
+            <img
+              src="~@/assets/images/recruitment/team-icons/team-icon-1.png"
+              alt="team icon"
+            />
+          </div>
+          <div class="copywriting_card_team">
+            {{ copywriting.copywriting_team_name }}
+          </div>
+          <div class="copywriting_card_area">
+            {{ copywriting.copywriting_area }}
+          </div>
+        </div>
+      </div>
+    </router-link>
   </div>
 </template>
 
-<script>
+<script setup>
 import exps from "@/composables/tables/exps";
 import roles from "@/composables/tables/roles";
 
-export default {
-  setup() {},
+const props = defineProps(["copywriting"]);
+
+const convertRole = (role) => {
+  if (role || role === 0) return roles[role + 1].label;
+};
+
+const convertExp = (exp) => {
+  if (exp || exp === 0) return exps[exp];
 };
 </script>
 
 <style scoped lang="scss">
 .copywriting_card {
   width: 100%;
-  min-height: 400px;
   border: 2px solid var(--primary-blue);
+
+  a {
+    width: 100%;
+    min-height: 400px;
+  }
 
   &_role {
     padding: 0.5rem 1rem;

@@ -11,8 +11,11 @@
       :modules="modules"
       class="mySwiper"
     >
-      <swiper-slide v-for="index in 8" :key="index">
-        <copywritingSwiperCard />
+      <swiper-slide
+        v-for="copywriting in computedCopywritings"
+        :key="copywriting.copywriting_id"
+      >
+        <CopywritingSwiperCard :copywriting="copywriting" />
       </swiper-slide>
     </swiper>
 
@@ -24,7 +27,7 @@
     </button>
   </div>
 </template>
-<script>
+<script setup>
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from "swiper/vue";
 
@@ -36,93 +39,101 @@ import "swiper/css/pagination";
 // import required modules
 import { Navigation, Pagination } from "swiper/modules";
 
-import copywritingSwiperCard from "@/components/recruitments/copywriting/copywritingSwiperCard.vue";
-import { computed, onBeforeMount, ref } from "vue";
+import CopywritingSwiperCard from "@/components/recruitments/copywriting/CopywritingSwiperCard.vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
 
-export default {
-  components: {
-    Swiper,
-    SwiperSlide,
-    copywritingSwiperCard,
+const store = useStore();
+const props = defineProps(["role"]);
+
+const modules = ref([Navigation, Pagination]);
+const defaultCopywritings = ref([
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
   },
-
-  setup() {
-    const store = useStore();
-
-    const defaultCopywritings = ref([
-      {
-        copywriting_id: 98,
-        copywriting_role: 5,
-        copywriting_exp: 1,
-        copywriting_team_name: "勇士隊",
-        copywriting_area: "花蓮縣",
-      },
-      {
-        copywriting_id: 98,
-        copywriting_role: 5,
-        copywriting_exp: 1,
-        copywriting_team_name: "勇士隊",
-        copywriting_area: "花蓮縣",
-      },
-      {
-        copywriting_id: 98,
-        copywriting_role: 5,
-        copywriting_exp: 1,
-        copywriting_team_name: "勇士隊",
-        copywriting_area: "花蓮縣",
-      },
-      {
-        copywriting_id: 98,
-        copywriting_role: 5,
-        copywriting_exp: 1,
-        copywriting_team_name: "勇士隊",
-        copywriting_area: "花蓮縣",
-      },
-      {
-        copywriting_id: 98,
-        copywriting_role: 5,
-        copywriting_exp: 1,
-        copywriting_team_name: "勇士隊",
-        copywriting_area: "花蓮縣",
-      },
-      {
-        copywriting_id: 98,
-        copywriting_role: 5,
-        copywriting_exp: 1,
-        copywriting_team_name: "勇士隊",
-        copywriting_area: "花蓮縣",
-      },
-      {
-        copywriting_id: 98,
-        copywriting_role: 5,
-        copywriting_exp: 1,
-        copywriting_team_name: "勇士隊",
-        copywriting_area: "花蓮縣",
-      },
-      {
-        copywriting_id: 98,
-        copywriting_role: 5,
-        copywriting_exp: 1,
-        copywriting_team_name: "勇士隊",
-        copywriting_area: "花蓮縣",
-      },
-    ]);
-
-    const computedCopywritings = computed(() =>
-      store.state.copywritingsCount === 0
-        ? [...defaultCopywritings.value]
-        : store.state.copywritings
-            .filter((copywriting) => copywriting.copywriting_role === 5)
-            .slice(0, 8)
-    );
-
-    return {
-      modules: [Navigation, Pagination],
-      computedCopywritings,
-    };
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
   },
-};
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+]);
+
+const computedCopywritings = computed(() =>
+  store.state.copywritingsCount === 0
+    ? [...defaultCopywritings.value]
+    : store.state.copywritings
+        .filter((copywriting) => copywriting.copywriting_role === props.role)
+        .slice(0, 8)
+);
 </script>
 
 <style scoped lang="scss">

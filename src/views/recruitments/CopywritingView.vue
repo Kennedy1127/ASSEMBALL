@@ -101,20 +101,20 @@
       </h2>
 
       <div class="copywriting_footer_carousel">
-        <copywritingSwiper />
+        <CopywritingSwiper :role="computedCopywriting.copywriting_role" />
       </div>
     </div>
   </main>
 </template>
 
 <script>
-import copywritingSwiper from "@/components/recruitments/copywriting/copywritingSwiper.vue";
+import CopywritingSwiper from "@/components/recruitments/copywriting/CopywritingSwiper.vue";
 import roles from "@/composables/tables/roles";
 import exps from "@/composables/tables/exps";
 import roleDesc from "@/composables/tables/roleDesc";
 
 export default {
-  components: { copywritingSwiper },
+  components: { CopywritingSwiper },
   props: ["curHeight", "id"],
 
   beforeMount() {
