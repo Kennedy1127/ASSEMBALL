@@ -74,6 +74,8 @@ export default {
 
 <style scoped lang="scss">
 .recruit {
+  margin-top: 6rem;
+
   &_landing {
     position: relative;
     min-height: 650px;
