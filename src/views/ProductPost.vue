@@ -20,7 +20,7 @@
       </div>
 
       <div class="product_post_info">
-        <slot name="bluelinetitle">
+        <slot name="title">
           <div class="product_post_info_title">
             <div class="block"></div>
             <div>上傳基本資訊</div>
@@ -81,6 +81,11 @@
                 value
                 placeholder="(0/10)"
               />
+              <!-- <selector-primary :options="options" value="currentCategory" @update-category="currentCategory = $event" /> -->
+              <!-- <selector-primary :options="options2" value="currentLocation" @update-category="currentLocation = $event" /> -->
+
+              <!-- selector-primary.vue
+              emit('update-category', value) -->
               <select id="product_post_produccategory"></select>
               <select id="product_post_loation"></select>
               <input
@@ -135,7 +140,6 @@
 .product_post_wrap {
   background-color: var(--secondary-blue-4);
   padding: 4rem 0;
-  padding-top: 8rem;
   .goback {
     font-size: 1.5rem;
     color: var(--primary-blue);
