@@ -77,7 +77,7 @@ export default {
   &_landing {
     position: relative;
     min-height: 650px;
-    z-index: -1;
+    // z-index: -1; // -1搜尋欄會無法使用
     background-image: url("@/assets/images/recruitment/recruitment-landing.png");
     background-position: 100% 90%;
     background-repeat: no-repeat;
