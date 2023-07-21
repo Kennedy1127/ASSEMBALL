@@ -20,7 +20,7 @@
           </div>
         </li>
         <li>
-          <router-link to="/">
+          <router-link :to="{ name: 'MemberCenterOrder' }">
             <span
               ><font-awesome-icon
                 icon="fa-solid fa-file-lines"

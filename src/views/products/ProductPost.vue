@@ -231,7 +231,7 @@
         border-bottom: 2px solid var(--secondary-gray-2);
         margin-bottom: 3rem;
         .block {
-          width: 0.5rem;
+          width: 1rem;
           background-color: var(--primary-blue);
         }
       }

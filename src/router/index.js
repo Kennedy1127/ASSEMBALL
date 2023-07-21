@@ -100,6 +100,12 @@ const routes = [
     name: "Backstage",
     component: () => import("@/views/Backstage.vue"),
   },
+  /////////////////////////////////////////
+  {
+    path: "/MemberCenter-Order",
+    name: "MemberCenterOrder",
+    component: () => import("@/views/memberCenter/MemberCenterOrder.vue"),
+  },
 ];
 
 const router = createRouter({
