@@ -27,7 +27,7 @@
     @enter_personal="enterPersonal"
   />
   <router-view />
-  <MainFooter />
+  <MainFooter v-if="$route.name !== 'Home'" />
 </template>
 
 <style>

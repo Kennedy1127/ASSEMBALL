@@ -37,6 +37,8 @@ import {
   faTriangleExclamation,
   faImage,
   faCirclePlus,
+  // faPen,
+  // faTrashCan,
   faAngleLeft,
   faCircleArrowRight,
   faCircleXmark,
@@ -70,10 +72,7 @@ library.add(
   faEnvelope,
   faTriangleExclamation,
   faImage,
-  faCirclePlus,
-  faAngleLeft,
-  faCircleArrowRight,
-  faCircleXmark
+  faCirclePlus
 );
 
 createApp(App)

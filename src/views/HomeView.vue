@@ -19,6 +19,12 @@
       <section class="home_auction">
         <HomeAuction />
       </section>
+      <section class="home_product">
+        <HomeProduct />
+      </section>
+      <footer class="home_footer">
+        <HomeFooter />
+      </footer>
     </div>
   </main>
 </template>
@@ -30,6 +36,8 @@ import HomeNews from "@/components/Home/HomeNews";
 import HomeRecruit from "@/components/Home/HomeRecruit";
 import HomeMessage from "@/components/Home/HomeMessage";
 import HomeAuction from "@/components/Home/HomeAuction";
+import HomeProduct from "@/components/Home/HomeProduct";
+import HomeFooter from "@/components/Home/HomeFooter";
 
 export default {
   components: {
@@ -39,6 +47,8 @@ export default {
     HomeRecruit,
     HomeMessage,
     HomeAuction,
+    HomeProduct,
+    HomeFooter,
   },
 
   data() {
@@ -97,6 +107,11 @@ export default {
     .home_auction {
       background-color: #fff;
       border-top: 3px solid var(--primary-blue);
+    }
+    .home_product {
+      display: flex;
+    }
+    .home_footer {
     }
   }
 }
