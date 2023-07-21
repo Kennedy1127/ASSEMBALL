@@ -82,7 +82,6 @@ export default {
 <style scoped lang="scss">
 .products_main_paginations {
   margin-top: 6rem;
-
   display: flex;
   justify-content: flex-end;
   align-items: center;

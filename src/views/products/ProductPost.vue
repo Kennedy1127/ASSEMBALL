@@ -1,7 +1,9 @@
 <template>
   <div class="product_post_wrap">
     <div class="goback">
-      <font-awesome-icon icon="fa-solid fa-chevron-left" />返回
+      <router-link to="/">
+        <span><font-awesome-icon icon="fa-solid fa-angle-left" /></span>返回
+      </router-link>
     </div>
     <div class="product_post">
       <div class="product_post_caution">
@@ -98,7 +100,7 @@
                 id="product_post_phone"
                 class="product_post_info_content_formlist_input"
               />
-              <div class="product_post_info_content_formlist_inputfile">
+              <!-- <div class="product_post_info_content_formlist_inputfile">
                 <font-awesome-icon icon="fa-solid fa-image" />
                 <font-awesome-icon icon="fa-regular fa-circle-plus" />
 
@@ -107,7 +109,14 @@
                   id="product_post_image"
                   class="product_post_info_content_formlist_input"
                 />
-              </div>
+              </div> -->
+              <label for="product_post_image"
+                ><img
+                  src="~@/assets/images/MemberCenter/MemberCenter_Personal_pic.svg"
+                  alt="MemberCenter_Personal_pic"
+                />上傳商品圖片
+                <input type="file" id="product_post_image" />
+              </label>
               <textarea
                 id="roduct_post_comment"
                 cols="60"
@@ -141,20 +150,44 @@
     color: var(--primary-blue);
     margin-bottom: 1rem;
     // width: 100%;
-    max-width: 1600px;
+    max-width: 1200px;
     margin: auto;
+    & a {
+      display: inline-block;
+      color: var(--primary-blue);
+      font-size: 1.25rem;
+      font-weight: 500;
+      padding-bottom: 0.5rem;
+      cursor: pointer;
+      & span {
+        color: var(--primary-blue);
+        font-size: 1.25rem;
+        padding-right: 0.5rem;
+      }
+    }
   }
   .product_post {
     background-color: var(--pale-white);
+    box-shadow: var(--shadow-heavy);
+    border-radius: var(--round);
     padding: 4rem 0;
     width: 100%;
     max-width: 1600px;
     margin: auto;
-    padding: 100px 100px;
+    padding: 4rem 12rem;
     display: flex;
     gap: 4.5rem;
+    @media screen and (max-width: 1600px) {
+      padding: 4rem 10rem;
+    }
+    @media screen and (max-width: 1500px) {
+      padding: 4rem 6rem;
+    }
+    @media screen and (max-width: 1400px) {
+      padding: 4rem 1.5rem;
+    }
     &_caution {
-      width: 18vw;
+      width: 100%;
       height: 100%;
       background-color: var(--secondary-blue-3);
       padding: 1.5rem;
@@ -173,12 +206,13 @@
           font-size: 1.25rem;
           margin-bottom: 1.5rem;
           color: var(--caution-red);
-          font-weight: medium;
+          font-weight: 500;
         }
         &_text {
           font-size: 1rem;
           line-height: 1.75;
-          white-space: pre-wrap;
+          // white-space: pre-wrap;
+          text-align: left;
         }
       }
     }
@@ -186,11 +220,14 @@
       &_title {
         display: flex;
         gap: 1.5rem;
-        padding-bottom: 1rem;
-        font-size: 2rem;
+        padding-bottom: 2rem;
+        font-size: 1.5rem;
+        font-weight: 600;
         color: var(--primary-blue);
+        border-bottom: 2px solid var(--secondary-gray-2);
+        margin-bottom: 3rem;
         .block {
-          width: 1rem;
+          width: 0.5rem;
           background-color: var(--primary-blue);
         }
       }
@@ -232,13 +269,15 @@
             border: 0;
             // color: var(--secondary-blue-1);
             margin-bottom: 3rem;
+            padding-left: 1rem;
           }
           &_input::placeholder {
             text-align: right;
             line-height: 25rem;
           }
           &_input:focus {
-            outline: 3px var(--secondary-blue-1) solid;
+            outline: 2px var(--secondary-blue-1) solid;
+            background-color: var(--pale-white);
           }
           &_text {
             margin-bottom: 60px;
@@ -256,6 +295,27 @@
             #product_post_image {
               display: none;
             }
+            & label {
+              display: flex;
+              flex-direction: column;
+              text-align: center;
+              color: var(--secondary-blue-1);
+              border: 2px dashed var(--secondary-blue-1);
+              padding: 1.5rem;
+              max-width: 12rem;
+              cursor: pointer;
+              & img {
+                padding: 1rem;
+                padding-left: 1.5rem;
+                width: 8rem;
+              }
+              & input {
+                display: none;
+              }
+            }
+            & label:hover {
+              background-color: var(--secondary-blue-4);
+            }
             textarea {
               font-size: 1.25rem;
               line-height: 1.75;
@@ -265,11 +325,17 @@
               border-radius: 10px;
               padding: 0.5rem;
               caret-color: var(--secondary-blue-1);
+              padding-left: 1rem;
+              margin-top: 2.5rem;
             }
             textarea::placeholder {
               position: absolute;
               bottom: 0.5rem;
               right: 0.5rem;
+            }
+            textarea:focus {
+              outline: 2px var(--secondary-blue-1) solid;
+              background-color: var(--pale-white);
             }
             button {
               width: 10rem;

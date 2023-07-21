@@ -41,6 +41,7 @@ import "swiper/css/pagination";
 // import required modules
 import { Navigation, Pagination } from "swiper/modules";
 
+import CopywritingSwiperCard from "@/components/recruitments/copywriting/copywritingSwiperCard.vue";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 
