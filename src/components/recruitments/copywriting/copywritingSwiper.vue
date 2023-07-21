@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import CopywritingSwiperCard from "@/components/recruitments/copywriting/copywritingSwiperCard.vue";
+import CopywritingSwiperCard from "@/components/recruitments/copywriting/CopywritingSwiperCard.vue";
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from "swiper/vue";
 

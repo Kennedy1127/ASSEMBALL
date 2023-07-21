@@ -77,7 +77,7 @@
       </div>
 
       <div class="copywriting_content_btn">
-        <button>
+        <button @click="overlayIsOpen = true">
           應徵
           <font-awesome-icon :icon="['fas', 'envelope']" />
         </button>
@@ -105,16 +105,22 @@
       </div>
     </div>
   </main>
+
+  <CopywritingSubmitApply
+    v-if="overlayIsOpen"
+    @closeOverlay="overlayIsOpen = false"
+  />
 </template>
 
 <script>
-import CopywritingSwiper from "@/components/recruitments/copywriting/copywritingSwiper.vue";
+import CopywritingSwiper from "@/components/recruitments/copywriting/CopywritingSwiper.vue";
+import CopywritingSubmitApply from "@/components/recruitments/copywriting/CopywritingSubmitApply.vue";
 import roles from "@/composables/tables/roles";
 import exps from "@/composables/tables/exps";
 import roleDesc from "@/composables/tables/roleDesc";
 
 export default {
-  components: { CopywritingSwiper },
+  components: { CopywritingSwiper, CopywritingSubmitApply },
   props: ["curHeight", "id"],
 
   beforeMount() {
@@ -145,6 +151,8 @@ export default {
         copywriting_team_intro:
           "喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵，喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵",
       },
+
+      overlayIsOpen: true,
     };
   },
 
