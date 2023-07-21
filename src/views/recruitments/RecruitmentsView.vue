@@ -77,7 +77,7 @@ export default {
   &_landing {
     position: relative;
     min-height: 650px;
-
+    z-index: -1;
     background-image: url("@/assets/images/recruitment/recruitment-landing.png");
     background-position: 100% 90%;
     background-repeat: no-repeat;
