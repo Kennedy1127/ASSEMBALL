@@ -108,7 +108,7 @@
 </template>
 
 <script>
-import CopywritingSwiper from "@/components/recruitments/copywriting/CopywritingSwiper.vue";
+import CopywritingSwiper from "@/components/recruitments/copywriting/copywritingSwiper.vue";
 import roles from "@/composables/tables/roles";
 import exps from "@/composables/tables/exps";
 import roleDesc from "@/composables/tables/roleDesc";
