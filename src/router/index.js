@@ -92,6 +92,7 @@ router.beforeEach(() => {
   // 在每次路由跳轉前關閉通知、會員頁面
   store.state.isNotifyVisible = 0;
   store.state.isMemberVisible = 0;
+  store.state.isPersonalVisible = 0;
 });
 
 export default router;

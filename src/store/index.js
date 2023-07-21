@@ -4,9 +4,10 @@ import axios from "axios";
 export default createStore({
   state: {
     //////////////////////////////////////////////////////
-    // 通知、會員頁面
+    // 通知、會員頁面、個人資料
     isNotifyVisible: 0,
     isMemberVisible: 0,
+    isPersonalVisible: 0,
     //////////////////////////////////////////////////////
     // 商品區塊
     productsCurPage: 1,
@@ -140,6 +141,17 @@ export default createStore({
     MemberToggle(state) {
       state.isMemberVisible = !state.isMemberVisible;
       state.isNotifyVisible = false;
+      state.isPersonalVisible = false;
+    },
+    // 會員 > 個人資料 頁面切換
+    EnterPersonal(state) {
+      state.isPersonalVisible = true;
+      state.isMemberVisible = false;
+    },
+    // 個人資料 > 會員中心 頁面切換
+    ReturnPage(state) {
+      state.isPersonalVisible = false;
+      state.isMemberVisible = true;
     },
     //////////////////////////////////////////////////////
     // 商品區塊
