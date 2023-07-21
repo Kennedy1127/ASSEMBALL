@@ -11,8 +11,11 @@
       :modules="modules"
       class="mySwiper"
     >
-      <swiper-slide v-for="index in 8" :key="index">
-        <copywritingSwiperCard />
+      <swiper-slide
+        v-for="copywriting in computedCopywritings"
+        :key="copywriting.copywriting_id"
+      >
+        <CopywritingSwiperCard :copywriting="copywriting" />
       </swiper-slide>
     </swiper>
 
@@ -24,9 +27,9 @@
     </button>
   </div>
 </template>
-<script>
-import copywritingSwiperCard from "@/components/recruitments/copywriting/copywritingSwiperCard.vue";
 
+<script setup>
+import CopywritingSwiperCard from "@/components/recruitments/copywriting/CopywritingSwiperCard.vue";
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from "swiper/vue";
 
@@ -38,18 +41,100 @@ import "swiper/css/pagination";
 // import required modules
 import { Navigation, Pagination } from "swiper/modules";
 
-export default {
-  components: {
-    Swiper,
-    SwiperSlide,
-    copywritingSwiperCard,
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+const props = defineProps(["role"]);
+
+const modules = ref([Navigation, Pagination]);
+const defaultCopywritings = ref([
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
   },
-  setup() {
-    return {
-      modules: [Navigation, Pagination],
-    };
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
   },
-};
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+  {
+    copywriting_id: 98,
+    copywriting_role: 5,
+    copywriting_exp: 1,
+    copywriting_team_name: "勇士隊",
+    copywriting_area: "花蓮縣",
+  },
+]);
+
+const computedCopywritings = computed(() =>
+  store.state.copywritingsCount === 0
+    ? [...defaultCopywritings.value]
+    : store.state.copywritings
+        .filter((copywriting) => copywriting.copywriting_role === props.role)
+        .slice(0, 8)
+);
 </script>
 
 <style scoped lang="scss">

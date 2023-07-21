@@ -15,6 +15,7 @@ export default createStore({
     //////////////////////////////////////////////////////
     // 招募文案區塊
     copywritings: [],
+    copywritingsCount: 0,
     selectedCopywritingsText: "",
     selectedCopywritingsRole: -1,
     selectedCopywritingsArea: "",
@@ -172,6 +173,11 @@ export default createStore({
     //////////////////////////////////////////////////////
     // 招募文案區塊
     // 取得招募文案數量
+    setCopywritingsCount(state, payload) {
+      state.copywritingsCount = payload;
+    },
+
+    // 取得招募文案
     setCopywritings(state, payload) {
       state.copywritings = [...payload];
     },
@@ -218,7 +224,18 @@ export default createStore({
   },
 
   actions: {
-    // 撈文案資料
+    // 撈招募文案數量
+    async getCopywritingsCount(context) {
+      try {
+        const res = await axios.get("http://localhost:3000/copywritings");
+        if (!res) throw new Error("Cannot fetch response");
+        context.commit("setCopywritingsCount", res.data.length);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    // 撈招募文案資料
     async getCopywritings(context) {
       try {
         const res = await axios.get("http://localhost:3000/copywritings");
