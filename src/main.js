@@ -37,6 +37,7 @@ import {
   faTriangleExclamation,
   faImage,
   faCirclePlus,
+  faAngleLeft,
   faCircleArrowRight,
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
@@ -70,6 +71,7 @@ library.add(
   faTriangleExclamation,
   faImage,
   faCirclePlus,
+  faAngleLeft,
   faCircleArrowRight,
   faCircleXmark
 );

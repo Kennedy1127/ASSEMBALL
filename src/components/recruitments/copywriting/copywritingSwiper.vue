@@ -27,7 +27,9 @@
     </button>
   </div>
 </template>
+
 <script setup>
+import CopywritingSwiperCard from "@/components/recruitments/copywriting/copywritingSwiperCard.vue";
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from "swiper/vue";
 
