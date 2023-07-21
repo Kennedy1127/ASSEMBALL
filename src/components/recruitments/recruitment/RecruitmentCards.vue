@@ -8,7 +8,12 @@
       <router-link
         :to="{
           name: 'Copywriting',
-          params: { id: item.copywriting_id, curHeight: windowTop },
+          params: {
+            id: item.copywriting_id,
+          },
+          query: {
+            h: windowTop,
+          },
         }"
       >
         <h2 class="recruit_copywritings_card_header">

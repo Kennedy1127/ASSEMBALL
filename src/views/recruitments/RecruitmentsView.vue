@@ -21,7 +21,12 @@
         <div class="recruit_feedback_carousel">
           <RecruitmentSwiper />
         </div>
-        <div class="recruit_feedback_pics"></div>
+        <div class="recruit_feedback_pics">
+          <img
+            src="@/assets/images/recruitment/Baseball-pana.png"
+            alt="feedback pic"
+          />
+        </div>
       </div>
     </div>
   </main>
@@ -42,8 +47,16 @@ export default {
   },
 
   beforeMount() {
-    // 掛載後撈資料
-    this.$store.dispatch("getCopywritings");
+    // 掛載後撈文案數量
+    this.$store.dispatch("getCopywritingsCount");
+
+    // 如果文案陣列長度為0或是文案陣列長度與文案數量不等於，則撈文案資料
+    if (
+      this.$store.state.copywritings.length === 0 ||
+      this.$store.state.copywritings.length !==
+        this.$store.state.copywritingsCount
+    )
+      this.$store.dispatch("getCopywritings");
   },
 
   data() {
@@ -114,9 +127,10 @@ export default {
     }
 
     &_pics {
-      width: 50%;
-      min-height: 600px;
-      background-color: #faa;
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 }

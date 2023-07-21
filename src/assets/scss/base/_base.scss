@@ -21,6 +21,11 @@ button {
   cursor: pointer;
 }
 
+input {
+  border: 0;
+  background-color: none;
+}
+
 *::placeholder {
   color: var(--secondary-gray-3);
   font-family: "Noto Sans TC";

@@ -12,7 +12,7 @@
       :modules="modules"
       class="mySwiper"
     >
-      <swiper-slide v-for="index in 5" :key="index">
+      <swiper-slide v-for="data in defaultCarouselData" :key="data">
         <div class="recruit_feedback_swiper_content">
           <div class="recruit_feedback_swiper_icon">
             <img
@@ -20,10 +20,11 @@
               alt="team icon"
             />
           </div>
-          <div class="recruit_feedback_swiper_name">猛虎隊</div>
+          <div class="recruit_feedback_swiper_name">
+            {{ data.team_name }}
+          </div>
           <div class="recruit_feedback_swiper_text">
-            這個網路平台真的太好用了！
-            它提供了豐富的資源，讓我能快速的找到同樣熱愛棒球的隊友。
+            {{ data.team_text }}
           </div>
         </div>
       </swiper-slide>
@@ -37,7 +38,7 @@
     </swiper>
   </div>
 </template>
-<script>
+<script setup>
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from "swiper/vue";
 
@@ -48,18 +49,36 @@ import "swiper/css/pagination";
 
 // import required modules
 import { Navigation, Pagination } from "swiper/modules";
+import { ref } from "vue";
 
-export default {
-  components: {
-    Swiper,
-    SwiperSlide,
+const modules = ref([Navigation, Pagination]);
+const defaultCarouselData = ref([
+  {
+    team_name: "火箭隊",
+    team_text: `這個網路平台真的太好用了！
+    它提供了豐富的資源，讓我能快速的找到同樣熱愛棒球的隊友。`,
   },
-  setup() {
-    return {
-      modules: [Navigation, Pagination],
-    };
+  {
+    team_name: "道奇隊",
+    team_text: `這個網路平台真的太好用了！
+    它提供了豐富的資源，讓我能快速的找到同樣熱愛棒球的隊友。`,
   },
-};
+  {
+    team_name: "太空人隊",
+    team_text: `這個網路平台真的太好用了！
+    它提供了豐富的資源，讓我能快速的找到同樣熱愛棒球的隊友。`,
+  },
+  {
+    team_name: "天使隊",
+    team_text: `這個網路平台真的太好用了！
+    它提供了豐富的資源，讓我能快速的找到同樣熱愛棒球的隊友。`,
+  },
+  {
+    team_name: "洋基隊",
+    team_text: `這個網路平台真的太好用了！
+    它提供了豐富的資源，讓我能快速的找到同樣熱愛棒球的隊友。`,
+  },
+]);
 </script>
 
 <style scoped lang="scss">

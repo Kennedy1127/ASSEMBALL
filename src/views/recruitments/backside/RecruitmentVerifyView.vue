@@ -8,7 +8,7 @@
     <main class="recruitment_post_main">
       <section class="recruitment_post_breadcrumb">
         <span>
-          <router-link to="/recruitment">球隊徵人</router-link>
+          <router-link :to="{ name: 'Recruitments' }">球員招募</router-link>
         </span>
         <div class="icon">
           <font-awesome-icon icon="fa-solid fa-chevron-right" />

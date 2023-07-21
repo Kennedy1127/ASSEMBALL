@@ -11,13 +11,13 @@
     <div class="MemberCenter_list">
       <ul>
         <li>
-          <router-link to="/">
+          <div @click="enterPersonal">
             <span
               ><font-awesome-icon
                 icon="fa-solid fa-user"
                 style="color: #f87171" /></span
-            >個人資料</router-link
-          >
+            >個人資料
+          </div>
         </li>
         <li>
           <router-link to="/">
@@ -66,6 +66,11 @@ export default {
       },
     };
   },
+  methods: {
+    enterPersonal() {
+      this.$emit("enter_personal");
+    },
+  },
 };
 </script>
 
@@ -112,6 +117,21 @@ export default {
         flex-direction: row;
         align-items: center;
         justify-content: center;
+        & > div {
+          width: 100%;
+          padding: 1.25rem;
+          color: var(--primary-blue);
+          text-align: center;
+          font-size: 1rem;
+          font-weight: 500;
+          transition: all 0.09s ease-in-out;
+          border-radius: var(--round);
+          margin: 0.5rem;
+          cursor: pointer;
+          & span {
+            padding-right: 1rem;
+          }
+        }
         & a {
           width: 100%;
           padding: 1.25rem;
@@ -127,6 +147,9 @@ export default {
           }
         }
         & a:hover {
+          background-color: var(--secondary-blue-3);
+        }
+        & div:hover {
           background-color: var(--secondary-blue-3);
         }
       }

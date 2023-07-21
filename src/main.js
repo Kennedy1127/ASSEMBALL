@@ -39,6 +39,9 @@ import {
   faCirclePlus,
   // faPen,
   // faTrashCan,
+  faAngleLeft,
+  faCircleArrowRight,
+  faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -70,8 +73,6 @@ library.add(
   faTriangleExclamation,
   faImage,
   faCirclePlus
-  // faPen,
-  // faTrashCan
 );
 
 createApp(App)
