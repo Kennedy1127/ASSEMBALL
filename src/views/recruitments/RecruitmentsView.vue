@@ -21,7 +21,12 @@
         <div class="recruit_feedback_carousel">
           <RecruitmentSwiper />
         </div>
-        <div class="recruit_feedback_pics"></div>
+        <div class="recruit_feedback_pics">
+          <img
+            src="@/assets/images/recruitment/Baseball-pana.png"
+            alt="feedback pic"
+          />
+        </div>
       </div>
     </div>
   </main>
@@ -122,9 +127,10 @@ export default {
     }
 
     &_pics {
-      width: 50%;
-      min-height: 600px;
-      background-color: #faa;
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 }
