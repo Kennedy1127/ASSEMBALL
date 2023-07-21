@@ -34,7 +34,6 @@
 .products_main_header {
   display: flex;
   justify-content: space-between;
-  padding: 0 0.5rem;
 
   &_features {
     display: flex;

@@ -1,6 +1,9 @@
 <template>
   <div class="authentication_wrap">
     <div class="authentication">
+      <div v-if="layout !== 'normal'">
+        <slot name="form"></slot>
+      </div>
       <div class="authentication_pic">
         <div class="authentication_pic_title">Welcome Back !</div>
 
@@ -14,6 +17,9 @@
         </button>
       </div>
 
+      <div v-if="layout === 'normal'">
+        <slot name="form"></slot>
+      </div>
       <form class="authentication_text">
         <div class="authentication_text_slogan">Hello , Friend !</div>
         <div class="authentication_text_title">會員註冊/Sign Up</div>
@@ -53,9 +59,65 @@
       </form>
     </div>
   </div>
+
+  <!-- 框.vue -->
+  <!-- <div class="authentication_wrap">
+    <div class="authentication">
+      <div v-if="layout !== 'normal'">
+        <slot name="here"></slot>
+      </div>
+      <div class="authentication_pic">
+        <div class="authentication_pic_title">Welcome Back !</div>
+
+        <div class="authentication_pic_text">
+          Are you ready <br />
+          to unleash the power of baseball?
+        </div>
+
+        <button class="authentication_btn">
+          登入 <font-awesome-icon icon="fa-solid fa-chevron-right" />
+        </button>
+      </div>
+      <div v-if="layout === 'normal'">
+        <slot name="here"></slot>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- 表格login.vue -->
+  <!-- <form>...</form> -->
+
+  <!-- 表格Forget.vue -->
+  <!-- <form>...</form> -->
+
+  <!-- 表格Register.vue -->
+  <!-- <form>...</form> -->
+
+  <!-- 頁面登入.vue -->
+  <!-- <框 layout="reverse">
+          <template #here>
+            <表格login />
+          </template>
+      </框> -->
+
+  <!-- 頁面註冊.vue -->
+  <!-- <框 layout="reverse">
+          <template #here>
+            <表格Register />
+          </template>
+      </框> -->
 </template>
 
-<script></script>
+<script>
+export default {
+  props: {
+    layout: {
+      type: String,
+      default: () => "normal",
+    },
+  },
+};
+</script>
 
 <style scoped lang="scss">
 .authentication_wrap {

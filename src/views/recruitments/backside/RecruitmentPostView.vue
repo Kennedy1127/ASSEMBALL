@@ -29,6 +29,19 @@
       <!-- <template #title></template> -->
 
       <!-- 組件 -->
+      <!-- ViewLogin.vue -->
+      <!-- <LoginFrame>
+        <template #right>
+          <div class="product_post_info_title">
+            <div class="block"></div>
+            <selector-primary
+              :options="options"
+              value="currentCategory"
+              @update-category="currentCategory = $event"
+            />
+          </div>
+        </template>
+      </LoginFrame> -->
     </main>
   </main>
 </template>
