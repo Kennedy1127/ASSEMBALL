@@ -1,7 +1,7 @@
 <template>
   <div class="overlay" @click.self="closeOverlay">
     <slot v-if="type === 'apply'" name="apply">
-      <CopywritingApplyModal />
+      <CopywritingApplyModal @closeModal="closeOverlay" />
     </slot>
   </div>
 </template>

@@ -152,7 +152,7 @@ export default {
           "喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵，喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵",
       },
 
-      overlayIsOpen: true,
+      overlayIsOpen: false,
     };
   },
 
