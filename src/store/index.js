@@ -4,9 +4,10 @@ import axios from "axios";
 export default createStore({
   state: {
     //////////////////////////////////////////////////////
-    // 通知、會員頁面
+    // 通知、會員頁面、個人資料
     isNotifyVisible: 0,
     isMemberVisible: 0,
+    isPersonalVisible: 0,
     //////////////////////////////////////////////////////
     // 商品區塊
     productsCurPage: 1,
@@ -14,6 +15,7 @@ export default createStore({
     //////////////////////////////////////////////////////
     // 招募文案區塊
     copywritings: [],
+    copywritingsCount: 0,
     selectedCopywritingsText: "",
     selectedCopywritingsRole: -1,
     selectedCopywritingsArea: "",
@@ -67,14 +69,18 @@ export default createStore({
 
     // 如果守備位置條件符合的話或為-1時，return true
     includedCopywritingsByRole: (state) => (copywriting) => {
-      if (state.selectedCopywritingsRole === -1) return true;
+      if (state.selectedCopywritingsRole < 0) return true;
 
       return state.selectedCopywritingsRole === copywriting.copywriting_role;
     },
 
-    // 如果地區條件符合的話或不為空字串時，return true
+    // 如果地區條件符合的話或為空字串、-1時，return true
     includedCopywritingsByArea: (state) => (copywriting) => {
-      if (!state.selectedCopywritingsArea) return true;
+      if (
+        !state.selectedCopywritingsArea ||
+        state.selectedCopywritingsArea === -1
+      )
+        return true;
 
       return state.selectedCopywritingsArea.includes(
         copywriting.copywriting_area
@@ -140,6 +146,17 @@ export default createStore({
     MemberToggle(state) {
       state.isMemberVisible = !state.isMemberVisible;
       state.isNotifyVisible = false;
+      state.isPersonalVisible = false;
+    },
+    // 會員 > 個人資料 頁面切換
+    EnterPersonal(state) {
+      state.isPersonalVisible = true;
+      state.isMemberVisible = false;
+    },
+    // 個人資料 > 會員中心 頁面切換
+    ReturnPage(state) {
+      state.isPersonalVisible = false;
+      state.isMemberVisible = true;
     },
     //////////////////////////////////////////////////////
     // 商品區塊
@@ -160,6 +177,11 @@ export default createStore({
     //////////////////////////////////////////////////////
     // 招募文案區塊
     // 取得招募文案數量
+    setCopywritingsCount(state, payload) {
+      state.copywritingsCount = payload;
+    },
+
+    // 取得招募文案
     setCopywritings(state, payload) {
       state.copywritings = [...payload];
     },
@@ -173,19 +195,11 @@ export default createStore({
 
     // 更新招募文案過濾條件
     selectCopywritingsExp(state, payload) {
-      if (state.selectedCopywritingsExp.includes(payload)) {
-        const index = state.selectedCopywritingsExp.findIndex(
-          (el) => el === payload
-        );
-
-        return state.selectedCopywritingsExp.splice(index, 1);
-      }
-      state.selectedCopywritingsExp.push(payload);
+      state.selectedCopywritingsExp = [...payload];
     },
 
     // 更新招募文案時間過濾條件
     selectCopywritingsDate(state, payload) {
-      if (state.selectedCopywritingsDate === payload) return;
       state.selectedCopywritingsDate = payload;
     },
 
@@ -230,7 +244,18 @@ export default createStore({
   },
 
   actions: {
-    // 撈文案資料
+    // 撈招募文案數量
+    async getCopywritingsCount(context) {
+      try {
+        const res = await axios.get("http://localhost:3000/copywritings");
+        if (!res) throw new Error("Cannot fetch response");
+        context.commit("setCopywritingsCount", res.data.length);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    // 撈招募文案資料
     async getCopywritings(context) {
       try {
         const res = await axios.get("http://localhost:3000/copywritings");

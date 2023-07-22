@@ -95,6 +95,22 @@ export default {
     box-shadow: var(--shadow-heavy);
     border-radius: var(--round);
     padding: 3rem 12rem;
+    @media screen and (max-width: 1600px) {
+      padding: 3rem 10rem;
+    }
+    @media screen and (max-width: 1500px) {
+      padding: 3rem 6rem;
+    }
+    @media screen and (max-width: 1400px) {
+      padding: 3rem 2rem;
+    }
+  }
+
+  &_main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 994px; //不跑版設定
   }
 
   &_breadcrumb {
@@ -118,6 +134,10 @@ export default {
     display: grid;
     grid-template-columns: 1fr 5fr;
     gap: 1.5rem;
+
+    & aside {
+      width: 190px;
+    }
 
     .block {
       width: 8px;

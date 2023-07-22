@@ -13,13 +13,13 @@
         <div class="header_list">
           <ul>
             <li>
-              <router-link to="/"
+              <router-link :to="{ name: 'Recruitments' }"
                 ><span><font-awesome-icon icon="fa-solid fa-flag" /></span>
-                球隊徵人</router-link
+                球員招募</router-link
               >
             </li>
             <li>
-              <router-link to="/products"
+              <router-link :to="{ name: 'Products' }"
                 ><span
                   ><font-awesome-icon icon="fa-solid fa-bag-shopping"
                 /></span>

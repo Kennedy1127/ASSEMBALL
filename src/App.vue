@@ -14,13 +14,20 @@
       @toggle_member="toggleMember"
     />
   </transition>
-  <!-- 通知視窗內容 -->
-  <MemberNotify v-if="$store.state.isNotifyVisible" :show="showNotify" />
-  <!-- 會員中心內容 -->
-  <MemberCenter v-if="$store.state.isMemberVisible" :show="showMember" />
+  <!-- 通知視窗頁面 -->
+  <MemberNotify v-if="$store.state.isNotifyVisible" />
+  <!-- 會員中心 > 個人資料頁面 -->
+  <MemberPersonal
+    v-if="$store.state.isPersonalVisible"
+    @return_page="returnPage"
+  />
+  <!-- 會員中心頁面 -->
+  <MemberCenter
+    v-if="$store.state.isMemberVisible"
+    @enter_personal="enterPersonal"
+  />
   <router-view />
   <MainFooter v-if="$route.name !== 'Home'" />
-  <!-- <MainFooter v-if="!$route.name({ name: 'Home' })" /> -->
 </template>
 
 <style>
@@ -55,6 +62,7 @@ import MainHeader from "@/components/MainHeader.vue";
 import MainHeaderLight from "@/components/MainHeader_light.vue";
 import MemberNotify from "@/components/MemberCenter/MemberNotify";
 import MemberCenter from "@/components/MemberCenter/MemberCenter";
+import MemberPersonal from "@/components/MemberCenter/MemberPersonal";
 import MainFooter from "@/components/MainFooter.vue";
 
 export default {
@@ -66,6 +74,7 @@ export default {
       // 通知視窗顯示
       isNotifyVisible: false,
       isMemberVisible: false,
+      isPersonalVisible: false,
     };
   },
   components: {
@@ -74,6 +83,7 @@ export default {
     MainHeaderLight,
     MemberNotify,
     MemberCenter,
+    MemberPersonal,
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
@@ -101,6 +111,14 @@ export default {
     //切換會員頁面
     toggleMember() {
       this.$store.commit("MemberToggle");
+    },
+    //會員中心 > 個人資料頁面
+    enterPersonal() {
+      this.$store.commit("EnterPersonal");
+    },
+    //個人資料頁面返回 > 會員中心
+    returnPage() {
+      this.$store.commit("ReturnPage");
     },
   },
 };

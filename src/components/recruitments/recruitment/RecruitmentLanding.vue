@@ -31,9 +31,9 @@ export default {
   components: { RecruitmentSelect },
   data() {
     return {
-      searchText: "",
-      role: -1,
-      area: "",
+      searchText: this.$store.state.selectedCopywritingsText,
+      role: this.$store.state.selectedCopywritingsRole,
+      area: this.$store.state.selectedCopywritingsArea,
     };
   },
 
@@ -54,7 +54,6 @@ export default {
 .recruit_landing {
   &_filters {
     max-width: 1400px; // 1600? 1400? 1200?
-
     display: flex;
     justify-content: center;
     align-items: center;

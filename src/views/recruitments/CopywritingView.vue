@@ -4,30 +4,36 @@
       <div class="copywriting_header_info">
         <h2 class="copywriting_title">
           <div class="block"></div>
-          召募捕手
+          召募{{
+            $store.state.copywritingsCount === 0
+              ? defaultCopywriting.copywriting_role
+              : convertRole(computedCopywriting.copywriting_role)
+          }}
         </h2>
 
-        <div class="copywriting_header_info_date">-2023.07.05</div>
+        <div class="copywriting_header_info_date">
+          -{{ convertDate(computedCopywriting.copywriting_date) }}
+        </div>
 
         <div class="copywriting_header_info_exp">
           <div class="copywriting_header_info_exp_block"></div>
-          初心者
+          {{ convertExp(computedCopywriting.copywriting_exp) }}
         </div>
 
         <div class="copywriting_header_info_area">
           <div class="copywriting_header_info_area_block"></div>
-          桃園市
+          {{ computedCopywriting.copywriting_area }}
         </div>
       </div>
 
       <div class="copywriting_header_intro">
         <h2 class="copywriting_title">
           <div class="block"></div>
-          職缺介紹
+          守備位置
         </h2>
 
         <p class="copywriting_header_intro_text">
-          捕手是球隊的防線指揮官，全能守備、瞭解投手意圖，捕捉每一個球種，守衛本壘。
+          {{ convertRoleDesc(computedCopywriting.copywriting_role) }}
         </p>
       </div>
 
@@ -38,9 +44,11 @@
             alt="team icon"
           />
         </div>
-        <div class="copywriting_header_team_name">猛虎隊</div>
+        <div class="copywriting_header_team_name">
+          {{ computedCopywriting.copywriting_team_name }}
+        </div>
         <div class="copywriting_header_team_btn">
-          <button>更多球隊</button>
+          <router-link :to="{ name: 'Recruitments' }">更多球隊</router-link>
         </div>
       </div>
     </div>
@@ -49,19 +57,15 @@
       <div class="copywriting_content_intro">
         <h2 class="copywriting_title">
           <div class="block"></div>
-          猛虎隊
+          {{ computedCopywriting.copywriting_team_name }}
         </h2>
 
         <h3 class="copywriting_content_intro_title">
-          猛虎隊以其勇敢、堅定和不屈不撓的精神而聞名 --
-          我們致力於每一場比賽都全力以赴，追求勝利。
+          {{ computedCopywriting.copywriting_team_title }}
         </h3>
 
         <p class="copywriting_content_intro_text">
-          我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。
-          <br />
-          <br />
-          猛虎隊的球場氛圍總是充滿熱情和能量。我們的忠實球迷總是在場邊為我們加油，他們的支持是我們不斷進步和戰勝困難的動力源泉。每次站在球場上，我們都為了他們而努力，為了帶給他們驕傲和喜悅而戰。
+          {{ computedCopywriting.copywriting_team_intro }}
         </p>
       </div>
 
@@ -73,7 +77,7 @@
       </div>
 
       <div class="copywriting_content_btn">
-        <button>
+        <button @click="overlayIsOpen = true">
           應徵
           <font-awesome-icon :icon="['fas', 'envelope']" />
         </button>
@@ -97,18 +101,120 @@
       </h2>
 
       <div class="copywriting_footer_carousel">
-        <copywritingSwiper />
+        <CopywritingSwiper :role="computedCopywriting.copywriting_role" />
       </div>
     </div>
   </main>
+
+  <CopywritingSubmitApply
+    v-if="overlayIsOpen"
+    @closeOverlay="overlayIsOpen = false"
+  />
 </template>
 
 <script>
-import copywritingSwiper from "@/components/recruitments/copywriting/copywritingSwiper.vue";
+import CopywritingSubmitApply from "@/components/recruitments/copywriting/CopywritingSubmitApply.vue";
+import CopywritingSwiper from "@/components/recruitments/copywriting/CopywritingSwiper.vue";
+import roles from "@/composables/tables/roles";
+import exps from "@/composables/tables/exps";
+import roleDesc from "@/composables/tables/roleDesc";
 
 export default {
-  components: { copywritingSwiper },
-  mounted() {},
+  components: { CopywritingSwiper, CopywritingSubmitApply },
+  props: ["curHeight", "id"],
+
+  beforeMount() {
+    if (
+      // 如果文案數量為0或是找不到該文案的話，重新撈資料
+      this.$store.state.copywritingsCount === 0 ||
+      this.$store.state.copywritings.find(
+        (copywriting) =>
+          copywriting.copywriting_id === Number(this.$route.params.id)
+      )
+    ) {
+      this.$store.dispatch("getCopywritingsCount");
+      this.$store.dispatch("getCopywritings");
+    }
+  },
+
+  data() {
+    return {
+      defaultCopywriting: {
+        copywriting_role: 5,
+        copywriting_title: "尋找新星！現正招募有潛力的球員",
+        copywriting_exp: 1,
+        copywriting_area: "花蓮縣",
+        copywriting_date: "2023-04-21T04:10:58.291Z",
+        copywriting_team_name: "勇士隊",
+        copywriting_team_icon: "https://picsum.photos/200/300",
+        copywriting_team_title: "熱愛棒球：生活在球場上的我們",
+        copywriting_team_intro:
+          "喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵，喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵",
+      },
+
+      overlayIsOpen: false,
+    };
+  },
+
+  computed: {
+    computedCopywriting() {
+      const data = this.$store.state.copywritings.find(
+        (copywriting) =>
+          copywriting.copywriting_id === Number(this.$route.params.id)
+      );
+
+      if (data) {
+        const {
+          copywriting_role,
+          copywriting_title,
+          copywriting_exp,
+          copywriting_area,
+          copywriting_date,
+          copywriting_team_name,
+          copywriting_team_icon,
+          copywriting_team_title,
+          copywriting_team_intro,
+        } = data;
+
+        return {
+          copywriting_role,
+          copywriting_title,
+          copywriting_exp,
+          copywriting_area,
+          copywriting_date,
+          copywriting_team_name,
+          copywriting_team_icon,
+          copywriting_team_title,
+          copywriting_team_intro,
+        };
+      }
+
+      return this.defaultCopywriting;
+    },
+  },
+
+  methods: {
+    convertRole(role) {
+      if (role || role === 0) return roles[role + 1].label;
+    },
+
+    convertExp(exp) {
+      if (exp || exp === 0) return exps[exp];
+    },
+
+    convertRoleDesc(role) {
+      if (role || role === 0) return roleDesc[role].desc;
+    },
+
+    convertDate(copywritingDate) {
+      if (!copywritingDate) return;
+      const date = new Date(copywritingDate);
+      return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(
+        2,
+        "0"
+      )}.${String(date.getDate()).padStart(2, "0")}`;
+    },
+  },
 };
 </script>
 
@@ -214,7 +320,7 @@ export default {
       &_btn {
         margin-top: auto;
 
-        button {
+        a {
           width: 200px;
           height: 60px;
           border-radius: 100px;
@@ -223,6 +329,10 @@ export default {
           font-weight: 500;
           color: #fff;
           background-color: var(--primary-blue);
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
       }
     }

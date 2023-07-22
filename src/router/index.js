@@ -10,28 +10,28 @@ const routes = [
   {
     path: "/authentication",
     name: "Authentication",
-    component: () => import("@/views/AuthenticationView.vue"),
+    component: () => import("@/views/authentications/AuthenticationView.vue"),
   },
   /////////////////////////////////////////
   {
     path: "/products",
     name: "Products",
-    component: () => import("@/views/ProductsView.vue"),
+    component: () => import("@/views/products/ProductsView.vue"),
   },
   {
     path: "/products/:id",
     name: "ProductDetail",
-    component: () => import("@/views/ProductDetail.vue"),
+    component: () => import("@/views/products/ProductDetail.vue"),
   },
   {
     path: "/product-post", //url- 網址的文字
     name: "ProductPost",
-    component: () => import("@/views/ProductPost.vue"), // 檔名
+    component: () => import("@/views/products/ProductPost.vue"), // 檔名
   },
   {
     path: "/products/products-manage",
     name: "ProductsManage",
-    component: () => import("@/views/ProductManageView.vue"),
+    component: () => import("@/views/products/ProductManageView.vue"),
   },
   /////////////////////////////////////////
   {
@@ -39,6 +39,11 @@ const routes = [
     name: "Recruitments",
     component: () => import("@/views/recruitments/RecruitmentsView.vue"),
     beforeEnter: (to, from, next) => {
+      if (from.name === "Copywriting") {
+        next();
+        return;
+      }
+      store.commit("resetCopywritingsCurPage");
       store.commit("resetFiltersAndSearch");
       next();
     },
@@ -51,7 +56,26 @@ const routes = [
   {
     path: "/recruitments/recruitment-post",
     name: "recruitmentPost",
-    component: () => import("@/views/recruitments/RecruitmentPostView.vue"),
+    component: () =>
+      import("@/views/recruitments/backside/RecruitmentPostView.vue"),
+  },
+  {
+    path: "/recruitments/recruitment-manage",
+    name: "recruitmentManage",
+    component: () =>
+      import("@/views/recruitments/backside/RecruitmentManageView.vue"),
+  },
+  {
+    path: "/recruitments/recruitment-verify",
+    name: "recruitmentVerify",
+    component: () =>
+      import("@/views/recruitments/backside/RecruitmentVerifyView.vue"),
+  },
+  {
+    path: "/recruitments/recruitment-verify-detail",
+    name: "recruitmentVerifyDetail",
+    component: () =>
+      import("@/views/recruitments/backside/RecruitmentVerifyDetailView.vue"),
   },
   /////////////////////////////////////////
   {
@@ -81,17 +105,30 @@ const routes = [
     name: "MyplayerGallery",
     component: () => import("@/views/MyPlayerGallery.vue"),
   },
+  /////////////////////////////////////////
+  {
+    path: "/MemberCenter-Order",
+    name: "MemberCenterOrder",
+    component: () => import("@/views/memberCenter/MemberCenterOrder.vue"),
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+  scrollBehavior(to, from) {
+    if (from.name === "Copywriting" && to.name === "Recruitments") {
+      return { top: Number(from.query.h) };
+    }
+    return { top: 0 };
+  },
 });
 
 router.beforeEach(() => {
   // 在每次路由跳轉前關閉通知、會員頁面
   store.state.isNotifyVisible = 0;
   store.state.isMemberVisible = 0;
+  store.state.isPersonalVisible = 0;
 });
 
 export default router;

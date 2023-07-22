@@ -1,7 +1,7 @@
 <template>
   <div class="recruitmentSelect-select">
     <Select
-      :value="modelValue"
+      :model-value="modelValue"
       @on-change="onChange"
       :placeholder="$props.placeholder"
     >

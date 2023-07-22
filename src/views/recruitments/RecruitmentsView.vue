@@ -21,7 +21,12 @@
         <div class="recruit_feedback_carousel">
           <RecruitmentSwiper />
         </div>
-        <div class="recruit_feedback_pics"></div>
+        <div class="recruit_feedback_pics">
+          <img
+            src="@/assets/images/recruitment/Baseball-pana.png"
+            alt="feedback pic"
+          />
+        </div>
       </div>
     </div>
   </main>
@@ -42,10 +47,16 @@ export default {
   },
 
   beforeMount() {
-    // 掛載後撈資料
-    this.$store.dispatch("getCopywritings");
-    this.$store.commit("resetCopywritingsCurPage");
-    this.$store.commit("resetFiltersAndSearch");
+    // 掛載後撈文案數量
+    this.$store.dispatch("getCopywritingsCount");
+
+    // 如果文案陣列長度為0或是文案陣列長度與文案數量不等於，則撈文案資料
+    if (
+      this.$store.state.copywritings.length === 0 ||
+      this.$store.state.copywritings.length !==
+        this.$store.state.copywritingsCount
+    )
+      this.$store.dispatch("getCopywritings");
   },
 
   data() {
@@ -63,10 +74,12 @@ export default {
 
 <style scoped lang="scss">
 .recruit {
+  margin-top: 6rem;
+
   &_landing {
     position: relative;
     min-height: 650px;
-
+    // z-index: -1; // -1搜尋欄會無法使用
     background-image: url("@/assets/images/recruitment/recruitment-landing.png");
     background-position: 100% 90%;
     background-repeat: no-repeat;
@@ -116,9 +129,10 @@ export default {
     }
 
     &_pics {
-      width: 50%;
-      min-height: 600px;
-      background-color: #faa;
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 }
