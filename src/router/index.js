@@ -79,9 +79,9 @@ const routes = [
   },
   /////////////////////////////////////////
   {
-    path: "/myplayer_team",
-    name: "myplayer_team",
-    component: () => import("@/views/MyPlayer_Team.vue"),
+    path: "/myplayerTeam",
+    name: "myplayerTeam",
+    component: () => import("@/views/MyPlayerTeam.vue"),
   },
   /////////////////////////////////////////
   {
@@ -99,6 +99,11 @@ const routes = [
     path: "/Backstage",
     name: "Backstage",
     component: () => import("@/views/Backstage.vue"),
+  },
+  {
+    path: "/MyplayerGallery",
+    name: "MyplayerGallery",
+    component: () => import("@/views/MyPlayerGallery.vue"),
   },
   /////////////////////////////////////////
   {

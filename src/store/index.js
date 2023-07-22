@@ -22,6 +22,10 @@ export default createStore({
     selectedCopywritingsExp: [],
     selectedCopywritingsDate: 0,
     copywritingsCurPage: 1,
+    ///////////////////////////////////////////
+    myplayerPopupsOpen: false,
+    myplayerEditOpen: false,
+    myplayerOverlay: true,
   },
 
   getters: {
@@ -220,6 +224,22 @@ export default createStore({
     },
     resetCopywritingsCurPage(state) {
       state.copywritingsCurPage = 1;
+    },
+    ///////////////////////////////////////
+    //我的球隊彈窗頁面切換
+    myplayerPopupsToggle(state) {
+      state.myplayerPopupsOpen = !state.myplayerPopupsOpen;
+      // state.myplayerPopupsOpen = false;
+    },
+    ////////////////////////////////////////
+    //我的球隊edit切換
+    myplayerEditToggle(state) {
+      state.myplayerEditOpen = !state.myplayerEditOpen;
+    },
+    ///////////////////////////////////////
+    //我的球隊Ovelay切換
+    myplayerOverlayToggle(state) {
+      state.myplayerPopupsOpen = !state.myplayerPopupsOpen;
     },
   },
 
