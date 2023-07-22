@@ -72,7 +72,8 @@ library.add(
   faEnvelope,
   faTriangleExclamation,
   faImage,
-  faCirclePlus
+  faCirclePlus,
+  faCircleXmark
 );
 
 createApp(App)
