@@ -31,8 +31,6 @@ import ProductsAsideSearch from "@/components/products/productsAside/ProductsAsi
 import ProductsAsideTags from "@/components/products/productsAside/ProductsAsideTags";
 import ProductsMainHeader from "@/components/products/productsItems/ProductsMainHeader";
 import ProductsMainItems from "@/components/products/productsItems/ProductsMainItems";
-import ProductsMainItem from "@/components/products/productsItem/ProductsMainItem";
-import ProductsMainItemMsg from "@/components/products/productsItem/ProductsMainItemMsg";
 import productsFakeData from "@/composables/productsData";
 
 export default {
@@ -90,6 +88,7 @@ export default {
 .products {
   background-color: var(--secondary-blue-4);
   padding: 4rem 0;
+  padding-top: 10rem;
 
   .wrapper {
     background-color: #fff;
