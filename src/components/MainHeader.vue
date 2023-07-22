@@ -27,7 +27,7 @@
               >
             </li>
             <li>
-              <router-link to="/"
+              <router-link to="/myplayerTeam"
                 ><span
                   ><font-awesome-icon icon="fa-solid fa-user-group"
                 /></span>
