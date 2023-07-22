@@ -54,7 +54,6 @@ export default {
 .recruit_landing {
   &_filters {
     max-width: 1400px; // 1600? 1400? 1200?
-
     display: flex;
     justify-content: center;
     align-items: center;

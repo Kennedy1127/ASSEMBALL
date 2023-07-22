@@ -149,6 +149,7 @@
 .product_post_wrap {
   background-color: var(--secondary-blue-4);
   padding: 4rem 0;
+  padding-top: 8rem;
   .goback {
     font-size: 1.5rem;
     color: var(--primary-blue);
@@ -231,7 +232,7 @@
         border-bottom: 2px solid var(--secondary-gray-2);
         margin-bottom: 3rem;
         .block {
-          width: 0.5rem;
+          width: 1rem;
           background-color: var(--primary-blue);
         }
       }

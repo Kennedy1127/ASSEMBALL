@@ -3,19 +3,24 @@
     <div class="wrapper">
       <!--網頁白色部分 -->
 
-      <a class="products_manage_back_btn_link" href="#">
+      <!-- <a class="products_manage_back_btn_link" href="#">
         <button class="products_manage_back_btn">
           <div class="img">
             <img src="~@/assets/images/icons/arrow-left.png" />
           </div>
           <div class="text">返回</div>
         </button>
-      </a>
+      </a> -->
+      <div class="products_manage_back_btn_link">
+        <router-link to="/">
+          <span><font-awesome-icon icon="fa-solid fa-angle-left" /></span>返回
+        </router-link>
+      </div>
       <div class="products_manage_header">
         <!--消息管理頁首 -->
         <div class="products_manage_header_title">
           <div class="color_block"></div>
-          消息管理
+          拍賣管理
         </div>
         <div class="products_manage_btn_area">
           <button class="set_time_btn">
@@ -64,11 +69,21 @@
           <div class="manage_item_list manage_item_icon">
             <button>
               <div class="notify">1</div>
-              <img src="~@/assets/images/icons/message.png" />
+              <span>
+                <font-awesome-icon
+                  icon="fa-solid fa-comment-dots"
+                  style="color: #64b1dc"
+                />
+              </span>
             </button>
           </div>
           <div class="manage_item_list manage_item_icon">
-            <button><img src="~@/assets/images/icons/pen.png" /></button>
+            <button>
+              <font-awesome-icon
+                icon="fa-solid fa-pen"
+                style="color: #1e60cd"
+              />
+            </button>
           </div>
         </div>
       </section>
@@ -119,8 +134,9 @@ export default {
 }
 .notify {
   border-radius: 50%;
-  width: 26px;
-  height: 28px;
+  width: 25px;
+  height: 25px;
+  line-height: 23px;
   background-color: var(--accent-red);
   display: flex;
   justify-content: center;
@@ -128,8 +144,11 @@ export default {
   color: #fff;
   font-weight: 600;
   position: absolute;
-  right: 10px;
-  top: -20px;
+  right: 22%;
+  top: -10%;
+  border: 2px solid #fff;
+  font-size: 1rem;
+  font-family: "Montserrat";
 }
 
 // 分隔線設定
@@ -143,11 +162,27 @@ hr {
 // 按鈕設定
 button {
   background-color: #fff;
+  & span {
+    font-size: 2rem;
+  }
 }
 
 // 返回按鈕
 .products_manage_back_btn_link {
   margin-bottom: 3rem;
+  & a {
+    display: inline-block;
+    color: var(--primary-blue);
+    font-size: 1.25rem;
+    font-weight: 500;
+    padding-bottom: 0.5rem;
+    cursor: pointer;
+    & span {
+      color: var(--primary-blue);
+      font-size: 1.25rem;
+      padding-right: 0.5rem;
+    }
+  }
 }
 
 .products_manage_back_btn {
@@ -169,15 +204,17 @@ button {
 
 // 表頭頁首
 .products_manage_header_title {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   display: flex;
   gap: 2rem;
   align-content: end;
   align-items: end;
+  color: var(--primary-blue);
+  font-weight: 600;
 
   .color_block {
-    width: 10px;
-    height: 39px;
+    width: 1rem;
+    height: 2rem;
     background-color: var(--primary-blue);
   }
 }
@@ -247,6 +284,7 @@ button {
   align-items: center;
   color: var(--secondary-gray-3);
   font-size: 1.25rem;
+  justify-content: space-evenly;
 }
 
 // 表頭
@@ -261,6 +299,7 @@ button {
   display: flex;
   margin-bottom: 2rem;
   align-items: center;
+  justify-content: space-evenly;
 }
 
 .manage_item_title {
@@ -272,6 +311,7 @@ button {
 
   &--red {
     color: var(--accent-red);
+    font-weight: 600;
   }
 }
 
@@ -285,7 +325,9 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-
+  & button {
+    font-size: 1.5rem;
+  }
   img {
     width: 2rem;
   }
