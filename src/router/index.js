@@ -106,6 +106,11 @@ const routes = [
     name: "MemberCenterOrder",
     component: () => import("@/views/memberCenter/MemberCenterOrder.vue"),
   },
+  {
+    path: "/MemberCenter-Createteam",
+    name: "MemberCenterCreateteam",
+    component: () => import("@/views/memberCenter/MemberCenterCreateteam.vue"),
+  },
 ];
 
 const router = createRouter({
