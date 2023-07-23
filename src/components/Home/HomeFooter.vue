@@ -15,7 +15,7 @@
       <div class="footer_logo">
         <router-link to="/">
           <img
-            src="~@/assets/images/icons/footer_logo_light.svg"
+            src="~@/assets/images/icons/home_footer_logo_light.svg"
             alt="footer_logo_light"
           />
         </router-link>
