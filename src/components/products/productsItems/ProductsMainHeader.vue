@@ -54,11 +54,15 @@
       border: 2px solid var(--secondary-blue-2);
       background-color: transparent;
       border-radius: 10px;
+      transition: all 0.09s ease-in-out;
 
       font-size: 1.25rem;
       font-weight: 500;
       color: var(--primary-blue);
     }
+    // a:hover {
+    //   background-color: var(--secondary-blue-4);
+    // }
 
     &:first-child {
       a {
@@ -66,6 +70,9 @@
         background-color: var(--primary-blue);
         color: #fff;
       }
+      // a:hover {
+      //   background-color: var(--secondary-blue-1);
+      // }
     }
 
     &_notify {
@@ -88,6 +95,7 @@
       font-weight: 600;
       color: #fff;
       border: 3px solid #fff;
+      transition: all 0.09s ease-in-out;
     }
   }
 }

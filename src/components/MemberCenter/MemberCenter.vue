@@ -29,7 +29,7 @@
           >
         </li>
         <li>
-          <router-link to="/">
+          <router-link :to="{ name: 'MemberCenterApplication' }">
             <span
               ><font-awesome-icon
                 icon="fa-solid fa-address-card"
