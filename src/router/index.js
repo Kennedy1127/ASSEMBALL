@@ -43,7 +43,7 @@ const routes = [
         next();
         return;
       }
-      store.commit("resetCopywritingsCurPage");
+      store.commit("resetPaginationCurPage", "copywritings");
       store.commit("resetFiltersAndSearch");
       next();
     },
