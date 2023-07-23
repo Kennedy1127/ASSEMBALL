@@ -10,6 +10,13 @@ export default createStore({
     isPersonalVisible: 0,
     //////////////////////////////////////////////////////
     // 商品區塊
+    products: [],
+    productsCount: 0,
+    // selectedProductsText: "",
+    // selectedProductsRole: -1,
+    // selectedProductsExp: [],
+    // selectedProductsArea: "",
+    // selectedProductsDate: 0,
     productsCurPage: 1,
 
     //////////////////////////////////////////////////////
@@ -18,13 +25,24 @@ export default createStore({
     copywritingsCount: 0,
     selectedCopywritingsText: "",
     selectedCopywritingsRole: -1,
-    selectedCopywritingsArea: "",
     selectedCopywritingsExp: [],
+    selectedCopywritingsArea: "",
     selectedCopywritingsDate: 0,
     copywritingsCurPage: 1,
+    ///////////////////////////////////////////
+    myplayerPopupsOpen: false,
+    myplayerEditOpen: false,
+    myplayerOverlay: true,
   },
 
   getters: {
+    //////////////////////////////////////////////////////
+    // 商品區塊
+    // productsPages(_, getters) {
+    //   const len = getters.filteredCopywritings.length;
+    //   return len % 6 === 0 ? (len > 6 ? len / 6 : 1) : Math.ceil(len / 6);
+    // },
+
     //////////////////////////////////////////////////////
     // 招募文案區塊
     // 招募初心者數量
@@ -156,6 +174,33 @@ export default createStore({
     },
     //////////////////////////////////////////////////////
     // 商品區塊
+    // 取得商品數量
+    setProductsCount(state, payload) {
+      state.productsCount = payload;
+    },
+
+    // 取得商品
+    setProducts(state, payload) {
+      state.products = [...payload];
+    },
+
+    // // 更新商品搜尋條件
+    // selectCopywritingsSearch(state, payload) {
+    //   state.selectedCopywritingsText = payload.searchText;
+    //   state.selectedCopywritingsRole = payload.role;
+    //   state.selectedCopywritingsArea = payload.area;
+    // },
+
+    // // 更新商品過濾條件
+    // selectCopywritingsExp(state, payload) {
+    //   state.selectedCopywritingsExp = [...payload];
+    // },
+
+    // // 更新商品時間過濾條件
+    // selectCopywritingsDate(state, payload) {
+    //   state.selectedCopywritingsDate = payload;
+    // },
+
     // 商品頁碼切換
     productsPrevPage(state) {
       state.productsCurPage--;
@@ -221,9 +266,47 @@ export default createStore({
     resetCopywritingsCurPage(state) {
       state.copywritingsCurPage = 1;
     },
+    ///////////////////////////////////////
+    //我的球隊彈窗頁面切換
+    myplayerPopupsToggle(state) {
+      state.myplayerPopupsOpen = !state.myplayerPopupsOpen;
+      // state.myplayerPopupsOpen = false;
+    },
+    ////////////////////////////////////////
+    //我的球隊edit切換
+    myplayerEditToggle(state) {
+      state.myplayerEditOpen = !state.myplayerEditOpen;
+    },
+    ///////////////////////////////////////
+    //我的球隊Ovelay切換
+    myplayerOverlayToggle(state) {
+      state.myplayerPopupsOpen = !state.myplayerPopupsOpen;
+    },
   },
 
   actions: {
+    // 撈商品數量
+    async getProductsCount(context) {
+      try {
+        const res = await axios.get("http://localhost:3000/products");
+        if (!res) throw new Error("Cannot fetch response");
+        context.commit("setProductsCount", res.data.length);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    // 撈商品資料
+    async getProducts(context) {
+      try {
+        const res = await axios.get("http://localhost:3000/products");
+        if (!res) throw new Error("Cannot fetch response");
+        context.commit("setProducts", res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
     // 撈招募文案數量
     async getCopywritingsCount(context) {
       try {
