@@ -12,7 +12,7 @@
         </div>
 
         <div class="recruit_copywritings_content">
-          <RecruitmentCards :copywritings="computedCopywritings" />
+          <RecruitmentCards />
           <RecruitmentAside />
         </div>
       </div>
@@ -32,44 +32,11 @@
   </main>
 </template>
 
-<script>
+<script setup>
 import RecruitmentLanding from "@/components/recruitments/recruitment/RecruitmentLanding.vue";
 import RecruitmentCards from "@/components/recruitments/recruitment/RecruitmentCards.vue";
 import RecruitmentAside from "@/components/recruitments/recruitment/RecruitmentAside.vue";
 import RecruitmentSwiper from "@/components/recruitments/recruitment/RecruitmentSwiper.vue";
-
-export default {
-  components: {
-    RecruitmentLanding,
-    RecruitmentCards,
-    RecruitmentAside,
-    RecruitmentSwiper,
-  },
-
-  beforeMount() {
-    // 掛載後撈文案數量
-    this.$store.dispatch("getCopywritingsCount");
-
-    // 如果文案陣列長度為0或是文案陣列長度與文案數量不等於，則撈文案資料
-    if (
-      this.$store.state.copywritings.length === 0 ||
-      this.$store.state.copywritings.length !==
-        this.$store.state.copywritingsCount
-    )
-      this.$store.dispatch("getCopywritings");
-  },
-
-  data() {
-    return {};
-  },
-
-  computed: {
-    // 渲染用資料
-    computedCopywritings() {
-      return this.$store.getters.dateSortedFilteredCopywritings;
-    },
-  },
-};
 </script>
 
 <style scoped lang="scss">

@@ -12,31 +12,32 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import roles from "@/composables/tables/roles";
 import area from "@/composables/tables/area";
+import { computed } from "vue";
 
-export default {
-  props: ["placeholder", "type", "modelValue"],
-
-  data() {
-    return {
-      roles,
-      area,
-    };
+const props = defineProps({
+  placeholder: {
+    type: String,
+    required: true,
   },
-
-  computed: {
-    items() {
-      return this.$props.type === "role" ? [...this.roles] : [...this.area];
-    },
+  type: {
+    type: String,
+    required: true,
   },
-
-  methods: {
-    onChange(e) {
-      this.$emit("update:modelValue", e);
-    },
+  modelValue: {
+    required: true,
   },
+});
+const emit = defineEmits(["update:modelValue"]);
+
+const items = computed(() => {
+  return props.type === "role" ? [...roles] : [...area];
+});
+
+const onChange = (e) => {
+  emit("update:modelValue", e);
 };
 </script>
 

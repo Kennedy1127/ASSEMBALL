@@ -112,109 +112,99 @@
   />
 </template>
 
-<script>
-import CopywritingSubmitApply from "@/components/recruitments/copywriting/CopywritingSubmitApply.vue";
-import CopywritingSwiper from "@/components/recruitments/copywriting/CopywritingSwiper.vue";
+<script setup>
 import roles from "@/composables/tables/roles";
 import exps from "@/composables/tables/exps";
 import roleDesc from "@/composables/tables/roleDesc";
+import CopywritingSubmitApply from "@/components/recruitments/copywriting/CopywritingSubmitApply.vue";
+import CopywritingSwiper from "@/components/recruitments/copywriting/CopywritingSwiper.vue";
+import { computed, onMounted, ref } from "vue";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 
-export default {
-  components: { CopywritingSwiper, CopywritingSubmitApply },
-  props: ["curHeight", "id"],
+const store = useStore();
+const route = useRoute();
 
-  beforeMount() {
-    if (
-      // 如果文案數量為0或是找不到該文案的話，重新撈資料
-      this.$store.state.copywritingsCount === 0 ||
-      this.$store.state.copywritings.find(
-        (copywriting) =>
-          copywriting.copywriting_id === Number(this.$route.params.id)
-      )
-    ) {
-      this.$store.dispatch("getCopywritingsCount");
-      this.$store.dispatch("getCopywritings");
-    }
-  },
+onMounted(() => {
+  if (
+    // 如果文案數量為0或是找不到該文案的話，重新撈資料
+    store.state.copywritingsCount === 0 ||
+    store.state.copywritings.find(
+      (copywriting) => copywriting.copywriting_id === Number(route.params.id)
+    )
+  ) {
+    store.dispatch("getCopywritingsCount");
+    store.dispatch("getCopywritings");
+  }
+});
 
-  data() {
+const defaultCopywriting = ref({
+  copywriting_role: 5,
+  copywriting_title: "尋找新星！現正招募有潛力的球員",
+  copywriting_exp: 1,
+  copywriting_area: "花蓮縣",
+  copywriting_date: "2023-04-21T04:10:58.291Z",
+  copywriting_team_name: "勇士隊",
+  copywriting_team_icon: "https://picsum.photos/200/300",
+  copywriting_team_title: "熱愛棒球：生活在球場上的我們",
+  copywriting_team_intro:
+    "喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵，喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵",
+});
+
+const overlayIsOpen = ref(false);
+
+const computedCopywriting = computed(() => {
+  const data = store.state.copywritings.find(
+    (copywriting) => copywriting.copywriting_id === route.params.id
+  );
+
+  if (data) {
+    const {
+      copywriting_role,
+      copywriting_title,
+      copywriting_exp,
+      copywriting_area,
+      copywriting_date,
+      copywriting_team_name,
+      copywriting_team_icon,
+      copywriting_team_title,
+      copywriting_team_intro,
+    } = data;
+
     return {
-      defaultCopywriting: {
-        copywriting_role: 5,
-        copywriting_title: "尋找新星！現正招募有潛力的球員",
-        copywriting_exp: 1,
-        copywriting_area: "花蓮縣",
-        copywriting_date: "2023-04-21T04:10:58.291Z",
-        copywriting_team_name: "勇士隊",
-        copywriting_team_icon: "https://picsum.photos/200/300",
-        copywriting_team_title: "熱愛棒球：生活在球場上的我們",
-        copywriting_team_intro:
-          "喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵，喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵",
-      },
-
-      overlayIsOpen: false,
+      copywriting_role,
+      copywriting_title,
+      copywriting_exp,
+      copywriting_area,
+      copywriting_date,
+      copywriting_team_name,
+      copywriting_team_icon,
+      copywriting_team_title,
+      copywriting_team_intro,
     };
-  },
+  }
+  return defaultCopywriting.value;
+});
 
-  computed: {
-    computedCopywriting() {
-      const data = this.$store.state.copywritings.find(
-        (copywriting) =>
-          copywriting.copywriting_id === Number(this.$route.params.id)
-      );
+const convertRole = (role) => {
+  if (role || role === 0) return roles[role + 1].label;
+};
 
-      if (data) {
-        const {
-          copywriting_role,
-          copywriting_title,
-          copywriting_exp,
-          copywriting_area,
-          copywriting_date,
-          copywriting_team_name,
-          copywriting_team_icon,
-          copywriting_team_title,
-          copywriting_team_intro,
-        } = data;
+const convertExp = (exp) => {
+  if (exp || exp === 0) return exps[exp];
+};
 
-        return {
-          copywriting_role,
-          copywriting_title,
-          copywriting_exp,
-          copywriting_area,
-          copywriting_date,
-          copywriting_team_name,
-          copywriting_team_icon,
-          copywriting_team_title,
-          copywriting_team_intro,
-        };
-      }
+const convertRoleDesc = (role) => {
+  if (role || role === 0) return roleDesc[role].desc;
+};
 
-      return this.defaultCopywriting;
-    },
-  },
-
-  methods: {
-    convertRole(role) {
-      if (role || role === 0) return roles[role + 1].label;
-    },
-
-    convertExp(exp) {
-      if (exp || exp === 0) return exps[exp];
-    },
-
-    convertRoleDesc(role) {
-      if (role || role === 0) return roleDesc[role].desc;
-    },
-
-    convertDate(copywritingDate) {
-      if (!copywritingDate) return;
-      const date = new Date(copywritingDate);
-      return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(
-        2,
-        "0"
-      )}.${String(date.getDate()).padStart(2, "0")}`;
-    },
-  },
+const convertDate = (copywritingDate) => {
+  if (!copywritingDate) return;
+  const date = new Date(copywritingDate);
+  return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}.${String(date.getDate()).padStart(2, "0")}`;
 };
 </script>
 

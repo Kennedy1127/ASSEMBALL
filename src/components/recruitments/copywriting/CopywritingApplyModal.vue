@@ -122,6 +122,7 @@ const submitApply = () => {
 
     font-size: 2.5rem;
     font-weight: 700;
+    color: var(--primary-blue);
   }
 
   &_select {

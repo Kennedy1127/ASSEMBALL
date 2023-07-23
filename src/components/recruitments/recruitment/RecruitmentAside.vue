@@ -73,63 +73,58 @@
   </div>
 </template>
 
-<script>
-export default {
-  mounted() {
-    this.selectedExp = [...this.$store.state.selectedCopywritingsExp];
-  },
+<script setup>
+import { computed, onMounted, ref } from "vue";
+import { useStore } from "vuex";
 
-  data() {
-    return {
-      selectedExp: [],
-      selectedDate: 0,
-    };
-  },
+const store = useStore();
 
-  computed: {
-    exps() {
-      const exps = [
-        {
-          type: 0,
-          typeName: "inexperenced",
-          typeCount: this.$store.getters.inexperencedCount,
-          name: "初心者",
-        },
-        {
-          type: 1,
-          typeName: "entry",
-          typeCount: this.$store.getters.entryCount,
-          name: "新手",
-        },
-        {
-          type: 2,
-          typeName: "intermediate",
-          typeCount: this.$store.getters.intermediateCount,
-          name: "老手",
-        },
-        {
-          type: 3,
-          typeName: "free",
-          typeCount: this.$store.getters.freeCount,
-          name: "經歷不拘",
-        },
-      ];
+onMounted(() => {
+  selectedExp.value = [...store.state.selectedCopywritingsExp];
+});
 
-      return exps;
+const selectedExp = ref([]);
+const selectedDate = ref(0);
+
+const exps = computed(() => {
+  const exps = [
+    {
+      type: 0,
+      typeName: "inexperenced",
+      typeCount: store.getters.inexperencedCount,
+      name: "初心者",
     },
-  },
-
-  methods: {
-    filterExp() {
-      this.$store.commit("selectCopywritingsExp", this.selectedExp);
-      this.$store.commit("resetPaginationCurPage", "copywritings");
+    {
+      type: 1,
+      typeName: "entry",
+      typeCount: store.getters.entryCount,
+      name: "新手",
     },
-
-    filterDate() {
-      this.$store.commit("selectCopywritingsDate", this.selectedDate);
-      this.$store.commit("resetPaginationCurPage", "copywritings");
+    {
+      type: 2,
+      typeName: "intermediate",
+      typeCount: store.getters.intermediateCount,
+      name: "老手",
     },
-  },
+    {
+      type: 3,
+      typeName: "free",
+      typeCount: store.getters.freeCount,
+      name: "經歷不拘",
+    },
+  ];
+
+  return exps;
+});
+
+const filterExp = () => {
+  store.commit("selectCopywritingsExp", selectedExp.value);
+  store.commit("resetPaginationCurPage", "copywritings");
+};
+
+const filterDate = () => {
+  store.commit("selectCopywritingsDate", selectedDate.value);
+  store.commit("resetPaginationCurPage", "copywritings");
 };
 </script>
 
