@@ -110,7 +110,8 @@ export default {
       border-top: 3px solid var(--primary-blue);
     }
     .home_product {
-      display: flex;
+      position: relative;
+      overflow: hidden;
     }
     .home_footer {
     }
