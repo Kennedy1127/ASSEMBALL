@@ -95,6 +95,9 @@ export default {
     box-shadow: var(--shadow-heavy);
     border-radius: var(--round);
     padding: 3rem 12rem;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
     @media screen and (max-width: 1600px) {
       padding: 3rem 10rem;
     }

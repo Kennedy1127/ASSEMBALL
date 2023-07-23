@@ -32,7 +32,7 @@
           <button class="del_btn">
             <div class="del_btn_text">刪除商品</div>
             <div class="del_btn_img">
-              <img src="~@/assets/images/icons/del.png" />
+              <font-awesome-icon icon="fa-solid fa-trash-can" />
             </div>
           </button>
         </div>

@@ -38,7 +38,7 @@
           >
         </li>
         <li>
-          <router-link to="/">
+          <router-link :to="{ name: 'MemberCenterCreateteam' }">
             <span
               ><font-awesome-icon
                 icon="fa-solid fa-flag"
