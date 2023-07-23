@@ -141,28 +141,46 @@ export default {
   &_top {
     width: 20%;
     margin-top: 10%;
+    height: 65vh;
     &_title {
       font-size: 96px;
-      color: #ffffff7b;
+      color: var(--secondary-blue-2);
       line-height: 1.25;
     }
     &_pic {
       width: 80%;
       margin: auto;
+      padding-bottom: 0;
+      box-shadow: var(--shadow-wide);
+      overflow: hidden;
+      border-radius: var(--round);
       & img {
         width: 100%;
-        box-shadow: var(--shadow-wide);
+        transform: scale(1.05);
+        transition: 0.5s;
       }
     }
     &_name {
       margin-top: 0.5rem;
-      font-size: 1.25rem;
+      font-size: 1rem;
       font-weight: 500;
       color: #fff;
+      overflow: hidden;
     }
     &_date {
       font-size: 1rem;
       color: #fff;
+    }
+  }
+  &_top:hover {
+    .home_product_all_top_title {
+      color: var(--accent-yellow);
+    }
+    .home_product_all_top_pic img {
+      transform: scale(1.25);
+    }
+    .home_product_all_top_name {
+      font-size: 1.25rem;
     }
   }
   &_top:nth-child(2) {

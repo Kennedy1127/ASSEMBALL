@@ -170,7 +170,7 @@ export default {
     max-width: 2000px;
   }
   &_logo {
-    padding: 2.25rem 0 2.25rem 0;
+    padding: 0 0 2.25rem 0;
     display: flex;
     align-items: center;
     & img {
