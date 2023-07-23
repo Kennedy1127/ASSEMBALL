@@ -21,6 +21,9 @@ import RecruitmentSelect from "@/components/recruitments/recruitment/Recruitment
 
 export default {
   components: { RecruitmentSelect },
+  props: {
+    color: false,
+  },
   data() {
     return {
       searchText: "",
