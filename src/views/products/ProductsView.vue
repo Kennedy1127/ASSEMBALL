@@ -3,7 +3,7 @@
     <div class="wrapper">
       <section class="products_breadcrumb">
         <span>
-          <router-link to="/">首頁</router-link>
+          <router-link :to="{ name: 'Home' }">首頁</router-link>
         </span>
         <div class="icon">
           <font-awesome-icon icon="fa-solid fa-chevron-right" />
@@ -13,8 +13,8 @@
 
       <section class="products_content">
         <aside class="products_aside">
-          <ProductsAsideSearch @filterProducts="filterByInput" />
-          <ProductsAsideTags @filterProducts="filterByTag" />
+          <ProductsAsideSearch />
+          <ProductsAsideTags />
         </aside>
 
         <main class="products_main">
@@ -43,33 +43,6 @@ export default {
   mounted() {
     if (this.$route.query.tag) this.filterByTag(Number(this.$route.query.tag));
     if (this.$route.query.search) this.filterByInput(this.$route.query.search);
-  },
-
-  data() {
-    return {
-      // 進入商品詳情
-      isInProductDetail: false,
-    };
-  },
-
-  methods: {
-    // 搜尋欄過濾
-    filterByInput(input) {
-      this.$store.commit("resetProductsCurPage");
-      this.productsData = productsFakeData.filter((el) =>
-        el.product_title.includes(input)
-      );
-    },
-
-    // tag 過濾
-    filterByTag(type) {
-      this.$store.commit("resetProductsCurPage");
-      if (type === 7) return (this.productsData = [...productsFakeData]);
-
-      this.productsData = productsFakeData.filter(
-        (el) => el.product_type === type
-      );
-    },
   },
 };
 </script>
