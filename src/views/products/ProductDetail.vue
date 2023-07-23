@@ -72,13 +72,26 @@ export default {
 .products {
   background-color: var(--secondary-blue-4);
   padding: 4rem 0;
+  padding-top: 10rem;
 
   .wrapper {
     background-color: #fff;
     box-shadow: var(--shadow-heavy);
     border-radius: var(--round);
     padding: 3rem 12rem;
-    margin-top: 6rem;
+    margin-top: 10rem;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    @media screen and (max-width: 1600px) {
+      padding: 3rem 10rem;
+    }
+    @media screen and (max-width: 1500px) {
+      padding: 3rem 6rem;
+    }
+    @media screen and (max-width: 1400px) {
+      padding: 3rem 2rem;
+    }
   }
 
   &_breadcrumb {

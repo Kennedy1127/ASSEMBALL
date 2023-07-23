@@ -17,7 +17,6 @@ export default createStore({
     // selectedProductsExp: [],
     // selectedProductsArea: "",
     // selectedProductsDate: 0,
-    productsCurPage: 1,
 
     //////////////////////////////////////////////////////
     // 招募文案區塊
@@ -28,21 +27,20 @@ export default createStore({
     selectedCopywritingsExp: [],
     selectedCopywritingsArea: "",
     selectedCopywritingsDate: 0,
-    copywritingsCurPage: 1,
+
     ///////////////////////////////////////////
+    // 我的球隊區塊
     myplayerPopupsOpen: false,
     myplayerEditOpen: false,
     myplayerOverlay: true,
+
+    //////////////////////////////////////////////////////
+    // 頁碼區塊
+    productsCurPage: 1,
+    copywritingsCurPage: 1,
   },
 
   getters: {
-    //////////////////////////////////////////////////////
-    // 商品區塊
-    // productsPages(_, getters) {
-    //   const len = getters.filteredCopywritings.length;
-    //   return len % 6 === 0 ? (len > 6 ? len / 6 : 1) : Math.ceil(len / 6);
-    // },
-
     //////////////////////////////////////////////////////
     // 招募文案區塊
     // 招募初心者數量
@@ -141,12 +139,6 @@ export default createStore({
 
       return copywritings;
     },
-
-    // 招募文案的總頁數
-    copywritingsPages(_, getters) {
-      const len = getters.filteredCopywritings.length;
-      return len % 6 === 0 ? (len > 6 ? len / 6 : 1) : Math.ceil(len / 6);
-    },
   },
 
   mutations: {
@@ -201,20 +193,6 @@ export default createStore({
     //   state.selectedCopywritingsDate = payload;
     // },
 
-    // 商品頁碼切換
-    productsPrevPage(state) {
-      state.productsCurPage--;
-    },
-    productsNextPage(state) {
-      state.productsCurPage++;
-    },
-    productsGoToPage(state, payload) {
-      state.productsCurPage = payload;
-    },
-    resetProductsCurPage(state) {
-      state.productsCurPage = 1;
-    },
-
     //////////////////////////////////////////////////////
     // 招募文案區塊
     // 取得招募文案數量
@@ -253,19 +231,6 @@ export default createStore({
       state.selectedCopywritingsDate = 0;
     },
 
-    // 招募文案頁碼切換
-    copywritingsPrevPage(state) {
-      state.copywritingsCurPage--;
-    },
-    copywritingsNextPage(state) {
-      state.copywritingsCurPage++;
-    },
-    copywritingsGoToPage(state, payload) {
-      state.copywritingsCurPage = payload;
-    },
-    resetCopywritingsCurPage(state) {
-      state.copywritingsCurPage = 1;
-    },
     ///////////////////////////////////////
     //我的球隊彈窗頁面切換
     myplayerPopupsToggle(state) {
@@ -281,6 +246,21 @@ export default createStore({
     //我的球隊Ovelay切換
     myplayerOverlayToggle(state) {
       state.myplayerPopupsOpen = !state.myplayerPopupsOpen;
+    },
+
+    ///////////////////////////////////////
+    // 頁碼區塊
+    paginationPrevPage(state, payload) {
+      state[`${payload}CurPage`]--;
+    },
+    paginationNextPage(state, payload) {
+      state[`${payload}CurPage`]++;
+    },
+    paginationGoToPage(state, payload) {
+      state[`${payload.type}CurPage`] = payload.num;
+    },
+    resetPaginationCurPage(state, payload) {
+      state[`${payload}CurPage`] = 1;
     },
   },
 

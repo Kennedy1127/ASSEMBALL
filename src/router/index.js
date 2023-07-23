@@ -43,7 +43,7 @@ const routes = [
         next();
         return;
       }
-      store.commit("resetCopywritingsCurPage");
+      store.commit("resetPaginationCurPage", "copywritings");
       store.commit("resetFiltersAndSearch");
       next();
     },
@@ -115,6 +115,11 @@ const routes = [
     path: "/MemberCenter-Createteam",
     name: "MemberCenterCreateteam",
     component: () => import("@/views/memberCenter/MemberCenterCreateteam.vue"),
+  },
+  {
+    path: "/MemberCenter-Application",
+    name: "MemberCenterApplication",
+    component: () => import("@/views/memberCenter/MemberCenterApplication.vue"),
   },
 ];
 

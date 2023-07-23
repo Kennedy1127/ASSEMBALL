@@ -93,6 +93,7 @@ export default {
           width: 25%;
           & img {
             width: 100%;
+            display: block;
           }
         }
       }
@@ -112,7 +113,7 @@ export default {
       &_body {
         color: var(--secondary-gray-1);
         padding: 0.75rem 0.75rem 0.75rem 0;
-        border-bottom: 1px solid var(--secondary-gray-3);
+        border-bottom: 2px solid var(--secondary-gray-2);
         letter-spacing: 1.5px;
       }
     }

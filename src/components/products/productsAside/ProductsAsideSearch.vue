@@ -127,6 +127,10 @@ export default {
       font-size: 1.25rem;
       letter-spacing: 6px;
       color: #fff;
+      transition: all 0.09s ease-in-out;
+    }
+    & button:hover {
+      background-color: var(--secondary-blue-1);
     }
   }
 }
