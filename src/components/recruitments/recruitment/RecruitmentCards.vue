@@ -63,17 +63,20 @@
       </router-link>
     </div>
 
-    <RecruitmentCardsPaginations />
+    <!-- <RecruitmentCardsPaginations /> -->
+    <PaginationComponent type="copywritings" />
   </div>
 </template>
 
 <script>
-import RecruitmentCardsPaginations from "@/components/recruitments/recruitment/RecruitmentCardsPaginations.vue";
+// import RecruitmentCardsPaginations from "@/components/recruitments/recruitment/RecruitmentCardsPaginations.vue";
+import PaginationComponent from "@/components/utilities/PaginationComponent.vue";
 import roles from "@/composables/tables/roles";
 import exps from "@/composables/tables/exps";
 
 export default {
-  components: { RecruitmentCardsPaginations },
+  // components: { RecruitmentCardsPaginations },
+  components: { PaginationComponent },
   props: ["copywritings"],
 
   mounted() {
