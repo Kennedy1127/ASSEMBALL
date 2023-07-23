@@ -12,7 +12,7 @@
         v-for="(tag, index) in tags"
         :key="tag"
         class="products_aside_tag"
-        @click="emitFilterProducts(index)"
+        @click="filterProducts(index)"
       >
         #{{ tag }}
       </div>
@@ -20,20 +20,17 @@
   </div>
 </template>
 
-<script>
-import productTags from "@/composables/productTags";
+<script setup>
+import productTags from "@/composables/tables/productTags";
+import { ref } from "vue";
+import { useStore } from "vuex";
 
-export default {
-  data() {
-    return {
-      tags: { ...productTags, 7: "全部商品" },
-    };
-  },
-  methods: {
-    emitFilterProducts(type) {
-      this.$emit("filterProducts", Number(type));
-    },
-  },
+const store = useStore();
+
+const tags = ref({ ...productTags });
+
+const filterProducts = (type) => {
+  store.commit("selectProductsTag", Number(type));
 };
 </script>
 
@@ -67,3 +64,4 @@ export default {
   }
 }
 </style>
+@/composables/tables/productTags

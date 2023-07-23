@@ -31,7 +31,6 @@ import ProductsAsideSearch from "@/components/products/productsAside/ProductsAsi
 import ProductsAsideTags from "@/components/products/productsAside/ProductsAsideTags";
 import ProductsMainHeader from "@/components/products/productsItems/ProductsMainHeader";
 import ProductsMainItems from "@/components/products/productsItems/ProductsMainItems";
-import productsFakeData from "@/composables/productsData";
 
 export default {
   components: {
@@ -41,20 +40,16 @@ export default {
     ProductsMainItems,
   },
 
+  mounted() {
+    if (this.$route.query.tag) this.filterByTag(Number(this.$route.query.tag));
+    if (this.$route.query.search) this.filterByInput(this.$route.query.search);
+  },
+
   data() {
     return {
-      // 商品資料(僅在進入畫面時去取一次資料)
-      productsData: [...productsFakeData],
-
       // 進入商品詳情
       isInProductDetail: false,
     };
-  },
-
-  computed: {
-    products() {
-      return this.productsData;
-    },
   },
 
   methods: {
@@ -75,11 +70,6 @@ export default {
         (el) => el.product_type === type
       );
     },
-  },
-
-  mounted() {
-    if (this.$route.query.tag) this.filterByTag(Number(this.$route.query.tag));
-    if (this.$route.query.search) this.filterByInput(this.$route.query.search);
   },
 };
 </script>
