@@ -116,6 +116,11 @@ const routes = [
     name: "MemberCenterCreateteam",
     component: () => import("@/views/memberCenter/MemberCenterCreateteam.vue"),
   },
+  {
+    path: "/MemberCenter-Application",
+    name: "MemberCenterApplication",
+    component: () => import("@/views/memberCenter/MemberCenterApplication.vue"),
+  },
 ];
 
 const router = createRouter({
