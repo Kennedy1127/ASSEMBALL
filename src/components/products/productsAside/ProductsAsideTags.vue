@@ -31,6 +31,7 @@ const tags = ref({ ...productTags });
 
 const filterProducts = (type) => {
   store.commit("selectProductsTag", Number(type));
+  store.commit("resetPaginationCurPage", "products");
 };
 </script>
 

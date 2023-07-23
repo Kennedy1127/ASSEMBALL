@@ -17,6 +17,15 @@ const routes = [
     path: "/products",
     name: "Products",
     component: () => import("@/views/products/ProductsView.vue"),
+    beforeEnter: (to, from, next) => {
+      if (from.name === "ProductDetail") {
+        next();
+        return;
+      }
+      store.commit("resetPaginationCurPage", "products");
+      store.commit("resetProductsFilterAndTag");
+      next();
+    },
   },
   {
     path: "/products/:id",
@@ -122,6 +131,10 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
   scrollBehavior(to, from) {
+    if (from.name === "ProductDetail" && to.name === "Products") {
+      return { top: Number(from.query.h) };
+    }
+
     if (from.name === "Copywriting" && to.name === "Recruitments") {
       return { top: Number(from.query.h) };
     }

@@ -221,6 +221,12 @@ export default createStore({
       state.selectedProductsTag = payload;
     },
 
+    resetProductsFilterAndTag(state) {
+      state.selectedProductsText = "";
+      state.selectedProductsDate = -1;
+      state.selectedProductsTag = 0;
+    },
+
     //////////////////////////////////////////////////////
     // 招募文案區塊
     // 取得招募文案數量

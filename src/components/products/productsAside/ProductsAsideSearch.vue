@@ -45,6 +45,7 @@ const filterProducts = () => {
     searchText: searchText.value,
     selectedDate: selectedDate.value,
   });
+  store.commit("resetPaginationCurPage", "products");
 };
 </script>
 
