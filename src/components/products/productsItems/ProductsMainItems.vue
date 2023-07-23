@@ -86,12 +86,8 @@ const computedRenderProducts = computed(() => {
 // 取得總頁數
 const computedTotalPages = computed(() => {
   if (store.state.productsCount === 0) return 1;
-
-  return store.state.productsCount % 9 === 0
-    ? store.state.productsCount > 9
-      ? store.state.productsCount / 9
-      : 1
-    : Math.ceil(store.state.productsCount / 9);
+  const len = store.getters.filteredProducts.length;
+  return len % 9 === 0 ? (len > 9 ? len / 9 : 1) : Math.ceil(len / 9);
 });
 
 // 日期轉換

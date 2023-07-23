@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import ProductsAsideSelect from "./ProductsAsideSelect.vue";
+import ProductsAsideSelect from "@/components/products/productsAside/ProductsAsideSelect.vue";
 import { ref } from "vue";
 import { useStore } from "vuex";
 
