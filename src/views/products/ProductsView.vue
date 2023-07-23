@@ -19,7 +19,7 @@
 
         <main class="products_main">
           <ProductsMainHeader />
-          <ProductsMainItems />
+          <ProductsMainItems :products="products" />
         </main>
       </section>
     </div>

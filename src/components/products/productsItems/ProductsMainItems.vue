@@ -1,7 +1,7 @@
 <template>
   <div class="products_main_items">
     <div
-      v-for="item in computedRenderProducts"
+      v-for="item in productItems"
       :key="item.product_id"
       class="products_item"
       @click="goToProductDetail(item.product_id)"
@@ -28,7 +28,7 @@
           <div class="products_item_seller_msg">
             <span>賣家留言：</span> <br />
             <p>
-              {{ item.product_seller_msg }}
+              {{ item.product_seller.msg }}
             </p>
           </div>
         </div>
@@ -36,78 +36,71 @@
     </div>
   </div>
 
-  <!-- <ProductsMainPagination :totalPages="totalPages" /> -->
-  <PaginationComponentVue :totalPages="computedTotalPages" type="products" />
+  <ProductsMainPagination :totalPages="totalPages" />
 </template>
 
-<script setup>
-// import ProductsMainPagination from "@/components/products/productsItems/ProductsMainPagination";
-import PaginationComponentVue from "@/components/utilities/PaginationComponent.vue";
+<script>
+import ProductsMainPagination from "@/components/products/productsItems/ProductsMainPagination";
 import productTags from "@/composables/productTags";
-import { computed, onMounted } from "vue";
-import { useStore } from "vuex";
-import { useRouter } from "vue-router";
 
-const store = useStore();
-const router = useRouter();
+export default {
+  components: { ProductsMainPagination },
+  props: ["products"],
+  emits: ["enterProductDetail"],
+  data() {
+    return {
+      productTags: { ...productTags },
+    };
+  },
 
-onMounted(() => {
-  // 掛載後撈商品數量
-  store.dispatch("getProductsCount");
+  computed: {
+    // 取得總頁數
+    totalPages() {
+      return this.$props.products.length % 9 === 0
+        ? this.$props.products.length > 9
+          ? this.$props.products.length / 9
+          : 1
+        : Math.ceil(this.$props.products.length / 9);
+    },
 
-  // 如果文案陣列長度為0或是文案陣列長度與文案數量不等於，則撈文案資料
-  if (
-    store.state.products.length === 0 ||
-    store.state.products.length !== store.state.productsCount
-  )
-    store.dispatch("getProducts");
-});
+    // 更具頁碼更新顯示商品
+    productItems() {
+      const startIndex = (this.$store.state.productsCurPage - 1) * 9;
+      const lastIndex = this.$store.state.productsCurPage * 9;
+      return this.$props.products.slice(startIndex, lastIndex);
+    },
+  },
 
-// 呈現商品
-const computedRenderProducts = computed(() => {
-  const start = (store.state.productsCurPage - 1) * 9;
-  const end = store.state.productsCurPage * 9;
-  return store.state.products.slice(start, end);
-});
+  methods: {
+    // 日期轉換
+    convertDate(inputDate) {
+      const date = new Date(inputDate);
 
-// 取得總頁數
-const computedTotalPages = computed(() => {
-  if (store.state.productsCount === 0) return 1;
+      return `${date.getFullYear()} / ${String(date.getMonth() + 1).padStart(
+        2,
+        0
+      )} / ${String(date.getDate()).padStart(2, 0)}`;
+    },
 
-  return store.state.productsCount % 9 === 0
-    ? store.state.productsCount > 9
-      ? store.state.productsCount / 9
-      : 1
-    : Math.ceil(store.state.productsCount / 9);
-});
+    // 轉換數字，1000->1,000
+    convertPrice(price) {
+      return price.toLocaleString();
+    },
 
-// 日期轉換
-const convertDate = (inputDate) => {
-  const date = new Date(inputDate);
-
-  return `${date.getFullYear()} / ${String(date.getMonth() + 1).padStart(
-    2,
-    0
-  )} / ${String(date.getDate()).padStart(2, 0)}`;
-};
-
-// 轉換數字，1000->1,000
-const convertPrice = (price) => {
-  return price.toLocaleString();
-};
-
-const goToProductDetail = (id) => {
-  router.push({
-    name: "ProductDetail",
-    params: { id },
-  });
-  window.scrollTo({ top: 0 });
+    goToProductDetail(id) {
+      this.$router.push({
+        name: "ProductDetail",
+        params: { id },
+      });
+      window.scrollTo({ top: 0 });
+    },
+  },
 };
 </script>
 
 <style scoped lang="scss">
 .products_main_items {
-  margin: 1.5rem 0;
+  margin-top: 1.5rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   row-gap: 4rem;

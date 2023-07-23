@@ -122,12 +122,12 @@ export default {
   methods: {
     filterExp() {
       this.$store.commit("selectCopywritingsExp", this.selectedExp);
-      this.$store.commit("resetPaginationCurPage", "copywritings");
+      this.$store.commit("resetCopywritingsCurPage");
     },
 
     filterDate() {
       this.$store.commit("selectCopywritingsDate", this.selectedDate);
-      this.$store.commit("resetPaginationCurPage", "copywritings");
+      this.$store.commit("resetCopywritingsCurPage");
     },
   },
 };

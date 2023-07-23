@@ -38,16 +38,14 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  totalPages: {
-    type: Number,
-    required: true,
-  },
 });
 
 const computedCurPage = computed(
   () => store.state[`${props.type}CurPage`] || 1
 );
-const computedTotalPages = computed(() => props.totalPages || 1);
+const computedTotalPages = computed(
+  () => store.getters[`${props.type}Pages`] || 1
+);
 const computedRenderPages = computed(() =>
   computedTotalPages.value > 3 ? 3 : computedTotalPages.value
 );
@@ -57,17 +55,17 @@ const computedTemp = computed(() =>
 
 const prevPage = () => {
   if (computedCurPage.value === 1) return;
-  store.commit("paginationPrevPage", props.type);
+  store.commit(`${props.type}PrevPage`);
 };
 
 const nextPage = () => {
   if (computedCurPage.value === computedTotalPages.value) return;
-  store.commit("paginationNextPage", props.type);
+  store.commit(`${props.type}NextPage`);
 };
 
 const movePage = (feature, num = null) => {
   feature === "number"
-    ? store.commit("paginationGoToPage", { num, type: props.type })
+    ? store.commit(`${props.type}GoToPage`, num)
     : feature === "next"
     ? nextPage()
     : prevPage();
