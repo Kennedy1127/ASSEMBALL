@@ -210,7 +210,12 @@ const convertDate = (copywritingDate) => {
 
 <style scoped lang="scss">
 .copywriting.wrapper {
-  padding-top: 3rem;
+  margin-top: 6rem;
+  padding-top: 6rem;
+
+  @media all and (max-width: 420px) {
+    padding: 2rem 2rem 0;
+  }
 }
 .copywriting {
   color: var(--primary-blue);
@@ -218,6 +223,10 @@ const convertDate = (copywritingDate) => {
     width: 1rem;
     height: 4rem;
     background-color: var(--primary-blue);
+
+    @media all and (max-width: 420px) {
+      height: 3rem;
+    }
   }
 
   &_title {
@@ -227,15 +236,23 @@ const convertDate = (copywritingDate) => {
 
     font-size: 2.5rem;
     font-weight: 700;
+
+    @media all and (max-width: 420px) {
+      gap: 1.5rem;
+      font-size: 1.5rem;
+    }
   }
 
   &_header {
-    margin-top: 8rem;
     padding-bottom: 3rem;
     border-bottom: 1px solid var(--primary-blue);
     display: flex;
     font-size: 1.5rem;
     font-weight: 500;
+
+    @media all and (max-width: 420px) {
+      flex-direction: column;
+    }
 
     &_info {
       width: 30%;
@@ -244,8 +261,19 @@ const convertDate = (copywritingDate) => {
       flex-direction: column;
       gap: 3rem;
 
+      @media all and (max-width: 420px) {
+        width: 100%;
+        gap: 0;
+      }
+
       &_date {
         font-weight: 400;
+
+        @media all and (max-width: 420px) {
+          font-size: 1.25rem;
+          padding-left: 2.5rem;
+          margin: 0.5rem 0 2rem;
+        }
       }
 
       &_exp,
@@ -254,13 +282,26 @@ const convertDate = (copywritingDate) => {
         align-items: center;
         gap: 1.5rem;
 
+        @media all and (max-width: 420px) {
+          font-size: 1.25rem;
+        }
+
         &_block {
           width: 40px;
           height: 40px;
+
+          @media all and (max-width: 420px) {
+            width: 20px;
+            height: 20px;
+          }
         }
       }
 
       &_exp {
+        @media all and (max-width: 420px) {
+          margin-bottom: 1.5rem;
+        }
+
         &_block {
           background-color: var(--accent-pink);
         }
@@ -279,8 +320,21 @@ const convertDate = (copywritingDate) => {
       border-left: 1px solid var(--primary-blue);
       border-right: 1px solid var(--primary-blue);
 
+      @media all and (max-width: 420px) {
+        width: 100%;
+        margin-top: 4rem;
+        padding: 2rem 0;
+        border: none;
+        border-top: 1px solid var(--primary-blue);
+        border-bottom: 1px solid var(--primary-blue);
+      }
+
       &_text {
         margin-top: 3rem;
+
+        @media all and (max-width: 420px) {
+          font-size: 1.25rem;
+        }
       }
     }
 
@@ -290,6 +344,10 @@ const convertDate = (copywritingDate) => {
       display: flex;
       flex-direction: column;
       align-items: center;
+
+      @media all and (max-width: 420px) {
+        margin-top: 3rem;
+      }
 
       &_icon {
         width: 150px;
@@ -305,12 +363,20 @@ const convertDate = (copywritingDate) => {
       &_name {
         margin-top: 2rem;
         font-weight: 400;
+
+        @media all and (max-width: 420px) {
+          margin-bottom: 2rem;
+        }
       }
 
       &_btn {
         margin-top: auto;
+        width: 100%;
 
         a {
+          display: block;
+          margin: 0 auto;
+
           width: 200px;
           height: 60px;
           border-radius: 100px;
@@ -323,6 +389,11 @@ const convertDate = (copywritingDate) => {
           display: flex;
           align-items: center;
           justify-content: center;
+
+          @media all and (max-width: 420px) {
+            width: 80%;
+            margin: 0 auto;
+          }
         }
       }
     }
@@ -339,6 +410,13 @@ const convertDate = (copywritingDate) => {
 
     position: relative;
 
+    @media all and (max-width: 420px) {
+      margin-top: 0;
+      padding-top: 3rem;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
     &_intro {
       &_title {
         margin-top: 4rem;
@@ -349,12 +427,30 @@ const convertDate = (copywritingDate) => {
         font-weight: 500;
 
         line-height: 1.7;
+
+        @media all and (max-width: 420px) {
+          margin: 1.5rem 0 2rem;
+          font-size: 1rem;
+        }
       }
 
       &_text {
         font-size: 1.25rem;
         font-weight: 400;
         line-height: 1.7;
+
+        @media all and (max-width: 420px) {
+          font-size: 1rem;
+        }
+      }
+    }
+
+    &_pic {
+      @media all and (max-width: 420px) {
+        img {
+          width: 100%;
+          height: 100%;
+        }
       }
     }
 
@@ -374,6 +470,11 @@ const convertDate = (copywritingDate) => {
         font-size: 1.5rem;
         font-weight: 700;
         color: #fff;
+
+        @media all and (max-width: 420px) {
+          width: 100%;
+          margin-bottom: 3rem;
+        }
       }
     }
 
@@ -392,8 +493,17 @@ const convertDate = (copywritingDate) => {
         font-size: 1.5rem;
         color: var(--warning-red);
 
+        @media all and (max-width: 420px) {
+          font-size: 1rem;
+          gap: 0.5rem;
+        }
+
         .warning-icon {
           font-size: 2rem;
+
+          @media all and (max-width: 420px) {
+            font-size: 1.5rem;
+          }
         }
       }
     }
@@ -402,8 +512,16 @@ const convertDate = (copywritingDate) => {
   &_footer {
     margin: 6rem 0;
 
+    @media all and (max-width: 420px) {
+      margin: 3rem 0;
+    }
+
     &_carousel {
       margin-top: 6rem;
+
+      @media all and (max-width: 420px) {
+        margin-top: 4rem;
+      }
     }
   }
 }
