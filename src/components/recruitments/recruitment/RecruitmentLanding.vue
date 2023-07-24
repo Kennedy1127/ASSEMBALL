@@ -59,6 +59,11 @@ const submitFilters = () => {
     left: 50%;
     transform: translateX(-50%);
 
+    @media all and (max-width: 420px) {
+      gap: 1rem;
+      bottom: 1rem;
+    }
+
     &_bar {
       flex: 1;
       height: 60px;
@@ -68,6 +73,10 @@ const submitFilters = () => {
 
       display: flex;
       align-items: center;
+
+      @media all and (max-width: 420px) {
+        height: 35px;
+      }
     }
 
     &_btn button {
@@ -81,15 +90,31 @@ const submitFilters = () => {
       font-weight: 500;
       letter-spacing: 10.5px;
       color: var(--primary-blue);
+
+      @media all and (max-width: 420px) {
+        width: 75px;
+        height: 35px;
+
+        font-size: 1rem;
+        letter-spacing: 1.5px;
+      }
     }
   }
 
   &_filter {
     height: 3rem;
 
+    @media all and (max-width: 420px) {
+      height: 1.5rem;
+    }
+
     &--search {
       width: 60%;
       position: relative;
+
+      @media all and (max-width: 420px) {
+        display: none;
+      }
 
       .magnifying-glass {
         position: absolute;
@@ -101,6 +126,11 @@ const submitFilters = () => {
         color: var(--primary-blue);
 
         cursor: pointer;
+
+        @media all and (max-width: 420px) {
+          left: 0.5rem;
+          font-size: 1.25rem;
+        }
       }
 
       input {
@@ -119,10 +149,19 @@ const submitFilters = () => {
 
     &--role {
       flex: 1;
+
+      @media all and (max-width: 420px) {
+        width: 50%;
+        border-right: 2px solid var(--secondary-gray-3);
+      }
     }
 
     &--area {
       flex: 1;
+
+      @media all and (max-width: 420px) {
+        width: 50%;
+      }
     }
   }
 }

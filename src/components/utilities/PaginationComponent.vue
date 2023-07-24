@@ -71,6 +71,10 @@ const movePage = (feature, num = null) => {
     : feature === "next"
     ? nextPage()
     : prevPage();
+
+  if (store.state.isMobile) {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 };
 </script>
 

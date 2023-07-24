@@ -79,6 +79,7 @@ export default {
 
 <style scoped lang="scss">
 .footer {
+  overflow: hidden; // 手機板的時候 footer有東西飛出去了 這邊先加個overflow 之後改這頁的時候記得要處理哦
   background-color: var(--primary-blue);
   width: 100%;
   .wrapper {

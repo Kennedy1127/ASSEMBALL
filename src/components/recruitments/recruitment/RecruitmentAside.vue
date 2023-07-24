@@ -67,10 +67,31 @@
       </div>
     </div>
 
-    <div class="recruit_copywritings_aside_btn">
+    <div class="recruit_copywritings_aside_btn" v-if="!store.state.isMobile">
       <router-link :to="{ name: 'recruitmentPost' }">招募球員</router-link>
     </div>
+
+    <div class="recruit_copywritings_aside_btn">
+      <button @click="$emit('closeModal')">確定</button>
+    </div>
+
+    <div
+      class="recruit_copywritings_aside_xmark"
+      v-if="store.state.isMobile"
+      @click="$emit('closeModal')"
+    >
+      <font-awesome-icon
+        :icon="['fas', 'circle-xmark']"
+        class="recruit_copywritings_aside_xmark_icon"
+      />
+    </div>
   </div>
+
+  <div
+    class="overlay"
+    v-if="store.state.isMobile"
+    @click="$emit('closeModal')"
+  ></div>
 </template>
 
 <script setup>
@@ -78,6 +99,7 @@ import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
+const emit = defineEmits(["closeModal"]);
 
 onMounted(() => {
   selectedExp.value = [...store.state.selectedCopywritingsExp];
@@ -129,6 +151,16 @@ const filterDate = () => {
 </script>
 
 <style scoped lang="scss">
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+
+  width: 100%;
+  height: 100%;
+}
+
 .recruit_copywritings {
   &_aside {
     width: 24%;
@@ -137,6 +169,33 @@ const filterDate = () => {
     padding-left: 1.5rem;
     border-left: 2px solid var(--primary-blue);
     color: var(--primary-blue);
+
+    @media all and (max-width: 420px) {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      z-index: 101;
+      transform: translate(-50%, -50%);
+
+      padding: 1rem;
+      width: 90%;
+      max-height: 100%;
+      background-color: #fff;
+      border-radius: var(--round);
+      border: 2px solid var(--primary-blue);
+
+      &_xmark {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+
+        &_icon {
+          font-size: 2rem;
+          color: var(--primary-blue);
+          cursor: pointer;
+        }
+      }
+    }
 
     &_header {
       font-size: 2rem;
@@ -215,6 +274,7 @@ const filterDate = () => {
       display: flex;
       justify-content: space-between;
 
+      button,
       a {
         width: 140px;
         height: 50px;

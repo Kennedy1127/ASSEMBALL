@@ -4,6 +4,10 @@ import axios from "axios";
 export default createStore({
   state: {
     //////////////////////////////////////////////////////
+    // 確認是否為手機用戶
+    isMobile: 0,
+
+    //////////////////////////////////////////////////////
     // 通知、會員頁面、個人資料
     isNotifyVisible: 0,
     isMemberVisible: 0,

@@ -148,6 +148,9 @@ const router = createRouter({
 });
 
 router.beforeEach(() => {
+  if (window.innerWidth <= 410) {
+    store.state.isMobile = 1;
+  }
   // 在每次路由跳轉前關閉通知、會員頁面
   store.state.isNotifyVisible = 0;
   store.state.isMemberVisible = 0;
