@@ -48,11 +48,19 @@ const onChange = (e) => {
   .ivu-select-single {
     height: 100%;
 
+    .ivu-select-dropdown {
+      background-color: #fff;
+    }
+
     .ivu-select-selection {
       border: none;
       border-left: 3px solid var(--secondary-gray-3);
       height: 100%;
       border-radius: 0;
+
+      @media all and (max-width: 420px) {
+        border-left: none;
+      }
 
       div:first-of-type {
         height: 100%;
@@ -60,6 +68,11 @@ const onChange = (e) => {
         align-items: center;
         justify-content: center;
         gap: 1.25rem;
+
+        @media all and (max-width: 420px) {
+          padding: 0 0.5rem;
+          gap: 0.5rem;
+        }
 
         span {
           height: 100%;
@@ -71,7 +84,10 @@ const onChange = (e) => {
           font-family: "Noto Sans TC", "Montserrat", sans-serif;
           font-size: 1.5rem;
           font-weight: 400;
-          // color: var(--secondary-gray-3);
+
+          @media all and (max-width: 420px) {
+            font-size: 1rem;
+          }
         }
 
         i {
@@ -82,6 +98,11 @@ const onChange = (e) => {
           width: 24px;
           height: 24px;
 
+          @media all and (max-width: 420px) {
+            width: 20px;
+            height: 20px;
+          }
+
           &::before {
             position: absolute;
             top: 50%;
@@ -89,6 +110,10 @@ const onChange = (e) => {
             transform: translate(-50%, -40%);
             font-size: 2rem;
             color: var(--secondary-gray-3);
+
+            @media all and (max-width: 420px) {
+              font-size: 1rem;
+            }
           }
         }
       }

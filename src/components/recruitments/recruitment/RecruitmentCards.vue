@@ -94,8 +94,14 @@ onUnmounted(() => {
 const windowTop = ref(window.top.scrollY);
 
 const computedRenderCopywritings = computed(() => {
-  const start = (store.state.copywritingsCurPage - 1) * 6;
-  const end = store.state.copywritingsCurPage * 6;
+  const start = store.state.isMobile
+    ? (store.state.copywritingsCurPage - 1) * 4
+    : (store.state.copywritingsCurPage - 1) * 6;
+
+  const end = store.state.isMobile
+    ? store.state.copywritingsCurPage * 4
+    : store.state.copywritingsCurPage * 6;
+
   return store.getters.dateSortedFilteredCopywritings.slice(start, end);
 });
 
@@ -104,7 +110,17 @@ const computedTotalPages = computed(() => {
   if (store.state.copywritingsCount === 0) return 1;
 
   const len = store.getters.filteredCopywritings.length;
-  return len % 6 === 0 ? (len > 6 ? len / 6 : 1) : Math.ceil(len / 6);
+  return store.state.isMobile
+    ? len % 4 === 0
+      ? len > 4
+        ? len / 4
+        : 1
+      : Math.ceil(len / 4)
+    : len % 6 === 0
+    ? len > 6
+      ? len / 6
+      : 1
+    : Math.ceil(len / 6);
 });
 
 const convertRole = (role) => {
@@ -135,6 +151,10 @@ const convertDate = (copywritingDate) => {
     grid-template-columns: repeat(3, 1fr);
     // column-gap: 1rem;
     row-gap: 3rem;
+
+    @media all and (max-width: 420px) {
+      grid-template-columns: 1fr;
+    }
   }
 
   &_card {
