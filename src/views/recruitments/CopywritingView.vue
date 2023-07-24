@@ -385,6 +385,7 @@ const convertDate = (copywritingDate) => {
           font-weight: 500;
           color: #fff;
           background-color: var(--primary-blue);
+          transition: all 0.09s ease-in-out;
 
           display: flex;
           align-items: center;
@@ -393,6 +394,10 @@ const convertDate = (copywritingDate) => {
           @media all and (max-width: 420px) {
             width: 80%;
             margin: 0 auto;
+          }
+
+          &:hover {
+            background-color: var(--secondary-blue-1);
           }
         }
       }
@@ -465,6 +470,7 @@ const convertDate = (copywritingDate) => {
         height: 60px;
         border-radius: 100px;
         background-color: var(--primary-blue);
+        transition: all 0.09s ease-in-out;
 
         font-family: "Noto Sans TC", sans-serif;
         font-size: 1.5rem;
@@ -474,6 +480,10 @@ const convertDate = (copywritingDate) => {
         @media all and (max-width: 420px) {
           width: 100%;
           margin-bottom: 3rem;
+        }
+
+        &:hover {
+          background-color: var(--secondary-blue-1);
         }
       }
     }

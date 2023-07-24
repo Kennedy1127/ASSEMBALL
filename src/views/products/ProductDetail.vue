@@ -16,8 +16,8 @@
 
       <section class="products_content">
         <aside class="products_aside">
-          <ProductsAsideSearch @filterProducts="filterByInput" />
-          <ProductsAsideTags @filterProducts="filterByTag" />
+          <ProductsAsideSearch />
+          <ProductsAsideTags />
         </aside>
 
         <main class="products_main">
@@ -29,42 +29,11 @@
   </main>
 </template>
 
-<script>
+<script setup>
 import ProductsAsideSearch from "@/components/products/productsAside/ProductsAsideSearch";
 import ProductsAsideTags from "@/components/products/productsAside/ProductsAsideTags";
 import ProductsMainItem from "@/components/products/productsItem/ProductsMainItem";
 import ProductsMainItemMsg from "@/components/products/productsItem/ProductsMainItemMsg";
-
-export default {
-  components: {
-    ProductsAsideSearch,
-    ProductsAsideTags,
-    ProductsMainItem,
-    ProductsMainItemMsg,
-  },
-
-  data() {
-    return {};
-  },
-
-  methods: {
-    // 搜尋欄過濾
-    filterByInput(input) {
-      this.$router.push({
-        name: "products",
-        query: { search: input },
-      });
-    },
-
-    // tag 過濾
-    filterByTag(type) {
-      this.$router.push({
-        name: "products",
-        query: { tag: type },
-      });
-    },
-  },
-};
 </script>
 
 <style lang="scss">

@@ -215,12 +215,17 @@ const submitApply = () => {
       height: 60px;
       border-radius: 40px;
       background-color: var(--primary-blue);
+      transition: all 0.09s ease-in-out;
 
       text-align: center;
       font-size: 1.5rem;
       font-weight: 400;
       letter-spacing: 10px;
       color: #fff;
+
+      &:hover {
+        background-color: var(--secondary-blue-1);
+      }
     }
   }
 

@@ -90,6 +90,7 @@ const submitFilters = () => {
       font-weight: 500;
       letter-spacing: 10.5px;
       color: var(--primary-blue);
+      transition: all 0.09s ease-in-out;
 
       @media all and (max-width: 420px) {
         width: 75px;
@@ -97,6 +98,11 @@ const submitFilters = () => {
 
         font-size: 1rem;
         letter-spacing: 1.5px;
+      }
+
+      &:hover {
+        background-color: var(--primary-blue);
+        color: #fff;
       }
     }
   }

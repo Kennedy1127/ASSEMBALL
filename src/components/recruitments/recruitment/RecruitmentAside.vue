@@ -288,11 +288,16 @@ const filterDate = () => {
         letter-spacing: 5px;
         color: #fff;
 
+        transition: all 0.09s ease-in-out;
         background-color: var(--primary-blue);
 
         display: flex;
         align-items: center;
         justify-content: center;
+
+        &:hover {
+          background-color: var(--secondary-blue-1);
+        }
       }
     }
   }
