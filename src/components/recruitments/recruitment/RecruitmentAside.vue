@@ -71,7 +71,7 @@
       <router-link :to="{ name: 'recruitmentPost' }">招募球員</router-link>
     </div>
 
-    <div class="recruit_copywritings_aside_btn">
+    <div class="recruit_copywritings_aside_btn" v-if="store.state.isMobile">
       <button @click="$emit('closeModal')">確定</button>
     </div>
 
@@ -103,6 +103,7 @@ const emit = defineEmits(["closeModal"]);
 
 onMounted(() => {
   selectedExp.value = [...store.state.selectedCopywritingsExp];
+  selectedDate.value = store.state.selectedCopywritingsDate;
 });
 
 const selectedExp = ref([]);
@@ -145,6 +146,7 @@ const filterExp = () => {
 };
 
 const filterDate = () => {
+  console.log(selectedDate.value);
   store.commit("selectCopywritingsDate", selectedDate.value);
   store.commit("resetPaginationCurPage", "copywritings");
 };
