@@ -19,32 +19,43 @@
 
         <main class="products_main">
           <ProductsMainHeader />
-          <ProductsMainItems />
+          <ProductsMainItems v-if="!isNoResults" />
+          <ProductsNoResults v-else />
         </main>
       </section>
     </div>
   </main>
 </template>
 
-<script>
+<script setup>
 import ProductsAsideSearch from "@/components/products/productsAside/ProductsAsideSearch";
 import ProductsAsideTags from "@/components/products/productsAside/ProductsAsideTags";
 import ProductsMainHeader from "@/components/products/productsItems/ProductsMainHeader";
 import ProductsMainItems from "@/components/products/productsItems/ProductsMainItems";
+import ProductsNoResults from "@/components/products/productsItems/ProductsNoResults.vue";
+import { computed, onMounted } from "vue";
+import { useStore } from "vuex";
 
-export default {
-  components: {
-    ProductsAsideSearch,
-    ProductsAsideTags,
-    ProductsMainHeader,
-    ProductsMainItems,
-  },
+const store = useStore();
 
-  mounted() {
-    if (this.$route.query.tag) this.filterByTag(Number(this.$route.query.tag));
-    if (this.$route.query.search) this.filterByInput(this.$route.query.search);
-  },
-};
+// mounted() {
+//   if (this.$route.query.tag) this.filterByTag(Number(this.$route.query.tag));
+//   if (this.$route.query.search) this.filterByInput(this.$route.query.search);
+// },
+
+onMounted(() => {
+  // 掛載後撈商品數量
+  store.dispatch("getProductsCount");
+
+  // 如果文案陣列長度為0或是商品陣列長度與商品數量不等於，則撈商品資料
+  if (
+    store.state.products.length === 0 ||
+    store.state.products.length !== store.state.productsCount
+  )
+    store.dispatch("getProducts");
+});
+
+const isNoResults = computed(() => store.getters.filteredProducts.length === 0);
 </script>
 
 <style lang="scss">

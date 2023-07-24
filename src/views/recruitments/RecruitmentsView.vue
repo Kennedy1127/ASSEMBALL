@@ -12,7 +12,8 @@
         </div>
 
         <div class="recruit_copywritings_content">
-          <RecruitmentCards />
+          <RecruitmentCards v-if="!isNoResults" />
+          <RecruitmentNoResults v-else />
           <RecruitmentAside />
         </div>
       </div>
@@ -35,8 +36,29 @@
 <script setup>
 import RecruitmentLanding from "@/components/recruitments/recruitment/RecruitmentLanding.vue";
 import RecruitmentCards from "@/components/recruitments/recruitment/RecruitmentCards.vue";
+import RecruitmentNoResults from "@/components/recruitments/recruitment/RecruitmentNoResults.vue";
 import RecruitmentAside from "@/components/recruitments/recruitment/RecruitmentAside.vue";
 import RecruitmentSwiper from "@/components/recruitments/recruitment/RecruitmentSwiper.vue";
+import { computed, onMounted } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+
+onMounted(() => {
+  // 掛載後撈文案數量
+  store.dispatch("getCopywritingsCount");
+
+  // 如果文案陣列長度為0或是文案陣列長度與文案數量不等於，則撈文案資料
+  if (
+    store.state.copywritings.length === 0 ||
+    store.state.copywritings.length !== store.state.copywritingsCount
+  )
+    store.dispatch("getCopywritings");
+});
+
+const isNoResults = computed(
+  () => store.getters.filteredCopywritings.length === 0
+);
 </script>
 
 <style scoped lang="scss">

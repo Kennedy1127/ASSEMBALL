@@ -84,16 +84,6 @@ const onScroll = (e) => {
 
 onMounted(() => {
   window.addEventListener("scroll", onScroll);
-
-  // 掛載後撈文案數量
-  store.dispatch("getCopywritingsCount");
-
-  // 如果文案陣列長度為0或是文案陣列長度與文案數量不等於，則撈文案資料
-  if (
-    store.state.copywritings.length === 0 ||
-    store.state.copywritings.length !== store.state.copywritingsCount
-  )
-    store.dispatch("getCopywritings");
 });
 
 onUnmounted(() => {
