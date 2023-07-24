@@ -1,7 +1,7 @@
 <template>
   <div class="product_post_wrap">
     <div class="goback">
-      <router-link to="/">
+      <router-link :to="{ name: 'Products' }">
         <span><font-awesome-icon icon="fa-solid fa-angle-left" /></span>返回
       </router-link>
     </div>

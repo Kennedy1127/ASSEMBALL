@@ -42,6 +42,11 @@ const routes = [
     name: "ProductsManage",
     component: () => import("@/views/products/ProductManageView.vue"),
   },
+  {
+    path: "/products/products-payment",
+    name: "ProductPayment",
+    component: () => import("@/views/products/ProductPayment.vue"),
+  },
   /////////////////////////////////////////
   {
     path: "/recruitments",

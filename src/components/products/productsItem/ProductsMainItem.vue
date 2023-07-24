@@ -45,7 +45,9 @@
       </div>
       <div class="detail_footer">
         <div class="detail_price">{{ productDetail.Price }}</div>
-        <button>我要購買</button>
+        <router-link :to="{ name: 'ProductPayment' }">
+          <button>我要購買</button>
+        </router-link>
       </div>
     </div>
   </section>
@@ -128,19 +130,21 @@ export default {
         color: var(--error-red);
         padding-top: 3rem;
       }
-      & button {
-        width: 150px;
-        height: 50px;
-        font-size: 1.25rem;
-        font-weight: 500;
-        letter-spacing: 6px;
-        border-radius: var(--round);
-        color: #ffffff;
-        background-color: var(--error-yellow);
-        transition: all 0.2s ease-in-out;
-      }
-      & button:hover {
-        background-color: var(--error-red);
+      & a {
+        & button {
+          width: 150px;
+          height: 50px;
+          font-size: 1.25rem;
+          font-weight: 500;
+          letter-spacing: 6px;
+          border-radius: var(--round);
+          color: #ffffff;
+          background-color: var(--error-yellow);
+          transition: all 0.09s ease-in-out;
+        }
+        & button:hover {
+          background-color: var(--error-red);
+        }
       }
     }
   }

@@ -1,7 +1,7 @@
 <template>
   <div class="products_no-results">
     <div class="products_no-results_img">
-      <img src="@/assets/images/recruitment/no-results.png" alt="" />
+      <img src="@/assets/images/recruitment/no-results.svg" alt="" />
     </div>
     <p>商品不見了QQ...請重新整理頁面喔！</p>
   </div>
@@ -19,7 +19,7 @@
 
   p {
     color: var(--secondary-gray-3);
-    font-weight: 500;
+    font-weight: 400;
     font-size: 1.5rem;
     text-align: center;
   }

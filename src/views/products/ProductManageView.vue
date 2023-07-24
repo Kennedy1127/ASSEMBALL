@@ -12,7 +12,7 @@
         </button>
       </a> -->
       <div class="products_manage_back_btn_link">
-        <router-link to="/">
+        <router-link :to="{ name: 'Products' }">
           <span><font-awesome-icon icon="fa-solid fa-angle-left" /></span>返回
         </router-link>
       </div>
@@ -86,13 +86,19 @@
             </button>
           </div>
         </div>
+        <!-- 頁碼 -->
+        <PaginationComponent />
       </section>
       <!-- 表單 -->
     </div>
   </main>
 </template>
 <script>
+import PaginationComponent from "@/components/utilities/PaginationComponent";
 export default {
+  components: {
+    PaginationComponent,
+  },
   data() {
     return {
       manage: [
