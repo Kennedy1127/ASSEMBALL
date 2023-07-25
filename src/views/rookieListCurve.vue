@@ -83,12 +83,13 @@ export default {
 .rookieListCurve {
   background-color: var(--secondary-blue-4);
   padding: 4rem 0;
+  padding-top: 10rem;
   .wrapper {
     background-color: #fff;
     box-shadow: var(--shadow-heavy);
     border-radius: var(--round);
     padding: 4rem 5rem;
-    position: relative;
+    // position: relative;
   }
 }
 .rookieListCurve_title {

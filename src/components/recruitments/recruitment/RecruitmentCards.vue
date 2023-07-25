@@ -1,7 +1,7 @@
 <template>
   <div class="recruit_copywritings_cards">
     <div
-      v-for="(item, index) in renderCopywritings"
+      v-for="(item, index) in computedRenderCopywritings"
       :key="index"
       class="recruit_copywritings_card"
     >
@@ -63,65 +63,80 @@
       </router-link>
     </div>
 
-    <!-- <RecruitmentCardsPaginations /> -->
-    <PaginationComponent type="copywritings" />
+    <PaginationComponent :totalPages="computedTotalPages" type="copywritings" />
   </div>
 </template>
 
-<script>
-// import RecruitmentCardsPaginations from "@/components/recruitments/recruitment/RecruitmentCardsPaginations.vue";
+<script setup>
 import PaginationComponent from "@/components/utilities/PaginationComponent.vue";
 import roles from "@/composables/tables/roles";
 import exps from "@/composables/tables/exps";
+import { computed, onMounted, onUnmounted, ref } from "vue";
+import { useStore } from "vuex";
 
-export default {
-  // components: { RecruitmentCardsPaginations },
-  components: { PaginationComponent },
-  props: ["copywritings"],
+const store = useStore();
 
-  mounted() {
-    window.addEventListener("scroll", this.onScroll);
-  },
-  beforeDestroy() {
-    window.removeEventListener("scroll", this.onScroll);
-  },
+// 更新螢幕捲動高度
+const onScroll = (e) => {
+  windowTop.value =
+    window.top.scrollY; /* or: e.target.documentElement.scrollTop */
+};
 
-  data() {
-    return {
-      windowTop: window.top.scrollY,
-    };
-  },
+onMounted(() => {
+  window.addEventListener("scroll", onScroll);
+});
 
-  computed: {
-    renderCopywritings() {
-      const start = (this.$store.state.copywritingsCurPage - 1) * 6;
-      const end = this.$store.state.copywritingsCurPage * 6;
-      return this.$props.copywritings.slice(start, end);
-    },
-  },
+onUnmounted(() => {
+  window.removeEventListener("scroll", onScroll);
+});
 
-  methods: {
-    onScroll(e) {
-      this.windowTop =
-        window.top.scrollY; /* or: e.target.documentElement.scrollTop */
-    },
+// 螢幕捲動高度
+const windowTop = ref(window.top.scrollY);
 
-    convertRole(role) {
-      return roles[Number(role) + 1].label;
-    },
+const computedRenderCopywritings = computed(() => {
+  const start = store.state.isMobile
+    ? (store.state.copywritingsCurPage - 1) * 4
+    : (store.state.copywritingsCurPage - 1) * 6;
 
-    convertExp(exp) {
-      return exps[exp];
-    },
+  const end = store.state.isMobile
+    ? store.state.copywritingsCurPage * 4
+    : store.state.copywritingsCurPage * 6;
 
-    convertDate(copywritingDate) {
-      const date = new Date(copywritingDate);
-      return `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(
-        2,
-        "0"
-      )}/${String(date.getDate()).padStart(2, "0")}`;
-    },
-  },
+  return store.getters.dateSortedFilteredCopywritings.slice(start, end);
+});
+
+// 招募文案的總頁數
+const computedTotalPages = computed(() => {
+  if (store.state.copywritingsCount === 0) return 1;
+
+  const len = store.getters.filteredCopywritings.length;
+  return store.state.isMobile
+    ? len % 4 === 0
+      ? len > 4
+        ? len / 4
+        : 1
+      : Math.ceil(len / 4)
+    : len % 6 === 0
+    ? len > 6
+      ? len / 6
+      : 1
+    : Math.ceil(len / 6);
+});
+
+const convertRole = (role) => {
+  return roles[Number(role) + 1].label;
+};
+
+const convertExp = (exp) => {
+  return exps[exp];
+};
+
+const convertDate = (copywritingDate) => {
+  const date = new Date(copywritingDate);
+  return `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}/${String(date.getDate()).padStart(2, "0")}`;
 };
 </script>
 
@@ -136,6 +151,10 @@ export default {
     grid-template-columns: repeat(3, 1fr);
     // column-gap: 1rem;
     row-gap: 3rem;
+
+    @media all and (max-width: 420px) {
+      grid-template-columns: 1fr;
+    }
   }
 
   &_card {

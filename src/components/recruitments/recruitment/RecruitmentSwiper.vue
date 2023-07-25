@@ -5,9 +5,13 @@
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
       }"
-      :pagination="{
-        clickable: true,
-      }"
+      :pagination="
+        store.state.isMobile
+          ? false
+          : {
+              clickable: true,
+            }
+      "
       :loop="true"
       :modules="modules"
       class="mySwiper"
@@ -50,6 +54,9 @@ import "swiper/css/pagination";
 // import required modules
 import { Navigation, Pagination } from "swiper/modules";
 import { ref } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
 
 const modules = ref([Navigation, Pagination]);
 const defaultCarouselData = ref([
@@ -94,16 +101,40 @@ const defaultCarouselData = ref([
     color: var(--primary-blue);
   }
 
+  &_icon {
+    width: 200px;
+    height: 200px;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+
+    @media all and (max-width: 420px) {
+      width: 150px;
+      height: 150px;
+    }
+  }
+
   &_name {
     margin: 0.5rem 0 1rem;
     font-size: 2rem;
     font-weight: 700;
+
+    @media all and (max-width: 420px) {
+      margin-bottom: 2rem;
+    }
   }
 
   &_text {
     max-width: 60%;
     font-size: 1.5rem;
     font-weight: 500;
+
+    @media all and (max-width: 420px) {
+      max-width: 100%;
+      font-size: 1.25rem;
+    }
   }
 }
 
@@ -128,6 +159,11 @@ const defaultCarouselData = ref([
 
   &::after {
     content: "";
+  }
+
+  @media all and (max-width: 420px) {
+    width: 35px;
+    height: 35px;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="product_post_wrap">
     <div class="goback">
-      <router-link to="/">
+      <router-link :to="{ name: 'Products' }">
         <span><font-awesome-icon icon="fa-solid fa-angle-left" /></span>返回
       </router-link>
     </div>
@@ -81,7 +81,6 @@
                 class="product_post_info_content_formlist_input"
                 maxlength="10"
                 value
-                placeholder="(0/10)"
               />
               <select id="product_post_produccategory"></select>
               <select id="product_post_loation"></select>
@@ -123,7 +122,6 @@
                 rows="10"
                 maxlength="100"
                 value
-                placeholder="(0/100)"
               ></textarea>
               <div class="product_post_info_content_formlist_btn">
                 <button>取消</button>
@@ -178,7 +176,7 @@
     display: flex;
     gap: 4.5rem;
     @media screen and (max-width: 1600px) {
-      padding: 4rem 10rem;
+      padding: 4rem rem;
     }
     @media screen and (max-width: 1500px) {
       padding: 4rem 6rem;
@@ -257,7 +255,7 @@
           }
 
           &_input {
-            width: 36rem;
+            width: 100%;
             border-radius: 10px;
             height: 3rem;
             font-size: 1.25rem;
@@ -271,10 +269,10 @@
             margin-bottom: 3rem;
             padding-left: 1rem;
           }
-          &_input::placeholder {
-            text-align: right;
-            line-height: 25rem;
-          }
+          // &_input::placeholder {
+          //   text-align: right;
+          //   line-height: 25rem;
+          // } 先不用這個
           &_input:focus {
             outline: 2px var(--secondary-blue-1) solid;
             background-color: var(--pale-white);
@@ -327,11 +325,6 @@
               caret-color: var(--secondary-blue-1);
               padding-left: 1rem;
               margin-top: 2.5rem;
-            }
-            textarea::placeholder {
-              position: absolute;
-              bottom: 0.5rem;
-              right: 0.5rem;
             }
             textarea:focus {
               outline: 2px var(--secondary-blue-1) solid;

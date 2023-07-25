@@ -15,7 +15,7 @@
         @click="() => (active = i)"
       >
         <h2>{{ artist.classigicationName }}</h2>
-        <button>
+        <button @click="goToProducts(artist.tag)">
           <Icon type="ios-baseball-outline" />{{ artist.classigicationBtn }}
         </button>
         <div class="content"></div>
@@ -34,31 +34,37 @@ export default {
           backgroundUrl: require("@/assets/images/index/classification_bat.jpg"),
           classigicationName: "Bat",
           classigicationBtn: "VIEW MORE",
+          tag: 1,
         },
         {
           backgroundUrl: require("@/assets/images/index/classification_baseball.jpg"),
           classigicationName: "Baseball",
           classigicationBtn: "VIEW MORE",
+          tag: 4,
         },
         {
           backgroundUrl: require("@/assets/images/index/classification_catcher_gear.jpg"),
           classigicationName: "Catcher's Gear",
           classigicationBtn: "VIEW MORE",
+          tag: 5,
         },
         {
           backgroundUrl: require("@/assets/images/index/classification_hitter_gear.jpg"),
           classigicationName: "Hitter's Gear",
           classigicationBtn: "VIEW MORE",
+          tag: 5,
         },
         {
           backgroundUrl: require("@/assets/images/index/classification_pitcher_gear.jpg"),
           classigicationName: "Pitcher's Gear",
           classigicationBtn: "VIEW MORE",
+          tag: 7,
         },
         {
           backgroundUrl: require("@/assets/images/index/classification_accessories.jpg"),
           classigicationName: "Accessories",
           classigicationBtn: "VIEW MORE",
+          tag: 3,
         },
       ],
       methods: {
@@ -74,6 +80,12 @@ export default {
         },
       },
     };
+  },
+
+  methods: {
+    goToProducts(tag) {
+      this.$router.push({ name: "Products", query: { tag } });
+    },
   },
 };
 </script>

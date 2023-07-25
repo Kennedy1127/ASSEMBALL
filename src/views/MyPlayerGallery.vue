@@ -197,6 +197,32 @@ export default {
     margin: 8rem auto 0rem auto;
     height: 20px;
     border: 1px solid black;
+    display: none;
+  }
+}
+@media screen and (min-width: 1200px) and (max-width: 1440px) {
+  .myplayer_gallery_content_add {
+    padding: 6rem 0rem;
+  }
+  .myplayer_gallery_content_pic {
+    padding: 18rem 0rem 0.5rem 0.5rem;
+  }
+}
+@media screen and (min-width: 1024px) and (max-width: 1199px) {
+  .myplayer_gallery_content_add {
+    padding: 4rem 0rem;
+  }
+  .myplayer_gallery_content_pic {
+    padding: 16rem 0rem 0.5rem 0.5rem;
+  }
+  .myplayer_gallery_return_delete {
+    width: 12rem;
+  }
+  .myplayer_gallery_return_delete_confirm {
+    font-size: 1.5rem;
+  }
+  .myplayer_gallery_return_delete_icon {
+    font-size: 1.5rem;
   }
 }
 </style>

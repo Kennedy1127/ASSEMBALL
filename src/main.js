@@ -45,6 +45,8 @@ import {
   faAngleLeft,
   faCircleArrowRight,
   faCircleXmark,
+  faCircleChevronUp,
+  faCircleChevronDown,
   faCircleCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -83,8 +85,7 @@ library.add(
   faTrashCan,
   faAngleLeft,
   faCircleArrowRight,
-  faCircleXmark,
-  faCircleCheck
+  faCircleXmark
 );
 
 createApp(App)

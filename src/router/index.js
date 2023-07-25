@@ -33,6 +33,15 @@ const routes = [
     path: "/products",
     name: "Products",
     component: () => import("@/views/products/ProductsView.vue"),
+    beforeEnter: (to, from, next) => {
+      if (from.name === "ProductDetail") {
+        next();
+        return;
+      }
+      store.commit("resetPaginationCurPage", "products");
+      store.commit("resetProductsFilterAndTag");
+      next();
+    },
   },
   {
     path: "/products/:id",
@@ -49,6 +58,11 @@ const routes = [
     name: "ProductsManage",
     component: () => import("@/views/products/ProductManageView.vue"),
   },
+  {
+    path: "/products/products-payment",
+    name: "ProductPayment",
+    component: () => import("@/views/products/ProductPayment.vue"),
+  },
   /////////////////////////////////////////
   {
     path: "/recruitments",
@@ -59,7 +73,7 @@ const routes = [
         next();
         return;
       }
-      store.commit("resetCopywritingsCurPage");
+      store.commit("resetPaginationCurPage", "copywritings");
       store.commit("resetFiltersAndSearch");
       next();
     },
@@ -138,12 +152,21 @@ const routes = [
     name: "MemberCenterCreateteam",
     component: () => import("@/views/memberCenter/MemberCenterCreateteam.vue"),
   },
+  {
+    path: "/MemberCenter-Application",
+    name: "MemberCenterApplication",
+    component: () => import("@/views/memberCenter/MemberCenterApplication.vue"),
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
   scrollBehavior(to, from) {
+    if (from.name === "ProductDetail" && to.name === "Products") {
+      return { top: Number(from.query.h) };
+    }
+
     if (from.name === "Copywriting" && to.name === "Recruitments") {
       return { top: Number(from.query.h) };
     }
@@ -152,6 +175,9 @@ const router = createRouter({
 });
 
 router.beforeEach(() => {
+  if (window.innerWidth <= 410) {
+    store.state.isMobile = 1;
+  }
   // 在每次路由跳轉前關閉通知、會員頁面
   store.state.isNotifyVisible = 0;
   store.state.isMemberVisible = 0;

@@ -6,7 +6,7 @@
         我要應徵
       </h2>
       <div class="apply_select">
-        <h3>選擇模板:</h3>
+        <h3>選擇模板：</h3>
         <SelectorComponent
           v-model="selectedTemplateNum"
           :options="templates"
@@ -96,15 +96,31 @@ const submitApply = () => {
   display: grid;
   grid-template-columns: 3fr 2fr;
 
+  @media all and (max-width: 420px) {
+    width: 90%;
+    height: 90%;
+    padding: 1.5rem;
+
+    grid-template-columns: 1fr;
+  }
+
   .block {
     width: 1rem;
     height: 4rem;
     background-color: var(--primary-blue);
+
+    @media all and (max-width: 420px) {
+      height: 3rem;
+    }
   }
 
   &_pic {
     justify-self: center;
     align-self: end;
+
+    @media all and (max-width: 420px) {
+      display: none;
+    }
   }
 
   &_content {
@@ -122,6 +138,13 @@ const submitApply = () => {
 
     font-size: 2.5rem;
     font-weight: 700;
+    color: var(--primary-blue);
+
+    @media all and (max-width: 420px) {
+      padding-bottom: 1.5rem;
+      gap: 1.5rem;
+      font-size: 1.5rem;
+    }
   }
 
   &_select {
@@ -130,9 +153,22 @@ const submitApply = () => {
     display: flex;
     gap: 2rem;
 
+    @media all and (max-width: 420px) {
+      flex-direction: column;
+    }
+
     h3 {
       font-size: 1.5rem;
       font-weight: 500;
+      color: var(--secondary-gray-1);
+
+      @media all and (max-width: 420px) {
+        font-size: 1.25rem;
+      }
+    }
+
+    .selector-component {
+      width: 100%;
     }
   }
 
@@ -148,6 +184,7 @@ const submitApply = () => {
       border: none;
       padding: 1rem;
       background-color: var(--secondary-blue-4);
+      border-radius: var(--round);
 
       font-weight: 400;
       font-size: 1.25rem;
@@ -178,12 +215,17 @@ const submitApply = () => {
       height: 60px;
       border-radius: 40px;
       background-color: var(--primary-blue);
+      transition: all 0.09s ease-in-out;
 
       text-align: center;
       font-size: 1.5rem;
       font-weight: 400;
       letter-spacing: 10px;
       color: #fff;
+
+      &:hover {
+        background-color: var(--secondary-blue-1);
+      }
     }
   }
 
@@ -192,10 +234,19 @@ const submitApply = () => {
     top: 1.5rem;
     right: 1.5rem;
 
+    @media all and (max-width: 420px) {
+      top: 1rem;
+      right: 1rem;
+    }
+
     &_icon {
       font-size: 3rem;
       color: var(--primary-blue);
       cursor: pointer;
+
+      @media all and (max-width: 420px) {
+        font-size: 2.5rem;
+      }
     }
   }
 }

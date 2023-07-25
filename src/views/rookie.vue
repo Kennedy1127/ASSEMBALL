@@ -12,7 +12,7 @@
                     首頁
                 </a> -->
         <div class="bread_crumbs_arrow">
-          <img src="~@/assets/images/icons/arrow-right.png" />
+          <span> <font-awesome-icon icon="fa-solid fa-chevron-right" /></span>
         </div>
 
         新手上路
@@ -39,7 +39,9 @@
         <!-- 教學清單區域--------------------------------- -->
         <div class="rookie_teaching_container">
           <button @click="pageup" class="change_page_btn_up">
-            <img src="~@/assets/images/icons/arrow-right.png" />
+            <span>
+              <font-awesome-icon icon="fa-solid fa-circle-chevron-up"
+            /></span>
           </button>
           <div
             v-for="item in currentList"
@@ -52,7 +54,7 @@
                 <div class="rookie_teaching_list_title">
                   <!-- 清單標題 -->
                   <div class="rookie_teaching_list_title_arrow">
-                    <img src="~@/assets/images/icons/arrow-right.png" />
+                    <font-awesome-icon icon="fa-solid fa-chevron-right" />
                   </div>
                   {{ item.type }} - {{ item.title }}
                 </div>
@@ -67,7 +69,9 @@
             </div>
           </div>
           <button @click="pagedown" class="change_page_btn_down">
-            <img src="~@/assets/images/icons/arrow-right.png" />
+            <span
+              ><font-awesome-icon icon="fa-solid fa-circle-chevron-down"
+            /></span>
           </button>
         </div>
       </div>
@@ -193,6 +197,10 @@ export default {
 
   .bread_crumbs_arrow {
     margin-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    span {
+      color: var(--primary-blue);
+    }
   }
 }
 
@@ -251,13 +259,12 @@ export default {
   position: relative;
 }
 
-.change_page_btn_up {
+.change_page_btn_up > span {
   //教學清單頁面向上切換按鈕
-  width: 15px;
-  background-color: var(--pale-white);
-  transform: rotate(-90deg);
+  font-size: 2.5rem;
+  color: var(--primary-blue);
   position: absolute;
-  top: -2rem;
+  top: -4rem;
   right: 1.5rem;
 
   //   img {
@@ -265,18 +272,17 @@ export default {
   //   }
 }
 
-.change_page_btn_down {
+.change_page_btn_down > span {
   //教學清單頁面向下切換按鈕
-  width: 15px;
-  background-color: var(--pale-white);
-  transform: rotate(90deg);
+  font-size: 2.5rem;
+  color: var(--primary-blue);
   position: absolute;
-  bottom: -1rem;
+  bottom: -3rem;
   right: 1.5rem;
 
-  img {
-    width: 100%;
-  }
+  // img {
+  //   width: 100%;
+  // }
 }
 
 .rookie_teaching_list {
@@ -295,7 +301,7 @@ export default {
 
     &_arrow {
       position: absolute;
-      left: -1.5rem;
+      left: -2rem;
     }
   }
 

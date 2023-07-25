@@ -4,6 +4,10 @@ import axios from "axios";
 export default createStore({
   state: {
     //////////////////////////////////////////////////////
+    // 確認是否為手機用戶
+    isMobile: 0,
+
+    //////////////////////////////////////////////////////
     // 通知、會員頁面、個人資料
     isNotifyVisible: 0,
     isMemberVisible: 0,
@@ -12,12 +16,9 @@ export default createStore({
     // 商品區塊
     products: [],
     productsCount: 0,
-    // selectedProductsText: "",
-    // selectedProductsRole: -1,
-    // selectedProductsExp: [],
-    // selectedProductsArea: "",
-    // selectedProductsDate: 0,
-    productsCurPage: 1,
+    selectedProductsText: "",
+    selectedProductsTag: 0,
+    selectedProductsDate: -1,
 
     //////////////////////////////////////////////////////
     // 招募文案區塊
@@ -28,20 +29,59 @@ export default createStore({
     selectedCopywritingsExp: [],
     selectedCopywritingsArea: "",
     selectedCopywritingsDate: 0,
-    copywritingsCurPage: 1,
+
     ///////////////////////////////////////////
+    // 我的球隊區塊
     myplayerPopupsOpen: false,
     myplayerEditOpen: false,
     myplayerOverlay: true,
+<<<<<<< HEAD
+    myplayerTeam: {},
+=======
+
+    //////////////////////////////////////////////////////
+    // 頁碼區塊
+    productsCurPage: 1,
+    copywritingsCurPage: 1,
+>>>>>>> f7388d8bc7df89a6c06138fa34ab3516ab289e11
   },
 
   getters: {
     //////////////////////////////////////////////////////
     // 商品區塊
-    // productsPages(_, getters) {
-    //   const len = getters.filteredCopywritings.length;
-    //   return len % 6 === 0 ? (len > 6 ? len / 6 : 1) : Math.ceil(len / 6);
-    // },
+    // 如果文字搜尋條件符合或長度為0時，return true
+    includedProductsByText: (state) => (product) => {
+      if (!state.selectedProductsText) return true;
+      return product.product_title.includes(state.selectedProductsText);
+    },
+
+    // 如果商品TAG符合或為-1時，return true
+    includedCProductsByTag: (state) => (product) => {
+      if (state.selectedProductsTag === 0) return true;
+      return state.selectedProductsTag === product.product_tag;
+    },
+
+    // 過濾後的商品
+    filteredProducts(state, getters) {
+      return state.products
+        .filter((product) => getters.includedProductsByText(product))
+        .filter((product) => getters.includedCProductsByTag(product));
+    },
+
+    // 更具時間排序的商品
+    dateSortedFilteredProducts(state, getters) {
+      const products = [...getters.filteredProducts];
+
+      state.selectedProductsDate
+        ? products.sort(
+            (a, b) => new Date(b.product_date) - new Date(a.product_date)
+          )
+        : products.sort(
+            (a, b) => new Date(a.product_date) - new Date(b.product_date)
+          );
+
+      return products;
+    },
 
     //////////////////////////////////////////////////////
     // 招募文案區塊
@@ -141,12 +181,6 @@ export default createStore({
 
       return copywritings;
     },
-
-    // 招募文案的總頁數
-    copywritingsPages(_, getters) {
-      const len = getters.filteredCopywritings.length;
-      return len % 6 === 0 ? (len > 6 ? len / 6 : 1) : Math.ceil(len / 6);
-    },
   },
 
   mutations: {
@@ -184,35 +218,21 @@ export default createStore({
       state.products = [...payload];
     },
 
-    // // 更新商品搜尋條件
-    // selectCopywritingsSearch(state, payload) {
-    //   state.selectedCopywritingsText = payload.searchText;
-    //   state.selectedCopywritingsRole = payload.role;
-    //   state.selectedCopywritingsArea = payload.area;
-    // },
-
-    // // 更新商品過濾條件
-    // selectCopywritingsExp(state, payload) {
-    //   state.selectedCopywritingsExp = [...payload];
-    // },
-
-    // // 更新商品時間過濾條件
-    // selectCopywritingsDate(state, payload) {
-    //   state.selectedCopywritingsDate = payload;
-    // },
-
-    // 商品頁碼切換
-    productsPrevPage(state) {
-      state.productsCurPage--;
+    // 更新商品搜尋條件
+    selectProductsSearch(state, payload) {
+      state.selectedProductsText = payload.searchText;
+      state.selectedProductsDate = payload.selectedDate;
     },
-    productsNextPage(state) {
-      state.productsCurPage++;
+
+    // 更新商品TAG過濾條件
+    selectProductsTag(state, payload) {
+      state.selectedProductsTag = payload;
     },
-    productsGoToPage(state, payload) {
-      state.productsCurPage = payload;
-    },
-    resetProductsCurPage(state) {
-      state.productsCurPage = 1;
+
+    resetProductsFilterAndTag(state) {
+      state.selectedProductsText = "";
+      state.selectedProductsDate = -1;
+      state.selectedProductsTag = 0;
     },
 
     //////////////////////////////////////////////////////
@@ -253,19 +273,6 @@ export default createStore({
       state.selectedCopywritingsDate = 0;
     },
 
-    // 招募文案頁碼切換
-    copywritingsPrevPage(state) {
-      state.copywritingsCurPage--;
-    },
-    copywritingsNextPage(state) {
-      state.copywritingsCurPage++;
-    },
-    copywritingsGoToPage(state, payload) {
-      state.copywritingsCurPage = payload;
-    },
-    resetCopywritingsCurPage(state) {
-      state.copywritingsCurPage = 1;
-    },
     ///////////////////////////////////////
     //我的球隊彈窗頁面切換
     myplayerPopupsToggle(state) {
@@ -281,6 +288,21 @@ export default createStore({
     //我的球隊Ovelay切換
     myplayerOverlayToggle(state) {
       state.myplayerPopupsOpen = !state.myplayerPopupsOpen;
+    },
+
+    ///////////////////////////////////////
+    // 頁碼區塊
+    paginationPrevPage(state, payload) {
+      state[`${payload}CurPage`]--;
+    },
+    paginationNextPage(state, payload) {
+      state[`${payload}CurPage`]++;
+    },
+    paginationGoToPage(state, payload) {
+      state[`${payload.type}CurPage`] = payload.num;
+    },
+    resetPaginationCurPage(state, payload) {
+      state[`${payload}CurPage`] = 1;
     },
   },
 
@@ -306,6 +328,8 @@ export default createStore({
         console.error(err);
       }
     },
+
+    ///////////////////////////////////////
 
     // 撈招募文案數量
     async getCopywritingsCount(context) {

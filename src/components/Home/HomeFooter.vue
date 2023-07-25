@@ -15,7 +15,7 @@
       <div class="footer_logo">
         <router-link to="/">
           <img
-            src="~@/assets/images/icons/footer_logo_light.svg"
+            src="~@/assets/images/icons/home_footer_logo_light.svg"
             alt="footer_logo_light"
           />
         </router-link>
@@ -170,7 +170,7 @@ export default {
     max-width: 2000px;
   }
   &_logo {
-    padding: 2.25rem 0 2.25rem 0;
+    padding: 0 0 2.25rem 0;
     display: flex;
     align-items: center;
     & img {

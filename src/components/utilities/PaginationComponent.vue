@@ -30,12 +30,18 @@
 
 <script setup>
 import { computed } from "vue";
+import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 
 const store = useStore();
+const route = useRoute();
 const props = defineProps({
   type: {
     type: String,
+    required: true,
+  },
+  totalPages: {
+    type: Number,
     required: true,
   },
 });
@@ -43,9 +49,7 @@ const props = defineProps({
 const computedCurPage = computed(
   () => store.state[`${props.type}CurPage`] || 1
 );
-const computedTotalPages = computed(
-  () => store.getters[`${props.type}Pages`] || 1
-);
+const computedTotalPages = computed(() => props.totalPages || 1);
 const computedRenderPages = computed(() =>
   computedTotalPages.value > 3 ? 3 : computedTotalPages.value
 );
@@ -55,20 +59,24 @@ const computedTemp = computed(() =>
 
 const prevPage = () => {
   if (computedCurPage.value === 1) return;
-  store.commit(`${props.type}PrevPage`);
+  store.commit("paginationPrevPage", props.type);
 };
 
 const nextPage = () => {
   if (computedCurPage.value === computedTotalPages.value) return;
-  store.commit(`${props.type}NextPage`);
+  store.commit("paginationNextPage", props.type);
 };
 
 const movePage = (feature, num = null) => {
   feature === "number"
-    ? store.commit(`${props.type}GoToPage`, num)
+    ? store.commit("paginationGoToPage", { num, type: props.type })
     : feature === "next"
     ? nextPage()
     : prevPage();
+
+  if (store.state.isMobile || route.name === "Products") {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 };
 </script>
 
