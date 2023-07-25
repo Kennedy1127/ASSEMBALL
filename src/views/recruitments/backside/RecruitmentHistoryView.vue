@@ -1,8 +1,9 @@
 <template>
-  <main class="recruitment_post">
+  <div class="recruitment_post">
     <section class="recruitment_post_aside">
-      <!-- 側邊欄 -->
+      <!-- <aside class="recruitment_post_aside"> -->
       <RecruitmentPostAside />
+      <!-- </aside> -->
     </section>
     <main class="recruitment_post_main">
       <section class="recruitment_post_breadcrumb">
@@ -12,43 +13,49 @@
         <div class="icon">
           <font-awesome-icon icon="fa-solid fa-chevron-right" />
         </div>
-        <span>新增職缺</span>
+        <span>紀錄管理</span>
       </section>
 
       <div class="recruitment_post_main_title">
         <div class="block"></div>
-        <div>新增職缺</div>
+        <div>紀錄管理</div>
       </div>
-      <div class="recruitment_post_main_formItem">
-        <label for=""></label>
-        <input type="text" />
+      <div class="recruitment_post_main_filter">
+        <!--RecruitmentSearchbar.vue  -->
+
+        <RecruitmentSearchbar />
       </div>
-      <div class="recruitment_post_main_content">
-        <div class="recruitment_post_main_content_form">
-          <RecruitmentPostForm />
-        </div>
-        <div class="recruitment_post_main_content_pic">
-          <img
-            src="~@/assets/images/recruitment/Baseball-Park.png"
-            alt="Baseball-Park"
-          />
-        </div>
+      <div class="recruitment_post_main_table">
+        <RecruitmentTable />
+      </div>
+      <div class="recruitment_post_main_page">
+        <ProductsMainPagination />頁碼待補
       </div>
     </main>
-  </main>
+  </div>
 </template>
 
 <script>
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
-import RecruitmentPostForm from "@/components/recruitments/backside/RecruitmentPostForm";
-
+import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
+import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";
+import ProductsMainPagination from "@/components/products/productsItems/ProductsMainPagination";
 export default {
-  components: { RecruitmentPostAside, RecruitmentPostForm },
+  components: {
+    RecruitmentPostAside,
+    RecruitmentSearchbar,
+    RecruitmentTable,
+    ProductsMainPagination,
+  },
 };
 </script>
 
 <style lang="scss">
 .recruitment_post {
+  // 距離navbar
+  // position: relative;
+  // top: 6rem;
+  // 距離navbar
   display: flex;
 
   // &_aside{
@@ -72,6 +79,9 @@ export default {
     width: 100%;
     padding: 2rem 5rem;
     // background-color: red;
+    & > div {
+      margin-bottom: 3rem;
+    }
     &_title {
       display: flex;
       gap: 1.5rem;
@@ -83,9 +93,10 @@ export default {
         background-color: var(--primary-blue);
       }
     }
-    &_content {
-      display: flex;
-      justify-content: space-between;
+    &_filter {
+    }
+    &_page {
+      margin-right: 0;
     }
   }
 }

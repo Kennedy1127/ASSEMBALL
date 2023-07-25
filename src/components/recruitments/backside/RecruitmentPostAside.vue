@@ -17,7 +17,9 @@
       <li>
         <router-link :to="{ name: 'recruitmentVerify' }">審查應徵</router-link>
       </li>
-      <li><router-link to="/"></router-link>記錄管理</li>
+      <li>
+        <router-link :to="{ name: 'recruitmentHistory' }">記錄管理</router-link>
+      </li>
     </div>
     <div class="recruitment_aside_hitterpic">
       <img class="recruitment_aside_hitterpic_img" />
@@ -35,7 +37,7 @@
 
 <style lang="scss">
 .recruitment_aside {
-  width: 25vw;
+  width: 18vw;
   height: 100%;
   padding: 4rem 0;
   background-color: var(--secondary-blue-4);
