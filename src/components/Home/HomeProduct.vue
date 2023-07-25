@@ -25,12 +25,17 @@
       class="home_product_all_top"
       v-for="data in topProductData"
       :key="data"
+      @click="this.$router.push(`/products/${data.product_id}`)"
     >
       <h2 class="home_product_all_top_title">{{ data.top }}</h2>
       <div class="home_product_all_top_pic">
         <img :src="data.imgUrl" alt="product" />
       </div>
-      <h3 class="home_product_all_top_name">{{ data.productName }}</h3>
+      <h3 class="home_product_all_top_name">
+        <router-link :to="{ name: 'Products' }">{{
+          data.productName
+        }}</router-link>
+      </h3>
       <div class="home_product_all_top_date">{{ data.date }}</div>
     </div>
   </div>
@@ -46,18 +51,21 @@ export default {
           imgUrl: require("@/assets/images/index/product_top02.jpg"),
           productName: "高品質二手棒球護具套裝",
           date: "2023-05-19",
+          product_id: "64bd64f29f794a48d3f301f5",
         },
         {
           top: "TOP1",
           imgUrl: require("@/assets/images/index/product_top01.jpg"),
           productName: "精選二手棒球珍品",
           date: "2023-07-29",
+          product_id: "64bd64f2d2f814a94f8bb334",
         },
         {
           top: "TOP3",
           imgUrl: require("@/assets/images/index/product_top03.jpg"),
           productName: "品牌投手手套尋找新主人",
           date: "2023-06-09",
+          product_id: "64bd64f24723b88c4fb87da9",
         },
       ],
     };
@@ -166,6 +174,9 @@ export default {
       font-weight: 500;
       color: #fff;
       overflow: hidden;
+      & a {
+        color: #fff;
+      }
     }
     &_date {
       font-size: 1rem;

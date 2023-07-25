@@ -37,6 +37,8 @@ export default createStore({
     selectedCopywritingsExp: [],
     selectedCopywritingsArea: "",
     selectedCopywritingsDate: 0,
+    //----
+    ManageCopywritings: [],
 
     ///////////////////////////////////////////
     // 我的球隊區塊
@@ -302,6 +304,12 @@ export default createStore({
       state.selectedCopywritingsDate = 0;
     },
 
+    // 後台-招募文案區塊
+    // 取得後台-招募文案數量
+    setManageCopywritings(state, payload) {
+      state.ManageCopywritings = [...payload]; //payload:要運送出來的東西
+    },
+
     ///////////////////////////////////////
     //我的球隊彈窗頁面切換
     myplayerPopupsToggle(state) {
@@ -424,6 +432,20 @@ export default createStore({
         const res = await axios.get("http://localhost:3000/copywritings");
         if (!res) throw new Error("Cannot fetch response");
         context.commit("setCopywritings", res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    // 撈後台-招募文案資料
+    async getManageCopywritings(context) {
+      try {
+        const res = await axios.get(
+          "http://localhost:3000/candidate-copywritings"
+        );
+        if (!res) throw new Error("Cannot fetch response");
+        context.commit("setManageCopywritings", res.data); //setManageCopywritings: 寫在mutation裡面
+        // context.commit("setCopywritingsCount", res.data.length);
       } catch (err) {
         console.error(err);
       }

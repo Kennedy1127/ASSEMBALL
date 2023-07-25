@@ -23,9 +23,9 @@
       <div class="footer_list">
         <ul>
           <li>
-            <router-link to="/"
+            <router-link :to="{ name: 'Recruitments' }"
               ><span><font-awesome-icon icon="fa-solid fa-flag" /></span>
-              球隊徵人</router-link
+              球員招募</router-link
             >
           </li>
           <li>
@@ -37,13 +37,13 @@
             >
           </li>
           <li>
-            <router-link to="/"
+            <router-link :to="{ name: 'myplayerTeam' }"
               ><span><font-awesome-icon icon="fa-solid fa-user-group" /></span>
               我的球隊</router-link
             >
           </li>
           <li>
-            <router-link to="/"
+            <router-link :to="{ name: 'rookie' }"
               ><span><font-awesome-icon icon="fa-solid fa-map" /></span>
               新手上路</router-link
             >
@@ -231,7 +231,7 @@ export default {
         cursor: pointer;
       }
       & > span:hover {
-        color: var(--primary-blue);
+        color: var(--secondary-blue-1);
         background-color: var(--accent-yellow);
       }
     }

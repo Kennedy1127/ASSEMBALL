@@ -13,7 +13,9 @@
         </div>
 
         <button class="authentication_btn">
-          登入 <font-awesome-icon icon="fa-solid fa-chevron-right" />
+          <router-link :to="{ name: 'LogIn' }"
+            >登入 <font-awesome-icon icon="fa-solid fa-chevron-right"
+          /></router-link>
         </button>
       </div>
 
