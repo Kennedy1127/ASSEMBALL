@@ -42,8 +42,6 @@ import {
   faTriangleExclamation,
   faImage,
   faCirclePlus,
-  // faPen,
-  // faTrashCan,
   faAngleLeft,
   faCircleArrowRight,
   faCircleXmark,
@@ -84,12 +82,10 @@ library.add(
   faTriangleExclamation,
   faImage,
   faCirclePlus,
+  faTrashCan,
   faAngleLeft,
   faCircleArrowRight,
-  faCircleXmark,
-  faCircleChevronUp,
-  faCircleChevronDown,
-  faCircleCheck,
+  faCircleXmark
 );
 
 createApp(App)

@@ -3,7 +3,7 @@
     <div class="wrapper">
       <section class="products_breadcrumb">
         <span>
-          <router-link to="/">首頁</router-link>
+          <router-link :to="{ name: 'Home' }">首頁</router-link>
         </span>
         <div class="icon">
           <font-awesome-icon icon="fa-solid fa-chevron-right" />
@@ -13,74 +13,55 @@
 
       <section class="products_content">
         <aside class="products_aside">
-          <ProductsAsideSearch @filterProducts="filterByInput" />
-          <ProductsAsideTags @filterProducts="filterByTag" />
+          <ProductsAsideSearch @filterProducts="goToTop" />
+          <ProductsAsideTags @filterProducts="goToTop" />
         </aside>
 
         <main class="products_main">
           <ProductsMainHeader />
-          <ProductsMainItems />
+          <ProductsMainItems v-if="!isNoResults" />
+          <ProductsNoResults v-else />
         </main>
       </section>
     </div>
   </main>
 </template>
 
-<script>
+<script setup>
 import ProductsAsideSearch from "@/components/products/productsAside/ProductsAsideSearch";
 import ProductsAsideTags from "@/components/products/productsAside/ProductsAsideTags";
 import ProductsMainHeader from "@/components/products/productsItems/ProductsMainHeader";
 import ProductsMainItems from "@/components/products/productsItems/ProductsMainItems";
-import productsFakeData from "@/composables/productsData";
+import ProductsNoResults from "@/components/products/productsItems/ProductsNoResults.vue";
+import { computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 
-export default {
-  components: {
-    ProductsAsideSearch,
-    ProductsAsideTags,
-    ProductsMainHeader,
-    ProductsMainItems,
-  },
+const store = useStore();
+const route = useRoute();
 
-  data() {
-    return {
-      // 商品資料(僅在進入畫面時去取一次資料)
-      productsData: [...productsFakeData],
+onMounted(() => {
+  // 檢查url是否有tag，有的話篩選
+  if (route.query.tag) {
+    store.commit("selectProductsTag", Number(route.query.tag));
+    store.commit("resetPaginationCurPage", "products");
+  }
 
-      // 進入商品詳情
-      isInProductDetail: false,
-    };
-  },
+  // 掛載後撈商品數量
+  store.dispatch("getProductsCount");
 
-  computed: {
-    products() {
-      return this.productsData;
-    },
-  },
+  // 如果商品陣列長度為0或是商品陣列長度與商品數量不等於，則撈商品資料
+  if (
+    store.state.products.length === 0 ||
+    store.state.products.length !== store.state.productsCount
+  )
+    store.dispatch("getProducts");
+});
 
-  methods: {
-    // 搜尋欄過濾
-    filterByInput(input) {
-      this.$store.commit("resetProductsCurPage");
-      this.productsData = productsFakeData.filter((el) =>
-        el.product_title.includes(input)
-      );
-    },
+const isNoResults = computed(() => store.getters.filteredProducts.length === 0);
 
-    // tag 過濾
-    filterByTag(type) {
-      this.$store.commit("resetProductsCurPage");
-      if (type === 7) return (this.productsData = [...productsFakeData]);
-
-      this.productsData = productsFakeData.filter(
-        (el) => el.product_type === type
-      );
-    },
-  },
-
-  mounted() {
-    if (this.$route.query.tag) this.filterByTag(Number(this.$route.query.tag));
-    if (this.$route.query.search) this.filterByInput(this.$route.query.search);
-  },
+const goToTop = () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
 };
 </script>
 

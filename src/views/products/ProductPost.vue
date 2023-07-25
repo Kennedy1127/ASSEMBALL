@@ -1,7 +1,7 @@
 <template>
   <div class="product_post_wrap">
     <div class="goback">
-      <router-link to="/">
+      <router-link :to="{ name: 'Products' }">
         <span><font-awesome-icon icon="fa-solid fa-angle-left" /></span>返回
       </router-link>
     </div>
@@ -82,11 +82,6 @@
                 maxlength="10"
                 value
               />
-              <!-- <selector-primary :options="options" value="currentCategory" @update-category="currentCategory = $event" /> -->
-              <!-- <selector-primary :options="options2" value="currentLocation" @update-category="currentLocation = $event" /> -->
-
-              <!-- selector-primary.vue
-              emit('update-category', value) -->
               <select id="product_post_produccategory"></select>
               <select id="product_post_loation"></select>
               <input
@@ -293,7 +288,7 @@
               color: var(--secondary-blue-1);
               font-size: 1.5rem;
               outline: 0;
-              margin-bottom: 3.5rem;
+              margin-bottom: 3.2rem;
             }
             #product_post_image {
               display: none;

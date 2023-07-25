@@ -8,7 +8,7 @@
 
     <div class="products_main_header_features">
       <div class="products_main_header_feature">
-        <router-link to="/product-post">
+        <router-link :to="{ name: 'ProductPost' }">
           <div class="icon">
             <font-awesome-icon icon="fa-solid fa-plus" />
           </div>
@@ -17,7 +17,7 @@
       </div>
 
       <div class="products_main_header_feature">
-        <router-link to="/">
+        <router-link :to="{ name: 'ProductsManage' }">
           <div class="icon">
             <font-awesome-icon icon="fa-solid fa-pen-to-square" />
           </div>

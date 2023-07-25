@@ -30,9 +30,11 @@
 
 <script setup>
 import { computed } from "vue";
+import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 
 const store = useStore();
+const route = useRoute();
 const props = defineProps({
   type: {
     type: String,
@@ -71,6 +73,10 @@ const movePage = (feature, num = null) => {
     : feature === "next"
     ? nextPage()
     : prevPage();
+
+  if (store.state.isMobile || route.name === "Products") {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 };
 </script>
 

@@ -12,11 +12,36 @@ const routes = [
     name: "Authentication",
     component: () => import("@/views/authentications/AuthenticationView.vue"),
   },
+  {
+    path: "/auth-logIn",
+    name: "LogIn",
+    component: () => import("@/views/authentications/LogInView.vue"),
+  },
+  {
+    path: "/auth-psw-forgot",
+    name: "psw-forgot",
+    component: () => import("@/views/authentications/PswForgotView.vue"),
+  },
+  {
+    path: "/auth-psw-reset",
+    name: "psw-reset",
+    component: () => import("@/views/authentications/PswResetView.vue"),
+  },
+
   /////////////////////////////////////////
   {
     path: "/products",
     name: "Products",
     component: () => import("@/views/products/ProductsView.vue"),
+    beforeEnter: (to, from, next) => {
+      if (from.name === "ProductDetail") {
+        next();
+        return;
+      }
+      store.commit("resetPaginationCurPage", "products");
+      store.commit("resetProductsFilterAndTag");
+      next();
+    },
   },
   {
     path: "/products/:id",
@@ -32,6 +57,11 @@ const routes = [
     path: "/products/products-manage",
     name: "ProductsManage",
     component: () => import("@/views/products/ProductManageView.vue"),
+  },
+  {
+    path: "/products/products-payment",
+    name: "ProductPayment",
+    component: () => import("@/views/products/ProductPayment.vue"),
   },
   /////////////////////////////////////////
   {
@@ -76,6 +106,12 @@ const routes = [
     name: "recruitmentVerifyDetail",
     component: () =>
       import("@/views/recruitments/backside/RecruitmentVerifyDetailView.vue"),
+  },
+  {
+    path: "/recruitments/recruitment-history",
+    name: "recruitmentHistory",
+    component: () =>
+      import("@/views/recruitments/backside/RecruitmentHistoryView.vue"),
   },
   /////////////////////////////////////////
   {
@@ -127,6 +163,10 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
   scrollBehavior(to, from) {
+    if (from.name === "ProductDetail" && to.name === "Products") {
+      return { top: Number(from.query.h) };
+    }
+
     if (from.name === "Copywriting" && to.name === "Recruitments") {
       return { top: Number(from.query.h) };
     }
@@ -135,6 +175,9 @@ const router = createRouter({
 });
 
 router.beforeEach(() => {
+  if (window.innerWidth <= 410) {
+    store.state.isMobile = 1;
+  }
   // 在每次路由跳轉前關閉通知、會員頁面
   store.state.isNotifyVisible = 0;
   store.state.isMemberVisible = 0;

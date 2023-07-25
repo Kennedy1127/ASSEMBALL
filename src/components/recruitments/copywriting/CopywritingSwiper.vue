@@ -1,7 +1,7 @@
 <template>
   <div class="copywriting_swiper">
     <swiper
-      :slidesPerView="4"
+      :slidesPerView="store.state.isMobile ? 1 : 4"
       :spaceBetween="48"
       :loop="true"
       :navigation="{
@@ -144,6 +144,10 @@ const computedCopywritings = computed(() =>
 
 .swiper {
   margin: 0 4rem;
+
+  @media all and (max-width: 420px) {
+    margin: 0 1rem;
+  }
 }
 
 .swiper-button-prev,
@@ -153,7 +157,6 @@ const computedCopywritings = computed(() =>
   padding: 0.5rem;
   border-radius: 50%;
   background-color: var(--primary-blue);
-
   color: #fff;
 
   &::after {
@@ -164,10 +167,18 @@ const computedCopywritings = computed(() =>
 .swiper-button-prev {
   right: initial;
   left: 0;
+
+  @media all and (max-width: 420px) {
+    left: -2rem;
+  }
 }
 
 .swiper-button-next {
   right: 0;
   left: initial;
+
+  @media all and (max-width: 420px) {
+    right: -2rem;
+  }
 }
 </style>

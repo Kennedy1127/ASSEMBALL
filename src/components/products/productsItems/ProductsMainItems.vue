@@ -12,7 +12,7 @@
       </div>
       <div class="products_item_content">
         <div class="products_item_tag">
-          #{{ productTags[item.product_type] }}
+          #{{ productTags[item.product_tag] }}
         </div>
         <div class="products_item_date">
           {{ convertDate(item.product_date) }}
@@ -36,49 +36,48 @@
     </div>
   </div>
 
-  <!-- <ProductsMainPagination :totalPages="totalPages" /> -->
   <PaginationComponentVue :totalPages="computedTotalPages" type="products" />
 </template>
 
 <script setup>
-// import ProductsMainPagination from "@/components/products/productsItems/ProductsMainPagination";
 import PaginationComponentVue from "@/components/utilities/PaginationComponent.vue";
-import productTags from "@/composables/productTags";
-import { computed, onMounted } from "vue";
+import productTags from "@/composables/tables/productTags";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
 const store = useStore();
 const router = useRouter();
 
-onMounted(() => {
-  // 掛載後撈商品數量
-  store.dispatch("getProductsCount");
+// 更新螢幕捲動高度
+const onScroll = (e) => {
+  windowTop.value =
+    window.top.scrollY; /* or: e.target.documentElement.scrollTop */
+};
 
-  // 如果文案陣列長度為0或是文案陣列長度與文案數量不等於，則撈文案資料
-  if (
-    store.state.products.length === 0 ||
-    store.state.products.length !== store.state.productsCount
-  )
-    store.dispatch("getProducts");
+onMounted(() => {
+  window.addEventListener("scroll", onScroll);
 });
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", onScroll);
+});
+
+// 螢幕捲動高度
+const windowTop = ref(window.top.scrollY);
 
 // 呈現商品
 const computedRenderProducts = computed(() => {
   const start = (store.state.productsCurPage - 1) * 9;
   const end = store.state.productsCurPage * 9;
-  return store.state.products.slice(start, end);
+  return store.getters.dateSortedFilteredProducts.slice(start, end);
 });
 
 // 取得總頁數
 const computedTotalPages = computed(() => {
   if (store.state.productsCount === 0) return 1;
-
-  return store.state.productsCount % 9 === 0
-    ? store.state.productsCount > 9
-      ? store.state.productsCount / 9
-      : 1
-    : Math.ceil(store.state.productsCount / 9);
+  const len = store.getters.filteredProducts.length;
+  return len % 9 === 0 ? (len > 9 ? len / 9 : 1) : Math.ceil(len / 9);
 });
 
 // 日期轉換
@@ -100,8 +99,8 @@ const goToProductDetail = (id) => {
   router.push({
     name: "ProductDetail",
     params: { id },
+    query: { h: windowTop.value },
   });
-  window.scrollTo({ top: 0 });
 };
 </script>
 

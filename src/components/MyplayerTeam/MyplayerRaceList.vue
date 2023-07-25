@@ -1,15 +1,18 @@
 <template>
   <section class="myplayer_function_group">
-    <div class="myplayer_function_group_calendar_wrap">
+    <!-- <div class="myplayer_function_group_calendar_wrap">
       <div class="myplayer_function_title_wrap">
         <div class="myplayer_function_rect"></div>
         <h3>賽程表</h3>
       </div>
       <div class="myplayer_function_calendar">
-        <VCalendar class="myplayer_function_calendar_vue vc-header" expanded />
-        <!-- <VDatePicker v-model="date" /> -->
+        <VCalendar
+          class="myplayer_function_calendar_vue vc-header vc-title"
+          expanded
+        />
       </div>
-    </div>
+    </div> -->
+    <MyplayerCalendar />
     <div class="myplayer_function_group_race_wrap">
       <div class="myplayer_function_title_wrap">
         <div class="myplayer_function_rect"></div>
@@ -71,7 +74,11 @@
 </template>
 
 <script>
+import MyplayerCalendar from "@/components/MyplayerTeam/MyplayerCalendar";
 export default {
+  components: {
+    MyplayerCalendar,
+  },
   data() {
     return {
       myplayer_race_list: [
@@ -120,7 +127,7 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss">
+<style lang="scss">
 .myplayer {
   margin: 0 auto;
 }
@@ -131,12 +138,12 @@ export default {
   justify-content: space-between;
   padding-bottom: 8rem;
 }
-.myplayer_function_group_calendar_wrap {
-  width: 47.5%;
-}
-.vc-title {
-  background-color: aqua;
-}
+// .myplayer_function_group_calendar_wrap {
+//   width: 47.5%;
+// }
+// .vc-title {
+//   background-color: aqua;
+// }
 .myplayer_function_title_wrap {
   display: flex;
   justify-content: space-between;
@@ -324,5 +331,133 @@ h3 {
   font-size: 2.5rem;
   color: var(--accent-red);
   font-weight: 700;
+}
+@media screen and (min-width: 1024px) and (max-width: 1200px) {
+  .myplayer_function_race_item_logo1 {
+    width: 4rem;
+    height: 4rem;
+  }
+  .myplayer_function_race_item_logo2 {
+    width: 4rem;
+    height: 4rem;
+  }
+  .myplayer_function_race_list {
+    height: 30rem;
+  }
+  .myplayer_function_race_item_team1 {
+    padding: 1rem 1rem 0rem 1rem;
+  }
+  .myplayer_function_race_item_team2 {
+    padding: 1rem 1rem 0rem 1rem;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .myplayer_function_title_wrap h3 {
+    font-size: 2rem;
+    width: 8rem;
+  }
+  .myplayer_function_race_title_time {
+    font-size: 1rem;
+  }
+  .myplayer_function_race_title_team1 {
+    font-size: 1rem;
+  }
+  .myplayer_function_race_title_team2 {
+    font-size: 1rem;
+  }
+  .myplayer_function_race_item_day {
+    font-size: 1.5rem;
+  }
+  .myplayer_function_race_item_versus {
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+  }
+  .myplayer_function_race_item_colon {
+    font-size: 1.5rem;
+    transform: translateY(10px);
+  }
+  .myplayer_function_race_item_logo1 {
+    width: 4rem;
+    height: 4rem;
+  }
+  .myplayer_function_race_item_logo2 {
+    width: 4rem;
+    height: 4rem;
+  }
+  .myplayer_function_race_list {
+    height: 28rem;
+  }
+  .myplayer_function_race_item_team1 {
+    padding: 1rem 0.5rem 0rem 0.5rem;
+  }
+  .myplayer_function_race_item_team2 {
+    padding: 1rem 0.5rem 0rem 0.5rem;
+  }
+  .myplayer_function_race_item_score1 {
+    font-size: 2rem;
+  }
+  .myplayer_function_race_item_score2 {
+    font-size: 2rem;
+  }
+}
+@media screen and (max-width: 767px) {
+  .myplayer_function_group {
+    display: flex;
+    flex-direction: column;
+  }
+  .myplayer_function_group_race_wrap {
+    width: 100%;
+  }
+  .myplayer_function_title_wrap h3 {
+    font-size: 2rem;
+    width: 8rem;
+  }
+  .myplayer_function_race_title_time {
+    font-size: 1rem;
+  }
+  .myplayer_function_race_title_team1 {
+    font-size: 1rem;
+  }
+  .myplayer_function_race_title_team2 {
+    font-size: 1rem;
+  }
+  .myplayer_function_race_item_day {
+    font-size: 1.5rem;
+  }
+  .myplayer_function_race_item_versus {
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+  }
+  .myplayer_function_race_item_colon {
+    font-size: 1.5rem;
+    transform: translateY(10px);
+  }
+  .myplayer_function_race_item_logo1 {
+    width: 4rem;
+    height: 4rem;
+  }
+  .myplayer_function_race_item_logo2 {
+    width: 4rem;
+    height: 4rem;
+  }
+  .myplayer_function_race_list {
+    height: 28rem;
+  }
+  .myplayer_function_race_item_team1 {
+    padding: 1rem 0.5rem 0rem 0.5rem;
+  }
+  .myplayer_function_race_item_team2 {
+    padding: 1rem 0.5rem 0rem 0.5rem;
+  }
+  .myplayer_function_race_item_score1 {
+    font-size: 2rem;
+  }
+  .myplayer_function_race_item_score2 {
+    font-size: 2rem;
+  }
 }
 </style>

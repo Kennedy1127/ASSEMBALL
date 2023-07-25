@@ -112,115 +112,110 @@
   />
 </template>
 
-<script>
-import CopywritingSubmitApply from "@/components/recruitments/copywriting/CopywritingSubmitApply.vue";
-import CopywritingSwiper from "@/components/recruitments/copywriting/CopywritingSwiper.vue";
+<script setup>
 import roles from "@/composables/tables/roles";
 import exps from "@/composables/tables/exps";
 import roleDesc from "@/composables/tables/roleDesc";
+import CopywritingSubmitApply from "@/components/recruitments/copywriting/CopywritingSubmitApply.vue";
+import CopywritingSwiper from "@/components/recruitments/copywriting/CopywritingSwiper.vue";
+import { computed, onMounted, ref } from "vue";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 
-export default {
-  components: { CopywritingSwiper, CopywritingSubmitApply },
-  props: ["curHeight", "id"],
+const store = useStore();
+const route = useRoute();
 
-  beforeMount() {
-    if (
-      // 如果文案數量為0或是找不到該文案的話，重新撈資料
-      this.$store.state.copywritingsCount === 0 ||
-      this.$store.state.copywritings.find(
-        (copywriting) =>
-          copywriting.copywriting_id === Number(this.$route.params.id)
-      )
-    ) {
-      this.$store.dispatch("getCopywritingsCount");
-      this.$store.dispatch("getCopywritings");
-    }
-  },
+onMounted(() => {
+  if (
+    // 如果文案數量為0或是找不到該文案的話，重新撈資料
+    store.state.copywritingsCount === 0 ||
+    store.state.copywritings.find(
+      (copywriting) => copywriting.copywriting_id === Number(route.params.id)
+    )
+  ) {
+    store.dispatch("getCopywritingsCount");
+    store.dispatch("getCopywritings");
+  }
+});
 
-  data() {
+const defaultCopywriting = ref({
+  copywriting_role: 5,
+  copywriting_title: "尋找新星！現正招募有潛力的球員",
+  copywriting_exp: 1,
+  copywriting_area: "花蓮縣",
+  copywriting_date: "2023-04-21T04:10:58.291Z",
+  copywriting_team_name: "勇士隊",
+  copywriting_team_icon: "https://picsum.photos/200/300",
+  copywriting_team_title: "熱愛棒球：生活在球場上的我們",
+  copywriting_team_intro:
+    "喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵，喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵",
+});
+
+const overlayIsOpen = ref(false);
+
+const computedCopywriting = computed(() => {
+  const data = store.state.copywritings.find(
+    (copywriting) => copywriting.copywriting_id === route.params.id
+  );
+
+  if (data) {
+    const {
+      copywriting_role,
+      copywriting_title,
+      copywriting_exp,
+      copywriting_area,
+      copywriting_date,
+      copywriting_team_name,
+      copywriting_team_icon,
+      copywriting_team_title,
+      copywriting_team_intro,
+    } = data;
+
     return {
-      defaultCopywriting: {
-        copywriting_role: 5,
-        copywriting_title: "尋找新星！現正招募有潛力的球員",
-        copywriting_exp: 1,
-        copywriting_area: "花蓮縣",
-        copywriting_date: "2023-04-21T04:10:58.291Z",
-        copywriting_team_name: "勇士隊",
-        copywriting_team_icon: "https://picsum.photos/200/300",
-        copywriting_team_title: "熱愛棒球：生活在球場上的我們",
-        copywriting_team_intro:
-          "喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵，喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵",
-      },
-
-      overlayIsOpen: false,
+      copywriting_role,
+      copywriting_title,
+      copywriting_exp,
+      copywriting_area,
+      copywriting_date,
+      copywriting_team_name,
+      copywriting_team_icon,
+      copywriting_team_title,
+      copywriting_team_intro,
     };
-  },
+  }
+  return defaultCopywriting.value;
+});
 
-  computed: {
-    computedCopywriting() {
-      const data = this.$store.state.copywritings.find(
-        (copywriting) =>
-          copywriting.copywriting_id === Number(this.$route.params.id)
-      );
+const convertRole = (role) => {
+  if (role || role === 0) return roles[role + 1].label;
+};
 
-      if (data) {
-        const {
-          copywriting_role,
-          copywriting_title,
-          copywriting_exp,
-          copywriting_area,
-          copywriting_date,
-          copywriting_team_name,
-          copywriting_team_icon,
-          copywriting_team_title,
-          copywriting_team_intro,
-        } = data;
+const convertExp = (exp) => {
+  if (exp || exp === 0) return exps[exp];
+};
 
-        return {
-          copywriting_role,
-          copywriting_title,
-          copywriting_exp,
-          copywriting_area,
-          copywriting_date,
-          copywriting_team_name,
-          copywriting_team_icon,
-          copywriting_team_title,
-          copywriting_team_intro,
-        };
-      }
+const convertRoleDesc = (role) => {
+  if (role || role === 0) return roleDesc[role].desc;
+};
 
-      return this.defaultCopywriting;
-    },
-  },
-
-  methods: {
-    convertRole(role) {
-      if (role || role === 0) return roles[role + 1].label;
-    },
-
-    convertExp(exp) {
-      if (exp || exp === 0) return exps[exp];
-    },
-
-    convertRoleDesc(role) {
-      if (role || role === 0) return roleDesc[role].desc;
-    },
-
-    convertDate(copywritingDate) {
-      if (!copywritingDate) return;
-      const date = new Date(copywritingDate);
-      return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(
-        2,
-        "0"
-      )}.${String(date.getDate()).padStart(2, "0")}`;
-    },
-  },
+const convertDate = (copywritingDate) => {
+  if (!copywritingDate) return;
+  const date = new Date(copywritingDate);
+  return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}.${String(date.getDate()).padStart(2, "0")}`;
 };
 </script>
 
 <style scoped lang="scss">
 .copywriting.wrapper {
-  padding-top: 3rem;
+  margin-top: 6rem;
+  padding-top: 6rem;
+
+  @media all and (max-width: 420px) {
+    padding: 2rem 2rem 0;
+  }
 }
 .copywriting {
   color: var(--primary-blue);
@@ -228,6 +223,10 @@ export default {
     width: 1rem;
     height: 4rem;
     background-color: var(--primary-blue);
+
+    @media all and (max-width: 420px) {
+      height: 3rem;
+    }
   }
 
   &_title {
@@ -237,15 +236,23 @@ export default {
 
     font-size: 2.5rem;
     font-weight: 700;
+
+    @media all and (max-width: 420px) {
+      gap: 1.5rem;
+      font-size: 1.5rem;
+    }
   }
 
   &_header {
-    margin-top: 8rem;
     padding-bottom: 3rem;
     border-bottom: 1px solid var(--primary-blue);
     display: flex;
     font-size: 1.5rem;
     font-weight: 500;
+
+    @media all and (max-width: 420px) {
+      flex-direction: column;
+    }
 
     &_info {
       width: 30%;
@@ -254,8 +261,19 @@ export default {
       flex-direction: column;
       gap: 3rem;
 
+      @media all and (max-width: 420px) {
+        width: 100%;
+        gap: 0;
+      }
+
       &_date {
         font-weight: 400;
+
+        @media all and (max-width: 420px) {
+          font-size: 1.25rem;
+          padding-left: 2.5rem;
+          margin: 0.5rem 0 2rem;
+        }
       }
 
       &_exp,
@@ -264,13 +282,26 @@ export default {
         align-items: center;
         gap: 1.5rem;
 
+        @media all and (max-width: 420px) {
+          font-size: 1.25rem;
+        }
+
         &_block {
           width: 40px;
           height: 40px;
+
+          @media all and (max-width: 420px) {
+            width: 20px;
+            height: 20px;
+          }
         }
       }
 
       &_exp {
+        @media all and (max-width: 420px) {
+          margin-bottom: 1.5rem;
+        }
+
         &_block {
           background-color: var(--accent-pink);
         }
@@ -289,8 +320,21 @@ export default {
       border-left: 1px solid var(--primary-blue);
       border-right: 1px solid var(--primary-blue);
 
+      @media all and (max-width: 420px) {
+        width: 100%;
+        margin-top: 4rem;
+        padding: 2rem 0;
+        border: none;
+        border-top: 1px solid var(--primary-blue);
+        border-bottom: 1px solid var(--primary-blue);
+      }
+
       &_text {
         margin-top: 3rem;
+
+        @media all and (max-width: 420px) {
+          font-size: 1.25rem;
+        }
       }
     }
 
@@ -300,6 +344,10 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
+
+      @media all and (max-width: 420px) {
+        margin-top: 3rem;
+      }
 
       &_icon {
         width: 150px;
@@ -315,12 +363,20 @@ export default {
       &_name {
         margin-top: 2rem;
         font-weight: 400;
+
+        @media all and (max-width: 420px) {
+          margin-bottom: 2rem;
+        }
       }
 
       &_btn {
         margin-top: auto;
+        width: 100%;
 
         a {
+          display: block;
+          margin: 0 auto;
+
           width: 200px;
           height: 60px;
           border-radius: 100px;
@@ -329,10 +385,20 @@ export default {
           font-weight: 500;
           color: #fff;
           background-color: var(--primary-blue);
+          transition: all 0.09s ease-in-out;
 
           display: flex;
           align-items: center;
           justify-content: center;
+
+          @media all and (max-width: 420px) {
+            width: 80%;
+            margin: 0 auto;
+          }
+
+          &:hover {
+            background-color: var(--secondary-blue-1);
+          }
         }
       }
     }
@@ -349,6 +415,13 @@ export default {
 
     position: relative;
 
+    @media all and (max-width: 420px) {
+      margin-top: 0;
+      padding-top: 3rem;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
     &_intro {
       &_title {
         margin-top: 4rem;
@@ -359,12 +432,30 @@ export default {
         font-weight: 500;
 
         line-height: 1.7;
+
+        @media all and (max-width: 420px) {
+          margin: 1.5rem 0 2rem;
+          font-size: 1rem;
+        }
       }
 
       &_text {
         font-size: 1.25rem;
         font-weight: 400;
         line-height: 1.7;
+
+        @media all and (max-width: 420px) {
+          font-size: 1rem;
+        }
+      }
+    }
+
+    &_pic {
+      @media all and (max-width: 420px) {
+        img {
+          width: 100%;
+          height: 100%;
+        }
       }
     }
 
@@ -379,11 +470,21 @@ export default {
         height: 60px;
         border-radius: 100px;
         background-color: var(--primary-blue);
+        transition: all 0.09s ease-in-out;
 
         font-family: "Noto Sans TC", sans-serif;
         font-size: 1.5rem;
         font-weight: 700;
         color: #fff;
+
+        @media all and (max-width: 420px) {
+          width: 100%;
+          margin-bottom: 3rem;
+        }
+
+        &:hover {
+          background-color: var(--secondary-blue-1);
+        }
       }
     }
 
@@ -402,8 +503,17 @@ export default {
         font-size: 1.5rem;
         color: var(--warning-red);
 
+        @media all and (max-width: 420px) {
+          font-size: 1rem;
+          gap: 0.5rem;
+        }
+
         .warning-icon {
           font-size: 2rem;
+
+          @media all and (max-width: 420px) {
+            font-size: 1.5rem;
+          }
         }
       }
     }
@@ -412,8 +522,16 @@ export default {
   &_footer {
     margin: 6rem 0;
 
+    @media all and (max-width: 420px) {
+      margin: 3rem 0;
+    }
+
     &_carousel {
       margin-top: 6rem;
+
+      @media all and (max-width: 420px) {
+        margin-top: 4rem;
+      }
     }
   }
 }
