@@ -13,7 +13,7 @@
         <div class="icon">
           <font-awesome-icon icon="fa-solid fa-chevron-right" />
         </div>
-        <span>職缺</span>
+        <span>管理職缺</span>
       </section>
 
       <div class="recruitment_post_main_title">
@@ -22,6 +22,7 @@
       </div>
       <div class="recruitment_post_main_filter">
         <!--RecruitmentSearchbar.vue  -->
+
         <RecruitmentSearchbar />
       </div>
       <div class="recruitment_post_main_table">
@@ -51,13 +52,17 @@ export default {
 
 <style lang="scss">
 .recruitment_post {
+  // 距離navbar
+  // position: relative;
+  // top: 6rem;
+  // 距離navbar
   display: flex;
 
   // &_aside{
 
   // }
   &_breadcrumb {
-    // margin-bottom: 4rem;
+    margin-bottom: 4rem;
     display: flex;
     gap: 1.5rem;
 
@@ -89,7 +94,6 @@ export default {
       }
     }
     &_filter {
-      width: 50%;
     }
     &_page {
       margin-right: 0;

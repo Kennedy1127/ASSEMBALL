@@ -7,18 +7,17 @@
     </section>
     <main class="recruitment_post_main">
       <section class="recruitment_post_breadcrumb">
-        <span>
-          <router-link to="/recruitment">返回</router-link>
-        </span>
         <div class="icon">
-          <font-awesome-icon icon="fa-solid fa-chevron-right" />
+          <font-awesome-icon icon="fa-solid fa-chevron-left" />
         </div>
-        <span>verify</span>
+        <span>
+          <router-link :to="{ name: 'recruitmentVerify' }">返回</router-link>
+        </span>
       </section>
 
       <div class="recruitment_post_main_title">
         <div class="block"></div>
-        <div>recruitmentVerifyDetail</div>
+        <div>審核應徵</div>
       </div>
       <div class="recruitment_post_main_content">
         <div class="recruitment_post_main_content_entire">
@@ -112,7 +111,7 @@ export default {
 .recruitment_post {
   display: flex;
   &_breadcrumb {
-    // margin-bottom: 4rem;
+    margin-bottom: 4rem;
     display: flex;
     gap: 1.5rem;
 
