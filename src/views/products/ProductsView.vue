@@ -13,8 +13,8 @@
 
       <section class="products_content">
         <aside class="products_aside">
-          <ProductsAsideSearch />
-          <ProductsAsideTags />
+          <ProductsAsideSearch @filterProducts="goToTop" />
+          <ProductsAsideTags @filterProducts="goToTop" />
         </aside>
 
         <main class="products_main">
@@ -47,7 +47,7 @@ onMounted(() => {
   // 掛載後撈商品數量
   store.dispatch("getProductsCount");
 
-  // 如果文案陣列長度為0或是商品陣列長度與商品數量不等於，則撈商品資料
+  // 如果商品陣列長度為0或是商品陣列長度與商品數量不等於，則撈商品資料
   if (
     store.state.products.length === 0 ||
     store.state.products.length !== store.state.productsCount
@@ -56,6 +56,10 @@ onMounted(() => {
 });
 
 const isNoResults = computed(() => store.getters.filteredProducts.length === 0);
+
+const goToTop = () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
 </script>
 
 <style lang="scss">

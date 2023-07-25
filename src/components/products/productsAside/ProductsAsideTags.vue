@@ -26,12 +26,15 @@ import { ref } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
+const emit = defineEmits(["filterProducts"]);
 
 const tags = ref({ ...productTags });
 
 const filterProducts = (type) => {
   store.commit("selectProductsTag", Number(type));
   store.commit("resetPaginationCurPage", "products");
+
+  emit("filterProducts");
 };
 </script>
 

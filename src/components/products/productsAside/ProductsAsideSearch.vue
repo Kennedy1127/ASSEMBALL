@@ -36,6 +36,7 @@ import { ref } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
+const emit = defineEmits(["filterProducts"]);
 
 const searchText = ref(store.state.selectedProductsText);
 const selectedDate = ref(store.state.selectedProductsDate);
@@ -46,6 +47,8 @@ const filterProducts = () => {
     selectedDate: selectedDate.value,
   });
   store.commit("resetPaginationCurPage", "products");
+
+  emit("filterProducts");
 };
 </script>
 

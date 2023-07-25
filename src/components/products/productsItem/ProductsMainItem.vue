@@ -55,6 +55,8 @@
 
 <script>
 export default {
+  props: ["productItemData"],
+
   data() {
     return {
       productDetail: {

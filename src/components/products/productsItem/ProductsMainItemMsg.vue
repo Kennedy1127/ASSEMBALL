@@ -76,6 +76,7 @@
 
 <script>
 export default {
+  props: ["productMsgData"],
   data() {
     return {
       productMessage: {
