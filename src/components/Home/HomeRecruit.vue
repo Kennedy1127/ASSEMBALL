@@ -9,7 +9,7 @@
     </div>
     <div class="home_recruit_title_text">
       <h2>
-        <router-link to="/">球隊招募</router-link>
+        <router-link :to="{ name: 'Recruitments' }">球員招募</router-link>
       </h2>
       <p>發掘你的潛力，成為球隊的關鍵一員！</p>
     </div>
@@ -43,7 +43,13 @@
               資歷或經驗：<span>{{ data.experience }}</span>
             </p>
           </div>
-          <button>
+          <button
+            @click="
+              this.$router.push(
+                `/recruitments/copywriting/${data.copywriting_id}`
+              )
+            "
+          >
             <Icon type="ios-arrow-dropright-circle" />{{ data.button }}
           </button>
         </div>
@@ -95,6 +101,7 @@ export default defineComponent({
         major: "打擊",
         experience: "無",
         button: "更多",
+        copywriting_id: "64bce68aa6e78ad85526de2b",
       },
       {
         imgUrl: require("@/assets/images/index/team_logo_02.png"),
@@ -104,6 +111,7 @@ export default defineComponent({
         major: "內野手",
         experience: "學校比賽",
         button: "更多",
+        copywriting_id: "64bce68a1de82a6963b4a688",
       },
       {
         imgUrl: require("@/assets/images/index/team_logo_03.png"),
@@ -113,6 +121,7 @@ export default defineComponent({
         major: "外野手",
         experience: "大學棒球",
         button: "更多",
+        copywriting_id: "64bce68a1bce9bfeaf97952a",
       },
       {
         imgUrl: require("@/assets/images/index/team_logo_04.png"),
@@ -122,6 +131,7 @@ export default defineComponent({
         major: "游擊手",
         experience: "學校比賽",
         button: "更多",
+        copywriting_id: "64bce68abb20cfcf7a193bf8",
       },
       {
         imgUrl: require("@/assets/images/index/team_logo_05.png"),
@@ -131,6 +141,7 @@ export default defineComponent({
         major: "捕手",
         experience: "小聯盟",
         button: "更多",
+        copywriting_id: "64bce68abb20cfcf7a193bf8",
       },
       {
         imgUrl: require("@/assets/images/index/team_logo_06.png"),
@@ -140,6 +151,7 @@ export default defineComponent({
         major: "打擊",
         experience: "青少年聯盟",
         button: "更多",
+        copywriting_id: "64bce68abb20cfcf7a193bf8",
       },
       {
         imgUrl: require("@/assets/images/index/team_logo_07.png"),
@@ -149,9 +161,15 @@ export default defineComponent({
         major: "捕手",
         experience: "大學棒球",
         button: "更多",
+        copywriting_id: "64bce68abb20cfcf7a193bf8",
       },
     ],
   }),
+  methods: {
+    goToRecruitments(tag) {
+      this.$router.push({ name: "recruitments", query: { tag } });
+    },
+  },
 });
 </script>
 

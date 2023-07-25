@@ -13,7 +13,7 @@
         <div class="icon">
           <font-awesome-icon icon="fa-solid fa-chevron-right" />
         </div>
-        <span>職缺</span>
+        <span>管理職缺</span>
       </section>
 
       <div class="recruitment_post_main_title">
@@ -30,34 +30,59 @@
       <div class="recruitment_post_main_page">
         <ProductsMainPagination />頁碼待補
       </div>
+      <PaginationComponent
+        :totalPages="computedTotalPages"
+        type="BacksideRecruit"
+      />
     </main>
   </div>
 </template>
 
-<script>
+<script setup>
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
 import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
 import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";
 import ProductsMainPagination from "@/components/products/productsItems/ProductsMainPagination";
-export default {
-  components: {
-    RecruitmentPostAside,
-    RecruitmentSearchbar,
-    RecruitmentTable,
-    ProductsMainPagination,
-  },
-};
+import PaginationComponent from "@/components/utilities/PaginationComponent.vue";
+import { useStore } from "vuex";
+import { computed, onMounted } from "vue";
+
+const store = useStore();
+onMounted(() => {
+  store.dispatch("getManageCopywritings"); //用index.js的 action 要用dispatch
+});
+const computedTotalPages = computed(() => {
+  // return 20;
+  if (store.state.Managecopywritings.length === 0) return 1;
+
+  const len = store.state.ManageCopywritings.length; //state :return的東西
+  return store.state.isMobile
+    ? len % 4 === 0
+      ? len > 4
+        ? len / 4
+        : 1
+      : Math.ceil(len / 4)
+    : len % 5 === 0
+    ? len > 5
+      ? len / 5
+      : 1
+    : Math.ceil(len / 5);
+});
 </script>
 
 <style lang="scss">
 .recruitment_post {
+  // 距離navbar
+  // position: relative;
+  // top: 6rem;
+  // 距離navbar
   display: flex;
 
   // &_aside{
 
   // }
   &_breadcrumb {
-    // margin-bottom: 4rem;
+    margin-bottom: 4rem;
     display: flex;
     gap: 1.5rem;
 
@@ -89,7 +114,6 @@ export default {
       }
     }
     &_filter {
-      width: 50%;
     }
     &_page {
       margin-right: 0;
