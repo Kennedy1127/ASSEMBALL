@@ -34,17 +34,17 @@
     </div>
     <div class="product_main_detail_content">
       <div class="product_main_detail_content_title">
-        <span>{{ productDetail.Title }}</span>
+        <span>{{ renderProductTitle }}</span>
       </div>
       <div
+        v-for="(item, index) in renderProductItems"
+        :key="index"
         class="product_main_detail_content_body"
-        v-for="item in productDetailBody"
-        :key="item"
       >
-        {{ item.title }}{{ item.text }}
+        {{ item.title }} {{ item.text }}
       </div>
       <div class="detail_footer">
-        <div class="detail_price">{{ productDetail.Price }}</div>
+        <div class="detail_price">NT$ {{ renderProductPrice }}</div>
         <router-link :to="{ name: 'ProductPayment' }">
           <button>我要購買</button>
         </router-link>
@@ -53,26 +53,48 @@
   </section>
 </template>
 
-<script>
-export default {
-  props: ["productItemData"],
+<script setup>
+import productTags from "@/composables/tables/productTags";
+import { computed } from "vue";
 
-  data() {
-    return {
-      productDetail: {
-        Title: "棒球界LV精品球棒",
-        Price: "NT$4,500",
-      },
-      productDetailBody: [
-        { title: "刊登日期 : ", text: "2023/07/06" },
-        { title: "類別 : ", text: "球棒" },
-        { title: "刊登者 : ", text: "棒球專家小羊" },
-        { title: "縣市 : ", text: "新北市" },
-        { title: "Email : ", text: "hawhaw052@gmail.com" },
-        { title: "Phone : ", text: "0953299481" },
-      ],
-    };
+const props = defineProps({
+  productItemData: {
+    type: Object,
+    required: true,
   },
+});
+
+console.log(props.productItemData);
+
+const renderProductTitle = computed(() => props.productItemData.product_title);
+
+const renderProductItems = computed(() => [
+  {
+    title: "刊登日期 : ",
+    text: convertDate(props.productItemData.product_date),
+  },
+  { title: "類別 : ", text: productTags[props.productItemData.product_tag] },
+  { title: "刊登者 : ", text: props.productItemData.product_seller_name },
+  { title: "縣市 : ", text: props.productItemData.product_area },
+  { title: "Email : ", text: props.productItemData.product_email },
+  { title: "Phone : ", text: props.productItemData.product_phone },
+]);
+
+const renderProductPrice = computed(() =>
+  convertPrice(props.productItemData.product_price)
+);
+
+const convertDate = (copywritingDate) => {
+  if (!copywritingDate) return;
+  const date = new Date(copywritingDate);
+  return `${date.getFullYear()} / ${String(date.getMonth() + 1).padStart(
+    2,
+    "0"
+  )} / ${String(date.getDate()).padStart(2, "0")}`;
+};
+
+const convertPrice = (price) => {
+  return price.toLocaleString();
 };
 </script>
 
