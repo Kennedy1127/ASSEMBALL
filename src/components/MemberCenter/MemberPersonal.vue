@@ -6,51 +6,64 @@
       </div>
     </div>
     <div class="MemberPersonal_member">
-      <div class="MemberPersonal_member_title">個人資料</div>
+      <div class="MemberPersonal_member_title">會員資料</div>
     </div>
     <form
       action=""
       method="post"
       name="personalInformation"
       class="MemberPersonal_form"
+      @submit.prevent="submitForm"
     >
       <!-- 會員頭像 -->
       <div class="MemberPersonal_form_pic">
         <div class="MemberPersonal_form_pic_btn">
+          <img :src="avatar" alt="MemberPersonal_form_pic" />
           <label for="member_pic"
-            ><img
-              src="~@/assets/images/MemberCenter/MemberCenter_Personal_pic.svg"
-              alt="MemberCenter_Personal_pic"
-            />上傳頭像
-            <input type="file" id="member_pic" />
-          </label>
+            ><span><font-awesome-icon icon="fa-solid fa-plus" /></span>上傳頭像
+            <input type="file" id="member_pic" @change="onfile"
+          /></label>
         </div>
       </div>
+      <!-- 姓氏 只能輸入1-5個中文字 -->
       <div class="MemberPersonal_form_lastname">
-        <label for="lastname">姓氏：</label>
+        <label for="lastname"><span>*</span>姓氏：</label>
         <input
           type="text"
           name="member_lastname"
           id="lastname"
-          placeholder="請輸入姓氏"
+          placeholder="請輸入中文姓氏"
+          pattern="^[\u4E00-\u9FA5]{1,5}$"
+          v-model="lastname"
+          minlength="1"
+          maxlength="5"
+          required
         />
       </div>
+      <!-- 名字 只能輸入1-5個中文字 -->
       <div class="MemberPersonal_form_name">
-        <label for="name">名字：</label>
+        <label for="name"><span>*</span>名字：</label>
         <input
           type="text"
           name="member_name"
           id="name"
-          placeholder="請輸入名字"
+          placeholder="請輸入中文名字"
+          pattern="^[\u4E00-\u9FA5]{1,5}$"
+          v-model="name"
+          minlength="1"
+          maxlength="5"
+          required
         />
       </div>
       <div class="MemberPersonal_form_email">
-        <label for="email">信箱：</label>
+        <label for="email"><span>*</span>信箱：</label>
         <input
-          type="text"
+          type="email"
           name="member_email"
           id="email"
           placeholder="請輸入電子信箱"
+          v-model="email"
+          required
         />
       </div>
       <!-- //地區篩選 -->
@@ -60,25 +73,52 @@
           :model-value="modelValue"
           @on-change="onChange"
           :placeholder="$props.placeholder"
+          v-model="region"
+          required
         >
-          <Option v-for="item in items" :value="item.value" :key="item.value">{{
-            item.label
-          }}</Option>
+          <Option
+            v-for="item in items"
+            :value="item.value"
+            :key="item.value"
+            required
+            >{{ item.label }}</Option
+          >
         </Select>
       </div>
-
+      <!-- 經歷 -->
       <div class="MemberPersonal_form_experience">
         <div class="MemberPersonal_form_experience_nood">
-          <input type="radio" name="experience" value="初新者" id="nood" />
-          <label for="nood">初新者</label>
+          <input
+            type="radio"
+            name="experience"
+            value="初心者"
+            id="experience[0]"
+            v-model="experience"
+            required
+          />
+          <label for="experience[0]">初心者</label>
         </div>
         <div class="MemberPersonal_form_experience_new">
-          <input type="radio" name="experience" value="新手" id="new" />
-          <label for="new">新手</label>
+          <input
+            type="radio"
+            name="experience"
+            value="新手"
+            id="experience[1]"
+            v-model="experience"
+            required
+          />
+          <label for="experience[1]">新手</label>
         </div>
         <div class="MemberPersonal_form_experience_rookie">
-          <input type="radio" name="experience" value="老手" id="rookie" />
-          <label for="rookie">老手</label>
+          <input
+            type="radio"
+            name="experience"
+            value="老手"
+            id="experience[2]"
+            v-model="experience"
+            required
+          />
+          <label for="experience[2]">老手</label>
         </div>
       </div>
       <div class="MemberPersonal_form_btn">
@@ -97,11 +137,20 @@ export default {
 
   data() {
     return {
+      // 表單資料
+      avatar: require("@/assets/images/icons/default_avatar.svg"),
+      lastname: "",
+      name: "",
+      email: "",
+      region: "",
+      experience: [],
+      ////////////////////
       roles,
       area,
     };
   },
 
+  //地區下拉選擇
   computed: {
     items() {
       return this.$props.type === "role" ? [...this.roles] : [...this.area];
@@ -109,11 +158,43 @@ export default {
   },
 
   methods: {
+    //地區篩選
     onChange(e) {
       this.$emit("update:modelValue", e);
     },
     returnPage() {
       this.$emit("return_page");
+    },
+
+    //圖片設定
+    onfile(event) {
+      this.file = event.target.files[0];
+      let filereader = new FileReader();
+      filereader.readAsDataURL(this.file);
+      filereader.addEventListener("load", () => {
+        this.avatar = filereader.result;
+        console.warn(this.avatar);
+      });
+    },
+
+    //提交表單
+    submitForm() {
+      alert("會員資料提交成功！");
+      // 表單資料確認
+      console.log("會員頭貼", this.avatar);
+      console.log("姓氏", this.lastname);
+      console.log("名字", this.name);
+      console.log("信箱", this.email);
+      console.log("地區", this.region);
+      console.log("經歷", this.experience);
+
+      //提交後重置表單資料
+      this.avatar = require("@/assets/images/icons/default_avatar.svg");
+      this.lastname = "";
+      this.name = "";
+      this.email = "";
+      this.region = "";
+      this.experience = [];
     },
   },
 };
@@ -239,19 +320,24 @@ export default {
       padding-top: 1rem;
       &_btn {
         padding: 2rem 0;
+        display: flex;
+        flex-direction: column;
+        & img {
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+        }
         & label {
           display: flex;
-          flex-direction: column;
           text-align: center;
           color: var(--secondary-blue-1);
+          padding: 0.5rem;
+          margin-top: 1rem;
+          font-weight: 500;
           border: 2px dashed var(--secondary-blue-1);
-          padding: 0 0.5rem;
-          padding-bottom: 1rem;
           cursor: pointer;
-          & img {
-            padding: 1rem;
-            padding-left: 1.5rem;
-            padding-top: 1.8rem;
+          & span {
+            padding-right: 0.5rem;
           }
           & input {
             display: none;
@@ -271,6 +357,9 @@ export default {
         color: var(--secondary-gray-1);
         font-weight: 400;
         padding-bottom: 0.5rem;
+        & span {
+          color: var(--accent-red);
+        }
       }
       & input {
         border: none;
@@ -293,6 +382,9 @@ export default {
         color: var(--secondary-gray-1);
         font-weight: 400;
         padding-bottom: 0.5rem;
+        & span {
+          color: var(--accent-red);
+        }
       }
       & input {
         border: none;
@@ -315,6 +407,9 @@ export default {
         color: var(--secondary-gray-1);
         font-weight: 400;
         padding-bottom: 0.5rem;
+        & span {
+          color: var(--accent-red);
+        }
       }
       & input {
         border: none;

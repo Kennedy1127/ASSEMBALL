@@ -16,7 +16,7 @@
               ><font-awesome-icon
                 icon="fa-solid fa-user"
                 style="color: #f87171" /></span
-            >個人資料
+            >會員資料
           </div>
         </li>
         <li>
