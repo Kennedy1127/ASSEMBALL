@@ -53,6 +53,7 @@
         color: var(--primary-blue);
         background-color: var(--pale-white);
         position: absolute;
+        z-index: 999;
         bottom: 0.5rem;
         right: 0.5rem;
         cursor: pointer;
@@ -64,6 +65,61 @@
         text-align: center;
       }
     }
+  }
+}
+@media screen and (min-width: 1024px) and (max-width: 1200px) {
+  .myplayer_banner {
+    height: 80vh;
+  }
+  .myplayer_banner h1 {
+    font-size: 5rem;
+  }
+  .myplayer_banner_text h2 {
+    font-size: 1rem;
+  }
+  .myplayer_banner_text {
+    padding: 4rem 6rem;
+  }
+  .myplayer_banner_text_edit {
+    font-size: 1.5rem;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .myplayer_banner {
+    height: 80vh;
+  }
+  .myplayer_banner h1 {
+    font-size: 3rem;
+  }
+  .myplayer_banner_text h2 {
+    font-size: 1rem;
+  }
+  .myplayer_banner_text {
+    padding: 4rem 6rem;
+    width: 60%;
+  }
+  .myplayer_banner_text_edit {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+}
+@media screen and (max-width: 767px) {
+  .myplayer_banner {
+    height: 80vh;
+  }
+  .myplayer_banner h1 {
+    font-size: 3rem;
+  }
+  .myplayer_banner_text h2 {
+    font-size: 1rem;
+  }
+  .myplayer_banner_text {
+    padding: 4rem;
+    width: 60%;
+  }
+  .myplayer_banner_text_edit {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
   }
 }
 </style>

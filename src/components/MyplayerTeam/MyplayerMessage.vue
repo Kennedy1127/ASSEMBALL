@@ -189,22 +189,22 @@ export default {
         }
 
         .myplayer_message_avatar_wrap {
-          width: 200px;
+          width: 12.5rem;
           position: absolute;
           bottom: 100%;
           right: calc(50% - 100px);
           transform: translateY(50%);
 
           .myplayer_message_avatar {
-            width: 200px;
-            height: 200px;
+            width: 12.5rem;
+            height: 12.5rem;
             border-radius: 50%;
             // background-image: url(../assets/images/myplayer_team/myplayer_card/player_1.jpg);
             background-repeat: no-repeat;
             background-size: cover;
           }
           .myplayer_message_name {
-            width: 200px;
+            width: 12.5rem;
             font-size: 2rem;
             font-weight: 700;
             color: var(--primary-blue);
@@ -214,7 +214,7 @@ export default {
         }
         .myplayer_message_area_content_wrap {
           width: 80%;
-          margin: auto;
+          margin: 0 auto;
           padding-top: 10rem;
           // border: 1px solid black;
           .myplayer_message_area_title {
@@ -260,6 +260,217 @@ export default {
         }
       }
     }
+  }
+}
+@media screen and (min-width: 1024px) and (max-width: 1200px) {
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_area_card
+    .myplayer_message_avatar_wrap
+    .myplayer_message_name {
+    width: 10.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    text-align: center;
+    padding-top: 2rem;
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_area_card
+    .myplayer_message_avatar_wrap {
+    width: 10.5rem;
+    position: absolute;
+    bottom: 100%;
+    right: calc(50% - 5.25rem);
+    transform: translateY(50%);
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_area_card
+    .myplayer_message_avatar_wrap
+    .myplayer_message_avatar {
+    width: 10.5rem;
+    height: 10.5rem;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_area_card
+    .myplayer_message_area_more_wrap
+    .myplayer_message_area_more {
+    margin-right: 0.5rem;
+  }
+  .myplayer_message_area {
+    padding: 3rem;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .myplayer_message_area {
+    padding: 2.5rem;
+  }
+  .myplayer_message_area .myplayer_message_title_wrap {
+    width: 10rem;
+  }
+  .myplayer_message_area
+    .myplayer_message_title_wrap
+    .myplayer_message_area_title {
+    font-size: 2rem;
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_area_card
+    .myplayer_message_avatar_wrap
+    .myplayer_message_name {
+    width: 10.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    text-align: center;
+    padding-top: 1.5rem;
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_area_card
+    .myplayer_message_avatar_wrap {
+    width: 10.5rem;
+    position: absolute;
+    bottom: 100%;
+    right: calc(50% - 5.25rem);
+    transform: translateY(50%);
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_area_card
+    .myplayer_message_avatar_wrap
+    .myplayer_message_avatar {
+    width: 10.5rem;
+    height: 10.5rem;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_area_card
+    .myplayer_message_area_more_wrap
+    .myplayer_message_area_more {
+    margin-right: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_area_card {
+    padding: 1rem;
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_more_wrap
+    .myplayer_message_more_group {
+    width: 12rem;
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_more_wrap
+    .myplayer_message_more {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .myplayer_message_area {
+    padding: 2rem;
+  }
+  .myplayer_message_area_content .myplayer_message_area_card_wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .myplayer_message_area .myplayer_message_title_wrap {
+    width: 10rem;
+  }
+  .myplayer_message_area
+    .myplayer_message_title_wrap
+    .myplayer_message_area_title {
+    font-size: 2rem;
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_area_card
+    .myplayer_message_avatar_wrap
+    .myplayer_message_name {
+    width: 10.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    text-align: center;
+    padding-top: 1.5rem;
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_area_card
+    .myplayer_message_avatar_wrap {
+    width: 10.5rem;
+    position: absolute;
+    bottom: 100%;
+    right: calc(50% - 5.25rem);
+    transform: translateY(50%);
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_area_card
+    .myplayer_message_avatar_wrap
+    .myplayer_message_avatar {
+    width: 10.5rem;
+    height: 10.5rem;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_area_card
+    .myplayer_message_area_more_wrap
+    .myplayer_message_area_more {
+    margin-right: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_area_card {
+    padding: 1rem;
+    width: 100%;
+    &:nth-child(even) {
+      // margin-top: 2.5rem;
+      position: relative;
+      top: 0rem;
+    }
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_more_wrap
+    .myplayer_message_more_group {
+    width: 12rem;
+    padding: 1rem 0.5rem;
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_more_wrap {
+    width: 50%;
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_more_wrap
+    .myplayer_message_more {
+    font-size: 1rem;
   }
 }
 </style>

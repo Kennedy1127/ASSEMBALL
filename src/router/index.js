@@ -12,6 +12,22 @@ const routes = [
     name: "Authentication",
     component: () => import("@/views/authentications/AuthenticationView.vue"),
   },
+  {
+    path: "/auth-logIn",
+    name: "LogIn",
+    component: () => import("@/views/authentications/LogInView.vue"),
+  },
+  {
+    path: "/auth-psw-forgot",
+    name: "psw-forgot",
+    component: () => import("@/views/authentications/PswForgotView.vue"),
+  },
+  {
+    path: "/auth-psw-reset",
+    name: "psw-reset",
+    component: () => import("@/views/authentications/PswResetView.vue"),
+  },
+
   /////////////////////////////////////////
   {
     path: "/products",
@@ -90,6 +106,12 @@ const routes = [
     name: "recruitmentVerifyDetail",
     component: () =>
       import("@/views/recruitments/backside/RecruitmentVerifyDetailView.vue"),
+  },
+  {
+    path: "/recruitments/recruitment-history",
+    name: "recruitmentHistory",
+    component: () =>
+      import("@/views/recruitments/backside/RecruitmentHistoryView.vue"),
   },
   /////////////////////////////////////////
   {

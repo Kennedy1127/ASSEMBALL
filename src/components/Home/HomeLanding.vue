@@ -51,7 +51,7 @@ export default {
       },
       homeLandingCenter: {
         focus:
-          "- 為了解決這個問題，ASSEMBALL提供為棒球球隊和球員提供絕佳的配對服務 -",
+          "- 為了解決這個問題，ASSEMBALL為棒球球隊和球員提供絕佳的配對服務 -",
         textOne:
           "無論在棒球場上還是球迷的心中，一個成功的球隊都需要完美的球員組合",
         textTwo: "然而，找到適合球隊需求的球員並不容易",
@@ -100,8 +100,12 @@ export default {
   margin-left: auto;
   position: sticky;
   top: 8rem;
+  border-radius: var(--round);
+  overflow: hidden;
+  box-shadow: var(--shadow-wide);
   & video {
     width: 100%;
+    transform: scale(1.02);
   }
 }
 .home_landing_all {

@@ -1,8 +1,75 @@
 <template>
   <div class="authentication_wrap">
-    <div class="authentication">
+    <AuthenticationComponent :layout="normal">
+      <template #form>
+        <div class="authentication">
+          <div class="authentication_text">
+            <div class="authentication_text_slogan">Welocom Back !</div>
+            <div class="authentication_text_title">會員註冊/Sign Up</div>
+            <div class="authentication_text_subtitle">快速登入</div>
+            <div class="authentication_text_quickLogin">
+              <button class="authentication_text_quickLogin_FB">
+                <!-- faFacebook, faLine -->
+                <font-awesome-icon icon="fa-brands fa-facebook" />
+                Facebook
+              </button>
+              <button class="authentication_text_quickLogin_LINE">
+                <font-awesome-icon icon="fa-brands fa-line" />
+                LINE
+              </button>
+            </div>
+            <fieldset>
+              <legend>or</legend>
+            </fieldset>
+
+            <div class="authentication_text_underline">
+              <input type="email" placeholder="電子郵件/Email" />
+            </div>
+
+            <div class="authentication_text_underline">
+              <input type="password" placeholder="密碼/Password" />
+            </div>
+            <div class="authentication_text_rememberPsw">
+              <label class="authentication_text_rememberPsw_checkbox">
+                <input type="checkbox" /><span>
+                  <font-awesome-icon icon="fa-solid fa-circle-check"
+                /></span>
+              </label>
+              記住密碼
+            </div>
+
+            <div class="authentication_text_btn">
+              <button>
+                登入 <font-awesome-icon icon="fa-solid fa-chevron-right" />
+              </button>
+
+              <div class="authentication_psw_error">輸入錯誤!</div>
+            </div>
+          </div>
+          <!-- 左邊 -->
+          <div class="authentication_pic">
+            <div class="authentication_pic_title">Hello , Friend !</div>
+
+            <div class="authentication_pic_text">
+              Welcome to our baseball family!
+            </div>
+
+            <button class="authentication_btn">
+              註冊 <font-awesome-icon icon="fa-solid fa-chevron-right" />
+            </button>
+          </div>
+        </div>
+      </template>
+    </AuthenticationComponent>
+  </div>
+
+  <!-- <Authentication :layout="reverse">
+      <template #form></template
+    ></Authentication> -->
+
+  <!-- <div class="authentication">
       <div v-if="layout !== 'normal'">
-        <slot name="form"></slot>
+        <slot name="form">123</slot>
       </div>
       <div class="authentication_pic">
         <div class="authentication_pic_title">Welcome Back !</div>
@@ -18,7 +85,7 @@
       </div>
 
       <div v-if="layout === 'normal'">
-        <slot name="pic"></slot>
+        <slot name="form"></slot>
       </div>
       <form class="authentication_text">
         <div class="authentication_text_slogan">Hello , Friend !</div>
@@ -57,8 +124,7 @@
           <div class="authentication_psw_error">輸入錯誤!</div>
         </div>
       </form>
-    </div>
-  </div>
+    </div> -->
 
   <!-- 框.vue -->
   <!-- <div class="authentication_wrap">
@@ -109,7 +175,9 @@
 </template>
 
 <script>
+import AuthenticationComponent from "@/components/Authourize/AuthenticationComponent";
 export default {
+  components: { AuthenticationComponent },
   props: {
     layout: {
       type: String,
@@ -120,70 +188,24 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.authentication_wrap {
-  background-color: var(--primary-blue);
-  padding: 12rem 0rem;
-  padding-top: 16rem;
-}
 .authentication {
   display: flex;
-  width: 1200px;
-  min-height: 80vh;
-  margin: auto;
-  border: 1px solid #0003;
-  box-shadow: var(--shadow-wide);
-  border-radius: 0.5rem;
-  overflow: hidden;
-
-  &_pic {
-    // flex: 1;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-image: url(~@/assets/images/authentication/sign-in-bg.jpg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    position: relative;
-
-    &_title {
-      font-size: 2.5rem;
-      color: var(--pale-white);
-      text-align: center;
-      font-family: "Montserrat", sans-serif;
-      font-weight: 700;
-    }
-
-    &_text {
-      font-size: 1.25rem;
-      color: var(--pale-white);
-      text-align: center;
-      font-family: "Montserrat", sans-serif;
-    }
-
-    .authentication_btn {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.5rem;
-      width: 6rem;
-      border-radius: 2rem;
-      padding: 0.5rem 0.25rem;
-      color: var(--primary-blue);
-      font-size: 1.25rem;
-      font-family: "Noto Sans TC";
-      font-weight: 500;
-      position: absolute;
-      top: 80%;
-    }
-  }
+  // width: 1200px;
+  // min-height: 80vh;
+  // margin: auto;
+  // border: 1px solid #0003;
+  // box-shadow: var(--shadow-wide);
+  // border-radius: 0.5rem;
+  // overflow: hidden;
 
   &_text {
     width: 50%;
     padding: 5rem 4rem;
     background-color: var(--pale-white);
     position: relative;
+    display: flex;
+    flex-direction: column;
+    color: var(--secondary-gray-1);
 
     &_slogan {
       text-align: center;
@@ -197,6 +219,9 @@ export default {
       font-family: "Noto Sans TC";
       font-size: 1.5rem;
       padding: 1.25rem 0rem;
+    }
+    &_subtitle {
+      font-size: 1.25rem;
     }
 
     &_underline {
@@ -238,21 +263,61 @@ export default {
         padding: 0.25rem;
       }
     }
+    fieldset {
+      border: none;
+      border-top: 1px solid var(--secondary-blue-2);
+      legend {
+        text-align: center;
+        color: var(--secondary-blue-2);
+        padding: 0 1rem;
+      }
+    }
+    &_quickLogin {
+      display: flex;
+      gap: 2rem;
+      margin: 1.5rem 0;
+      button {
+        padding: 0.5rem 2rem;
+        width: 50%;
+        border-radius: var(--round);
+        color: var(--pale-white);
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+      &_LINE {
+        background-color: #1dcb42;
+      }
+      &_FB {
+        background-color: #1a76f2;
+      }
+    }
 
+    &_rememberPsw {
+      margin-top: 1rem;
+      font-size: 1.25rem;
+      color: var(--secondary-gray-1);
+      input[type="checkbox"] {
+        display: none;
+      }
+      input[type="checkbox"]:checked + span {
+        color: var(--primary-blue);
+      }
+    }
     &_btn {
+      margin-top: 6rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 0.5rem;
 
-      position: absolute;
-      top: 80%;
-      left: 50%;
-      transform: translateX(-50%);
+      // position: absolute;
+      // top: 80%;
+      // left: 50%;
+      // transform: translateX(-50%);
 
       button {
-        width: 6rem;
+        width: 10rem;
         border-radius: 2rem;
         padding: 0.5rem 0.25rem;
         color: var(--pale-white);
@@ -269,6 +334,49 @@ export default {
       color: var(--accent-red);
       text-align: center;
       // display: none;
+    }
+  }
+  &_pic {
+    // flex: 1;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url(~@/assets/images/authentication/log-in-bg.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+
+    &_title {
+      font-size: 2.5rem;
+      color: var(--pale-white);
+      text-align: center;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 700;
+    }
+
+    &_text {
+      font-size: 1.25rem;
+      color: var(--pale-white);
+      text-align: center;
+      font-family: "Montserrat", sans-serif;
+    }
+
+    .authentication_btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      width: 10rem;
+      border-radius: 2rem;
+      padding: 0.5rem 0.25rem;
+      color: var(--primary-blue);
+      font-size: 1.25rem;
+      font-family: "Noto Sans TC";
+      font-weight: 500;
+      position: absolute;
+      top: 80%;
     }
   }
 }
