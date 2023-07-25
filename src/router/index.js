@@ -19,12 +19,12 @@ const routes = [
   },
   {
     path: "/auth-psw-forgot",
-    name: "psw-forgot",
+    name: "PswForgot",
     component: () => import("@/views/authentications/PswForgotView.vue"),
   },
   {
     path: "/auth-psw-reset",
-    name: "psw-reset",
+    name: "PswReset",
     component: () => import("@/views/authentications/PswResetView.vue"),
   },
 

@@ -1,6 +1,6 @@
 <template>
   <div class="authentication_wrap">
-    <AuthenticationComponent :layout="normal">
+    <AuthenticationComponent layout="normal">
       <template #form>
         <div class="authentication">
           <div class="authentication_text">
@@ -27,7 +27,10 @@
             </div>
 
             <div class="authentication_text_underline">
-              <input type="password" placeholder="密碼/Password" />
+              <input
+                type="password"
+                placeholder="密碼/Password"
+              /><font-awesome-icon icon="fa-solid fa-eye" />
             </div>
             <div class="authentication_text_rememberPsw">
               <label class="authentication_text_rememberPsw_checkbox">
@@ -35,7 +38,13 @@
                   <font-awesome-icon icon="fa-solid fa-circle-check"
                 /></span>
               </label>
-              記住密碼
+              <span class="authentication_text_rememberPsw_itemtext"
+                >記住密碼</span
+              >
+
+              <span class="authentication_text_rememberPsw_item">
+                <router-link :to="{ name: 'PswForgot' }">忘記密碼?</router-link>
+              </span>
             </div>
 
             <div class="authentication_text_btn">
@@ -53,10 +62,11 @@
             <div class="authentication_pic_text">
               Welcome to our baseball family!
             </div>
-
-            <button class="authentication_btn">
-              註冊 <font-awesome-icon icon="fa-solid fa-chevron-right" />
-            </button>
+            <router-link :to="{ name: 'Authentication' }">
+              <button class="authentication_btn">
+                註冊
+                <font-awesome-icon icon="fa-solid fa-chevron-right" /></button
+            ></router-link>
           </div>
         </div>
       </template>
@@ -296,11 +306,18 @@ export default {
       margin-top: 1rem;
       font-size: 1.25rem;
       color: var(--secondary-gray-1);
+      &_itemtext {
+        margin: 0 52% 0 3%;
+      }
       input[type="checkbox"] {
         display: none;
       }
       input[type="checkbox"]:checked + span {
         color: var(--primary-blue);
+      }
+      a {
+        color: gray;
+        text-decoration: dashed;
       }
     }
     &_btn {

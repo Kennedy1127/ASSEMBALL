@@ -46,11 +46,13 @@
               </div>
               <div class="authentication_text_underline_code">HI2k4q0PS</div>
             </div>
-            <div class="authentication_text_btn">
-              <button>
-                下一步<font-awesome-icon icon="fa-solid fa-chevron-right" />
-              </button>
-            </div>
+            <router-link :to="{ name: 'PswReset' }"
+              ><div class="authentication_text_btn">
+                <button>
+                  下一步<font-awesome-icon icon="fa-solid fa-chevron-right" />
+                </button></div
+            ></router-link>
+
             <div class="authentication_psw_error">驗證碼輸入錯誤</div>
           </div>
         </div>

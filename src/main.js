@@ -41,6 +41,7 @@ import {
   faCircleArrowRight,
   faCircleXmark,
   faCircleCheck,
+  faEye,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -76,7 +77,8 @@ library.add(
   faAngleLeft,
   faCircleArrowRight,
   faCircleXmark,
-  faCircleCheck
+  faCircleCheck,
+  faEye
 );
 
 createApp(App)
