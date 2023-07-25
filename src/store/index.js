@@ -26,6 +26,7 @@ export default createStore({
     myplayerPopupsOpen: false,
     myplayerEditOpen: false,
     myplayerOverlay: true,
+    myplayerTeam: {},
   },
 
   getters: {

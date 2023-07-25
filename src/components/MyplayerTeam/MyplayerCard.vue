@@ -18,8 +18,8 @@
         </div>
       </div>
       <div class="myplayer_group_card_more">
-        <span
-          >觀看更多 <font-awesome-icon icon="fa-solid fa-chevron-right"
+        <span>
+          觀看更多 <font-awesome-icon icon="fa-solid fa-chevron-right"
         /></span>
       </div>
     </div>
@@ -134,6 +134,51 @@ export default {
       color: var(--primary-blue);
       font-weight: 700;
     }
+  }
+}
+@media screen and (min-width: 1024px) and (max-width: 1200px) {
+  .myplayer_group_card_name {
+    padding: 6rem 0rem 2rem 0.5rem;
+    font-size: 1.5rem;
+  }
+  .myplayer_group_card_more span {
+    font-size: 1.5rem;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .myplayer_title_wrap h3 {
+    font-size: 2rem;
+  }
+  .myplayer_group_card_name {
+    padding: 5rem 0rem 2rem 0.5rem;
+    font-size: 1rem;
+  }
+  .myplayer_group_card_more span {
+    font-size: 1rem;
+  }
+  .myplayer_title_wrap {
+    width: 8rem;
+  }
+}
+@media screen and (max-width: 767px) {
+  .myplayer_group_card {
+    width: 50%;
+  }
+  .myplayer_group_card_more {
+    width: 50%;
+  }
+  .myplayer_title_wrap h3 {
+    font-size: 2rem;
+  }
+  .myplayer_group_card_name {
+    padding: 5rem 0rem 2rem 0.5rem;
+    font-size: 1rem;
+  }
+  .myplayer_group_card_more span {
+    font-size: 1rem;
+  }
+  .myplayer_title_wrap {
+    width: 8rem;
   }
 }
 </style>

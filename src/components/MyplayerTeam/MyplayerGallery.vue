@@ -60,4 +60,37 @@
     }
   }
 }
+@media screen and (min-width: 1024px) and (max-width: 1200px) {
+  .myplayer_album .myplayer_album_gallery_text {
+    font-size: 3.5rem;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .myplayer_album .myplayer_album_gallery {
+    background-position-x: -10rem;
+  }
+  .myplayer_album_title_wrap {
+    width: 8rem;
+  }
+  .myplayer_album_title_wrap .myplayer_album_title {
+    font-size: 2rem;
+  }
+  .myplayer_album .myplayer_album_gallery_text {
+    font-size: 3rem;
+  }
+}
+@media screen and (max-width: 767px) {
+  .myplayer_album .myplayer_album_gallery {
+    background-position-x: -25rem;
+  }
+  .myplayer_album_title_wrap {
+    width: 8rem;
+  }
+  .myplayer_album_title_wrap .myplayer_album_title {
+    font-size: 2rem;
+  }
+  .myplayer_album .myplayer_album_gallery_text {
+    font-size: 3rem;
+  }
+}
 </style>
