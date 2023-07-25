@@ -6,21 +6,27 @@
   </div>
   <div class="home_landing_all">
     <div class="home_landing_all_title">
-      <h1>{{ homeLandingTitle.title }}</h1>
-      <h1>{{ homeLandingTitle.about }}</h1>
+      <div class="home_landing_all_title_wrapper">
+        <h1 class="home_landing_all_title_wrapper_text">
+          {{ homeLandingTitle.title }}
+        </h1>
+        <h1 class="home_landing_all_title_wrapper_text">
+          {{ homeLandingTitle.about }}
+        </h1>
+      </div>
     </div>
-    <div class="home_landing_all_text">
+    <div class="home_landing_all_text fade-up">
       <div class="home_landing_all_text_first">
         <strong>{{ homeLandingFirst.focus }}</strong>
         <p>{{ homeLandingFirst.textOne }}</p>
         <p>{{ homeLandingFirst.textTwo }}</p>
       </div>
-      <div class="home_landing_all_text_center">
+      <div class="home_landing_all_text_center fade-up">
         <p>{{ homeLandingCenter.textOne }}</p>
         <p>{{ homeLandingCenter.textTwo }}</p>
         <strong>{{ homeLandingCenter.focus }}</strong>
       </div>
-      <div class="home_landing_all_text_last">
+      <div class="home_landing_all_text_last fade-up">
         <p>{{ homeLandingLast.textOne }}</p>
         <p>{{ homeLandingLast.textTwo }}</p>
         <strong>{{ homeLandingLast.focus }}</strong>
@@ -45,7 +51,7 @@ export default {
       },
       homeLandingCenter: {
         focus:
-          "- 為了解決這個問題，ASSEMBALL提供為棒球球隊和球員提供絕佳的配對服務 -",
+          "- 為了解決這個問題，ASSEMBALL為棒球球隊和球員提供絕佳的配對服務 -",
         textOne:
           "無論在棒球場上還是球迷的心中，一個成功的球隊都需要完美的球員組合",
         textTwo: "然而，找到適合球隊需求的球員並不容易",
@@ -60,6 +66,31 @@ export default {
       },
     };
   },
+  mounted() {
+    this.fadeUpText(); // 调用一次确保初始状态正确
+    window.addEventListener("scroll", this.fadeUpText);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.fadeUpText);
+  },
+  methods: {
+    fadeUpText() {
+      const elements = document.querySelectorAll(
+        ".home_landing_all_text_first, .home_landing_all_text_center, .home_landing_all_text_last"
+      );
+
+      elements.forEach((element) => {
+        const elementTop = element.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+
+        if (elementTop < windowHeight * 0.9) {
+          element.classList.add("fade-up");
+        } else {
+          element.classList.remove("fade-up");
+        }
+      });
+    },
+  },
 };
 </script>
 
@@ -69,8 +100,12 @@ export default {
   margin-left: auto;
   position: sticky;
   top: 8rem;
+  border-radius: var(--round);
+  overflow: hidden;
+  box-shadow: var(--shadow-wide);
   & video {
     width: 100%;
+    transform: scale(1.02);
   }
 }
 .home_landing_all {
@@ -81,10 +116,37 @@ export default {
 
   &_title {
     margin-top: 8rem;
-    & h1 {
-      font-size: 96px;
-      font-family: "Montserrat";
-      text-shadow: var(--shadow-heavy);
+    &_wrapper {
+      overflow: hidden;
+      position: relative;
+      &_text {
+        font-size: 96px;
+        font-family: "Montserrat";
+        text-shadow: var(--shadow-heavy);
+        background: linear-gradient(
+          90deg,
+          #fff,
+          var(--secondary-blue-1),
+          #fff,
+          var(--secondary-blue-2),
+          #fff,
+          var(--secondary-blue-1),
+          #fff
+        );
+        background-size: 200%;
+        background-clip: text;
+        color: transparent;
+        animation: animatedGradient 10s alternate infinite;
+      }
+    }
+    /* Animation for the gradient */
+    @keyframes animatedGradient {
+      0% {
+        background-position: 0% 100%;
+      }
+      100% {
+        background-position: 100% 0%;
+      }
     }
   }
   &_text {
@@ -97,15 +159,38 @@ export default {
       margin-bottom: 2rem;
     }
     &_first {
+      opacity: 0;
       margin-top: 8rem;
     }
     &_center {
+      opacity: 0;
       margin-top: 12rem;
     }
     &_last {
+      opacity: 0;
       margin-top: 12rem;
       text-align: right;
     }
+  }
+  .fade-up {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @keyframes fadeUpAnimation {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .home_landing_all_text_first.fade-up,
+  .home_landing_all_text_center.fade-up,
+  .home_landing_all_text_last.fade-up {
+    animation: fadeUpAnimation 2.5s ease forwards;
   }
 }
 </style>

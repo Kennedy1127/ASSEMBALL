@@ -67,73 +67,102 @@
       </div>
     </div>
 
-    <div class="recruit_copywritings_aside_btn">
+    <div class="recruit_copywritings_aside_btn" v-if="!store.state.isMobile">
       <router-link :to="{ name: 'recruitmentPost' }">招募球員</router-link>
     </div>
+
+    <div class="recruit_copywritings_aside_btn" v-if="store.state.isMobile">
+      <button @click="$emit('closeModal')">確定</button>
+    </div>
+
+    <div
+      class="recruit_copywritings_aside_xmark"
+      v-if="store.state.isMobile"
+      @click="$emit('closeModal')"
+    >
+      <font-awesome-icon
+        :icon="['fas', 'circle-xmark']"
+        class="recruit_copywritings_aside_xmark_icon"
+      />
+    </div>
   </div>
+
+  <div
+    class="overlay"
+    v-if="store.state.isMobile"
+    @click="$emit('closeModal')"
+  ></div>
 </template>
 
-<script>
-export default {
-  mounted() {
-    this.selectedExp = [...this.$store.state.selectedCopywritingsExp];
-  },
+<script setup>
+import { computed, onMounted, ref } from "vue";
+import { useStore } from "vuex";
 
-  data() {
-    return {
-      selectedExp: [],
-      selectedDate: 0,
-    };
-  },
+const store = useStore();
+const emit = defineEmits(["closeModal"]);
 
-  computed: {
-    exps() {
-      const exps = [
-        {
-          type: 0,
-          typeName: "inexperenced",
-          typeCount: this.$store.getters.inexperencedCount,
-          name: "初心者",
-        },
-        {
-          type: 1,
-          typeName: "entry",
-          typeCount: this.$store.getters.entryCount,
-          name: "新手",
-        },
-        {
-          type: 2,
-          typeName: "intermediate",
-          typeCount: this.$store.getters.intermediateCount,
-          name: "老手",
-        },
-        {
-          type: 3,
-          typeName: "free",
-          typeCount: this.$store.getters.freeCount,
-          name: "經歷不拘",
-        },
-      ];
+onMounted(() => {
+  selectedExp.value = [...store.state.selectedCopywritingsExp];
+  selectedDate.value = store.state.selectedCopywritingsDate;
+});
 
-      return exps;
+const selectedExp = ref([]);
+const selectedDate = ref(0);
+
+const exps = computed(() => {
+  const exps = [
+    {
+      type: 0,
+      typeName: "inexperenced",
+      typeCount: store.getters.inexperencedCount,
+      name: "初心者",
     },
-  },
-
-  methods: {
-    filterExp() {
-      this.$store.commit("selectCopywritingsExp", this.selectedExp);
-      this.$store.commit("resetCopywritingsCurPage");
+    {
+      type: 1,
+      typeName: "entry",
+      typeCount: store.getters.entryCount,
+      name: "新手",
     },
-
-    filterDate() {
-      this.$store.commit("selectCopywritingsDate", this.selectedDate);
-      this.$store.commit("resetCopywritingsCurPage");
+    {
+      type: 2,
+      typeName: "intermediate",
+      typeCount: store.getters.intermediateCount,
+      name: "老手",
     },
-  },
+    {
+      type: 3,
+      typeName: "free",
+      typeCount: store.getters.freeCount,
+      name: "經歷不拘",
+    },
+  ];
+
+  return exps;
+});
+
+const filterExp = () => {
+  store.commit("selectCopywritingsExp", selectedExp.value);
+  store.commit("resetPaginationCurPage", "copywritings");
+};
+
+const filterDate = () => {
+  console.log(selectedDate.value);
+  store.commit("selectCopywritingsDate", selectedDate.value);
+  store.commit("resetPaginationCurPage", "copywritings");
 };
 </script>
 
 <style scoped lang="scss">
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+
+  width: 100%;
+  height: 100%;
+}
+
 .recruit_copywritings {
   &_aside {
     width: 24%;
@@ -142,6 +171,33 @@ export default {
     padding-left: 1.5rem;
     border-left: 2px solid var(--primary-blue);
     color: var(--primary-blue);
+
+    @media all and (max-width: 420px) {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      z-index: 101;
+      transform: translate(-50%, -50%);
+
+      padding: 1rem;
+      width: 90%;
+      max-height: 100%;
+      background-color: #fff;
+      border-radius: var(--round);
+      border: 2px solid var(--primary-blue);
+
+      &_xmark {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+
+        &_icon {
+          font-size: 2rem;
+          color: var(--primary-blue);
+          cursor: pointer;
+        }
+      }
+    }
 
     &_header {
       font-size: 2rem;
@@ -220,6 +276,7 @@ export default {
       display: flex;
       justify-content: space-between;
 
+      button,
       a {
         width: 140px;
         height: 50px;
@@ -231,11 +288,16 @@ export default {
         letter-spacing: 5px;
         color: #fff;
 
+        transition: all 0.09s ease-in-out;
         background-color: var(--primary-blue);
 
         display: flex;
         align-items: center;
         justify-content: center;
+
+        &:hover {
+          background-color: var(--secondary-blue-1);
+        }
       }
     }
   }

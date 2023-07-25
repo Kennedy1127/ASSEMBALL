@@ -4,13 +4,21 @@ import axios from "axios";
 export default createStore({
   state: {
     //////////////////////////////////////////////////////
+    // 確認是否為手機用戶
+    isMobile: 0,
+
+    //////////////////////////////////////////////////////
     // 通知、會員頁面、個人資料
     isNotifyVisible: 0,
     isMemberVisible: 0,
     isPersonalVisible: 0,
     //////////////////////////////////////////////////////
     // 商品區塊
-    productsCurPage: 1,
+    products: [],
+    productsCount: 0,
+    selectedProductsText: "",
+    selectedProductsTag: 0,
+    selectedProductsDate: -1,
 
     //////////////////////////////////////////////////////
     // 招募文案區塊
@@ -18,13 +26,63 @@ export default createStore({
     copywritingsCount: 0,
     selectedCopywritingsText: "",
     selectedCopywritingsRole: -1,
-    selectedCopywritingsArea: "",
     selectedCopywritingsExp: [],
+    selectedCopywritingsArea: "",
     selectedCopywritingsDate: 0,
+
+    ///////////////////////////////////////////
+    // 我的球隊區塊
+    myplayerPopupsOpen: false,
+    myplayerEditOpen: false,
+    myplayerOverlay: true,
+<<<<<<< HEAD
+    myplayerTeam: {},
+=======
+
+    //////////////////////////////////////////////////////
+    // 頁碼區塊
+    productsCurPage: 1,
     copywritingsCurPage: 1,
+>>>>>>> f7388d8bc7df89a6c06138fa34ab3516ab289e11
   },
 
   getters: {
+    //////////////////////////////////////////////////////
+    // 商品區塊
+    // 如果文字搜尋條件符合或長度為0時，return true
+    includedProductsByText: (state) => (product) => {
+      if (!state.selectedProductsText) return true;
+      return product.product_title.includes(state.selectedProductsText);
+    },
+
+    // 如果商品TAG符合或為-1時，return true
+    includedCProductsByTag: (state) => (product) => {
+      if (state.selectedProductsTag === 0) return true;
+      return state.selectedProductsTag === product.product_tag;
+    },
+
+    // 過濾後的商品
+    filteredProducts(state, getters) {
+      return state.products
+        .filter((product) => getters.includedProductsByText(product))
+        .filter((product) => getters.includedCProductsByTag(product));
+    },
+
+    // 更具時間排序的商品
+    dateSortedFilteredProducts(state, getters) {
+      const products = [...getters.filteredProducts];
+
+      state.selectedProductsDate
+        ? products.sort(
+            (a, b) => new Date(b.product_date) - new Date(a.product_date)
+          )
+        : products.sort(
+            (a, b) => new Date(a.product_date) - new Date(b.product_date)
+          );
+
+      return products;
+    },
+
     //////////////////////////////////////////////////////
     // 招募文案區塊
     // 招募初心者數量
@@ -123,12 +181,6 @@ export default createStore({
 
       return copywritings;
     },
-
-    // 招募文案的總頁數
-    copywritingsPages(_, getters) {
-      const len = getters.filteredCopywritings.length;
-      return len % 6 === 0 ? (len > 6 ? len / 6 : 1) : Math.ceil(len / 6);
-    },
   },
 
   mutations: {
@@ -156,18 +208,31 @@ export default createStore({
     },
     //////////////////////////////////////////////////////
     // 商品區塊
-    // 商品頁碼切換
-    productsPrevPage(state) {
-      state.productsCurPage--;
+    // 取得商品數量
+    setProductsCount(state, payload) {
+      state.productsCount = payload;
     },
-    productsNextPage(state) {
-      state.productsCurPage++;
+
+    // 取得商品
+    setProducts(state, payload) {
+      state.products = [...payload];
     },
-    productsGoToPage(state, payload) {
-      state.productsCurPage = payload;
+
+    // 更新商品搜尋條件
+    selectProductsSearch(state, payload) {
+      state.selectedProductsText = payload.searchText;
+      state.selectedProductsDate = payload.selectedDate;
     },
-    resetProductsCurPage(state) {
-      state.productsCurPage = 1;
+
+    // 更新商品TAG過濾條件
+    selectProductsTag(state, payload) {
+      state.selectedProductsTag = payload;
+    },
+
+    resetProductsFilterAndTag(state) {
+      state.selectedProductsText = "";
+      state.selectedProductsDate = -1;
+      state.selectedProductsTag = 0;
     },
 
     //////////////////////////////////////////////////////
@@ -208,22 +273,64 @@ export default createStore({
       state.selectedCopywritingsDate = 0;
     },
 
-    // 招募文案頁碼切換
-    copywritingsPrevPage(state) {
-      state.copywritingsCurPage--;
+    ///////////////////////////////////////
+    //我的球隊彈窗頁面切換
+    myplayerPopupsToggle(state) {
+      state.myplayerPopupsOpen = !state.myplayerPopupsOpen;
+      // state.myplayerPopupsOpen = false;
     },
-    copywritingsNextPage(state) {
-      state.copywritingsCurPage++;
+    ////////////////////////////////////////
+    //我的球隊edit切換
+    myplayerEditToggle(state) {
+      state.myplayerEditOpen = !state.myplayerEditOpen;
     },
-    copywritingsGoToPage(state, payload) {
-      state.copywritingsCurPage = payload;
+    ///////////////////////////////////////
+    //我的球隊Ovelay切換
+    myplayerOverlayToggle(state) {
+      state.myplayerPopupsOpen = !state.myplayerPopupsOpen;
     },
-    resetCopywritingsCurPage(state) {
-      state.copywritingsCurPage = 1;
+
+    ///////////////////////////////////////
+    // 頁碼區塊
+    paginationPrevPage(state, payload) {
+      state[`${payload}CurPage`]--;
+    },
+    paginationNextPage(state, payload) {
+      state[`${payload}CurPage`]++;
+    },
+    paginationGoToPage(state, payload) {
+      state[`${payload.type}CurPage`] = payload.num;
+    },
+    resetPaginationCurPage(state, payload) {
+      state[`${payload}CurPage`] = 1;
     },
   },
 
   actions: {
+    // 撈商品數量
+    async getProductsCount(context) {
+      try {
+        const res = await axios.get("http://localhost:3000/products");
+        if (!res) throw new Error("Cannot fetch response");
+        context.commit("setProductsCount", res.data.length);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    // 撈商品資料
+    async getProducts(context) {
+      try {
+        const res = await axios.get("http://localhost:3000/products");
+        if (!res) throw new Error("Cannot fetch response");
+        context.commit("setProducts", res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    ///////////////////////////////////////
+
     // 撈招募文案數量
     async getCopywritingsCount(context) {
       try {

@@ -2,7 +2,7 @@
   <div class="recruitment_post">
     <section class="recruitment_post_aside">
       <!-- <aside class="recruitment_post_aside"> -->
-      <RecruitmentPostAside />
+      <RecruitmentPostAside> </RecruitmentPostAside>
       <!-- </aside> -->
     </section>
     <main class="recruitment_post_main">
@@ -22,8 +22,7 @@
       </div>
       <div class="recruitment_post_main_filter">
         <!--RecruitmentSearchbar.vue  -->
-
-        <RecruitmentSearchbar />
+        <RecruitmentSearchbar :color="blue"> </RecruitmentSearchbar>
       </div>
       <div class="recruitment_post_main_table">
         <RecruitmentTable />

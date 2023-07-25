@@ -13,13 +13,13 @@
         <div class="footer_list">
           <ul>
             <li>
-              <router-link to="/"
+              <router-link :to="{ name: 'Recruitments' }"
                 ><span><font-awesome-icon icon="fa-solid fa-flag" /></span>
-                球隊徵人</router-link
+                球員招募</router-link
               >
             </li>
             <li>
-              <router-link to="/products"
+              <router-link :to="{ name: 'Products' }"
                 ><span
                   ><font-awesome-icon icon="fa-solid fa-bag-shopping"
                 /></span>
@@ -27,7 +27,7 @@
               >
             </li>
             <li>
-              <router-link to="/"
+              <router-link :to="{ name: 'myplayerTeam' }"
                 ><span
                   ><font-awesome-icon icon="fa-solid fa-user-group"
                 /></span>
@@ -35,7 +35,7 @@
               >
             </li>
             <li>
-              <router-link to="/"
+              <router-link :to="{ name: 'rookie' }"
                 ><span><font-awesome-icon icon="fa-solid fa-map" /></span>
                 新手上路</router-link
               >
@@ -79,6 +79,7 @@ export default {
 
 <style scoped lang="scss">
 .footer {
+  overflow: hidden; // 手機板的時候 footer有東西飛出去了 這邊先加個overflow 之後改這頁的時候記得要處理哦
   background-color: var(--primary-blue);
   width: 100%;
   .wrapper {

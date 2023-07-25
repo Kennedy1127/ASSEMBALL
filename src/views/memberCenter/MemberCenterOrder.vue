@@ -32,42 +32,17 @@
         </div>
       </div>
       <!-- //頁碼未處理 -->
-      <div class="products_main_paginations">
-        <div class="icon" @click="movePage('prev')">
-          <font-awesome-icon icon="fa-solid fa-chevron-left" />
-        </div>
-
-        <div
-          v-for="num in renderPagesCount"
-          :key="num"
-          :class="{
-            products_main_pagination: true,
-            'products_main_pagination--active':
-              num + temp === $store.state.productsCurPage,
-          }"
-          @click="movePage('number', num + temp)"
-        >
-          {{ num + temp }}
-        </div>
-
-        <div
-          v-show="
-            $props.totalPages > 3 && $store.state.productsCurPage != lastPage
-          "
-        >
-          ...
-        </div>
-
-        <div class="icon" @click="movePage('next')">
-          <font-awesome-icon icon="fa-solid fa-chevron-right" />
-        </div>
-      </div>
+      <PaginationComponent />
     </div>
   </section>
 </template>
 
 <script>
+import PaginationComponent from "@/components/utilities/PaginationComponent";
 export default {
+  components: {
+    PaginationComponent,
+  },
   props: ["totalPages"],
   data() {
     return {
@@ -103,43 +78,6 @@ export default {
         },
       ],
     };
-  },
-  computed: {
-    renderPagesCount() {
-      return this.$props.totalPages > 3 ? 3 : this.$props.totalPages;
-    },
-
-    temp() {
-      if (this.$store.state.productsCurPage > 3) {
-        return this.$store.state.productsCurPage - 3;
-      }
-
-      return 0;
-    },
-  },
-
-  methods: {
-    prevPage() {
-      if (this.$store.state.productsCurPage === 1) return;
-      this.$store.commit("productsPrevPage");
-    },
-
-    nextPage() {
-      if (this.$store.state.productsCurPage === this.$props.totalPages) return;
-      this.$store.commit("productsNextPage");
-    },
-
-    // 進行切換頁碼
-    movePage(feature, num = null) {
-      feature === "number"
-        ? this.$store.commit("productsGoToPage", num)
-        : feature === "next"
-        ? this.nextPage()
-        : this.prevPage();
-
-      // 更換頁碼時，滾動到頂端
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    },
   },
 };
 </script>
@@ -217,53 +155,11 @@ export default {
         width: 89px;
         height: 101px;
       }
-      // &_name {
-      // }
-      // &_seller {
-      // }
       &_price {
         font-weight: 600;
         color: var(--accent-red);
       }
-      // &_date {
-      // }
     }
-  }
-
-  //頁碼未處理
-  .products_main_paginations {
-    margin-top: 6rem;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 1rem;
-
-    font-family: "Noto Sans TC", sans-serif;
-  }
-
-  .products_main_pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-
-    font-size: 1.25rem;
-
-    &--active {
-      color: #fff;
-      background-color: var(--error-yellow);
-    }
-
-    cursor: pointer;
-  }
-
-  .icon {
-    cursor: pointer;
-    color: var(--primary-blue);
-    padding-right: 0.5rem;
   }
 }
 </style>

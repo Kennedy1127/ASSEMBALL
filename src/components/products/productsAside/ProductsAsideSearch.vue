@@ -7,23 +7,17 @@
 
     <div class="products_aside_search_input">
       <input type="text" placeholder="輸入關鍵字" v-model="searchText" />
-      <div class="icon">
+      <div class="icon" @click="filterProducts">
         <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
       </div>
     </div>
 
     <div class="products_aside_search_filter">
-      <div class="products_aside_search_filter_dropdown">
-        <span>上架日期</span>
-        <div class="icon">
-          <font-awesome-icon icon="fa-solid fa-chevron-down" />
-        </div>
-      </div>
-      <!-- <div class="products_aside_search_filter_content"></div> -->
+      <ProductsAsideSelect v-model="selectedDate" />
     </div>
 
     <div class="products_aside_search_button">
-      <button @click="emitFilterProducts" id="Button">
+      <button @click="filterProducts" id="Button">
         <div class="icon">
           <font-awesome-icon
             icon="fa-solid fa-arrow-right"
@@ -36,18 +30,25 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      searchText: "",
-    };
-  },
-  methods: {
-    emitFilterProducts() {
-      this.$emit("filterProducts", this.searchText);
-    },
-  },
+<script setup>
+import ProductsAsideSelect from "@/components/products/productsAside/ProductsAsideSelect.vue";
+import { ref } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+const emit = defineEmits(["filterProducts"]);
+
+const searchText = ref(store.state.selectedProductsText);
+const selectedDate = ref(store.state.selectedProductsDate);
+
+const filterProducts = () => {
+  store.commit("selectProductsSearch", {
+    searchText: searchText.value,
+    selectedDate: selectedDate.value,
+  });
+  store.commit("resetPaginationCurPage", "products");
+
+  emit("filterProducts");
 };
 </script>
 
@@ -66,10 +67,15 @@ export default {
 
       font-size: 1rem;
       font-weight: 400;
-    }
-    input:focus {
-      background-color: var(--pale-white);
-      outline: 2px solid var(--secondary-blue-1);
+
+      &:focus {
+        background-color: var(--pale-white);
+        outline: 2px solid var(--secondary-blue-1);
+      }
+
+      &::placeholder {
+        color: var(--secondary-gray-3);
+      }
     }
 
     .icon {
@@ -80,7 +86,7 @@ export default {
       right: 1.25rem;
       transform: translateY(-50%);
 
-      pointer-events: none;
+      cursor: pointer;
     }
   }
 
@@ -127,6 +133,10 @@ export default {
       font-size: 1.25rem;
       letter-spacing: 6px;
       color: #fff;
+      transition: all 0.09s ease-in-out;
+    }
+    & button:hover {
+      background-color: var(--secondary-blue-1);
     }
   }
 }

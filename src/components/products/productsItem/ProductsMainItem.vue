@@ -45,7 +45,9 @@
       </div>
       <div class="detail_footer">
         <div class="detail_price">{{ productDetail.Price }}</div>
-        <button>我要購買</button>
+        <router-link :to="{ name: 'ProductPayment' }">
+          <button>我要購買</button>
+        </router-link>
       </div>
     </div>
   </section>
@@ -53,6 +55,8 @@
 
 <script>
 export default {
+  props: ["productItemData"],
+
   data() {
     return {
       productDetail: {
@@ -93,6 +97,7 @@ export default {
           width: 25%;
           & img {
             width: 100%;
+            display: block;
           }
         }
       }
@@ -112,7 +117,7 @@ export default {
       &_body {
         color: var(--secondary-gray-1);
         padding: 0.75rem 0.75rem 0.75rem 0;
-        border-bottom: 1px solid var(--secondary-gray-3);
+        border-bottom: 2px solid var(--secondary-gray-2);
         letter-spacing: 1.5px;
       }
     }
@@ -127,19 +132,21 @@ export default {
         color: var(--error-red);
         padding-top: 3rem;
       }
-      & button {
-        width: 150px;
-        height: 50px;
-        font-size: 1.25rem;
-        font-weight: 500;
-        letter-spacing: 6px;
-        border-radius: var(--round);
-        color: #ffffff;
-        background-color: var(--error-yellow);
-        transition: all 0.2s ease-in-out;
-      }
-      & button:hover {
-        background-color: var(--error-red);
+      & a {
+        & button {
+          width: 150px;
+          height: 50px;
+          font-size: 1.25rem;
+          font-weight: 500;
+          letter-spacing: 6px;
+          border-radius: var(--round);
+          color: #ffffff;
+          background-color: var(--error-yellow);
+          transition: all 0.09s ease-in-out;
+        }
+        & button:hover {
+          background-color: var(--error-red);
+        }
       }
     }
   }

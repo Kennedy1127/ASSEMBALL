@@ -27,7 +27,7 @@
               >
             </li>
             <li>
-              <router-link to="/"
+              <router-link :to="{ name: 'myplayerTeam' }"
                 ><span
                   ><font-awesome-icon icon="fa-solid fa-user-group"
                 /></span>
@@ -35,7 +35,7 @@
               >
             </li>
             <li>
-              <router-link to="/"
+              <router-link :to="{ name: 'rookie' }"
                 ><span><font-awesome-icon icon="fa-solid fa-map" /></span>
                 新手上路</router-link
               >

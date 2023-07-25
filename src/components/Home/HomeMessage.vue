@@ -39,7 +39,7 @@
     <div class="home_message_all_text" v-for="item in messageText">
       <div class="home_message_all_text_header">
         <h3>
-          {{ item.title }}
+          <router-link to="/">{{ item.title }}</router-link>
         </h3>
         <span class="home_message_all_text_header_date">
           {{ item.date }}
@@ -220,6 +220,9 @@ export default {
       margin-top: 1rem;
       & h3 {
         font-size: 1.5rem;
+        & a {
+          color: var(--primary-blue);
+        }
       }
       &_date {
         font-size: 1.25rem;
@@ -251,6 +254,7 @@ export default {
       }
       &_btn {
         width: 6rem;
+        height: 2rem;
         border-radius: 30px;
         border: 1px solid var(--primary-blue);
         background-color: #fff;
