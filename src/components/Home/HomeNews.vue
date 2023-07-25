@@ -14,7 +14,7 @@
         v-for="item in newsHashtag"
         :key="item"
       >
-        <router-link to="/">{{ item }}</router-link>
+        <router-link :to="{ name: 'Recruitments' }">{{ item }}</router-link>
       </div>
     </div>
   </div>
@@ -431,6 +431,7 @@ export default {
             text-align: left;
             margin-top: 0.5rem;
             text-indent: 2rem;
+            font-size: 1rem;
           }
         }
       }
@@ -460,7 +461,7 @@ export default {
   width: 35%;
   position: absolute;
   left: 12%;
-  top: 12%;
+  top: 10%;
   z-index: -1;
   animation: rotate-taichi 5s infinite linear;
   // animation: rotate-taichi02 4s cubic-bezier(0.2, 0.9, 0.3, 1.3) infinite;

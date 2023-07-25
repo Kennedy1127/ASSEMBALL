@@ -9,7 +9,7 @@
     </div>
     <div class="home_recruit_title_text">
       <h2>
-        <router-link to="/">球隊招募</router-link>
+        <router-link :to="{ name: 'Recruitments' }">球隊招募</router-link>
       </h2>
       <p>發掘你的潛力，成為球隊的關鍵一員！</p>
     </div>
@@ -43,9 +43,11 @@
               資歷或經驗：<span>{{ data.experience }}</span>
             </p>
           </div>
-          <button>
-            <Icon type="ios-arrow-dropright-circle" />{{ data.button }}
-          </button>
+          <router-link :to="{ name: 'Recruitments' }">
+            <button>
+              <Icon type="ios-arrow-dropright-circle" />{{ data.button }}
+            </button>
+          </router-link>
         </div>
       </Slide>
       <template #addons>
