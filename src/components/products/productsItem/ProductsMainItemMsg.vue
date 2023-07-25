@@ -13,7 +13,7 @@
         <div class="product_message_area_all_pic">
           <img
             class="product_message_area_all_pic_mark"
-            src=""
+            src="~@/assets/images/products/mark.png"
             alt="mark"
           />
           <img
@@ -54,7 +54,9 @@
     </div>
     <div class="product_message_notice">
       <div class="product_message_notice_icon">
-        <img src="~@/assets/images/products/notice.png" alt="notice" />
+        <span>
+          <font-awesome-icon icon="fa-solid fa-circle-exclamation"
+        /></span>
       </div>
       <div class="product_message_notice_text">
         <div class="product_message_notice_text_title">
@@ -74,6 +76,7 @@
 
 <script>
 export default {
+  props: ["productMsgData"],
   data() {
     return {
       productMessage: {
@@ -148,6 +151,7 @@ export default {
         margin-left: 2rem;
         &_name {
           font-size: 1.25rem;
+          font-weight: 500;
         }
         &_all {
           margin-top: 1rem;
@@ -178,7 +182,7 @@ export default {
     &_text {
       width: 100%;
       & textarea {
-        width: 90%;
+        width: 95%;
         display: block;
         margin: 0 2rem 0 2rem;
         min-height: 192px;
@@ -191,21 +195,25 @@ export default {
           color: var(--secondary-gray-3);
         }
       }
+      textarea:focus {
+        outline: 2px var(--secondary-blue-1) solid;
+        background-color: var(--pale-white);
+      }
     }
     & button {
-      width: 150px;
+      width: 200px;
       height: 50px;
       display: block;
       background-color: var(--primary-blue);
       color: #fff;
       font-size: 1.25rem;
-      font-weight: 500;
+      font-weight: 400;
       letter-spacing: 6px;
       border-radius: var(--round);
       border: none;
       margin-left: auto;
       margin-top: 2rem;
-      margin-right: 2rem;
+      margin-right: 1rem;
     }
   }
   &_notice {
@@ -217,13 +225,15 @@ export default {
     padding: 3rem 1rem;
     margin-bottom: 2rem;
     &_icon {
-      width: 5%;
+      color: var(--primary-blue);
+      font-size: 2.5rem;
       & img {
         width: 100%;
       }
     }
     &_text {
       width: 85%;
+      font-weight: 500;
       background-color: #fff;
       padding: 2rem;
       border-radius: var(--round);

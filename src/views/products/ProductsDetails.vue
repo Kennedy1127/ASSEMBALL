@@ -6,10 +6,7 @@
           <router-link to="/">拍賣專區</router-link>
         </span>
         <div class="icon">
-          <img
-            src="~@/assets/images/icons/arrow-right.png"
-            alt="breadcrumb arrow"
-          />
+          <span> <font-awesome-icon icon="fa-solid fa-chevron-right" /></span>
         </div>
         <span>
           <router-link to="/products">商品詳情</router-link>
@@ -87,7 +84,7 @@
                 <div class="product_message_area_all_pic">
                   <img
                     class="product_message_area_all_pic_mark"
-                    src="~@/assets/images/products/mark.svg"
+                    src="~@/assets/images/products/mark.png"
                     alt="mark"
                   />
                   <img
@@ -224,6 +221,19 @@ export default {
     border-radius: var(--round);
     padding: 3rem 12rem;
     margin-top: 10rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    @media screen and (max-width: 1600px) {
+      padding: 3rem 10rem;
+    }
+    @media screen and (max-width: 1500px) {
+      padding: 3rem 6rem;
+    }
+    @media screen and (max-width: 1400px) {
+      padding: 3rem 2rem;
+    }
   }
 
   &_breadcrumb {

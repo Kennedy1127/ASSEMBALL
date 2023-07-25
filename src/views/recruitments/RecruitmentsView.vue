@@ -12,8 +12,13 @@
         </div>
 
         <div class="recruit_copywritings_content">
-          <RecruitmentCards :copywritings="computedCopywritings" />
-          <RecruitmentAside />
+          <RecruitmentMobileButtons
+            v-if="store.state.isMobile"
+            @openModal="toggleAside"
+          />
+          <RecruitmentCards v-if="!isNoResults" />
+          <RecruitmentNoResults v-else />
+          <RecruitmentAside v-if="isAsideActived" @closeModal="toggleAside" />
         </div>
       </div>
 
@@ -21,7 +26,7 @@
         <div class="recruit_feedback_carousel">
           <RecruitmentSwiper />
         </div>
-        <div class="recruit_feedback_pics">
+        <div class="recruit_feedback_pics" v-if="!store.state.isMobile">
           <img
             src="@/assets/images/recruitment/Baseball-pana.png"
             alt="feedback pic"
@@ -32,43 +37,39 @@
   </main>
 </template>
 
-<script>
+<script setup>
 import RecruitmentLanding from "@/components/recruitments/recruitment/RecruitmentLanding.vue";
 import RecruitmentCards from "@/components/recruitments/recruitment/RecruitmentCards.vue";
+import RecruitmentNoResults from "@/components/recruitments/recruitment/RecruitmentNoResults.vue";
 import RecruitmentAside from "@/components/recruitments/recruitment/RecruitmentAside.vue";
+import RecruitmentMobileButtons from "@/components/recruitments/recruitment/RecruitmentMobileButtons.vue";
 import RecruitmentSwiper from "@/components/recruitments/recruitment/RecruitmentSwiper.vue";
+import { computed, onMounted, ref } from "vue";
+import { useStore } from "vuex";
 
-export default {
-  components: {
-    RecruitmentLanding,
-    RecruitmentCards,
-    RecruitmentAside,
-    RecruitmentSwiper,
-  },
+const store = useStore();
 
-  beforeMount() {
-    // 掛載後撈文案數量
-    this.$store.dispatch("getCopywritingsCount");
+onMounted(() => {
+  // 掛載後撈文案數量
+  store.dispatch("getCopywritingsCount");
 
-    // 如果文案陣列長度為0或是文案陣列長度與文案數量不等於，則撈文案資料
-    if (
-      this.$store.state.copywritings.length === 0 ||
-      this.$store.state.copywritings.length !==
-        this.$store.state.copywritingsCount
-    )
-      this.$store.dispatch("getCopywritings");
-  },
+  // 如果文案陣列長度為0或是文案陣列長度與文案數量不等於，則撈文案資料
+  if (
+    store.state.copywritings.length === 0 ||
+    store.state.copywritings.length !== store.state.copywritingsCount
+  )
+    store.dispatch("getCopywritings");
+});
 
-  data() {
-    return {};
-  },
+const isNoResults = computed(
+  () => store.getters.filteredCopywritings.length === 0
+);
 
-  computed: {
-    // 渲染用資料
-    computedCopywritings() {
-      return this.$store.getters.dateSortedFilteredCopywritings;
-    },
-  },
+// 確認桌機或手機，桌機aside預設為true，手機aside預設為false
+const isAsideActived = ref(store.state.isMobile ? false : true);
+
+const toggleAside = () => {
+  isAsideActived.value = !isAsideActived.value;
 };
 </script>
 
@@ -83,15 +84,41 @@ export default {
     background-image: url("@/assets/images/recruitment/recruitment-landing.png");
     background-position: 100% 90%;
     background-repeat: no-repeat;
+
+    @media all and (max-width: 420px) {
+      min-height: 300px;
+      background-image: url("@/assets/images/recruitment/recruitment-landing-sm.png");
+      background-position: center;
+    }
+  }
+
+  .wrapper {
+    @media all and (max-width: 420px) {
+      padding: 0 2rem;
+    }
   }
 
   &_copywritings {
     max-width: 1400px; // 1600? 1400? 1200?
     margin: 4rem auto 0;
 
+    @media all and (max-width: 420px) {
+      margin-top: 2rem;
+    }
+
     &_header {
       width: fit-content;
       position: relative;
+      z-index: -1;
+
+      @media all and (max-width: 420px) {
+        padding: 0 0.5rem;
+
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+      }
+
       .block {
         position: absolute;
         top: 50%;
@@ -101,6 +128,11 @@ export default {
         width: 1rem;
         height: 4rem;
         background-color: var(--primary-blue);
+
+        @media all and (max-width: 420px) {
+          position: initial;
+          transform: translateY(0);
+        }
       }
 
       &_title {
@@ -114,6 +146,12 @@ export default {
       margin-top: 4rem;
       display: flex;
       gap: 1.5rem;
+
+      @media all and (max-width: 420px) {
+        margin-top: 0;
+        flex-direction: column;
+        gap: 0;
+      }
     }
   }
 
@@ -126,6 +164,10 @@ export default {
 
     &_carousel {
       width: 50%;
+
+      @media all and (max-width: 420px) {
+        width: 100%;
+      }
     }
 
     &_pics {

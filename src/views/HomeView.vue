@@ -64,7 +64,8 @@ export default {
   padding-top: 2rem;
   .wrapper {
     width: 100%;
-    max-width: 1600px;
+    max-width: 100%;
+    // max-width: 1600px;
     // 網站故事
     .home_landing {
       width: 100%;
@@ -109,7 +110,8 @@ export default {
       border-top: 3px solid var(--primary-blue);
     }
     .home_product {
-      display: flex;
+      position: relative;
+      overflow: hidden;
     }
     .home_footer {
     }
