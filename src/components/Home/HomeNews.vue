@@ -189,7 +189,7 @@ export default {
       // Modified to accept itemIndex instead of itemData
       this.modalIsOpen = true; // Store the index of the clicked item
       const data = this.itemsData.find((item) => item.id === id);
-      console.log(data);
+
       this.modalData.title = data.title;
       this.modalData.date = data.date;
       this.modalData.bigImgSrc = data.bigImgSrc;

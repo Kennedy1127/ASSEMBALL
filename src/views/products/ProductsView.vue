@@ -34,16 +34,19 @@ import ProductsMainHeader from "@/components/products/productsItems/ProductsMain
 import ProductsMainItems from "@/components/products/productsItems/ProductsMainItems";
 import ProductsNoResults from "@/components/products/productsItems/ProductsNoResults.vue";
 import { computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 
 const store = useStore();
-
-// mounted() {
-//   if (this.$route.query.tag) this.filterByTag(Number(this.$route.query.tag));
-//   if (this.$route.query.search) this.filterByInput(this.$route.query.search);
-// },
+const route = useRoute();
 
 onMounted(() => {
+  // 檢查url是否有tag，有的話篩選
+  if (route.query.tag) {
+    store.commit("selectProductsTag", Number(route.query.tag));
+    store.commit("resetPaginationCurPage", "products");
+  }
+
   // 掛載後撈商品數量
   store.dispatch("getProductsCount");
 

@@ -15,7 +15,7 @@
         @click="() => (active = i)"
       >
         <h2>{{ artist.classigicationName }}</h2>
-        <button @click="goToFilteredProducts(artist.tag)">
+        <button @click="goToProducts(artist.tag)">
           <Icon type="ios-baseball-outline" />{{ artist.classigicationBtn }}
         </button>
         <div class="content"></div>
@@ -78,11 +78,14 @@ export default {
             this.active = this.active + -1;
           }
         },
-        goToFilteredProducts(tag) {
-          console.log(tag);
-        },
       },
     };
+  },
+
+  methods: {
+    goToProducts(tag) {
+      this.$router.push({ name: "Products", query: { tag } });
+    },
   },
 };
 </script>
