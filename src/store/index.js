@@ -35,15 +35,12 @@ export default createStore({
     myplayerPopupsOpen: false,
     myplayerEditOpen: false,
     myplayerOverlay: true,
-<<<<<<< HEAD
     myplayerTeam: {},
-=======
 
     //////////////////////////////////////////////////////
     // 頁碼區塊
     productsCurPage: 1,
     copywritingsCurPage: 1,
->>>>>>> f7388d8bc7df89a6c06138fa34ab3516ab289e11
   },
 
   getters: {
