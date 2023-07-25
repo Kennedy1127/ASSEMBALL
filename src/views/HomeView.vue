@@ -54,6 +54,13 @@ export default {
   data() {
     return {};
   },
+
+  mounted() {
+    this.$store.dispatch("getHomeNews");
+    this.$store.dispatch("getHomeTeams");
+    this.$store.dispatch("getHomeCopywritings");
+    this.$store.dispatch("getHomeProducts");
+  },
 };
 </script>
 
