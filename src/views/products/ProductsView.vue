@@ -108,6 +108,7 @@ const goToTop = (e) => {
 
   @media all and (max-width: 420px) {
     padding-top: 196px;
+    background-color: #fff;
   }
 
   .wrapper {
@@ -130,6 +131,7 @@ const goToTop = (e) => {
     @media screen and (max-width: 420px) {
       padding: 0 1.5rem 1rem;
       border-radius: 0;
+      box-shadow: none;
     }
   }
 

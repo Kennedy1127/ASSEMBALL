@@ -45,7 +45,7 @@
 
         <main class="products_main" v-if="productItemData">
           <ProductsMainItem :productItemData="productItemData" />
-          <!-- <ProductsMainItemMsg :productMsgData="productMsgData" /> -->
+          <ProductsMainItemMsg :productMsgData="productMsgData" />
         </main>
       </section>
     </div>
@@ -55,7 +55,6 @@
 <script setup>
 import ProductsAsideSearch from "@/components/products/productsAside/ProductsAsideSearch";
 import ProductsAsideTags from "@/components/products/productsAside/ProductsAsideTags";
-import ProductsAsideMobile from "@/components/products/productsAside/ProductsAsideMobile.vue";
 import ProductsMainItem from "@/components/products/productsItem/ProductsMainItem";
 import ProductsMainItemMsg from "@/components/products/productsItem/ProductsMainItemMsg";
 import { computed, onMounted } from "vue";
@@ -119,6 +118,7 @@ const goToProducts = () => {
 
   @media all and (max-width: 420px) {
     padding-top: 196px;
+    background-color: #fff;
   }
 
   .wrapper {
@@ -142,6 +142,7 @@ const goToProducts = () => {
     @media screen and (max-width: 420px) {
       padding: 0 1.5rem 1rem;
       border-radius: 0;
+      box-shadow: none;
     }
   }
 
