@@ -75,6 +75,9 @@
     li:hover {
       background-color: var(--secondary-blue-3);
     }
+    li:hover a {
+      color: var(--primary-blue);
+    }
   }
   &_hitterpic {
     width: 100%;
@@ -119,6 +122,9 @@
     }
     li:hover {
       background-color: var(--primary-blue);
+    }
+    li:hover a {
+      color: var(--pale-white);
     }
   }
 }

@@ -13,12 +13,12 @@
         <div class="icon">
           <font-awesome-icon icon="fa-solid fa-chevron-right" />
         </div>
-        <span>verify</span>
+        <span>審核應徵</span>
       </section>
 
       <div class="recruitment_post_main_title">
         <div class="block"></div>
-        <div>verify</div>
+        <div>審核應徵</div>
         <router-link :to="{ name: 'recruitmentVerifyDetail' }"
           >審核詳細頁</router-link
         >
@@ -61,7 +61,7 @@ export default {
 
   // }
   &_breadcrumb {
-    // margin-bottom: 4rem;
+    margin-bottom: 4rem;
     display: flex;
     gap: 1.5rem;
 
@@ -98,11 +98,6 @@ export default {
     &_page {
       margin-right: 0;
     }
-  }
-}
-@media screen and (max-width: 420px) {
-  .recruitment_post {
-    display: block;
   }
 }
 </style>

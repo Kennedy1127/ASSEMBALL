@@ -1,48 +1,67 @@
 <template>
   <div class="recruitment_post_form">
-    <div class="recruitment_post_form_label">
-      <label for="product_post_title" class="recruitment_post_form_label_title"
+    <div class="recruitment_post_form_item">
+      <label
+        for="recruitment_post_title"
+        class="recruitment_post_form_label_title"
         ><span class="requiredMark">*</span>徵人標題：
       </label>
-      <label for="product_post_title" class="recruitment_post_form_label_title"
+      <input
+        type="text"
+        id="recruitment_post_title"
+        class="recruitment_post_form_item_input"
+        maxlength="10"
+        value
+        placeholder="(0/10)"
+      />
+    </div>
+
+    <div class="recruitment_post_form_item">
+      <label
+        for="recruitment_post_level"
+        class="recruitment_post_form_label_title"
         ><span class="requiredMark">*</span>經歷：
       </label>
-      <label for="product_post_title" class="recruitment_post_form_label_title"
+      <select id="recruitment_post_level"></select>
+    </div>
+
+    <div class="recruitment_post_form_item">
+      <label
+        for="recruitment_post_player"
+        class="recruitment_post_form_label_title"
         ><span class="requiredMark">*</span>職缺：
       </label>
-      <label for="product_post_title" class="recruitment_post_form_label_title"
+      <select id="recruitment_post_player"></select>
+    </div>
+
+    <div class="recruitment_post_form_item">
+      <label
+        for="recruitment_post_loation"
+        class="recruitment_post_form_label_title"
         ><span class="requiredMark">*</span>所在地區(縣市)：
       </label>
+      <select id="recruitment_post_loation"></select>
+    </div>
+
+    <div class="recruitment_post_form_item">
       <label
         for="recruitment_post_info"
         class="recruitment_post_form_label_title"
         ><span class="requiredMark">*</span>職缺說明：
       </label>
-    </div>
-    <div class="recruitment_post_form_text">
-      <input
-        type="text"
-        id="recruitment_post_title"
-        class="recruitment_post_form_text_input"
-        maxlength="10"
-        value
-        placeholder="(0/10)"
-      />
-      <select id="recruitment_post_level"></select>
-      <select id="recruitment_post_player"></select>
-      <select id="recruitment_post_loation"></select>
       <textarea
         id="recruitment_post_info"
-        cols="20"
-        rows="10"
+        cols="30"
+        rows="8"
         maxlength="100"
         value
         placeholder="(0/100)"
       ></textarea>
-      <div class="recruitment_post_form_btn">
-        <button>取消</button>
-        <button>上傳</button>
-      </div>
+    </div>
+    <div class="recruitment_post_form_btn">
+      <button>上傳</button>
+      <button>刪除</button>
+      <button>取消</button>
     </div>
   </div>
 </template>
@@ -51,11 +70,7 @@
 
 <style scoped lang="scss">
 .recruitment_post_form {
-  display: flex;
-  gap: 1rem;
   &_label {
-    display: flex;
-    flex-direction: column;
     &_title {
       display: block;
       width: 200px;
@@ -68,12 +83,15 @@
       }
     }
   }
-
-  &_text {
+  // 表單的item
+  &_item {
     display: flex;
-    flex-direction: column;
+    label {
+      width: 12rem;
+      margin-right: 1rem;
+    }
     &_input {
-      width: 36rem;
+      width: 65%;
       border-radius: 10px;
       height: 3rem;
       font-size: 1.25rem;
@@ -102,6 +120,7 @@
       margin-bottom: 3.2rem;
     }
     textarea {
+      width: 65%;
       font-size: 1.25rem;
       line-height: 1.75;
       outline: 0;
@@ -122,6 +141,7 @@
       background-color: var(--pale-white);
     }
   }
+
   &_btn {
     margin-top: 2rem;
     display: flex;
@@ -138,15 +158,54 @@
       font-weight: 500;
       border: 0;
     }
-    & button:nth-child(1) {
+    & button:nth-child(3) {
       border: 2px solid;
       border-color: var(--secondary-gray-3);
       color: var(--secondary-gray-3);
       background-color: #fff;
     }
-    & button:nth-child(2) {
+    & button:nth-child(1) {
       background-color: var(--primary-blue);
       color: var(--pale-white);
+    }
+    & button:nth-child(2) {
+      background-color: var(--error-yellow);
+      color: var(--secondary-gray-1);
+    }
+  }
+}
+@media screen and (max-width: 420px) {
+  .recruitment_post_form {
+    &_item {
+      display: block;
+      margin-bottom: 1rem;
+      &_input,
+      select,
+      textarea {
+        width: 100%;
+        margin-bottom: 0;
+      }
+    }
+    &_label {
+      &_title {
+        // display: block;
+        // width: 200px;
+        text-align: initial;
+        // font-size: 1.25rem;
+        // color: var(--input-label-gray);
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    &_btn {
+      display: block;
+      button {
+        width: 100%;
+        // !important
+      }
+      & button:nth-child(2) {
+        margin: 1.25rem 0;
+      }
     }
   }
 }
