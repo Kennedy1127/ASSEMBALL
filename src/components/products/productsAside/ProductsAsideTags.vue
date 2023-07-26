@@ -34,7 +34,7 @@ const filterProducts = (type) => {
   store.commit("selectProductsTag", Number(type));
   store.commit("resetPaginationCurPage", "products");
 
-  emit("filterProducts");
+  emit("filterProducts", type);
 };
 </script>
 

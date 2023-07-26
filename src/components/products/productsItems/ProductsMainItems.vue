@@ -68,8 +68,13 @@ const windowTop = ref(window.top.scrollY);
 
 // 呈現商品
 const computedRenderProducts = computed(() => {
-  const start = (store.state.productsCurPage - 1) * 9;
-  const end = store.state.productsCurPage * 9;
+  const start = store.state.isMobile
+    ? (store.state.productsCurPage - 1) * 5
+    : (store.state.productsCurPage - 1) * 9;
+
+  const end = store.state.isMobile
+    ? store.state.productsCurPage * 5
+    : store.state.productsCurPage * 9;
   return store.getters.dateSortedFilteredProducts.slice(start, end);
 });
 
@@ -77,7 +82,18 @@ const computedRenderProducts = computed(() => {
 const computedTotalPages = computed(() => {
   if (store.state.productsCount === 0) return 1;
   const len = store.getters.filteredProducts.length;
-  return len % 9 === 0 ? (len > 9 ? len / 9 : 1) : Math.ceil(len / 9);
+
+  return store.state.isMobile
+    ? len % 5 === 0
+      ? len > 5
+        ? len / 5
+        : 1
+      : Math.ceil(len / 5)
+    : len % 9 === 0
+    ? len > 9
+      ? len / 9
+      : 1
+    : Math.ceil(len / 9);
 });
 
 // 日期轉換
@@ -110,6 +126,10 @@ const goToProductDetail = (id) => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   row-gap: 4rem;
+
+  @media all and (max-width: 420px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .products_item {
@@ -188,6 +208,7 @@ const goToProductDetail = (id) => {
       z-index: 1;
       font-family: "Noto Sans TC";
       letter-spacing: 1.5px;
+
       & span {
         font-weight: 500;
         color: var(--primary-black);
