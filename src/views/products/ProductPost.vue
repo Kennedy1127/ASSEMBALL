@@ -74,61 +74,96 @@
                 ><span class="requiredMark">*</span>賣家留言：
               </label>
             </div>
-            <div class="product_post_info_content_formlist_text">
-              <input
-                type="text"
-                id="product_post_productname"
-                class="product_post_info_content_formlist_input"
-                maxlength="10"
-                value
-              />
-              <select id="product_post_produccategory"></select>
-              <select id="product_post_loation"></select>
-              <input
-                type="text"
-                id="product_post_price"
-                class="product_post_info_content_formlist_input"
-              />
-              <input
-                type="email"
-                id="product_post_email"
-                class="product_post_info_content_formlist_input"
-              />
-              <input
-                type="tel"
-                id="product_post_phone"
-                class="product_post_info_content_formlist_input"
-              />
-              <!-- <div class="product_post_info_content_formlist_inputfile">
-                <font-awesome-icon icon="fa-solid fa-image" />
-                <font-awesome-icon icon="fa-regular fa-circle-plus" />
-
+            <form
+              action=""
+              method="post"
+              name="productPost"
+              class="product_post_form"
+              @submit.prevent="submitForm"
+            >
+              <div class="product_post_info_content_formlist_text">
                 <input
-                  type="file"
-                  id="product_post_image"
+                  type="text"
+                  id="product_post_productname"
                   class="product_post_info_content_formlist_input"
+                  placeholder="請輸入商品名稱(1-10字)"
+                  v-model="productname"
+                  maxlength="11"
+                  pattern="[^%&',;=?$\x22]+"
+                  required
                 />
-              </div> -->
-              <label for="product_post_image"
-                ><img
-                  src="~@/assets/images/MemberCenter/MemberCenter_Personal_pic.svg"
-                  alt="MemberCenter_Personal_pic"
-                />上傳商品圖片
-                <input type="file" id="product_post_image" />
-              </label>
-              <textarea
-                id="roduct_post_comment"
-                cols="60"
-                rows="10"
-                maxlength="100"
-                value
-              ></textarea>
-              <div class="product_post_info_content_formlist_btn">
-                <button>取消</button>
-                <button>刪除商品</button>
-                <button>刊登商品</button>
+                <select id="product_post_produccategory"></select>
+                <!-- //待修 -->
+                <select id="product_post_loation"></select>
+                <!-- //待修 -->
+                <input
+                  type="text"
+                  id="product_post_price"
+                  class="product_post_info_content_formlist_input"
+                  placeholder="請輸入商品價格"
+                  v-model="price"
+                  minlength="1"
+                  pattern="^[0-9]*$"
+                  required
+                />
+                <!-- // 電子信箱驗證 規定只能輸入 xxx@xxx.xxx 形式 -->
+                <input
+                  type="email"
+                  id="product_post_email"
+                  class="product_post_info_content_formlist_input"
+                  placeholder="請輸入電子信箱"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                  v-model="email"
+                  required
+                />
+                <input
+                  type="tel"
+                  id="product_post_phone"
+                  class="product_post_info_content_formlist_input"
+                  placeholder="請輸入手機號碼(格式：09xx-xxxxxx)"
+                  v-model="phone"
+                  maxlength="11"
+                  pattern="09\d{2}-\d{6}"
+                  required
+                />
+                <!-- <div class="product_post_info_content_formlist_inputfile">
+                  <font-awesome-icon icon="fa-solid fa-image" />
+                  <font-awesome-icon icon="fa-regular fa-circle-plus" />
+  
+                  <input
+                    type="file"
+                    id="product_post_image"
+                    class="product_post_info_content_formlist_input"
+                  />
+                </div> -->
+                <label for="product_post_image"
+                  ><img
+                    src="~@/assets/images/MemberCenter/MemberCenter_Personal_pic.svg"
+                    alt="MemberCenter_Personal_pic"
+                  />上傳商品圖片
+                  <input type="file" id="product_post_image" />
+                </label>
+                <!-- //待修 -->
+                <textarea
+                  id="roduct_post_comment"
+                  cols="60"
+                  rows="10"
+                  minlength="10"
+                  maxlength="100"
+                  value
+                  placeholder="請填入留言版內容(10-100字)"
+                  v-model="comment"
+                ></textarea>
+                <div class="product_post_info_content_formlist_btn">
+                  <!-- <button>取消</button>
+                  <button>刪除商品</button>
+                  <button>刊登商品</button> -->
+                  <input type="button" value="取消刊登" />
+                  <input type="button" value="刪除商品" />
+                  <input type="submit" value="刊登商品" />
+                </div>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -136,7 +171,40 @@
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  data() {
+    return {
+      // 表單資料
+      productname: "",
+      price: "",
+      email: "",
+      phone: "",
+      comment: "",
+      ////////////////
+    };
+  },
+
+  methods: {
+    //提交表單
+    submitForm() {
+      alert("商品上架的資料送出成功！");
+      // 表單資料確認
+      console.log("商品名稱：", this.productname);
+      console.log("商品價格：", this.price);
+      console.log("電子信箱：", this.email);
+      console.log("手機號碼：", this.phone);
+      console.log("賣家留言：", this.comment);
+      //提交後重置表單資料
+      this.productname = "";
+      this.price = "";
+      this.email = "";
+      this.phone = "";
+      this.comment = "";
+    },
+  },
+};
+</script>
 
 <style scoped lang="scss">
 .product_post_wrap {
@@ -360,26 +428,37 @@
             justify-content: flex-end;
             gap: 2rem;
             font-size: 1.25rem;
-            & button:nth-child(n) {
+            & input:nth-child(n) {
               border-radius: 10px;
               font-weight: 500;
               border: 0;
+              padding: 1rem 2.5rem 1rem 2.5rem;
+              cursor: pointer;
             }
-            & button:nth-child(1) {
+            & input:nth-child(1) {
               border: 2px solid;
               border-color: var(--secondary-gray-3);
               color: var(--secondary-gray-3);
               background-color: #fff;
             }
-            & button:nth-child(2) {
+            // & input:nth-child(1):hover {
+            //   background-color: var(--secondary-blue-1);
+            // }
+            & input:nth-child(2) {
               background-color: var(--error-yellow);
               color: var(--secondary-gray-1);
               border: 0;
             }
-            & button:nth-child(3) {
+            // & input:nth-child(2):hover {
+            //   background-color: var(--accent-yellow);
+            // }
+            & input:nth-child(3) {
               background-color: var(--primary-blue);
               color: var(--pale-white);
             }
+            // & input:nth-child(3):hover {
+            //   background-color: var(--secondary-gray-2);
+            // }
           }
         }
         &_splitline {

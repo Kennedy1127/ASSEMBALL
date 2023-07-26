@@ -69,7 +69,7 @@ export default {
   data() {
     return {
       // 導覽列顯示
-      MainHeader: true,
+      MainHeader: false,
       MainHeaderLight: false,
       // 通知視窗顯示
       isNotifyVisible: false,
