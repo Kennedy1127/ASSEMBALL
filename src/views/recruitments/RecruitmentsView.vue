@@ -102,12 +102,17 @@ const toggleAside = () => {
     max-width: 1400px; // 1600? 1400? 1200?
     margin: 4rem auto 0;
 
+    @media all and (max-width: 1280px) {
+      max-width: 1200px;
+    }
+
     @media all and (max-width: 420px) {
       margin-top: 2rem;
     }
 
     &_header {
       width: fit-content;
+      padding-left: 0.5rem;
       position: relative;
       z-index: -1;
 
@@ -129,6 +134,10 @@ const toggleAside = () => {
         height: 4rem;
         background-color: var(--primary-blue);
 
+        @media all and (max-width: 1280px) {
+          left: 0.5rem;
+        }
+
         @media all and (max-width: 420px) {
           position: initial;
           transform: translateY(0);
@@ -139,6 +148,10 @@ const toggleAside = () => {
         font-weight: 700;
         font-size: 2rem;
         color: var(--primary-blue);
+
+        @media all and (max-width: 1280px) {
+          margin-left: 3rem;
+        }
       }
     }
 

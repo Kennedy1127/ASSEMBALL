@@ -13,12 +13,14 @@
         </div>
 
         <button class="authentication_btn">
-          登入 <font-awesome-icon icon="fa-solid fa-chevron-right" />
+          <router-link :to="{ name: 'LogIn' }"
+            >登入 <font-awesome-icon icon="fa-solid fa-chevron-right"
+          /></router-link>
         </button>
       </div>
 
       <div v-if="layout === 'normal'">
-        <slot name="form"></slot>
+        <slot name="pic"></slot>
       </div>
       <form class="authentication_text">
         <div class="authentication_text_slogan">Hello , Friend !</div>

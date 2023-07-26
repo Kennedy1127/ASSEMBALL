@@ -1,9 +1,8 @@
 <template>
   <main class="recruitment_post">
     <section class="recruitment_post_aside">
-      <!-- <aside class="recruitment_post_aside"> -->
+      <!-- 側邊欄 -->
       <RecruitmentPostAside />
-      <!-- </aside> -->
     </section>
     <main class="recruitment_post_main">
       <section class="recruitment_post_breadcrumb">
@@ -24,39 +23,33 @@
         <label for=""></label>
         <input type="text" />
       </div>
-      <!-- 組件 -->
-      <!-- slot -->
-      <!-- <template #title></template> -->
-
-      <!-- 組件 -->
-      <!-- ViewLogin.vue -->
-      <!-- <LoginFrame>
-        <template #right>
-          <div class="product_post_info_title">
-            <div class="block"></div>
-            <selector-primary
-              :options="options"
-              value="currentCategory"
-              @update-category="currentCategory = $event"
-            />
-          </div>
-        </template>
-      </LoginFrame> -->
+      <div class="recruitment_post_main_content">
+        <div class="recruitment_post_main_content_form">
+          <RecruitmentPostForm />
+        </div>
+        <div class="recruitment_post_main_content_pic">
+          <img
+            src="~@/assets/images/recruitment/Baseball-Park.png"
+            alt="Baseball-Park"
+          />
+        </div>
+      </div>
     </main>
   </main>
 </template>
 
 <script>
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
-import ProductPost from "@/views/products/ProductPost";
+import RecruitmentPostForm from "@/components/recruitments/backside/RecruitmentPostForm";
 
 export default {
-  components: { RecruitmentPostAside, ProductPost },
+  components: { RecruitmentPostAside, RecruitmentPostForm },
 };
 </script>
 
 <style lang="scss">
 .recruitment_post {
+  margin-top: 6rem;
   display: flex;
 
   // &_aside{
@@ -91,6 +84,15 @@ export default {
         background-color: var(--primary-blue);
       }
     }
+    &_content {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+@media screen and (max-width: 420px) {
+  .recruitment_post {
+    display: block;
   }
 }
 </style>

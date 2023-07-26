@@ -13,11 +13,13 @@
   flex: 1;
 
   &_img {
-    display: flex;
-    justify-content: center;
+    width: 70%;
+    height: 70%;
+    margin: 0 auto;
 
     img {
       width: 100%;
+      height: 100%;
     }
   }
 

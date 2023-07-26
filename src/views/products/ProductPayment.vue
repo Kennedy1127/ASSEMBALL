@@ -15,6 +15,7 @@
         method="post"
         name="ProductPayment"
         class="ProductPayment_form"
+        @submit.prevent="submitForm"
       >
         <div class="ProductPayment_form_title">
           <div class="ProductPayment_form_title_project">收件商品</div>
@@ -41,7 +42,11 @@
             type="text"
             name="ProductPayment_phone"
             id="phone"
-            placeholder="請輸入手機號碼"
+            placeholder="請輸入手機號碼(格式：09xx-xxxxxx)"
+            v-model="phone"
+            maxlength="11"
+            pattern="09\d{2}-\d{6}"
+            required
           />
         </div>
         <div class="ProductPayment_form_address">
@@ -51,6 +56,9 @@
             name="ProductPayment_address"
             id="address"
             placeholder="請輸入詳細地址"
+            v-model="address"
+            pattern="[^%&',;=?$\x22]+"
+            required
           />
         </div>
         <div class="ProductPayment_form_title">
@@ -63,7 +71,11 @@
               type="text"
               name="ProductPayment_creditCardNumber"
               id="creditCardNumber"
-              placeholder="請輸入信用卡號"
+              placeholder="請輸入信用卡號(16碼)"
+              v-model="creditCardNumber"
+              maxlength="17"
+              pattern="^\d{16}$"
+              required
             />
           </div>
           <div class="ProductPayment_form_card_creditCardDate">
@@ -72,6 +84,11 @@
               type="text"
               name="ProductPayment_creditCardDate"
               id="creditCardDate"
+              v-model="creditCardDate"
+              placeholder="(3碼)"
+              maxlength="3"
+              pattern="^\d{3}$"
+              required
             />
           </div>
           <div class="ProductPayment_form_card_creditCardCVV">
@@ -80,6 +97,11 @@
               type="text"
               name="ProductPayment_creditCardCVV"
               id="creditCardCVV"
+              v-model="creditCardCVV"
+              placeholder="(3碼)"
+              maxlength="3"
+              pattern="^\d{3}$"
+              required
             />
           </div>
         </div>
@@ -97,6 +119,13 @@
 export default {
   data() {
     return {
+      // 表單資料
+      phone: "",
+      address: "",
+      creditCardNumber: "",
+      creditCardDate: "",
+      creditCardCVV: "",
+      ////////////////////
       ProductPaymentItem: [
         {
           imgSrc: require("@/assets/images/products/ProductPayment_pic1.png"),
@@ -106,6 +135,25 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    //提交表單
+    submitForm() {
+      alert("付款資料提交成功！");
+      // 表單資料確認
+      console.log("手機號碼：", this.phone);
+      console.log("收件地址：", this.address);
+      console.log("信用卡號：", this.creditCardNumber);
+      console.log("到期日：", this.creditCardDate);
+      console.log("CVV：", this.creditCardCVV);
+
+      //提交後重置表單資料
+      this.phone = "";
+      this.address = "";
+      this.creditCardNumber = "";
+      this.creditCardDate = "";
+      this.creditCardCVV = "";
+    },
   },
 };
 </script>

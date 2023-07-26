@@ -3,7 +3,7 @@
     <div class="footer">
       <div class="wrapper">
         <div class="footer_logo">
-          <router-link to="/">
+          <router-link :to="{ name: 'Home' }">
             <img
               src="~@/assets/images/icons/footer_logo_light.svg"
               alt="footer_logo_light"

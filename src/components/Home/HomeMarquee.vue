@@ -5,14 +5,14 @@
       v-for="item in homeMarqueeProduct"
       :key="item"
     >
-      <router-link to="/">{{ item }}</router-link>
+      <router-link :to="{ name: 'Products' }">{{ item }}</router-link>
     </div>
     <div
       class="home_marquee_hashtag_text"
       v-for="item in homeMarqueeProduct"
       :key="item"
     >
-      <router-link to="/">{{ item }}</router-link>
+      <router-link :to="{ name: 'Products' }">{{ item }}</router-link>
     </div>
   </div>
   <div class="home_marquee_hashtag">
@@ -21,14 +21,14 @@
       v-for="item in homeMarqueeCopywriting"
       :key="item"
     >
-      <router-link to="/">{{ item }}</router-link>
+      <router-link :to="{ name: 'Recruitments' }">{{ item }}</router-link>
     </div>
     <div
       class="home_marquee_hashtag_text"
       v-for="item in homeMarqueeCopywriting"
       :key="item"
     >
-      <router-link to="/">{{ item }}</router-link>
+      <router-link :to="{ name: 'Recruitments' }">{{ item }}</router-link>
     </div>
   </div>
   <div class="home_marquee_hashtag">
@@ -37,14 +37,14 @@
       v-for="item in homeMarqueeTeach"
       :key="item"
     >
-      <router-link to="/">{{ item }}</router-link>
+      <router-link :to="{ name: 'rookie' }">{{ item }}</router-link>
     </div>
     <div
       class="home_marquee_hashtag_text"
       v-for="item in homeMarqueeTeach"
       :key="item"
     >
-      <router-link to="/">{{ item }}</router-link>
+      <router-link :to="{ name: 'rookie' }">{{ item }}</router-link>
     </div>
   </div>
 </template>

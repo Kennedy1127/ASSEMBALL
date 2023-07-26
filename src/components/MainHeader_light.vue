@@ -3,7 +3,7 @@
     <nav class="header">
       <div class="wrapper">
         <div class="header_logo">
-          <router-link to="/">
+          <router-link :to="{ name: 'Home' }">
             <img
               src="~@/assets/images/icons/header_logo_dark.svg"
               alt="nav_logo"

@@ -213,6 +213,10 @@ const convertDate = (copywritingDate) => {
   margin-top: 6rem;
   padding-top: 6rem;
 
+  @media all and (max-width: 1280px) {
+    max-width: 1200px;
+  }
+
   @media all and (max-width: 420px) {
     padding: 2rem 2rem 0;
   }

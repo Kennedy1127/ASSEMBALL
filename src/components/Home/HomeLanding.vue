@@ -1,14 +1,18 @@
 <template>
   <div class="home_landing_video">
-    <video autoplay loop muted>
+    <video class="home_landing_video_desktop" autoplay loop muted>
       <source src="~@/assets/video/baseball_video_AdobeExpress.mp4" />
+    </video>
+    <video class="home_landing_video_mobile" autoplay loop muted>
+      <source src="~@/assets/video/mobile_baseball_video_AdobeExpress.mp4" />
     </video>
   </div>
   <div class="home_landing_all">
     <div class="home_landing_all_title">
       <div class="home_landing_all_title_wrapper">
         <h1 class="home_landing_all_title_wrapper_text">
-          {{ homeLandingTitle.title }}
+          {{ homeLandingTitle.titleAbout }}<br />
+          {{ homeLandingTitle.titleAssemball }}
         </h1>
         <h1 class="home_landing_all_title_wrapper_text">
           {{ homeLandingTitle.about }}
@@ -17,20 +21,48 @@
     </div>
     <div class="home_landing_all_text fade-up">
       <div class="home_landing_all_text_first">
-        <strong>{{ homeLandingFirst.focus }}</strong>
-        <p>{{ homeLandingFirst.textOne }}</p>
-        <p>{{ homeLandingFirst.textTwo }}</p>
+        <strong
+          >{{ homeLandingFirst.focusOne }}<br />
+          {{ homeLandingFirst.focusTwo }}
+        </strong>
+        <p>
+          {{ homeLandingFirst.textOne }}<br />{{ homeLandingFirst.textTwo }}
+        </p>
       </div>
       <div class="home_landing_all_text_center fade-up">
-        <p>{{ homeLandingCenter.textOne }}</p>
-        <p>{{ homeLandingCenter.textTwo }}</p>
-        <strong>{{ homeLandingCenter.focus }}</strong>
+        <p>
+          {{ homeLandingCenter.textOne }}<br />{{
+            homeLandingCenter.textOneBreakpoint
+          }}
+        </p>
+        <p>
+          {{ homeLandingCenter.textTwo
+          }}{{ homeLandingCenter.textTwoBreakpoint }}
+        </p>
+        <strong
+          >{{ homeLandingCenter.focusOne }}<br />{{ homeLandingCenter.focusTwo
+          }}{{ homeLandingCenter.focusThree }}</strong
+        >
       </div>
       <div class="home_landing_all_text_last fade-up">
-        <p>{{ homeLandingLast.textOne }}</p>
-        <p>{{ homeLandingLast.textTwo }}</p>
-        <strong>{{ homeLandingLast.focus }}</strong>
-        <p>{{ homeLandingLast.textThree }}</p>
+        <p>
+          {{ homeLandingLast.textOne }}
+        </p>
+        <p>
+          {{ homeLandingLast.textTwo }}<br />{{
+            homeLandingLast.textTwoBreakpoint
+          }}
+        </p>
+        <strong
+          >{{ homeLandingLast.focusOne }}<br />{{
+            homeLandingLast.focusTwo
+          }}</strong
+        >
+        <p>
+          {{ homeLandingLast.textThree }}<br />{{
+            homeLandingLast.textThreeBreakpoint
+          }}
+        </p>
       </div>
     </div>
   </div>
@@ -41,28 +73,34 @@ export default {
   data() {
     return {
       homeLandingTitle: {
-        title: "ABOUT ASSEMBALL",
+        titleAbout: "ABOUT",
+        titleAssemball: "ASSEMBALL",
         about: "- BASEBALL -",
       },
       homeLandingFirst: {
-        focus: "在這裡，我們致力於召集一群同樣熱愛棒球的人。",
+        focusOne: "在這裡，",
+        focusTwo: "我們致力於召集一群同樣熱愛棒球的人。",
         textOne: "不論你是新手還是資深球員，",
         textTwo: "我們都歡迎你加入或創建屬於自己的棒球團隊。",
       },
       homeLandingCenter: {
-        focus:
-          "- 為了解決這個問題，ASSEMBALL提供為棒球球隊和球員提供絕佳的配對服務 -",
-        textOne:
-          "無論在棒球場上還是球迷的心中，一個成功的球隊都需要完美的球員組合",
-        textTwo: "然而，找到適合球隊需求的球員並不容易",
+        focusOne: "- 為了解決這個問題，",
+        focusTwo: "ASSEMBALL為棒球球隊和球員提供",
+        focusThree: "絕佳的配對服務 -",
+        textOne: "無論在棒球場上還是球迷的心中，",
+        textOneBreakpoint: "一個成功的球隊都需要完美的球員組合。",
+        textTwo: "然而，",
+        textTwoBreakpoint: "找到適合球隊需求的球員並不容易。",
       },
       homeLandingLast: {
-        focus:
-          "- 這裡不僅僅是一個買賣的場所，也是一個棒球愛好者之間交流和互動的社群 -",
-        textOne: "我們匯集了各種棒球相關的二手商品",
-        textTwo: "並且嚴格審核和篩選所有上架的二手商品，確保它們的質量和可用性",
-        textThree:
-          "通過二手商品拍賣服務鼓勵棒球愛好者共享和再利用裝備，減少資源的浪費和環境壓力",
+        focusOne: "- 這裡不僅僅是一個買賣的場所，",
+        focusTwo: "也是一個棒球愛好者之間交流和互動的社群 -",
+        textOne: "我們匯集了各種棒球相關的二手商品，",
+        textTwo: "並且嚴格審核和篩選所有上架的商品",
+        textTwoBreakpoint: "確保它們的質量和可用性。",
+        textThree: "通過二手商品拍賣服務，",
+        textThreeBreakpoint:
+          "鼓勵棒球愛好者共享和再利用裝備減少資源的浪費與環境壓力。",
       },
     };
   },
@@ -100,16 +138,22 @@ export default {
   margin-left: auto;
   position: sticky;
   top: 8rem;
-  & video {
+  border-radius: var(--round);
+  overflow: hidden;
+  box-shadow: var(--shadow-wide);
+  &_desktop {
     width: 100%;
+    transform: scale(1.02);
+  }
+  &_mobile {
+    display: none;
   }
 }
 .home_landing_all {
   position: absolute;
   top: 0;
-  left: 2rem;
-  right: 2.5rem;
-
+  left: 2.75rem;
+  right: 2.75rem;
   &_title {
     margin-top: 8rem;
     &_wrapper {
@@ -132,7 +176,13 @@ export default {
         background-size: 200%;
         background-clip: text;
         color: transparent;
-        animation: animatedGradient 10s alternate infinite;
+        animation: animatedGradient 10s;
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+        & br {
+          display: none;
+        }
       }
     }
     /* Animation for the gradient */
@@ -141,15 +191,15 @@ export default {
         background-position: 0% 100%;
       }
       100% {
-        background-position: 100% 0%;
+        background-position: -100% 0%;
       }
     }
   }
   &_text {
-    strong {
+    & strong {
       font-size: 2rem;
     }
-    p {
+    & p {
       font-size: 1.5rem;
       margin-top: 2rem;
       margin-bottom: 2rem;
@@ -157,15 +207,24 @@ export default {
     &_first {
       opacity: 0;
       margin-top: 8rem;
+      & br {
+        display: none;
+      }
     }
     &_center {
       opacity: 0;
       margin-top: 12rem;
+      & br {
+        display: none;
+      }
     }
     &_last {
       opacity: 0;
       margin-top: 12rem;
       text-align: right;
+      & br {
+        display: none;
+      }
     }
   }
   .fade-up {
@@ -186,7 +245,76 @@ export default {
   .home_landing_all_text_first.fade-up,
   .home_landing_all_text_center.fade-up,
   .home_landing_all_text_last.fade-up {
-    animation: fadeUpAnimation 2.5s ease forwards;
+    animation: fadeUpAnimation 2s ease forwards;
+  }
+}
+@media (max-width: 420px) {
+  .home_landing_video {
+    width: 90%;
+    position: sticky;
+    top: 10rem;
+    &_desktop {
+      display: none;
+    }
+    &_mobile {
+      display: block;
+      width: 100%;
+      transform: scale(1.02);
+    }
+  }
+  .home_landing_all {
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    right: 1rem;
+    &_title {
+      margin-top: 45vh;
+      &_wrapper {
+        &_text {
+          font-size: 3rem;
+          & br {
+            display: block;
+          }
+        }
+        &_text:nth-child(2) {
+          display: none;
+        }
+      }
+    }
+    &_text {
+      & strong {
+        font-size: 1.3rem;
+        font-weight: 500;
+      }
+      & p {
+        font-size: 1.15rem;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.75rem;
+      }
+      &_first {
+        opacity: 0;
+        margin-top: 2.5rem;
+        & br {
+          display: block;
+        }
+      }
+      &_center {
+        opacity: 0;
+        margin-top: 10rem;
+        & br {
+          display: block;
+        }
+      }
+      &_last {
+        opacity: 0;
+        margin-top: 10rem;
+        text-align: left;
+        & br {
+          display: block;
+        }
+      }
+    }
   }
 }
 </style>

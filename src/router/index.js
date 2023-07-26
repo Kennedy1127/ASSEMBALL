@@ -4,6 +4,11 @@ import store from "@/store/index";
 const routes = [
   {
     path: "/",
+    name: "test",
+    component: () => import("@/views/test.vue"),
+  },
+  {
+    path: "/home",
     name: "Home",
     component: () => import("@/views/HomeView.vue"),
   },
@@ -12,6 +17,22 @@ const routes = [
     name: "Authentication",
     component: () => import("@/views/authentications/AuthenticationView.vue"),
   },
+  {
+    path: "/auth-logIn",
+    name: "LogIn",
+    component: () => import("@/views/authentications/LogInView.vue"),
+  },
+  {
+    path: "/auth-psw-forgot",
+    name: "PswForgot",
+    component: () => import("@/views/authentications/PswForgotView.vue"),
+  },
+  {
+    path: "/auth-psw-reset",
+    name: "PswReset",
+    component: () => import("@/views/authentications/PswResetView.vue"),
+  },
+
   /////////////////////////////////////////
   {
     path: "/products",
@@ -91,6 +112,12 @@ const routes = [
     component: () =>
       import("@/views/recruitments/backside/RecruitmentVerifyDetailView.vue"),
   },
+  {
+    path: "/recruitments/recruitment-history",
+    name: "recruitmentHistory",
+    component: () =>
+      import("@/views/recruitments/backside/RecruitmentHistoryView.vue"),
+  },
   /////////////////////////////////////////
   {
     path: "/myplayerTeam/:id",
@@ -153,7 +180,7 @@ const router = createRouter({
 });
 
 router.beforeEach(() => {
-  if (window.innerWidth <= 410) {
+  if (window.innerWidth <= 420) {
     store.state.isMobile = 1;
   }
   // 在每次路由跳轉前關閉通知、會員頁面

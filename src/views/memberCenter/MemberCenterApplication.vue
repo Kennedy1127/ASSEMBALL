@@ -9,103 +9,157 @@
         <div class="MemberCenter_Application_describe_content">內容撰寫</div>
         <div class="MemberCenter_Application_describe_revise">修改</div>
       </div>
-      <div class="MemberCenter_Application_template">
-        <div class="MemberCenter_Application_template_tick">
-          <input type="radio" name="template" />
+      <form
+        action=""
+        method="post"
+        name="MemberCenterApplicationform"
+        class="MemberCenter_Application_form"
+        @submit.prevent="submitForm"
+      >
+        <div class="MemberCenter_Application_template">
+          <div class="MemberCenter_Application_template_tick">
+            <input
+              type="radio"
+              name="template"
+              value="模板1"
+              id="template[0]"
+              v-model="template"
+              required
+            />
+          </div>
+          <div class="MemberCenter_Application_template_content">
+            <textarea
+              id="Createteam_Introduction"
+              cols="50"
+              rows="10"
+              maxlength="100"
+              value
+              placeholder="系統預設模板內容1...."
+              v-model="Introduction_one"
+            ></textarea>
+          </div>
+          <div class="MemberCenter_Application_template_revise">
+            <span> <font-awesome-icon icon="fa-solid fa-pen" /></span>
+          </div>
         </div>
-        <div class="MemberCenter_Application_template_content">
-          <textarea
-            id="Createteam_Introduction"
-            cols="50"
-            rows="10"
-            maxlength="100"
-            value
-            placeholder="系統預設模板內容1...."
-          ></textarea>
+        <div class="MemberCenter_Application_template">
+          <div class="MemberCenter_Application_template_tick">
+            <input
+              type="radio"
+              name="template"
+              value="模板2"
+              id="template[1]"
+              v-model="template"
+              required
+            />
+          </div>
+          <div class="MemberCenter_Application_template_content">
+            <textarea
+              id="Createteam_Introduction"
+              cols="50"
+              rows="10"
+              maxlength="100"
+              value
+              placeholder="系統預設模板內容2...."
+              v-model="Introduction_two"
+            ></textarea>
+          </div>
+          <div class="MemberCenter_Application_template_revise">
+            <span> <font-awesome-icon icon="fa-solid fa-pen" /></span>
+          </div>
         </div>
-        <div class="MemberCenter_Application_template_revise">
-          <span> <font-awesome-icon icon="fa-solid fa-pen" /></span>
+        <div class="MemberCenter_Application_template">
+          <div class="MemberCenter_Application_template_tick">
+            <input
+              type="radio"
+              name="template"
+              value="模板3"
+              id="template[2]"
+              v-model="template"
+              required
+            />
+          </div>
+          <div class="MemberCenter_Application_template_content">
+            <textarea
+              id="Createteam_Introduction"
+              cols="50"
+              rows="10"
+              maxlength="100"
+              value
+              placeholder="系統預設模板內容3...."
+              v-model="Introduction_three"
+            ></textarea>
+          </div>
+          <div class="MemberCenter_Application_template_revise">
+            <span> <font-awesome-icon icon="fa-solid fa-pen" /></span>
+          </div>
         </div>
-      </div>
-      <div class="MemberCenter_Application_template">
-        <div class="MemberCenter_Application_template_tick">
-          <input type="radio" name="template" />
+
+        <div class="MemberCenter_Application_adddescribe">添加模板</div>
+        <div class="MemberCenter_Application_template">
+          <div class="MemberCenter_Application_template_add">
+            <font-awesome-icon icon="fa-solid fa-circle-plus" />
+          </div>
+          <div class="MemberCenter_Application_template_content">
+            <textarea
+              id="Createteam_Introduction"
+              cols="50"
+              rows="10"
+              maxlength="100"
+              value
+              placeholder="系統預設模板內容1...."
+            ></textarea>
+          </div>
+          <div class="MemberCenter_Application_template_revise">
+            <span> <font-awesome-icon icon="fa-solid fa-pen" /></span>
+          </div>
         </div>
-        <div class="MemberCenter_Application_template_content">
-          <textarea
-            id="Createteam_Introduction"
-            cols="50"
-            rows="10"
-            maxlength="100"
-            value
-            placeholder="系統預設模板內容2...."
-          ></textarea>
+        <div class="MemberCenter_Application_btn">
+          <input type="submit" value="儲存" />
         </div>
-        <div class="MemberCenter_Application_template_revise">
-          <span> <font-awesome-icon icon="fa-solid fa-pen" /></span>
-        </div>
-      </div>
-      <div class="MemberCenter_Application_template">
-        <div class="MemberCenter_Application_template_tick">
-          <input type="radio" name="template" />
-        </div>
-        <div class="MemberCenter_Application_template_content">
-          <textarea
-            id="Createteam_Introduction"
-            cols="50"
-            rows="10"
-            maxlength="100"
-            value
-            placeholder="系統預設模板內容3...."
-          ></textarea>
-        </div>
-        <div class="MemberCenter_Application_template_revise">
-          <span> <font-awesome-icon icon="fa-solid fa-pen" /></span>
-        </div>
-      </div>
-      <div class="MemberCenter_Application_adddescribe">添加模板</div>
-      <div class="MemberCenter_Application_template">
-        <div class="MemberCenter_Application_template_add">
-          <font-awesome-icon icon="fa-solid fa-circle-plus" />
-        </div>
-        <div class="MemberCenter_Application_template_content">
-          <textarea
-            id="Createteam_Introduction"
-            cols="50"
-            rows="10"
-            maxlength="100"
-            value
-            placeholder="系統預設模板內容1...."
-          ></textarea>
-        </div>
-        <div class="MemberCenter_Application_template_revise">
-          <span> <font-awesome-icon icon="fa-solid fa-pen" /></span>
-        </div>
-      </div>
-      <div class="MemberCenter_Application_btn">
-        <input type="submit" value="儲存" />
-      </div>
+      </form>
     </div>
   </section>
 </template>
 
 <script>
 export default {
-  //   data() {
-  //     return {
-  //       template: [
-  //         {
-  //           systemContent: "系統預設內容1...",
-  //         },
-  //         {
-  //           systemContent: "系統預設內容2...",
-  //         },
-  //         {
-  //           systemContent: "系統預設內容3...",
-  //         },
-  //       ],
-  //     };
-  //   },
+  data() {
+    return {
+      // 表單資料
+      Introduction_one: "",
+      Introduction_two: "",
+      Introduction_three: "",
+      template: [],
+      /////////
+      // template: [
+      //   {
+      //     systemContent: "系統預設內容1...",
+      //   },
+      //   {
+      //     systemContent: "系統預設內容2...",
+      //   },
+      //   {
+      //     systemContent: "系統預設內容3...",
+      //   },
+      // ],
+    };
+  },
+
+  methods: {
+    //提交表單
+    submitForm() {
+      alert("模板資料儲存成功！");
+      // 表單資料確認
+      console.log("模板1：", this.Introduction_one);
+      console.log("模板2：", this.Introduction_two);
+      console.log("模板3：", this.Introduction_three);
+      console.log("系統預設：", this.template);
+
+      //提交後重置表單資料
+      // this.template = [];
+    },
+  },
 };
 </script>
 

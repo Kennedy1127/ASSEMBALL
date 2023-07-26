@@ -1,7 +1,7 @@
 <template>
   <div class="home_auction_title">
     <h2>
-      <router-link to="/">棒球用品二手拍賣</router-link>
+      <router-link :to="{ name: 'Products' }">棒球用品二手拍賣</router-link>
     </h2>
     <p>走進綠色棒球世界：延續價值的環保二手拍賣專區，讓棒球用品循環再利用</p>
   </div>
@@ -67,18 +67,6 @@ export default {
           tag: 3,
         },
       ],
-      methods: {
-        nextSlide() {
-          if (this.active <= this.artists.length) {
-            this.active = this.active += 1;
-          }
-        },
-        prevSlide() {
-          if (this.active > 0) {
-            this.active = this.active + -1;
-          }
-        },
-      },
     };
   },
 
