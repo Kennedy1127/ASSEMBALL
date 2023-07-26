@@ -109,6 +109,7 @@ export default {
 
 <style lang="scss">
 .recruitment_post {
+  margin-top: 6rem;
   display: flex;
   &_breadcrumb {
     margin-bottom: 4rem;
@@ -246,6 +247,11 @@ export default {
         }
       }
     }
+  }
+}
+@media screen and (max-width: 420px) {
+  .recruitment_post {
+    display: block;
   }
 }
 </style>

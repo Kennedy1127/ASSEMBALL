@@ -52,10 +52,7 @@ export default {
 
 <style lang="scss">
 .recruitment_post {
-  // 距離navbar
-  // position: relative;
-  // top: 6rem;
-  // 距離navbar
+  margin-top: 6rem;
   display: flex;
 
   // &_aside{
@@ -98,6 +95,11 @@ export default {
     &_page {
       margin-right: 0;
     }
+  }
+}
+@media screen and (max-width: 420px) {
+  .recruitment_post {
+    display: block;
   }
 }
 </style>
