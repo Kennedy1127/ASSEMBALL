@@ -37,7 +37,9 @@ import {
   faTriangleExclamation,
   faImage,
   faCirclePlus,
-  faAngleDown
+  faAngleDown,
+  faAngleUp,
+ 
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -69,7 +71,10 @@ library.add(
   faTriangleExclamation,
   faImage,
   faCirclePlus,
-  faAngleDown
+  faAngleDown,
+  faAngleUp,
+ 
+
 );
 
 createApp(App)
