@@ -74,7 +74,7 @@
         <Select
           :model-value="modelValue"
           @on-change="onChange"
-          :placeholder="$props.placeholder"
+          placeholder="全部地區"
           v-model="region"
           required
         >

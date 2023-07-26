@@ -7,7 +7,7 @@
       </div> -->
       <div class="bread_crumbs">
         <!--麵包屑 -->
-        <router-link to="/">首頁 </router-link>
+        <router-link :to="{ name: 'Home' }">首頁 </router-link>
         <!-- <a href="#">
                     首頁
                 </a> -->
@@ -193,6 +193,9 @@ export default {
     display: block;
     font-size: 1.25rem;
     color: var(--primary-blue);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    padding-bottom: 0.2rem;
   }
 
   .bread_crumbs_arrow {
