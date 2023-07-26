@@ -25,16 +25,14 @@
       class="home_product_all_top"
       v-for="data in topProductData"
       :key="data"
-      @click="this.$router.push(`/products/${data.product_id}`)"
+      @click="goToProducts(data.product_id)"
     >
       <h2 class="home_product_all_top_title">{{ data.top }}</h2>
       <div class="home_product_all_top_pic">
         <img :src="data.imgUrl" alt="product" />
       </div>
       <h3 class="home_product_all_top_name">
-        <router-link :to="{ name: 'Products' }">{{
-          data.productName
-        }}</router-link>
+        {{ data.productName }}
       </h3>
       <div class="home_product_all_top_date">{{ data.date }}</div>
     </div>
@@ -69,6 +67,11 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    goToProducts(id) {
+      this.$router.push({ name: "ProductDetail", params: { id } });
+    },
   },
 };
 </script>
