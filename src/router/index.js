@@ -3,12 +3,12 @@ import store from "@/store/index";
 
 const routes = [
   {
-    path: "/test",
+    path: "/",
     name: "test",
     component: () => import("@/views/test.vue"),
   },
   {
-    path: "/",
+    path: "/home",
     name: "Home",
     component: () => import("@/views/HomeView.vue"),
   },
