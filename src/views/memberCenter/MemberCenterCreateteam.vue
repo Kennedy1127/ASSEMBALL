@@ -34,7 +34,7 @@
               <Select
                 :model-value="modelValue"
                 @on-change="onChange"
-                :placeholder="$props.placeholder"
+                placeholder="全部地區"
                 v-model="region"
                 required
               >
@@ -78,6 +78,20 @@
     </div>
   </section>
 </template>
+
+<!-- <script setup>
+const props = defineProps({
+  options: {
+    required: true,
+  },
+  placeholder: {
+    required: false,
+  },
+  modelValue: {
+    required: true,
+  },
+});
+</script> -->
 
 <script>
 import roles from "@/composables/tables/roles";
@@ -231,6 +245,63 @@ export default {
         display: flex;
         flex-direction: column;
         padding-bottom: 2rem;
+        // 地區篩選框更改
+        .ivu-select-single {
+          height: 100%;
+
+          .ivu-select-selection {
+            height: 100%;
+            border: 2px solid var(--secondary-blue-2);
+            border-radius: 10px;
+            color: var(--secondary-blue-2);
+
+            .ivu-select-placeholder {
+              color: var(--secondary-blue-2);
+            }
+
+            div:first-of-type {
+              height: 100%;
+              padding: 1rem 1.5rem;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+
+              span {
+                height: 100%;
+                padding: 0;
+
+                display: flex;
+                align-items: center;
+
+                font-family: "Noto Sans TC", "Montserrat", sans-serif;
+                font-size: 1.25rem;
+                font-weight: 400;
+              }
+
+              i {
+                position: relative;
+                top: initial;
+                right: initial;
+                transform: translateY(0);
+                width: 24px;
+                height: 24px;
+
+                &::before {
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -40%);
+                  font-size: 2rem;
+                  color: var(--secondary-blue-2);
+                }
+              }
+            }
+          }
+        }
+
+        .ivu-select-visible .ivu-select-arrow {
+          transform: rotate(180deg) !important;
+        }
         & label {
           font-size: 1.25rem;
           color: var(--secondary-gray-1);
