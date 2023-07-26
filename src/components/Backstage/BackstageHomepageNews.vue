@@ -48,7 +48,10 @@
       <div class="homepage_marqueeKeyword_enter">
         <!--  跑馬燈關鍵字輸入框-->
         輸入關鍵字: <input type="text" v-model="AddMarquee" />
-        <button @click="AddMarqueeKeywordItem" class="homepage_marqueeKeyword_enter_btn">
+        <button
+          @click="AddMarqueeKeywordItem"
+          class="homepage_marqueeKeyword_enter_btn"
+        >
           <font-awesome-icon icon="fa-solid fa-circle-plus" />
         </button>
       </div>
@@ -64,7 +67,10 @@
             :key="item"
             class="marqueeKeyword_item"
           >
-            <button @click="removeMarquee(index)" class="marqueeKeyword_item_del">
+            <button
+              @click="removeMarquee(index)"
+              class="marqueeKeyword_item_del"
+            >
               <font-awesome-icon icon="fa-solid fa-trash-can" />
             </button>
             <div class="marqueeKeyword_item_text">
@@ -97,6 +103,9 @@
 </template>
 
 <style scoped lang="scss">
+input {
+  border: var(--primary-black) solid;
+}
 .homePage {
   //首頁管理
   &_newsKeyword {
@@ -353,7 +362,7 @@ const newsKeywordDefault = [
 ];
 const marqueeKeywordDefault = [
   { marqueeKeywordItem: "*球隊交易" },
-  { marqueeKeywordItem: "*MVP候選"},
+  { marqueeKeywordItem: "*MVP候選" },
   { marqueeKeywordItem: "*熱門球隊" },
   { marqueeKeywordItem: "*傷兵消息" },
   { marqueeKeywordItem: "*比賽結果" },
@@ -365,7 +374,7 @@ export default {
     return {
       AddnewsText: "",
       AddnewsLink: "",
-      AddMarquee:"",
+      AddMarquee: "",
       newsKeyword: [...newsKeywordDefault],
 
       marqueeKeyword: [...marqueeKeywordDefault],

@@ -14,14 +14,20 @@
       @toggle_member="toggleMember"
     />
   </transition>
-  <!-- 通知視窗內容 -->
-  <MemberNotify v-if="$store.state.isNotifyVisible" :show="showNotify" />
-  <!-- 會員中心內容 -->
-  <MemberCenter v-if="isMemberVisible" :show="showMember" />
-  <MainHeader v-if="$route.name !='Backstage'" />
-  <MemberCenter v-if="$store.state.isMemberVisible" :show="showMember" />
+  <!-- 通知視窗頁面 -->
+  <MemberNotify v-if="$store.state.isNotifyVisible" />
+  <!-- 會員中心 > 個人資料頁面 -->
+  <MemberPersonal
+    v-if="$store.state.isPersonalVisible"
+    @return_page="returnPage"
+  />
+  <!-- 會員中心頁面 -->
+  <MemberCenter
+    v-if="$store.state.isMemberVisible"
+    @enter_personal="enterPersonal"
+  />
   <router-view />
-  <MainFooter />
+  <MainFooter v-if="$route.name !== 'Home'" />
 </template>
 
 <style>
