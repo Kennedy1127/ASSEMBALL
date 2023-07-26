@@ -11,16 +11,16 @@
     <div class="MemberCenter_list">
       <ul>
         <li>
-          <router-link to="/">
+          <div @click="enterPersonal">
             <span
               ><font-awesome-icon
                 icon="fa-solid fa-user"
                 style="color: #f87171" /></span
-            >個人資料</router-link
-          >
+            >會員資料
+          </div>
         </li>
         <li>
-          <router-link to="/">
+          <router-link :to="{ name: 'MemberCenterOrder' }">
             <span
               ><font-awesome-icon
                 icon="fa-solid fa-file-lines"
@@ -29,7 +29,7 @@
           >
         </li>
         <li>
-          <router-link to="/">
+          <router-link :to="{ name: 'MemberCenterApplication' }">
             <span
               ><font-awesome-icon
                 icon="fa-solid fa-address-card"
@@ -38,7 +38,7 @@
           >
         </li>
         <li>
-          <router-link to="/">
+          <router-link :to="{ name: 'MemberCenterCreateteam' }">
             <span
               ><font-awesome-icon
                 icon="fa-solid fa-flag"
@@ -53,6 +53,14 @@
         <font-awesome-icon icon="fa-solid fa-arrow-up-right-from-square" /> 登出
       </button>
     </div>
+    <div class="MemberCenter_btn">
+      <router-link :to="{ name: 'Authentication' }">
+        <button>註冊</button>
+      </router-link>
+      <router-link :to="{ name: 'LogIn' }">
+        <button>登入</button>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -65,6 +73,11 @@ export default {
         title: "棒球專家小楊",
       },
     };
+  },
+  methods: {
+    enterPersonal() {
+      this.$emit("enter_personal");
+    },
   },
 };
 </script>
@@ -112,6 +125,21 @@ export default {
         flex-direction: row;
         align-items: center;
         justify-content: center;
+        & > div {
+          width: 100%;
+          padding: 1.25rem;
+          color: var(--primary-blue);
+          text-align: center;
+          font-size: 1rem;
+          font-weight: 500;
+          transition: all 0.09s ease-in-out;
+          border-radius: var(--round);
+          margin: 0.5rem;
+          cursor: pointer;
+          & span {
+            padding-right: 1rem;
+          }
+        }
         & a {
           width: 100%;
           padding: 1.25rem;
@@ -129,10 +157,60 @@ export default {
         & a:hover {
           background-color: var(--secondary-blue-3);
         }
+        & div:hover {
+          background-color: var(--secondary-blue-3);
+        }
+      }
+    }
+  }
+  &_btn {
+    display: flex;
+    gap: 2rem;
+    a:nth-child(1) {
+      button {
+        padding: 0.5rem 1.5rem;
+        border-radius: 2rem;
+        font-weight: 500;
+        font-size: 1rem;
+        letter-spacing: 1.5px;
+        background-color: var(--pale-white);
+        border: 2px solid var(--primary-blue);
+        color: var(--primary-blue);
+        font-family: "Noto Sans TC";
+        box-shadow: var(--shadow-heavy);
+        transition: all 0.09s ease-in-out;
+        margin-bottom: 1.5rem;
+        margin-top: 1rem;
+      }
+      button:hover {
+        background-color: var(--secondary-blue-3);
+      }
+    }
+    a:nth-child(2) {
+      button {
+        padding: 0.5rem 1.5rem;
+        border-radius: 2rem;
+        color: var(--pale-white);
+        font-weight: 400;
+        font-size: 1rem;
+        letter-spacing: 1.5px;
+        background-color: var(--primary-blue);
+        color: var(--pale-white);
+        font-family: "Noto Sans TC";
+        box-shadow: var(--shadow-heavy);
+        transition: all 0.09s ease-in-out;
+        margin-bottom: 1.5rem;
+        margin-top: 1rem;
+        border: 2px solid var(--primary-blue);
+      }
+      button:hover {
+        background-color: var(--secondary-blue-1);
+        border: 2px solid var(--secondary-blue-1);
       }
     }
   }
   &_signout {
+    display: none; //先隱藏
     & button {
       padding: 0.5rem 1.5rem;
       border-radius: 2rem;

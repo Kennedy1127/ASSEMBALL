@@ -1,7 +1,7 @@
 <template>
   <div class="products_main_items">
     <div
-      v-for="item in productItems"
+      v-for="item in computedRenderProducts"
       :key="item.product_id"
       class="products_item"
       @click="goToProductDetail(item.product_id)"
@@ -12,7 +12,7 @@
       </div>
       <div class="products_item_content">
         <div class="products_item_tag">
-          #{{ productTags[item.product_type] }}
+          #{{ productTags[item.product_tag] }}
         </div>
         <div class="products_item_date">
           {{ convertDate(item.product_date) }}
@@ -28,7 +28,7 @@
           <div class="products_item_seller_msg">
             <span>賣家留言：</span> <br />
             <p>
-              {{ item.product_seller.msg }}
+              {{ item.product_comments[0].text }}
             </p>
           </div>
         </div>
@@ -36,71 +36,77 @@
     </div>
   </div>
 
-  <ProductsMainPagination :totalPages="totalPages" />
+  <PaginationComponentVue :totalPages="computedTotalPages" type="products" />
 </template>
 
-<script>
-import ProductsMainPagination from "@/components/products/productsItems/ProductsMainPagination";
-import productTags from "@/composables/productTags";
+<script setup>
+import PaginationComponentVue from "@/components/utilities/PaginationComponent.vue";
+import productTags from "@/composables/tables/productTags";
+import { computed, onMounted, onUnmounted, ref } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
-export default {
-  components: { ProductsMainPagination },
-  props: ["products"],
-  emits: ["enterProductDetail"],
-  data() {
-    return {
-      productTags: { ...productTags },
-    };
-  },
+const store = useStore();
+const router = useRouter();
 
-  computed: {
-    // 取得總頁數
-    totalPages() {
-      return this.$props.products.length % 9 === 0
-        ? this.$props.products.length > 9
-          ? this.$props.products.length / 9
-          : 1
-        : Math.ceil(this.$props.products.length / 9);
-    },
+// 更新螢幕捲動高度
+const onScroll = (e) => {
+  windowTop.value =
+    window.top.scrollY; /* or: e.target.documentElement.scrollTop */
+};
 
-    // 更具頁碼更新顯示商品
-    productItems() {
-      const startIndex = (this.$store.state.productsCurPage - 1) * 9;
-      const lastIndex = this.$store.state.productsCurPage * 9;
-      return this.$props.products.slice(startIndex, lastIndex);
-    },
-  },
+onMounted(() => {
+  window.addEventListener("scroll", onScroll);
+});
 
-  methods: {
-    // 日期轉換
-    convertDate(inputDate) {
-      const date = new Date(inputDate);
+onUnmounted(() => {
+  window.removeEventListener("scroll", onScroll);
+});
 
-      return `${date.getFullYear()} / ${String(date.getMonth() + 1).padStart(
-        2,
-        0
-      )} / ${String(date.getDate()).padStart(2, 0)}`;
-    },
+// 螢幕捲動高度
+const windowTop = ref(window.top.scrollY);
 
-    // 轉換數字，1000->1,000
-    convertPrice(price) {
-      return price.toLocaleString();
-    },
+// 呈現商品
+const computedRenderProducts = computed(() => {
+  const start = (store.state.productsCurPage - 1) * 9;
+  const end = store.state.productsCurPage * 9;
+  return store.getters.dateSortedFilteredProducts.slice(start, end);
+});
 
-    goToProductDetail(id) {
-      this.$router.push({
-        name: "ProductDetail",
-        params: { id },
-      });
-      window.scrollTo({ top: 0 });
-    },
-  },
+// 取得總頁數
+const computedTotalPages = computed(() => {
+  if (store.state.productsCount === 0) return 1;
+  const len = store.getters.filteredProducts.length;
+  return len % 9 === 0 ? (len > 9 ? len / 9 : 1) : Math.ceil(len / 9);
+});
+
+// 日期轉換
+const convertDate = (inputDate) => {
+  const date = new Date(inputDate);
+
+  return `${date.getFullYear()} / ${String(date.getMonth() + 1).padStart(
+    2,
+    0
+  )} / ${String(date.getDate()).padStart(2, 0)}`;
+};
+
+// 轉換數字，1000->1,000
+const convertPrice = (price) => {
+  return price.toLocaleString();
+};
+
+const goToProductDetail = (id) => {
+  router.push({
+    name: "ProductDetail",
+    params: { id },
+    query: { h: windowTop.value },
+  });
 };
 </script>
 
 <style scoped lang="scss">
 .products_main_items {
-  margin-top: 1.5rem;
+  margin: 1.5rem 0;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   row-gap: 4rem;
