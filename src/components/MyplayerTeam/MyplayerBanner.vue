@@ -114,7 +114,7 @@
     font-size: 1rem;
   }
   .myplayer_banner_text {
-    padding: 4rem;
+    padding: 2rem 3rem;
     width: 60%;
   }
   .myplayer_banner_text_edit {

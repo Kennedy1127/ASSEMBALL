@@ -27,7 +27,7 @@
               >
             </li>
             <li>
-              <router-link :to="{ name: 'myplayerTeam' }"
+              <router-link :to="{ name: 'myplayerTeam', params: { id: 1 } }"
                 ><span
                   ><font-awesome-icon icon="fa-solid fa-user-group"
                 /></span>

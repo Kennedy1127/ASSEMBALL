@@ -9,7 +9,7 @@
     <div class="myplayer_message_area_card_wrap">
       <div
         class="myplayer_message_area_card"
-        v-for="item in myplayer_message_card"
+        v-for="(item, index) in myplayer_message_card.slice(0, visiblePosts)"
         :key="item.id"
       >
         <div class="myplayer_message_avatar_wrap">
@@ -37,7 +37,9 @@
       </div>
       <div class="myplayer_message_more_wrap">
         <div class="myplayer_message_more_group">
-          <div class="myplayer_message_more">觀看更多</div>
+          <div class="myplayer_message_more" @click="showMorePosts">
+            觀看更多
+          </div>
           <div class="myplayer_message_more_wrap_right">
             <font-awesome-icon :icon="['fas', 'chevron-right']" />
           </div>
@@ -101,12 +103,41 @@ export default {
           day: "-2023.06.22",
           more: "more",
         },
+        {
+          id: "6",
+          avatar: require("/src/assets/images/myplayer_team/myplayer_card/player_4.jpg"),
+          account: "珍茱乃茶",
+          title: "走了 打球阿!!",
+          typing_text:
+            "作為這支球隊的球員，我感到非常榮幸和幸福。每一次穿上球衣，踏上球場，我都能感受到那份獨特的熱情和自豪。這是我夢寐以求的機會，我將用盡全力去追逐我的棒球夢想。與我的隊友們一起訓練和比賽是一種難以言喻的榮幸。我們彼此相互激勵，相互扶持，共同成長。在球場上，我們不僅是球隊，更是一個充滿著友誼和團結的家庭。我相信這份團隊精神和凝聚力將使我們在每一場比賽中更加強大，球迷們是我們的力量源泉，，他們的支持和歡呼聲為我們帶來無限的動力和信心。在球場上，我能夠感受到他們對我們的熱愛和期待，這激勵著我們不斷超越自我，追求卓越。我們將竭盡所能，用最好的表現回報他們對我們的支持，作為球隊的一員，我將以積極的態度和無懈可擊的努力，追求卓越。我將不斷提升自己的技能和戰術知識，為球隊帶來穩定的表現",
+          day: "-2023.06.22",
+          more: "more",
+        },
+        {
+          id: "7",
+          avatar: require("/src/assets/images/myplayer_team/myplayer_card/player_5.jpg"),
+          account: "考肉梵",
+          title: "教練我想打球",
+          typing_text:
+            "作為這支球隊的球員，我感到充滿自豪和自信。每一次穿上球衣，踏上球場，我都能感受到那份無法言喻的激情和動力，這是我熱愛棒球的真正魅力。在球場上，我不僅是一個球員，更是一個戰士，我以無懼的勇氣和決心投身於比賽，每一分每一秒都充滿著渴望勝利的熱血，我不僅代表自己，更代表著這支球隊的榮譽和價值。與我的隊友們一起奮鬥是一種特別的連結和情誼，我們相互扶持，共同成長，共同進步，在球場上，我們彼此信任，彼此依賴，共同攜手戰勝困難，取得勝利，我相信這份團隊合作的力量能夠讓我們無往不利，球迷們是我們最強大的後盾，他們的支持和愛戴給予我們無盡的勇氣和動力，每一次看到他們在看台上為我們歡呼，我都感到無比感激和振奮，我們將竭盡所能，為他們帶來驕傲和成就，因為他們就是我們的第十二人",
+          day: "-2023.06.22",
+          more: "more",
+        },
       ],
+      visiblePosts: 5,
+      additionalPosts: 5,
     };
   },
   methods: {
     myplayer_message_more_btn() {
       this.$store.commit("myplayerPopupsToggle");
+    },
+    showMorePosts() {
+      this.visiblePosts += this.additionalPosts;
+      // If you want to limit the maximum number of posts shown, you can add the following check:
+      // if (this.visiblePosts > this.myplayer_message_card.length) {
+      //   this.visiblePosts = this.myplayer_message_card.length;
+      // }
     },
   },
 };
@@ -229,11 +260,24 @@ export default {
             font-size: 1rem;
             color: var(--primary-blue);
             padding: 1.5rem 0rem;
+            overflow: hidden;
+            // display: -webkit-box;
+            // margin-top: 0.5rem;
+            // font-size: 1rem;
+            // color: var(--primary-blue);
+            // -webkit-line-clamp: 3;
+            // -webkit-box-orient: vertical;
+            // overflow: hidden;
+            // text-overflow: ellipsis;
+            // line-clamp: 3;
+            // box-orient: vertical;
+            // white-space: normal;
           }
         }
         .myplayer_message_area_more_wrap {
           // border: 1px solid red;
-          width: 100%;
+          width: 80%;
+          margin: auto;
           display: flex;
           flex-direction: row-reverse;
           padding: 1rem;
@@ -442,6 +486,7 @@ export default {
     justify-content: center;
     align-items: center;
     font-size: 1rem;
+    transform: translateY(30px);
   }
   .myplayer_message_area_content
     .myplayer_message_area_card_wrap
@@ -464,13 +509,44 @@ export default {
   .myplayer_message_area_content
     .myplayer_message_area_card_wrap
     .myplayer_message_more_wrap {
-    width: 50%;
+    width: 60%;
+    padding: 0rem 0.5rem;
   }
   .myplayer_message_area_content
     .myplayer_message_area_card_wrap
     .myplayer_message_more_wrap
     .myplayer_message_more {
     font-size: 1rem;
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_area_card
+    .myplayer_message_area_more_wrap
+    .myplayer_message_area_day {
+    font-size: 1px;
+    transform: translateY(-20px);
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_area_card
+    .myplayer_message_area_content_wrap
+    .myplayer_message_area_text {
+    display: -webkit-box;
+    margin-top: 1rem;
+    padding: 0;
+    font-size: 1rem;
+    color: var(--primary-blue);
+    -webkit-line-clamp: 7;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+  }
+  .myplayer_message_area_content
+    .myplayer_message_area_card_wrap
+    .myplayer_message_area_card
+    .myplayer_message_area_more_wrap {
+    padding: 2rem 0rem 3rem 0rem;
   }
 }
 </style>

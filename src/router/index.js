@@ -93,7 +93,7 @@ const routes = [
   },
   /////////////////////////////////////////
   {
-    path: "/myplayerTeam",
+    path: "/myplayerTeam/:id",
     name: "myplayerTeam",
     component: () => import("@/views/MyPlayerTeam.vue"),
   },

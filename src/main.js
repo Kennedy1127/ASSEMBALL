@@ -22,6 +22,7 @@ import {
   faPenToSquare,
   faChevronLeft,
   faArrowRight,
+  faArrowLeft,
   faBell,
   faUser,
   faFlag,
@@ -62,6 +63,7 @@ library.add(
   faPenToSquare,
   faChevronLeft,
   faArrowRight,
+  faArrowLeft,
   faCircleExclamation,
   faPaperPlane,
   faPen,
@@ -89,7 +91,7 @@ library.add(
   faCircleXmark,
   faCircleChevronUp,
   faCircleChevronDown,
-  faCircleCheck,
+  faCircleCheck
 );
 
 createApp(App)

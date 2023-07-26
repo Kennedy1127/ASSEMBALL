@@ -5,7 +5,7 @@
         <div class="myplayer_gallery_return_arrow">
           <font-awesome-icon :icon="['fas', 'chevron-left']" />
         </div>
-        <router-link to="/myplayerTeam" class="myplayer_gallery_return_word"
+        <router-link to="/myplayerTeam/1" class="myplayer_gallery_return_word"
           >返回</router-link
         >
       </div>
@@ -32,17 +32,21 @@
       </div>
     </div>
     <div class="myplayer_gallery_pagination">
-      <!-- <ProductsMainPagination /> -->
+      <PaginationComponent />
     </div>
+    <MyplayerPhotoPopus v-if="isVisible" />
   </main>
 </template>
 <script>
 // "components/products/productsItems/ProductsMainPagination";
 //  import ProductsMainPagination from "@components/products/productsItems/ProductsMainPagination";
 // import ProductsMainPagination from "@components/products/productsItems/ProductsMainPagination";
+import PaginationComponent from "@/components/utilities/PaginationComponent.vue";
+import MyplayerPhotoPopus from "@/components/MyplayerTeam/MyplayerPhotoPopus.vue";
 export default {
   components: {
-    // ProductsMainPagination,
+    PaginationComponent,
+    MyplayerPhotoPopus,
   },
   data() {
     return {
@@ -80,6 +84,7 @@ export default {
           myGalleryPic: require("../assets/images/myplayer_team/myplayerGallery/myAlbum_8.jpg"),
         },
       ],
+      isVisible: false,
     };
   },
 };
@@ -196,8 +201,6 @@ export default {
     width: 80%;
     margin: 8rem auto 0rem auto;
     height: 20px;
-    border: 1px solid black;
-    display: none;
   }
 }
 @media screen and (min-width: 1200px) and (max-width: 1440px) {
