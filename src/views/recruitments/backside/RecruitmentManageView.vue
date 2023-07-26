@@ -28,12 +28,11 @@
         <RecruitmentTable />
       </div>
       <div class="recruitment_post_main_page">
-        <ProductsMainPagination />頁碼待補
+        <PaginationComponent
+          :totalPages="computedTotalPages"
+          type="BacksideRecruit"
+        />
       </div>
-      <PaginationComponent
-        :totalPages="computedTotalPages"
-        type="BacksideRecruit"
-      />
     </main>
   </div>
 </template>
@@ -42,10 +41,9 @@
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
 import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
 import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";
-import ProductsMainPagination from "@/components/products/productsItems/ProductsMainPagination";
 import PaginationComponent from "@/components/utilities/PaginationComponent.vue";
 import { useStore } from "vuex";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 const store = useStore();
 onMounted(() => {
@@ -53,7 +51,7 @@ onMounted(() => {
 });
 const computedTotalPages = computed(() => {
   // return 20;
-  if (store.state.Managecopywritings.length === 0) return 1;
+  if (store.state.ManageCopywritings.length === 0) return 1;
 
   const len = store.state.ManageCopywritings.length; //state :return的東西
   return store.state.isMobile

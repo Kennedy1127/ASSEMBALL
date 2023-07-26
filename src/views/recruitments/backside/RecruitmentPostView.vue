@@ -49,6 +49,7 @@ export default {
 
 <style lang="scss">
 .recruitment_post {
+  margin-top: 6rem;
   display: flex;
 
   // &_aside{
@@ -87,6 +88,11 @@ export default {
       display: flex;
       justify-content: space-between;
     }
+  }
+}
+@media screen and (max-width: 420px) {
+  .recruitment_post {
+    display: block;
   }
 }
 </style>

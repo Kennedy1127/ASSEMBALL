@@ -71,7 +71,7 @@
     </table>
   </div>
 </template>
-
+<!-- this.$route.name -->
 <script>
 import { icon } from "@fortawesome/fontawesome-svg-core";
 export default {
@@ -134,10 +134,28 @@ export default {
       //     </td>
     };
   },
+  // methods: {
+  //   checkURL() {
+  //     this.$route.name == "";
+  //   },
+  // },
+  // props: {
+  //   color: String,
+  // },
+  // compute: {
+  //   renderColor(){
+  //     return {
+  //       '`${props.color}`':true,
+  //     }
+  //   }
+  // },
 };
 </script>
 
 <style lang="scss">
+.green {
+  background-color: green;
+}
 table {
   width: 100%;
   border-collapse: collapse;

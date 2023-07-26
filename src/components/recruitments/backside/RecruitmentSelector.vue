@@ -53,16 +53,18 @@ const items = computed(() => {
   .ivu-select-single {
     width: fit-content;
     height: 100%;
-
+    .ivu-select-selection:focus {
+      outline: none;
+      border: none;
+      box-shadow: none;
+    }
     .ivu-select-selection {
       height: 100%;
       border: none;
       // border: 3px solid var(--primary-blue);
       border-radius: 10px;
       color: var(--secondary-blue-2);
-      .ivu-select-selection:active {
-        border: none;
-      }
+
       .ivu-select-placeholder {
         color: var(--secondary-blue-2);
       }
