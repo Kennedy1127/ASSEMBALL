@@ -39,6 +39,7 @@
 
 <script>
 import PaginationComponent from "@/components/utilities/PaginationComponent";
+
 export default {
   components: {
     PaginationComponent,

@@ -67,18 +67,6 @@ export default {
           tag: 3,
         },
       ],
-      methods: {
-        nextSlide() {
-          if (this.active <= this.artists.length) {
-            this.active = this.active += 1;
-          }
-        },
-        prevSlide() {
-          if (this.active > 0) {
-            this.active = this.active + -1;
-          }
-        },
-      },
     };
   },
 

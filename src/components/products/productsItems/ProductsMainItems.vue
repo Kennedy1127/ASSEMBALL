@@ -28,7 +28,7 @@
           <div class="products_item_seller_msg">
             <span>賣家留言：</span> <br />
             <p>
-              {{ item.product_seller_msg }}
+              {{ item.product_comments[0].text }}
             </p>
           </div>
         </div>

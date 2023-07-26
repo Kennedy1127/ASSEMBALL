@@ -59,6 +59,10 @@ const submitFilters = () => {
     left: 50%;
     transform: translateX(-50%);
 
+    @media all and (max-width: 1280px) {
+      max-width: 1200px;
+    }
+
     @media all and (max-width: 420px) {
       gap: 1rem;
       bottom: 1rem;

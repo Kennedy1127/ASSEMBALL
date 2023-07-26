@@ -12,6 +12,14 @@ export default createStore({
     isNotifyVisible: 0,
     isMemberVisible: 0,
     isPersonalVisible: 0,
+
+    //////////////////////////////////////////////////////
+    // 首頁區塊
+    homeNews: [],
+    homeTeams: [],
+    homeCopywritings: [],
+    homeProducts: [],
+
     //////////////////////////////////////////////////////
     // 商品區塊
     products: [],
@@ -43,7 +51,6 @@ export default createStore({
     // 頁碼區塊
     productsCurPage: 1,
     copywritingsCurPage: 1,
-    BacksideRecruitCurPage: 1,
   },
 
   getters: {
@@ -206,6 +213,30 @@ export default createStore({
       state.isPersonalVisible = false;
       state.isMemberVisible = true;
     },
+
+    //////////////////////////////////////////////////////
+    // 首頁區塊
+
+    // 取得首頁最新消息
+    setHomeNews(state, payload) {
+      state.homeNews = [...payload];
+    },
+
+    // 取得首頁球隊
+    setHomeTeams(state, payload) {
+      state.homeTeams = [...payload];
+    },
+
+    // 取得首頁球員招募
+    setHomeCopywritings(state, payload) {
+      state.homeCopywritings = [...payload];
+    },
+
+    // 取得首頁top 3商品
+    setHomeProducts(state, payload) {
+      state.homeProducts = [...payload];
+    },
+
     //////////////////////////////////////////////////////
     // 商品區塊
     // 取得商品數量
@@ -313,6 +344,53 @@ export default createStore({
   },
 
   actions: {
+    // 撈首頁資料
+    async getHomeNews(context) {
+      try {
+        const res = await axios.get("http://localhost:3000/home_news");
+        if (!res) throw new Error("Cannot fetch response");
+        console.log(res);
+        // context.commit("setProductsCount", res.data.length);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    async getHomeTeams(context) {
+      try {
+        const res = await axios.get("http://localhost:3000/home_teams");
+        if (!res) throw new Error("Cannot fetch response");
+        console.log(res);
+        // context.commit("setProductsCount", res.data.length);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    async getHomeCopywritings(context) {
+      try {
+        const res = await axios.get("http://localhost:3000/home_copywritings");
+        if (!res) throw new Error("Cannot fetch response");
+        console.log(res);
+        // context.commit("setProductsCount", res.data.length);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    async getHomeProducts(context) {
+      try {
+        const res = await axios.get("http://localhost:3000/home_products");
+        if (!res) throw new Error("Cannot fetch response");
+        console.log(res);
+        // context.commit("setProductsCount", res.data.length);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    ///////////////////////////////////////
+
     // 撈商品數量
     async getProductsCount(context) {
       try {
