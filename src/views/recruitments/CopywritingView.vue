@@ -4,30 +4,36 @@
       <div class="copywriting_header_info">
         <h2 class="copywriting_title">
           <div class="block"></div>
-          召募捕手
+          召募{{
+            $store.state.copywritingsCount === 0
+              ? defaultCopywriting.copywriting_role
+              : convertRole(computedCopywriting.copywriting_role)
+          }}
         </h2>
 
-        <div class="copywriting_header_info_date">-2023.07.05</div>
+        <div class="copywriting_header_info_date">
+          -{{ convertDate(computedCopywriting.copywriting_date) }}
+        </div>
 
         <div class="copywriting_header_info_exp">
           <div class="copywriting_header_info_exp_block"></div>
-          初心者
+          {{ convertExp(computedCopywriting.copywriting_exp) }}
         </div>
 
         <div class="copywriting_header_info_area">
           <div class="copywriting_header_info_area_block"></div>
-          桃園市
+          {{ computedCopywriting.copywriting_area }}
         </div>
       </div>
 
       <div class="copywriting_header_intro">
         <h2 class="copywriting_title">
           <div class="block"></div>
-          職缺介紹
+          守備位置
         </h2>
 
         <p class="copywriting_header_intro_text">
-          捕手是球隊的防線指揮官，全能守備、瞭解投手意圖，捕捉每一個球種，守衛本壘。
+          {{ convertRoleDesc(computedCopywriting.copywriting_role) }}
         </p>
       </div>
 
@@ -38,9 +44,11 @@
             alt="team icon"
           />
         </div>
-        <div class="copywriting_header_team_name">猛虎隊</div>
+        <div class="copywriting_header_team_name">
+          {{ computedCopywriting.copywriting_team_name }}
+        </div>
         <div class="copywriting_header_team_btn">
-          <button>更多球隊</button>
+          <router-link :to="{ name: 'Recruitments' }">更多球隊</router-link>
         </div>
       </div>
     </div>
@@ -49,19 +57,15 @@
       <div class="copywriting_content_intro">
         <h2 class="copywriting_title">
           <div class="block"></div>
-          猛虎隊
+          {{ computedCopywriting.copywriting_team_name }}
         </h2>
 
         <h3 class="copywriting_content_intro_title">
-          猛虎隊以其勇敢、堅定和不屈不撓的精神而聞名 --
-          我們致力於每一場比賽都全力以赴，追求勝利。
+          {{ computedCopywriting.copywriting_team_title }}
         </h3>
 
         <p class="copywriting_content_intro_text">
-          我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。
-          <br />
-          <br />
-          猛虎隊的球場氛圍總是充滿熱情和能量。我們的忠實球迷總是在場邊為我們加油，他們的支持是我們不斷進步和戰勝困難的動力源泉。每次站在球場上，我們都為了他們而努力，為了帶給他們驕傲和喜悅而戰。
+          {{ computedCopywriting.copywriting_team_intro }}
         </p>
       </div>
 
@@ -73,7 +77,7 @@
       </div>
 
       <div class="copywriting_content_btn">
-        <button>
+        <button @click="overlayIsOpen = true">
           應徵
           <font-awesome-icon :icon="['fas', 'envelope']" />
         </button>
@@ -97,24 +101,125 @@
       </h2>
 
       <div class="copywriting_footer_carousel">
-        <copywritingSwiper />
+        <CopywritingSwiper :role="computedCopywriting.copywriting_role" />
       </div>
     </div>
   </main>
+
+  <CopywritingSubmitApply
+    v-if="overlayIsOpen"
+    @closeOverlay="overlayIsOpen = false"
+  />
 </template>
 
-<script>
-import copywritingSwiper from "@/components/recruitments/copywriting/copywritingSwiper.vue";
+<script setup>
+import roles from "@/composables/tables/roles";
+import exps from "@/composables/tables/exps";
+import roleDesc from "@/composables/tables/roleDesc";
+import CopywritingSubmitApply from "@/components/recruitments/copywriting/CopywritingSubmitApply.vue";
+import CopywritingSwiper from "@/components/recruitments/copywriting/CopywritingSwiper.vue";
+import { computed, onMounted, ref } from "vue";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 
-export default {
-  components: { copywritingSwiper },
-  props: ["curHeight", "id"],
+const store = useStore();
+const route = useRoute();
+
+onMounted(() => {
+  if (
+    // 如果文案數量為0或是找不到該文案的話，重新撈資料
+    store.state.copywritingsCount === 0 ||
+    store.state.copywritings.find(
+      (copywriting) => copywriting.copywriting_id === Number(route.params.id)
+    )
+  ) {
+    store.dispatch("getCopywritingsCount");
+    store.dispatch("getCopywritings");
+  }
+});
+
+const defaultCopywriting = ref({
+  copywriting_role: 5,
+  copywriting_title: "尋找新星！現正招募有潛力的球員",
+  copywriting_exp: 1,
+  copywriting_area: "花蓮縣",
+  copywriting_date: "2023-04-21T04:10:58.291Z",
+  copywriting_team_name: "勇士隊",
+  copywriting_team_icon: "https://picsum.photos/200/300",
+  copywriting_team_title: "熱愛棒球：生活在球場上的我們",
+  copywriting_team_intro:
+    "喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵，喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵",
+});
+
+const overlayIsOpen = ref(false);
+
+const computedCopywriting = computed(() => {
+  const data = store.state.copywritings.find(
+    (copywriting) => copywriting.copywriting_id === route.params.id
+  );
+
+  if (data) {
+    const {
+      copywriting_role,
+      copywriting_title,
+      copywriting_exp,
+      copywriting_area,
+      copywriting_date,
+      copywriting_team_name,
+      copywriting_team_icon,
+      copywriting_team_title,
+      copywriting_team_intro,
+    } = data;
+
+    return {
+      copywriting_role,
+      copywriting_title,
+      copywriting_exp,
+      copywriting_area,
+      copywriting_date,
+      copywriting_team_name,
+      copywriting_team_icon,
+      copywriting_team_title,
+      copywriting_team_intro,
+    };
+  }
+  return defaultCopywriting.value;
+});
+
+const convertRole = (role) => {
+  if (role || role === 0) return roles[role + 1].label;
+};
+
+const convertExp = (exp) => {
+  if (exp || exp === 0) return exps[exp];
+};
+
+const convertRoleDesc = (role) => {
+  if (role || role === 0) return roleDesc[role].desc;
+};
+
+const convertDate = (copywritingDate) => {
+  if (!copywritingDate) return;
+  const date = new Date(copywritingDate);
+  return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}.${String(date.getDate()).padStart(2, "0")}`;
 };
 </script>
 
 <style scoped lang="scss">
 .copywriting.wrapper {
-  padding-top: 3rem;
+  margin-top: 6rem;
+  padding-top: 6rem;
+
+  @media all and (max-width: 1280px) {
+    max-width: 1200px;
+  }
+
+  @media all and (max-width: 420px) {
+    padding: 2rem 2rem 0;
+  }
 }
 .copywriting {
   color: var(--primary-blue);
@@ -122,6 +227,10 @@ export default {
     width: 1rem;
     height: 4rem;
     background-color: var(--primary-blue);
+
+    @media all and (max-width: 420px) {
+      height: 3rem;
+    }
   }
 
   &_title {
@@ -131,15 +240,23 @@ export default {
 
     font-size: 2.5rem;
     font-weight: 700;
+
+    @media all and (max-width: 420px) {
+      gap: 1.5rem;
+      font-size: 1.5rem;
+    }
   }
 
   &_header {
-    margin-top: 8rem;
     padding-bottom: 3rem;
     border-bottom: 1px solid var(--primary-blue);
     display: flex;
     font-size: 1.5rem;
     font-weight: 500;
+
+    @media all and (max-width: 420px) {
+      flex-direction: column;
+    }
 
     &_info {
       width: 30%;
@@ -148,8 +265,19 @@ export default {
       flex-direction: column;
       gap: 3rem;
 
+      @media all and (max-width: 420px) {
+        width: 100%;
+        gap: 0;
+      }
+
       &_date {
         font-weight: 400;
+
+        @media all and (max-width: 420px) {
+          font-size: 1.25rem;
+          padding-left: 2.5rem;
+          margin: 0.5rem 0 2rem;
+        }
       }
 
       &_exp,
@@ -158,13 +286,26 @@ export default {
         align-items: center;
         gap: 1.5rem;
 
+        @media all and (max-width: 420px) {
+          font-size: 1.25rem;
+        }
+
         &_block {
           width: 40px;
           height: 40px;
+
+          @media all and (max-width: 420px) {
+            width: 20px;
+            height: 20px;
+          }
         }
       }
 
       &_exp {
+        @media all and (max-width: 420px) {
+          margin-bottom: 1.5rem;
+        }
+
         &_block {
           background-color: var(--accent-pink);
         }
@@ -183,8 +324,21 @@ export default {
       border-left: 1px solid var(--primary-blue);
       border-right: 1px solid var(--primary-blue);
 
+      @media all and (max-width: 420px) {
+        width: 100%;
+        margin-top: 4rem;
+        padding: 2rem 0;
+        border: none;
+        border-top: 1px solid var(--primary-blue);
+        border-bottom: 1px solid var(--primary-blue);
+      }
+
       &_text {
         margin-top: 3rem;
+
+        @media all and (max-width: 420px) {
+          font-size: 1.25rem;
+        }
       }
     }
 
@@ -194,6 +348,10 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
+
+      @media all and (max-width: 420px) {
+        margin-top: 3rem;
+      }
 
       &_icon {
         width: 150px;
@@ -209,12 +367,20 @@ export default {
       &_name {
         margin-top: 2rem;
         font-weight: 400;
+
+        @media all and (max-width: 420px) {
+          margin-bottom: 2rem;
+        }
       }
 
       &_btn {
         margin-top: auto;
+        width: 100%;
 
-        button {
+        a {
+          display: block;
+          margin: 0 auto;
+
           width: 200px;
           height: 60px;
           border-radius: 100px;
@@ -223,6 +389,20 @@ export default {
           font-weight: 500;
           color: #fff;
           background-color: var(--primary-blue);
+          transition: all 0.09s ease-in-out;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          @media all and (max-width: 420px) {
+            width: 80%;
+            margin: 0 auto;
+          }
+
+          &:hover {
+            background-color: var(--secondary-blue-1);
+          }
         }
       }
     }
@@ -239,6 +419,13 @@ export default {
 
     position: relative;
 
+    @media all and (max-width: 420px) {
+      margin-top: 0;
+      padding-top: 3rem;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
     &_intro {
       &_title {
         margin-top: 4rem;
@@ -249,12 +436,30 @@ export default {
         font-weight: 500;
 
         line-height: 1.7;
+
+        @media all and (max-width: 420px) {
+          margin: 1.5rem 0 2rem;
+          font-size: 1rem;
+        }
       }
 
       &_text {
         font-size: 1.25rem;
         font-weight: 400;
         line-height: 1.7;
+
+        @media all and (max-width: 420px) {
+          font-size: 1rem;
+        }
+      }
+    }
+
+    &_pic {
+      @media all and (max-width: 420px) {
+        img {
+          width: 100%;
+          height: 100%;
+        }
       }
     }
 
@@ -269,11 +474,21 @@ export default {
         height: 60px;
         border-radius: 100px;
         background-color: var(--primary-blue);
+        transition: all 0.09s ease-in-out;
 
         font-family: "Noto Sans TC", sans-serif;
         font-size: 1.5rem;
         font-weight: 700;
         color: #fff;
+
+        @media all and (max-width: 420px) {
+          width: 100%;
+          margin-bottom: 3rem;
+        }
+
+        &:hover {
+          background-color: var(--secondary-blue-1);
+        }
       }
     }
 
@@ -292,8 +507,17 @@ export default {
         font-size: 1.5rem;
         color: var(--warning-red);
 
+        @media all and (max-width: 420px) {
+          font-size: 1rem;
+          gap: 0.5rem;
+        }
+
         .warning-icon {
           font-size: 2rem;
+
+          @media all and (max-width: 420px) {
+            font-size: 1.5rem;
+          }
         }
       }
     }
@@ -302,8 +526,16 @@ export default {
   &_footer {
     margin: 6rem 0;
 
+    @media all and (max-width: 420px) {
+      margin: 3rem 0;
+    }
+
     &_carousel {
       margin-top: 6rem;
+
+      @media all and (max-width: 420px) {
+        margin-top: 4rem;
+      }
     }
   }
 }

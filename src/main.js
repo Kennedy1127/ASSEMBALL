@@ -4,6 +4,10 @@ import router from "./router";
 import store from "./store";
 import ViewUIPlus from "view-ui-plus";
 import "view-ui-plus/dist/styles/viewuiplus.css";
+import VCalendar from "v-calendar";
+import "v-calendar/style.css";
+
+// Use plugin with optional defaults
 
 //icon 設定
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -25,6 +29,7 @@ import {
   faUserGroup,
   faMap,
   faCircleExclamation,
+  faPaperPlane,
   faPen,
   faEnvelope,
   faPhone,
@@ -37,7 +42,14 @@ import {
   faTriangleExclamation,
   faImage,
   faCirclePlus,
-  faAngleDown
+  faAngleDown,
+  faAngleLeft,
+  faCircleArrowRight,
+  faCircleXmark,
+  faCircleChevronUp,
+  faCircleChevronDown,
+  faCircleCheck,
+  faEye,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -50,6 +62,9 @@ library.add(
   faPenToSquare,
   faChevronLeft,
   faArrowRight,
+  faCircleExclamation,
+  faPaperPlane,
+  faPen,
   faBell,
   faUser,
   faFlag,
@@ -69,7 +84,15 @@ library.add(
   faTriangleExclamation,
   faImage,
   faCirclePlus,
-  faAngleDown
+  faAngleDown,
+  
+  faAngleLeft,
+  faCircleArrowRight,
+  faCircleXmark,
+  faCircleChevronUp,
+  faCircleChevronDown,
+  faCircleCheck,
+  faEye
 );
 
 createApp(App)
@@ -77,4 +100,5 @@ createApp(App)
   .use(router)
   .component("font-awesome-icon", FontAwesomeIcon) //icon 設定
   .use(ViewUIPlus)
+  .use(VCalendar, {})
   .mount("#app");

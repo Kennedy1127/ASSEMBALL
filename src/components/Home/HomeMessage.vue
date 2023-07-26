@@ -1,7 +1,7 @@
 <template>
   <div class="home_message_title">
     <h2>
-      <router-link to="/">交流留言板</router-link>
+      <router-link :to="{ name: 'myplayerTeam' }">交流留言板</router-link>
     </h2>
     <p>
       連結熱愛棒球的全球大家庭，一同分享熱情、討論戰術，共同創造無限棒球樂趣！
@@ -39,7 +39,7 @@
     <div class="home_message_all_text" v-for="item in messageText">
       <div class="home_message_all_text_header">
         <h3>
-          {{ item.title }}
+          <router-link to="/">{{ item.title }}</router-link>
         </h3>
         <span class="home_message_all_text_header_date">
           {{ item.date }}
@@ -52,7 +52,10 @@
         <span class="home_message_all_text_section_text">
           {{ item.text }}
         </span>
-        <button class="home_message_all_text_section_btn">
+        <button
+          @click="goToMyPlayerTeam(item.id)"
+          class="home_message_all_text_section_btn"
+        >
           <Icon type="ios-arrow-dropright-circle" />{{ item.btn }}
         </button>
       </div>
@@ -74,12 +77,14 @@ export default {
           tag: "HOT",
           text: "有沒有人對本週的比賽結果感到意外？我覺得野馬隊的表現真是出人意料，他們的投手表現......",
           btn: "更多",
+          id: "1",
         },
         {
           title: "如何提升棒球技術？",
           date: "2023/06/18",
           text: "對於棒球訓練和技術提升有沒有什麼好的建議？我最近在練習打擊，想聽聽大家的經驗分享......",
           btn: "更多",
+          id: "1",
         },
         {
           title: "球隊部署技巧分享",
@@ -87,6 +92,7 @@ export default {
           tag: "NEW",
           text: "對於這個球隊的戰術部署有什麼看法嗎？我覺得教練在換投手的時機上有待改進，有時候明......",
           btn: "更多",
+          id: "1",
         },
         {
           title: "這個賽季最熱門的球隊？",
@@ -94,15 +100,23 @@ export default {
           tag: "HOT",
           text: "哪支球隊在這個賽季的戰績最令你驚艷？我覺得小熊隊從開季以來一直保持穩定的表現，實......",
           btn: "更多",
+          id: "1",
         },
         {
           title: "棒球書籍和紀錄片推薦",
           date: "2023/05/14",
           text: "大家有沒有推薦的棒球書籍或紀錄片？想要深入了解棒球歷史和名人堂球員的故事！",
           btn: "更多",
+          id: "1",
         },
       ],
     };
+  },
+  methods: {
+    goToMyPlayerTeam(id) {
+      // 使用 $router.push 進行路由導航
+      this.$router.push({ name: "myplayerTeam", params: { id } });
+    },
   },
 };
 </script>
@@ -220,6 +234,9 @@ export default {
       margin-top: 1rem;
       & h3 {
         font-size: 1.5rem;
+        & a {
+          color: var(--primary-blue);
+        }
       }
       &_date {
         font-size: 1.25rem;
@@ -251,6 +268,7 @@ export default {
       }
       &_btn {
         width: 6rem;
+        height: 2rem;
         border-radius: 30px;
         border: 1px solid var(--primary-blue);
         background-color: #fff;

@@ -24,29 +24,24 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import RecruitmentSelect from "@/components/recruitments/recruitment/RecruitmentSelect.vue";
+import { ref } from "vue";
+import { useStore } from "vuex";
 
-export default {
-  components: { RecruitmentSelect },
-  data() {
-    return {
-      searchText: this.$store.state.selectedCopywritingsText,
-      role: this.$store.state.selectedCopywritingsRole,
-      area: this.$store.state.selectedCopywritingsArea,
-    };
-  },
+const store = useStore();
 
-  methods: {
-    submitFilters() {
-      const searchObj = {
-        searchText: this.searchText,
-        role: this.role,
-        area: this.area,
-      };
-      this.$store.commit("selectCopywritingsSearch", searchObj);
-    },
-  },
+const searchText = ref(store.state.selectedCopywritingsText);
+const role = ref(store.state.selectedCopywritingsRole);
+const area = ref(store.state.selectedCopywritingsArea);
+
+const submitFilters = () => {
+  const searchObj = {
+    searchText: searchText.value,
+    role: role.value,
+    area: area.value,
+  };
+  store.commit("selectCopywritingsSearch", searchObj);
 };
 </script>
 
@@ -54,7 +49,6 @@ export default {
 .recruit_landing {
   &_filters {
     max-width: 1400px; // 1600? 1400? 1200?
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -65,6 +59,15 @@ export default {
     left: 50%;
     transform: translateX(-50%);
 
+    @media all and (max-width: 1280px) {
+      max-width: 1200px;
+    }
+
+    @media all and (max-width: 420px) {
+      gap: 1rem;
+      bottom: 1rem;
+    }
+
     &_bar {
       flex: 1;
       height: 60px;
@@ -74,6 +77,10 @@ export default {
 
       display: flex;
       align-items: center;
+
+      @media all and (max-width: 420px) {
+        height: 35px;
+      }
     }
 
     &_btn button {
@@ -87,15 +94,37 @@ export default {
       font-weight: 500;
       letter-spacing: 10.5px;
       color: var(--primary-blue);
+      transition: all 0.09s ease-in-out;
+
+      @media all and (max-width: 420px) {
+        width: 75px;
+        height: 35px;
+
+        font-size: 1rem;
+        letter-spacing: 1.5px;
+      }
+
+      &:hover {
+        background-color: var(--primary-blue);
+        color: #fff;
+      }
     }
   }
 
   &_filter {
     height: 3rem;
 
+    @media all and (max-width: 420px) {
+      height: 1.5rem;
+    }
+
     &--search {
       width: 60%;
       position: relative;
+
+      @media all and (max-width: 420px) {
+        display: none;
+      }
 
       .magnifying-glass {
         position: absolute;
@@ -107,6 +136,11 @@ export default {
         color: var(--primary-blue);
 
         cursor: pointer;
+
+        @media all and (max-width: 420px) {
+          left: 0.5rem;
+          font-size: 1.25rem;
+        }
       }
 
       input {
@@ -125,10 +159,19 @@ export default {
 
     &--role {
       flex: 1;
+
+      @media all and (max-width: 420px) {
+        width: 50%;
+        border-right: 2px solid var(--secondary-gray-3);
+      }
     }
 
     &--area {
       flex: 1;
+
+      @media all and (max-width: 420px) {
+        width: 50%;
+      }
     }
   }
 }

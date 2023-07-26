@@ -17,7 +17,9 @@
       <li>
         <router-link :to="{ name: 'recruitmentVerify' }">審查應徵</router-link>
       </li>
-      <li><router-link to="/"></router-link>記錄管理</li>
+      <li>
+        <router-link :to="{ name: 'recruitmentHistory' }">記錄管理</router-link>
+      </li>
     </div>
     <div class="recruitment_aside_hitterpic">
       <img class="recruitment_aside_hitterpic_img" />
@@ -35,7 +37,7 @@
 
 <style lang="scss">
 .recruitment_aside {
-  width: 25vw;
+  width: 18vw;
   height: 100%;
   padding: 4rem 0;
   background-color: var(--secondary-blue-4);
@@ -66,10 +68,12 @@
       }
     }
 
-    a:visited,
+    a:hover,
+    a:focus {
+      color: var(--primary-blue);
+    }
     li:hover {
       background-color: var(--secondary-blue-3);
-      color: var(--primary-blue);
     }
   }
   &_hitterpic {
@@ -77,6 +81,44 @@
     overflow: hidden;
     &_img {
       width: 100%;
+    }
+  }
+}
+@media screen and (max-width: 420px) {
+  .recruitment_aside {
+    width: 100%;
+    padding: 0;
+    background-color: var(--secondary-blue-1);
+
+    &_hitterpic,
+    &_userpic {
+      display: none;
+    }
+
+    &_list {
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      li {
+        width: 25%;
+        font-size: 1rem;
+        padding: 1.5rem 0.5rem;
+        color: #000;
+        border-right: #fff 1px solid;
+        a {
+          color: var(--pale-white);
+        }
+      }
+      li:nth-last-child(1) {
+        border: 0;
+      }
+    }
+    a:hover,
+    a:focus {
+      color: var(--pale-white);
+    }
+    li:hover {
+      background-color: var(--primary-blue);
     }
   }
 }
