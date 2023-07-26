@@ -22,15 +22,12 @@
     @return_page="returnPage"
   />
   <!-- 會員中心頁面 -->
-<<<<<<< HEAD
   <MemberCenter v-if="isMemberVisible" :show="showMember" />
   <MainHeader v-if="$route.name !='Backstage'" />
-=======
   <MemberCenter
     v-if="$store.state.isMemberVisible"
     @enter_personal="enterPersonal"
   />
->>>>>>> 09537cf63d37c2e7117ebdc1b053cc931f2a86c1
   <router-view />
   <MainFooter />
 </template>
