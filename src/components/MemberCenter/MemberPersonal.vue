@@ -181,12 +181,12 @@ export default {
     submitForm() {
       alert("會員資料提交成功！");
       // 表單資料確認
-      console.log("會員頭貼", this.avatar);
-      console.log("姓氏", this.lastname);
-      console.log("名字", this.name);
-      console.log("信箱", this.email);
-      console.log("地區", this.region);
-      console.log("經歷", this.experience);
+      console.log("會員頭貼：", this.avatar);
+      console.log("姓氏：", this.lastname);
+      console.log("名字：", this.name);
+      console.log("信箱：", this.email);
+      console.log("地區：", this.region);
+      console.log("經歷：", this.experience);
 
       //提交後重置表單資料
       this.avatar = require("@/assets/images/icons/default_avatar.svg");
