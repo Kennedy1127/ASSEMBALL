@@ -53,7 +53,7 @@
             <img :src="avatar" alt="Createteam_form_pic" />
             <label for="Createteam_pic"
               ><span><font-awesome-icon icon="fa-solid fa-plus" /></span
-              >上傳頭像 <input type="file" id="Createteam_pic" @change="onfile"
+              >上傳隊徽 <input type="file" id="Createteam_pic" @change="onfile"
             /></label>
           </div>
         </div>

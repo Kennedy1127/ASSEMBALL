@@ -55,6 +55,7 @@
           required
         />
       </div>
+      <!-- // 電子信箱驗證 規定只能輸入 xxx@xxx.xxx 形式 -->
       <div class="MemberPersonal_form_email">
         <label for="email"><span>*</span>信箱：</label>
         <input
@@ -62,6 +63,7 @@
           name="member_email"
           id="email"
           placeholder="請輸入電子信箱"
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
           v-model="email"
           required
         />
