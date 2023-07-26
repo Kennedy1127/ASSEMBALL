@@ -17,7 +17,7 @@
 import RecruitmentSelector from "@/components/recruitments/backside/RecruitmentSelector.vue";
 
 export default {
-  components: { RecruitmentSelect },
+  components: { RecruitmentSelector },
   props: {
     color: false,
   },

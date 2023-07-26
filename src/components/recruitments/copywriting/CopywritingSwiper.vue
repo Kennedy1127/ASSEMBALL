@@ -1,7 +1,6 @@
 <template>
   <div class="copywriting_swiper">
     <swiper
-      :slidesPerView="store.state.isMobile ? 1 : 4"
       :spaceBetween="48"
       :loop="true"
       :navigation="{
@@ -9,6 +8,19 @@
         prevEl: '.swiper-button-prev',
       }"
       :modules="modules"
+      :breakpoints="{
+        420: {
+          slidesPerView: 1,
+        },
+        1280: {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        },
+        1600: {
+          slidesPerView: 4,
+          spaceBetween: 48,
+        },
+      }"
       class="mySwiper"
     >
       <swiper-slide

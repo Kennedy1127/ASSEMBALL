@@ -10,6 +10,7 @@
         method="post"
         name="CreateteamInformation"
         class="MemberCenter_Createteam_form"
+        @submit.prevent="submitForm"
       >
         <div>
           <div class="MemberCenter_Createteam_form_inner">
@@ -19,35 +20,41 @@
                 type="text"
                 name="team_name"
                 id="name"
-                placeholder="請輸入球隊名稱"
+                placeholder="請輸入球隊名稱(1-10個字)"
+                v-model="teamName"
+                minlength="1"
+                maxlength="10"
+                pattern="[^%&',;=?$\x22]+"
+                required
               />
             </div>
             <!-- //地區 -->
             <div class="MemberCenter_Createteam_form_inner_region">
-              <label for="email"><span>*</span>地區：</label>
+              <label for="email">地區：</label>
               <Select
                 :model-value="modelValue"
                 @on-change="onChange"
-                :placeholder="$props.placeholder"
+                placeholder="全部地區"
+                v-model="region"
+                required
               >
                 <Option
                   v-for="item in items"
                   :value="item.value"
                   :key="item.value"
+                  required
                   >{{ item.label }}</Option
                 >
               </Select>
             </div>
           </div>
           <div class="MemberCenter_Createteam_form_pic">
-            <div><span>*</span>上傳隊徽：</div>
+            <div>上傳隊徽：</div>
+            <img :src="avatar" alt="Createteam_form_pic" />
             <label for="Createteam_pic"
-              ><img
-                src="~@/assets/images/MemberCenter/MemberCenter_Personal_pic.svg"
-                alt="MemberCenter_Createteam_form_pic"
-              />上傳球隊隊徽
-              <input type="file" id="Createteam_pic" />
-            </label>
+              ><span><font-awesome-icon icon="fa-solid fa-plus" /></span
+              >上傳頭像 <input type="file" id="Createteam_pic" @change="onfile"
+            /></label>
           </div>
         </div>
         <div class="MemberCenter_Createteam_form_Introduction">
@@ -56,9 +63,12 @@
             id="Createteam_Introduction"
             cols="60"
             rows="10"
+            v-model="CreateteamIntroduction"
+            minlength="10"
             maxlength="100"
             value
-            placeholder="請輸入簡介內容...."
+            placeholder="請輸入簡介內容(10-100字)"
+            required
           ></textarea>
         </div>
         <div class="MemberCenter_Createteam_form_btn">
@@ -69,6 +79,20 @@
   </section>
 </template>
 
+<!-- <script setup>
+const props = defineProps({
+  options: {
+    required: true,
+  },
+  placeholder: {
+    required: false,
+  },
+  modelValue: {
+    required: true,
+  },
+});
+</script> -->
+
 <script>
 import roles from "@/composables/tables/roles";
 import area from "@/composables/tables/area";
@@ -78,6 +102,12 @@ export default {
 
   data() {
     return {
+      // 表單資料
+      avatar: require("@/assets/images/icons/default_avatar.svg"),
+      teamName: "",
+      CreateteamIntroduction: "",
+      region: "",
+      ////////////////////
       roles,
       area,
     };
@@ -95,6 +125,33 @@ export default {
     },
     returnPage() {
       this.$emit("return_page");
+    },
+
+    //圖片設定
+    onfile(event) {
+      this.file = event.target.files[0];
+      let filereader = new FileReader();
+      filereader.readAsDataURL(this.file);
+      filereader.addEventListener("load", () => {
+        this.avatar = filereader.result;
+        console.warn(this.avatar);
+      });
+    },
+
+    //提交表單
+    submitForm() {
+      alert("球隊資料提交成功！");
+      // 表單資料確認
+      console.log("球隊名稱：", this.teamName);
+      console.log("地區：", this.region);
+      console.log("球隊隊徽：", this.avatar);
+      console.log("球隊簡介：", this.CreateteamIntroduction);
+
+      //提交後重置表單資料
+      this.teamName = "";
+      this.region = "";
+      this.avatar = require("@/assets/images/icons/default_avatar.svg");
+      this.CreateteamIntroduction = "";
     },
   },
 };
@@ -188,6 +245,63 @@ export default {
         display: flex;
         flex-direction: column;
         padding-bottom: 2rem;
+        // 地區篩選框更改
+        .ivu-select-single {
+          height: 100%;
+
+          .ivu-select-selection {
+            height: 100%;
+            border: 2px solid var(--secondary-blue-2);
+            border-radius: 10px;
+            color: var(--secondary-blue-2);
+
+            .ivu-select-placeholder {
+              color: var(--secondary-blue-2);
+            }
+
+            div:first-of-type {
+              height: 100%;
+              padding: 1rem 1.5rem;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+
+              span {
+                height: 100%;
+                padding: 0;
+
+                display: flex;
+                align-items: center;
+
+                font-family: "Noto Sans TC", "Montserrat", sans-serif;
+                font-size: 1.25rem;
+                font-weight: 400;
+              }
+
+              i {
+                position: relative;
+                top: initial;
+                right: initial;
+                transform: translateY(0);
+                width: 24px;
+                height: 24px;
+
+                &::before {
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -40%);
+                  font-size: 2rem;
+                  color: var(--secondary-blue-2);
+                }
+              }
+            }
+          }
+        }
+
+        .ivu-select-visible .ivu-select-arrow {
+          transform: rotate(180deg) !important;
+        }
         & label {
           font-size: 1.25rem;
           color: var(--secondary-gray-1);
@@ -202,6 +316,7 @@ export default {
     }
     &_pic {
       display: flex;
+      flex-direction: column;
       padding-bottom: 2rem;
       & div {
         font-size: 1.25rem;
@@ -212,22 +327,22 @@ export default {
           color: var(--accent-red);
         }
       }
+      & img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+      }
       & label {
+        margin-left: 1.5rem;
         display: flex;
-        flex-direction: column;
+        width: 100px;
         text-align: center;
         color: var(--secondary-blue-1);
+        padding: 0.5rem;
+        margin-top: 1rem;
+        font-weight: 500;
         border: 2px dashed var(--secondary-blue-1);
-        padding: 0 2rem 2rem 2rem;
-        padding-bottom: 1rem;
-        margin-top: 0.5rem;
-        margin-left: 1rem;
         cursor: pointer;
-        & img {
-          padding: 1rem;
-          padding-left: 1.5rem;
-          padding-top: 1.8rem;
-        }
         & input {
           display: none;
         }

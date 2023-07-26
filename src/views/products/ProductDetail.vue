@@ -20,7 +20,7 @@
           <ProductsAsideTags @filterProducts="goToProducts" />
         </aside>
 
-        <main class="products_main">
+        <main class="products_main" v-if="productItemData">
           <ProductsMainItem :productItemData="productItemData" />
           <ProductsMainItemMsg :productMsgData="productMsgData" />
         </main>
@@ -44,6 +44,7 @@ const router = useRouter();
 
 onMounted(() => {
   // 如果商品陣列長度為0或是商品陣列長度與商品數量不等於，則撈商品資料
+
   if (
     store.state.products.length === 0 ||
     store.state.products.find(
@@ -59,20 +60,24 @@ const productData = computed(() =>
   store.state.products.find((product) => product.product_id === route.params.id)
 );
 
-const productItemData = computed(() => ({
-  product_seller_name: productData.value.product_seller_name,
-  product_seller_icon: productData.value.product_seller_icon,
-  product_seller_msg: productData.value.product_seller_msg,
-  product_area: productData.value.product_area,
-  product_email: productData.value.product_email,
-  product_phone: productData.value.product_phone,
-  product_price: productData.value.product_price,
-  product_pics: productData.value.product_pics,
-  product_tag: productData.value.product_tag,
-  product_date: productData.value.product_date,
-  product_title: productData.value.product_title,
-  product_id: productData.value.product_id,
-}));
+const productItemData = computed(() => {
+  if (!productData.value) return false;
+
+  return {
+    product_seller_name: productData.value.product_seller_name,
+    product_seller_icon: productData.value.product_seller_icon,
+    product_seller_msg: productData.value.product_seller_msg,
+    product_area: productData.value.product_area,
+    product_email: productData.value.product_email,
+    product_phone: productData.value.product_phone,
+    product_price: productData.value.product_price,
+    product_pics: productData.value.product_pics,
+    product_tag: productData.value.product_tag,
+    product_date: productData.value.product_date,
+    product_title: productData.value.product_title,
+    product_id: productData.value.product_id,
+  };
+});
 
 const productMsgData = computed(() => productData.value.product_comments);
 
