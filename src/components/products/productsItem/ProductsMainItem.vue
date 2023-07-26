@@ -64,8 +64,6 @@ const props = defineProps({
   },
 });
 
-console.log(props.productItemData);
-
 const renderProductTitle = computed(() => props.productItemData.product_title);
 
 const renderProductItems = computed(() => [
