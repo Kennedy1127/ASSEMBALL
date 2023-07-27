@@ -64,16 +64,13 @@ export default {
 </script>
 
 <style lang="scss">
-//
-// .recruitment_aside_list li.active {
-//   background-color: var(--secondary-blue-3);
-//   // color: var(--pale-white);
-// }
-// .recruitment_aside_list a.active {
-//   color: var(--primary-blue);
-// }
-//
-//
+.recruitment_aside_list li.active {
+  background-color: var(--secondary-blue-3);
+}
+.recruitment_aside_list a.active {
+  color: var(--primary-blue);
+}
+
 .recruitment_aside {
   width: 18vw;
   height: 100%;
