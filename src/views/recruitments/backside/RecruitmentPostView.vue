@@ -11,6 +11,7 @@
       <!-- 側邊欄 -->
       <RecruitmentPostAside />
     </section>
+    <!-- <slot name="mainContent"> -->
     <main class="recruitment_post_main">
       <section class="recruitment_post_breadcrumb">
         <span>
@@ -38,6 +39,7 @@
         </div>
       </div>
     </main>
+    <!-- </slot> -->
   </main>
 </template>
 
@@ -54,10 +56,6 @@ export default {
 .recruitment_post {
   margin-top: 6rem;
   display: flex;
-
-  // &_aside{
-
-  // }
   &_breadcrumb {
     margin-bottom: 4rem;
     display: flex;
@@ -85,6 +83,9 @@ export default {
       padding-bottom: 1rem;
       font-size: 2rem;
       color: var(--primary-blue);
+      &_sm {
+        display: none;
+      }
       .block {
         width: 1rem;
         background-color: var(--primary-blue);
@@ -120,6 +121,7 @@ export default {
         display: none;
       }
       &_title_sm {
+        display: block;
         margin-bottom: 3rem;
         text-align: center;
         font-size: 1.25rem;
