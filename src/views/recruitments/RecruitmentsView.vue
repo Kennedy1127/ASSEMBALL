@@ -175,6 +175,10 @@ const toggleAside = () => {
     display: flex;
     gap: 4rem;
 
+    @media all and (max-width: 420px) {
+      margin: 5rem auto;
+    }
+
     &_carousel {
       width: 50%;
 

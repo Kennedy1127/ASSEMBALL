@@ -153,6 +153,7 @@ const convertDate = (copywritingDate) => {
     row-gap: 3rem;
 
     @media all and (max-width: 420px) {
+      min-height: 0;
       grid-template-columns: 1fr;
     }
   }
