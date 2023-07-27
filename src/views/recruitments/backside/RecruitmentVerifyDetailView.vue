@@ -17,10 +17,9 @@
           返回</router-link
         >
       </section>
-
       <div class="recruitment_post_main_title">
         <div class="block"></div>
-        <div style="font-weight: 600">審核應徵</div>
+        <div>審核應徵</div>
       </div>
       <div class="recruitment_post_main_content">
         <div class="recruitment_post_main_content_entire">
@@ -268,6 +267,57 @@ export default {
 @media screen and (max-width: 420px) {
   .recruitment_post {
     display: block;
+    margin: 0;
+    &_aside {
+      // TODO:在思考要不要把側邊欄拿掉(設計圖原本有)
+      // display: none;
+    }
+    &_breadcrumb {
+      display: none;
+    }
+    &_main {
+      padding: 2rem;
+      &_title {
+        display: none;
+      }
+      &_content {
+        display: block;
+        &_entire {
+          width: 100%;
+        }
+        &_entire::after {
+          display: none;
+        }
+        &_SelfIntroduction_content {
+          max-width: 80vw;
+        }
+        &_personalInfo {
+          display: block;
+          &_pic {
+            // width: 6rem;
+            width: 80vw;
+            margin: auto;
+            margin-bottom: 2rem;
+          }
+          &_item {
+            &_title {
+              width: fit-content;
+              margin-right: 0.5rem;
+            }
+          }
+          &_item:nth-child(3) {
+            display: block;
+          }
+        }
+        &_btn {
+          margin-top: 2rem;
+          margin: 2rem auto auto auto;
+          button {
+            width: 100%;
+          }
+        }
+      }
+    }
   }
 }
 </style>

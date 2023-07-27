@@ -44,17 +44,7 @@
   </div>
   <div class="recruitment_table_mobile">
     <table class="fixed_headers">
-      <!-- <thead>
-        <tr>
-          <th>標題</th>
-          <th>守備位置</th>
-          <th>地區</th>
-          <th>更新日期</th>
-          <th>編輯</th>
-        </tr>
-      </thead> -->
       <tbody>
-        <!-- <tr v-for="item in recruitPosts" :key="item"> -->
         <tr v-for="item in recruitPosts" :key="item">
           <td>
             <div class="td_item">
