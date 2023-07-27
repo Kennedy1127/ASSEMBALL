@@ -123,7 +123,7 @@ export default {
       display: none;
     }
     &_main {
-      padding: 1rem;
+      padding: 2rem;
       &_title {
         display: none;
       }
