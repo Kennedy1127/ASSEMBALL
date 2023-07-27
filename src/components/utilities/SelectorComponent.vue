@@ -23,7 +23,6 @@ const props = defineProps({
     required: false,
   },
   modelValue: {
-    type: Number,
     required: true,
   },
 });
