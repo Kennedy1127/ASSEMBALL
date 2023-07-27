@@ -18,7 +18,11 @@
           <router-link :to="{ name: 'Recruitments' }">球員招募</router-link>
         </span>
         <div class="icon">
-          <font-awesome-icon icon="fa-solid fa-chevron-right" />
+          <span>
+            <font-awesome-icon
+              icon="fa-solid fa-chevron-right"
+              style="color: var(--primary-blue)"
+          /></span>
         </div>
         <span>新增職缺</span>
       </section>
@@ -80,9 +84,11 @@ export default {
     &_title {
       display: flex;
       gap: 1.5rem;
-      padding-bottom: 1rem;
+      padding-bottom: 2rem;
       font-size: 2rem;
+      font-weight: 600;
       color: var(--primary-blue);
+      margin-bottom: 2rem;
       &_sm {
         display: none;
       }

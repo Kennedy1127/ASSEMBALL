@@ -9,17 +9,18 @@
     </section>
     <main class="recruitment_post_main">
       <section class="recruitment_post_breadcrumb">
-        <div class="icon">
-          <font-awesome-icon icon="fa-solid fa-chevron-left" />
-        </div>
-        <span>
-          <router-link :to="{ name: 'recruitmentVerify' }">返回</router-link>
-        </span>
+        <router-link :to="{ name: 'recruitmentVerify' }">
+          <font-awesome-icon
+            icon="fa-solid fa-chevron-left"
+            style="color: var(--primary-blue)"
+          />
+          返回</router-link
+        >
       </section>
 
       <div class="recruitment_post_main_title">
         <div class="block"></div>
-        <div>審核應徵</div>
+        <div style="font-weight: 600">審核應徵</div>
       </div>
       <div class="recruitment_post_main_content">
         <div class="recruitment_post_main_content_entire">
@@ -128,6 +129,10 @@ export default {
 
     font-size: 1.25rem;
 
+    a {
+      color: var(--primary-blue);
+    }
+
     span:first-child a {
       color: var(--primary-blue);
       text-decoration: underline;
@@ -148,6 +153,7 @@ export default {
       padding-bottom: 1rem;
       font-size: 2rem;
       color: var(--primary-blue);
+      font-weight: 600;
       .block {
         width: 1rem;
         background-color: var(--primary-blue);

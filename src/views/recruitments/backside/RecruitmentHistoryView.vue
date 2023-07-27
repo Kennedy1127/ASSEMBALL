@@ -13,14 +13,17 @@
           <router-link :to="{ name: 'Recruitments' }">球員招募</router-link>
         </span>
         <div class="icon">
-          <font-awesome-icon icon="fa-solid fa-chevron-right" />
+          <font-awesome-icon
+            icon="fa-solid fa-chevron-right"
+            style="color: var(--primary-blue)"
+          />
         </div>
         <span>紀錄管理</span>
       </section>
 
       <div class="recruitment_post_main_title">
         <div class="block"></div>
-        <div>紀錄管理</div>
+        <div style="font-weight: 600">紀錄管理</div>
       </div>
       <div class="recruitment_post_main_filter">
         <!--RecruitmentSearchbar.vue  -->
