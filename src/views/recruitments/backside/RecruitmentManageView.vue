@@ -12,7 +12,10 @@
           <router-link :to="{ name: 'Recruitments' }">球員招募</router-link>
         </span>
         <div class="icon">
-          <font-awesome-icon icon="fa-solid fa-chevron-right" />
+          <font-awesome-icon
+            icon="fa-solid fa-chevron-right"
+            style="color: var(--primary-blue)"
+          />
         </div>
         <span>管理職缺</span>
       </section>
@@ -124,6 +127,10 @@ const computedTotalPages = computed(() => {
 .recruitment_post {
   margin-top: 6rem;
   display: flex;
+  &_main_page {
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+  }
   &_breadcrumb {
     margin-bottom: 4rem;
     display: flex;
@@ -151,6 +158,7 @@ const computedTotalPages = computed(() => {
       padding-bottom: 1rem;
       font-size: 2rem;
       color: var(--primary-blue);
+      font-weight: 600;
       &_sm {
         display: none;
       }

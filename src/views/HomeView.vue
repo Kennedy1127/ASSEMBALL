@@ -124,33 +124,22 @@ export default {
     }
   }
 }
-@media (max-width: 420px) {
+@media screen and (max-width: 420px) {
   .home {
     .wrapper {
-      width: 100%;
-      max-width: 100%;
       // 網站故事
       .home_landing {
-        width: 100%;
-        height: 200vh;
+        height: 190vh;
         padding: 1.25rem;
-        position: relative;
       }
       // 跑馬燈
       .home_marquee {
-        text-align: center;
-        font-size: 1.5rem;
-        background-color: var(--primary-blue);
-        padding-top: 2rem;
-        overflow: hidden;
+        padding-top: 1rem;
       }
       //最新消息
       .home_news {
-        background-color: #fff;
-        color: var(--primary-blue);
         display: flex;
-        text-align: center;
-        position: relative;
+        flex-direction: column;
         z-index: 2;
       }
       // 球隊招募

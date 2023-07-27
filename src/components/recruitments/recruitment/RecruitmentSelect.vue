@@ -47,6 +47,7 @@ const onChange = (e) => {
 
   .ivu-select-single {
     height: 100%;
+    vertical-align: initial;
 
     .ivu-select-dropdown {
       background-color: #fff;
@@ -57,6 +58,7 @@ const onChange = (e) => {
       border-left: 3px solid var(--secondary-gray-3);
       height: 100%;
       border-radius: 0;
+      box-shadow: none;
 
       @media all and (max-width: 420px) {
         border-left: none;
@@ -71,7 +73,7 @@ const onChange = (e) => {
 
         @media all and (max-width: 420px) {
           padding: 0 0.5rem;
-          gap: 0.5rem;
+          gap: 0rem;
         }
 
         span {

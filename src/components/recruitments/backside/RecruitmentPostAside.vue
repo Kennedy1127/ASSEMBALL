@@ -65,6 +65,8 @@
       cursor: pointer;
       a {
         color: var(--secondary-gray-3);
+        font-weight: 500;
+        letter-spacing: 1.5px;
       }
     }
 

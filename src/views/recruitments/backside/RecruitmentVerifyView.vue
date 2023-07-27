@@ -12,14 +12,17 @@
           <router-link :to="{ name: 'Recruitments' }">球員招募</router-link>
         </span>
         <div class="icon">
-          <font-awesome-icon icon="fa-solid fa-chevron-right" />
+          <font-awesome-icon
+            icon="fa-solid fa-chevron-right"
+            style="color: var(--primary-blue)"
+          />
         </div>
         <span>審核應徵</span>
       </section>
 
       <div class="recruitment_post_main_title">
         <div class="block"></div>
-        <div>審核應徵</div>
+        <div style="font-weight: 600">審核應徵</div>
         <router-link :to="{ name: 'recruitmentVerifyDetail' }"
           >審核詳細頁</router-link
         >

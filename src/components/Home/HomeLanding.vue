@@ -155,7 +155,7 @@ export default {
   left: 2.75rem;
   right: 2.75rem;
   &_title {
-    margin-top: 8rem;
+    margin-top: 12rem;
     &_wrapper {
       overflow: hidden;
       position: relative;
@@ -248,7 +248,7 @@ export default {
     animation: fadeUpAnimation 2s ease forwards;
   }
 }
-@media (max-width: 420px) {
+@media screen and (max-width: 420px) {
   .home_landing_video {
     width: 90%;
     position: sticky;
@@ -284,7 +284,7 @@ export default {
     &_text {
       & strong {
         font-size: 1.3rem;
-        font-weight: 500;
+        // font-weight: 500;
       }
       & p {
         font-size: 1.15rem;
@@ -301,14 +301,14 @@ export default {
       }
       &_center {
         opacity: 0;
-        margin-top: 10rem;
+        margin-top: 9rem;
         & br {
           display: block;
         }
       }
       &_last {
         opacity: 0;
-        margin-top: 10rem;
+        margin-top: 9rem;
         text-align: left;
         & br {
           display: block;

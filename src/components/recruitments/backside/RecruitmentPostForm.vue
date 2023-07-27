@@ -77,7 +77,7 @@
       ></textarea>
     </div>
     <div class="recruitment_post_form_btn">
-      <button>取消</button>
+      <!-- <button>取消</button> -->
       <button>刪除</button>
       <button>上傳</button>
     </div>
@@ -358,17 +358,17 @@ export default {
       font-weight: 500;
       border: 0;
     }
-    & button:nth-child(1) {
+    & button:nth-child(3) {
       border: 2px solid;
       border-color: var(--secondary-gray-3);
       color: var(--secondary-gray-3);
       background-color: #fff;
     }
-    & button:nth-child(3) {
+    & button:nth-child(1) {
       background-color: var(--primary-blue);
       color: var(--pale-white);
     }
-    & button:nth-child(2) {
+    & button:nth-child(1) {
       background-color: var(--error-yellow);
       color: var(--secondary-gray-1);
     }
