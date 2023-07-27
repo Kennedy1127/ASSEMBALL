@@ -162,4 +162,38 @@ export default {
     }
   }
 }
+@media screen and (max-width: 420px) {
+  .home_marquee_hashtag {
+    display: flex;
+    animation: scroll 20s linear infinite;
+    &:nth-child(2) {
+      animation: scroll2 20s linear infinite;
+    }
+    &_text {
+      padding: 0.5rem 1rem 0.5rem 0;
+      flex-shrink: 0;
+      border-top: 1px solid #fff;
+      a {
+        color: #fff;
+        font-size: 1.25rem;
+      }
+    }
+    @keyframes scroll {
+      from {
+        transform: translateX(0%);
+      }
+      to {
+        transform: translateX(-100%);
+      }
+    }
+    @keyframes scroll2 {
+      from {
+        transform: translateX(-100%);
+      }
+      to {
+        transform: translateX(0%);
+      }
+    }
+  }
+}
 </style>
