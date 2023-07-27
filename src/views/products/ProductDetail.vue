@@ -104,7 +104,7 @@ const productItemData = computed(() => {
 
 const productMsgData = computed(() => productData.value.product_comments);
 
-const goToProducts = () => {
+const goToTop = () => {
   router.push({ name: "Products" });
   route.query.h = 0;
 };
