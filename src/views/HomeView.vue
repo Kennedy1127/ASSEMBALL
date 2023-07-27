@@ -144,11 +144,10 @@ export default {
       }
       // 球隊招募
       .home_recruit {
-        background-color: #fff;
-        border-top: 3px solid var(--primary-blue);
-        padding: 4rem 2rem 4rem 2rem;
+        padding: 1rem 0rem 2rem 0rem;
         display: flex;
-        position: relative;
+        flex-direction: column;
+        position: none;
       }
       // 交流留言板
       .home_message {

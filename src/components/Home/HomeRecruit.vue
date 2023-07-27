@@ -9,7 +9,9 @@
     </div>
     <div class="home_recruit_title_text">
       <h2>
-        <router-link :to="{ name: 'Recruitments' }">球員招募</router-link>
+        <router-link :to="{ name: 'Recruitments' }"
+          >球員招募<Icon type="ios-arrow-dropright-circle"
+        /></router-link>
       </h2>
       <p>發掘你的潛力，成為球隊的關鍵一員！</p>
     </div>
@@ -194,8 +196,12 @@ export default defineComponent({
     & h2 {
       writing-mode: vertical-lr;
       font-size: 2.5rem;
-      a {
+      & a {
         color: var(--primary-blue);
+        & i {
+          vertical-align: baseline;
+          margin-top: 0.5rem;
+        }
       }
     }
     & p {
@@ -266,6 +272,97 @@ export default defineComponent({
     background-color: var(--primary-blue);
     color: #fff;
     border-radius: 50%;
+  }
+}
+@media screen and (max-width: 420px) {
+  .home_recruit_title {
+    width: 100%;
+    display: flex;
+    border-right: 0px;
+    border-bottom: 3px solid var(--primary-blue);
+    &_pic {
+      width: 20%;
+      margin-top: auto;
+      position: relative;
+      left: 0%;
+      top: -0.5rem;
+      & img {
+        width: 100%;
+      }
+    }
+    &_text {
+      width: 80%;
+      display: flex;
+      flex-direction: column;
+      margin: auto;
+      & h2 {
+        writing-mode: horizontal-tb;
+        font-size: 2.5rem;
+        & a {
+          color: var(--primary-blue);
+          & i {
+            vertical-align: baseline;
+            margin-left: 1rem;
+          }
+        }
+      }
+      & p {
+        writing-mode: horizontal-tb;
+        font-size: 1rem;
+        margin-left: 0rem;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+  .home_recruit_carousel {
+    width: 100%;
+    .carousel__item {
+      width: 100%;
+      border-right: 0px;
+      color: var(--primary-blue);
+      margin-top: 2rem;
+      &_pic {
+        width: 35%;
+        margin: auto;
+        border-radius: 50%;
+        border: 3px solid var(--primary-blue);
+        overflow: hidden;
+        padding: 1.25rem;
+      }
+      &_name {
+        margin-top: 0.5rem;
+        font-size: 1.5rem;
+      }
+      &_about {
+        width: 57%;
+        margin: auto;
+        margin-top: 0.75rem;
+        font-size: 1.25rem;
+        & span {
+          font-weight: 400;
+        }
+      }
+      & button {
+        margin-top: 1.75rem;
+        width: 7rem;
+        height: 2.75rem;
+        border-radius: 30px;
+        border: 1px solid var(--primary-blue);
+        background-color: var(--primary-blue);
+        color: #fff;
+        font-size: 1.25rem;
+        & i {
+          font-size: 1.5rem;
+          margin-right: 0.25rem;
+        }
+      }
+      & button:hover {
+        border: 1px solid var(--primary-blue);
+        background-color: #fff;
+        color: var(--primary-blue);
+        vertical-align: middle;
+      }
+    }
   }
 }
 </style>

@@ -48,7 +48,7 @@
           </div>
         </li>
         <!-- modal -->
-        <div class="modal" v-if="modalIsOpen" @click="closeModal">
+        <div class="modal" v-if="modalIsOpen">
           <div class="modal_content" ref="items">
             <div class="modal_content_close" @click="closeModal">
               <font-awesome-icon icon="fa-solid fa-circle-xmark" />
@@ -234,6 +234,7 @@ export default {
       border: 2px solid var(--primary-blue);
       background-color: var(--primary-blue);
       color: #fff;
+      outline: none;
       &::placeholder {
         font-size: 1rem;
         color: #ffffffe7;
@@ -247,6 +248,7 @@ export default {
       position: absolute;
       top: 0.45rem;
       right: 25%;
+      cursor: pointer;
     }
   }
   &_hashtag {

@@ -1,7 +1,9 @@
 <template>
   <div class="home_message_title">
     <h2>
-      <router-link :to="{ name: 'myplayerTeam' }">交流留言板</router-link>
+      <router-link :to="{ name: 'myplayerTeam' }"
+        >交流留言板<Icon type="ios-arrow-dropright-circle"
+      /></router-link>
     </h2>
     <p>
       連結熱愛棒球的全球大家庭，一同分享熱情、討論戰術，共同創造無限棒球樂趣！
@@ -129,6 +131,10 @@ export default {
     & a {
       font-size: 2.5rem;
       color: var(--primary-blue);
+      & i {
+        vertical-align: baseline;
+        margin-left: 0.5rem;
+      }
     }
   }
   & p {
