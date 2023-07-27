@@ -48,7 +48,7 @@
           </div>
         </li>
         <!-- modal -->
-        <div class="modal" v-if="modalIsOpen" @click="closeModal">
+        <div class="modal" v-if="modalIsOpen">
           <div class="modal_content" ref="items">
             <div class="modal_content_close" @click="closeModal">
               <font-awesome-icon icon="fa-solid fa-circle-xmark" />
@@ -61,7 +61,7 @@
                     computedModalData.titleBreakpoint
                   }}
                 </h3>
-                <span>{{ computedModalData.date }}</span>
+                <p>{{ computedModalData.date }}</p>
               </div>
             </div>
             <div class="modal_content_pic">
@@ -234,6 +234,7 @@ export default {
       border: 2px solid var(--primary-blue);
       background-color: var(--primary-blue);
       color: #fff;
+      outline: none;
       &::placeholder {
         font-size: 1rem;
         color: #ffffffe7;
@@ -247,6 +248,7 @@ export default {
       position: absolute;
       top: 0.45rem;
       right: 25%;
+      cursor: pointer;
     }
   }
   &_hashtag {
@@ -267,13 +269,13 @@ export default {
 }
 .home_news_all {
   width: 70%;
-  position: relative;
   & h2 {
     margin-top: 1rem;
     font-size: 96px;
     font-family: "Montserrat";
   }
   &_carousel {
+    width: 100%;
     margin-top: 1rem; // 可改
     &_list {
       position: relative;
@@ -337,6 +339,7 @@ export default {
         box-shadow: var(--shadow-wide);
 
         .carousel_content {
+          width: 100%;
           padding: 1rem;
           &_title {
             margin-top: 0.75rem;
@@ -424,10 +427,9 @@ export default {
                 font-size: 1.25rem;
                 font-weight: 500;
               }
-              & span {
+              & p {
                 font-size: 1rem;
                 margin-left: 1rem;
-                vertical-align: text-bottom;
               }
               & br {
                 display: none;
@@ -529,7 +531,6 @@ export default {
   .home_news_all {
     width: 100%;
     overflow: hidden;
-    position: relative;
     & h2 {
       margin-top: 2.5rem;
       font-size: 96px;
@@ -545,6 +546,7 @@ export default {
         justify-content: center;
         width: 320px; // 寬度影響左右方向鍵位置，更改時要注意
         margin: 0 auto;
+        // overflow: hidden;
         &_item {
           position: absolute;
           transition: transform 500ms;
@@ -574,13 +576,13 @@ export default {
           }
         }
         .modal {
+          width: 100%;
+          height: 100%;
           position: fixed;
           top: 0;
           left: 0;
-          width: 100%;
-          height: 100%;
           background-color: rgba(0, 0, 0, 0.5);
-          z-index: 100;
+          z-index: 15;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -589,8 +591,8 @@ export default {
             position: relative;
             width: 90%;
             height: 80vh;
-            overflow: hidden;
             margin: auto;
+            margin-top: 15vh;
             &_close {
               position: absolute;
               top: 0.75rem;
@@ -599,8 +601,9 @@ export default {
               cursor: pointer;
             }
             &_title {
+              width: 90%;
               display: flex;
-              align-items: end;
+              align-items: start;
               &_block {
                 width: 16px;
                 height: 60px;
@@ -608,13 +611,33 @@ export default {
               }
               &_text {
                 display: flex;
-                align-items: end;
+                flex-direction: column;
+                align-items: flex-start;
                 margin-left: 1rem;
                 text-align: left;
+                & h3 {
+                }
                 & br {
                   display: block;
                 }
+                & p {
+                  margin-left: 0;
+                }
               }
+            }
+            &_pic {
+              width: 100%;
+              margin-top: 1rem;
+              & img {
+                width: 100%;
+              }
+            }
+            &_text {
+              width: 100%;
+              text-align: left;
+              margin-top: 0.5rem;
+              text-indent: 2rem;
+              font-size: 1rem;
             }
           }
         }

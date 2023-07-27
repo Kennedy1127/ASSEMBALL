@@ -1,7 +1,9 @@
 <template>
   <div class="home_auction_title">
     <h2>
-      <router-link :to="{ name: 'Products' }">棒球用品二手拍賣</router-link>
+      <router-link :to="{ name: 'Products' }"
+        >棒球用品二手拍賣<Icon type="ios-arrow-dropright-circle"
+      /></router-link>
     </h2>
     <p>走進綠色棒球世界：延續價值的環保二手拍賣專區，讓棒球用品循環再利用</p>
   </div>
@@ -86,6 +88,10 @@ export default {
     & a {
       font-size: 2.5rem;
       color: var(--primary-blue);
+      & i {
+        vertical-align: baseline;
+        margin-left: 0.5rem;
+      }
     }
   }
   & p {
@@ -187,6 +193,26 @@ export default {
           #111111 100%
         );
       }
+    }
+  }
+}
+@media screen and (max-width: 420px) {
+  .home_auction_title {
+    padding: 2rem 4rem 2rem 4rem;
+    border-bottom: 3px solid var(--primary-blue);
+    & h2 {
+      & a {
+        font-size: 2.5rem;
+        color: var(--primary-blue);
+        & i {
+          vertical-align: baseline;
+          margin-left: 0.5rem;
+        }
+      }
+    }
+    & p {
+      font-size: 1.25rem;
+      color: var(--primary-blue);
     }
   }
 }

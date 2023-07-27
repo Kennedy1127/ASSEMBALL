@@ -252,7 +252,7 @@ export default {
   .home_landing_video {
     width: 90%;
     position: sticky;
-    top: 10rem;
+    top: 8rem;
     &_desktop {
       display: none;
     }
