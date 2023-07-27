@@ -1,9 +1,6 @@
 <template>
   <div class="authentication_wrap">
     <div class="authentication">
-      <div v-if="layout !== 'normal'">
-        <slot name="form"></slot>
-      </div>
       <div class="authentication_pic">
         <div class="authentication_pic_title">Welcome Back !</div>
 
@@ -19,41 +16,68 @@
         </button>
       </div>
 
-      <div v-if="layout === 'normal'">
-        <slot name="pic"></slot>
-      </div>
-      <form class="authentication_text">
+      <form class="authentication_text" @submit="submitRegister">
         <div class="authentication_text_slogan">Hello , Friend !</div>
         <div class="authentication_text_title">會員註冊/Sign Up</div>
         <div class="authentication_typing_name">
           <div class="authentication_typing_name_underline">
-            <input type="text" placeholder="姓/Last Name" />
+            <input
+              type="text"
+              placeholder="姓/Last Name"
+              v-model="lastname"
+              minlength="1"
+              maxlength="5"
+              required
+            />
           </div>
 
           <div class="authentication_typing_name_underline">
-            <input type="text" placeholder="名/First Name" />
+            <input
+              type="text"
+              placeholder="名/First Name"
+              v-model="firstname"
+              minlength="1"
+              maxlength="5"
+              required
+            />
           </div>
         </div>
 
         <div class="authentication_text_underline">
-          <input type="text" placeholder="使用者名稱/User Name" />
+          <input
+            type="email"
+            placeholder="電子郵件/Email"
+            v-model="email"
+            required
+          />
         </div>
 
         <div class="authentication_text_underline">
-          <input type="email" placeholder="電子郵件/Email" />
+          <input
+            type="password"
+            placeholder="密碼/Password"
+            v-model="password"
+            minlength="5"
+            maxlength="50"
+            required
+          />
         </div>
 
         <div class="authentication_text_underline">
-          <input type="password" placeholder="密碼/Password" />
-        </div>
-
-        <div class="authentication_text_underline">
-          <input type="password" placeholder="確認密碼/Confirm Password" />
+          <input
+            type="password"
+            placeholder="確認密碼/Confirm Password"
+            v-model="confirmPassword"
+            minlength="5"
+            maxlength="50"
+            required
+          />
         </div>
 
         <div class="authentication_text_btn">
           <button>
-            註冊 <font-awesome-icon icon="fa-solid fa-chevron-right" />
+            註冊
+            <font-awesome-icon icon="fa-solid fa-chevron-right" class="icon" />
           </button>
 
           <div class="authentication_psw_error">輸入錯誤!</div>
@@ -61,53 +85,6 @@
       </form>
     </div>
   </div>
-
-  <!-- 框.vue -->
-  <!-- <div class="authentication_wrap">
-    <div class="authentication">
-      <div v-if="layout !== 'normal'">
-        <slot name="here"></slot>
-      </div>
-      <div class="authentication_pic">
-        <div class="authentication_pic_title">Welcome Back !</div>
-
-        <div class="authentication_pic_text">
-          Are you ready <br />
-          to unleash the power of baseball?
-        </div>
-
-        <button class="authentication_btn">
-          登入 <font-awesome-icon icon="fa-solid fa-chevron-right" />
-        </button>
-      </div>
-      <div v-if="layout === 'normal'">
-        <slot name="here"></slot>
-      </div>
-    </div>
-  </div> -->
-
-  <!-- 表格login.vue -->
-  <!-- <form>...</form> -->
-
-  <!-- 表格Forget.vue -->
-  <!-- <form>...</form> -->
-
-  <!-- 表格Register.vue -->
-  <!-- <form>...</form> -->
-
-  <!-- 頁面登入.vue -->
-  <!-- <框 layout="reverse">
-          <template #here>
-            <表格login />
-          </template>
-      </框> -->
-
-  <!-- 頁面註冊.vue -->
-  <!-- <框 layout="reverse">
-          <template #here>
-            <表格Register />
-          </template>
-      </框> -->
 </template>
 
 <script>
@@ -117,6 +94,16 @@ export default {
       type: String,
       default: () => "normal",
     },
+  },
+
+  data() {
+    return {
+      firstname: "",
+      lastname: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    };
   },
 };
 </script>
@@ -165,19 +152,30 @@ export default {
     }
 
     .authentication_btn {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.5rem;
-      width: 6rem;
       border-radius: 2rem;
-      padding: 0.5rem 0.25rem;
       color: var(--primary-blue);
       font-size: 1.25rem;
       font-family: "Noto Sans TC";
       font-weight: 500;
       position: absolute;
       top: 80%;
+
+      width: 150px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+
+      a {
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+      }
     }
   }
 
@@ -254,14 +252,20 @@ export default {
       transform: translateX(-50%);
 
       button {
-        width: 6rem;
+        width: 150px;
+        height: 50px;
         border-radius: 2rem;
-        padding: 0.5rem 0.25rem;
+        background-color: var(--primary-blue);
+
         color: var(--pale-white);
         font-size: 1.25rem;
-        background-color: var(--primary-blue);
         font-family: "Noto Sans TC";
         font-weight: 500;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
       }
     }
 
