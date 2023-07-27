@@ -33,9 +33,12 @@
 <script setup>
 import ProductsAsideSelect from "@/components/products/productsAside/ProductsAsideSelect.vue";
 import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 
 const store = useStore();
+const router = useRouter();
+const route = useRoute();
 const emit = defineEmits(["filterProducts"]);
 
 const searchText = ref(store.state.selectedProductsText);
@@ -49,6 +52,8 @@ const filterProducts = () => {
   store.commit("resetPaginationCurPage", "products");
 
   emit("filterProducts");
+  route.query.h = 0;
+  router.push({ name: "Products" });
 };
 </script>
 

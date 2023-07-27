@@ -23,9 +23,12 @@
 <script setup>
 import productTags from "@/composables/tables/productTags";
 import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 
 const store = useStore();
+const route = useRoute();
+const router = useRouter();
 const emit = defineEmits(["filterProducts"]);
 
 const tags = ref({ ...productTags });
@@ -35,6 +38,8 @@ const filterProducts = (type) => {
   store.commit("resetPaginationCurPage", "products");
 
   emit("filterProducts", type);
+  route.query.h = 0;
+  router.push({ name: "Products" });
 };
 </script>
 
