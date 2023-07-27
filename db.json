@@ -212,6 +212,34 @@
     }
   ],
 
+  "member": [
+    {
+      "member_id": "64c1f6ed81adf7a64e72315c",
+      "member_icon": "https://picsum.photos/200/300",
+      "member_firstName": "小楊",
+      "member_lastName": "棒球專家",
+      "member_email": "GarrettWashington@mail.com",
+      "member_area": "澎湖縣",
+      "member_exp": 1,
+      "member_template_1": {
+        "template_id": 7,
+        "template_text": "喵喵喵喵喵喵喵，喵喵喵喵喵喵，喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵。",
+        "template_status": 1
+      },
+      "member_template_2": {
+        "template_id": 6,
+        "template_text": "喵喵喵喵喵，喵喵喵喵喵喵喵。喵喵喵喵喵，喵喵，喵喵喵喵。喵喵喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵。",
+        "template_status": 1
+      },
+      "member_template_3": {
+        "template_id": 4,
+        "template_text": "喵喵喵喵喵，喵喵喵喵喵喵喵。喵喵喵喵喵，喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵，喵喵喵喵，喵喵喵喵喵，喵喵喵喵喵喵喵。喵喵喵喵喵，喵喵喵喵喵喵喵喵喵喵喵。喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵喵。喵喵喵喵喵喵喵，喵喵喵喵",
+        "template_status": 1
+      },
+      "team_id": "64c1f6ed89bb5ec3bb5976c6"
+    }
+  ],
+
   "member_order": [
     {
       "member_id": "64bd0f96ecaf7dc37da31326",

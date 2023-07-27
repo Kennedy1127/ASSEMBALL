@@ -1,10 +1,5 @@
 <template>
-  <div class="recruitment_post_goback">
-    <router-link :to="{ name: 'Recruitments' }">
-      <span><font-awesome-icon icon="fa-solid fa-angle-left" /></span>返回
-    </router-link>
-  </div>
-  <div class="recruitment_post_main_title_sm">{{ title }}</div>
+  <GobackAndTitle :title="title" />
   <div class="recruitment_post">
     <section class="recruitment_post_aside">
       <!-- <aside class="recruitment_post_aside"> -->
@@ -17,14 +12,17 @@
           <router-link :to="{ name: 'Recruitments' }">球員招募</router-link>
         </span>
         <div class="icon">
-          <font-awesome-icon icon="fa-solid fa-chevron-right" />
+          <font-awesome-icon
+            icon="fa-solid fa-chevron-right"
+            style="color: var(--primary-blue)"
+          />
         </div>
         <span>審核應徵</span>
       </section>
 
       <div class="recruitment_post_main_title">
         <div class="block"></div>
-        <div>審核應徵</div>
+        <div style="font-weight: 600">審核應徵</div>
         <router-link :to="{ name: 'recruitmentVerifyDetail' }"
           >審核詳細頁</router-link
         >
@@ -37,13 +35,17 @@
         <RecruitmentTable />
       </div>
       <div class="recruitment_post_main_page">
-        <ProductsMainPagination />頁碼待補
+        <PaginationComponent
+          :totalPages="computedTotalPages"
+          type="BacksideRecruit"
+        />
       </div>
     </main>
   </div>
 </template>
 
 <script setup>
+import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
 import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
 import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";

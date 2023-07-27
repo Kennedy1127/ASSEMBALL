@@ -1,10 +1,5 @@
 <template>
-  <div class="recruitment_post_goback">
-    <router-link :to="{ name: 'Recruitments' }">
-      <span><font-awesome-icon icon="fa-solid fa-angle-left" /></span>返回
-    </router-link>
-  </div>
-  <div class="recruitment_post_main_title_sm">新增職缺</div>
+  <GobackAndTitle :title="title" />
 
   <main class="recruitment_post">
     <section class="recruitment_post_aside">
@@ -18,7 +13,11 @@
           <router-link :to="{ name: 'Recruitments' }">球員招募</router-link>
         </span>
         <div class="icon">
-          <font-awesome-icon icon="fa-solid fa-chevron-right" />
+          <span>
+            <font-awesome-icon
+              icon="fa-solid fa-chevron-right"
+              style="color: var(--primary-blue)"
+          /></span>
         </div>
         <span>新增職缺</span>
       </section>
@@ -44,11 +43,17 @@
 </template>
 
 <script>
+import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
 import RecruitmentPostForm from "@/components/recruitments/backside/RecruitmentPostForm";
 
 export default {
-  components: { RecruitmentPostAside, RecruitmentPostForm },
+  data() {
+    return {
+      title: "新增職缺",
+    };
+  },
+  components: { GobackAndTitle, RecruitmentPostAside, RecruitmentPostForm },
 };
 </script>
 
@@ -80,9 +85,11 @@ export default {
     &_title {
       display: flex;
       gap: 1.5rem;
-      padding-bottom: 1rem;
+      padding-bottom: 2rem;
       font-size: 2rem;
+      font-weight: 600;
       color: var(--primary-blue);
+      margin-bottom: 2rem;
       &_sm {
         display: none;
       }
@@ -116,7 +123,7 @@ export default {
       display: none;
     }
     &_main {
-      padding: 1rem;
+      padding: 2rem;
       &_title {
         display: none;
       }

@@ -1,10 +1,5 @@
 <template>
-  <div class="recruitment_post_goback">
-    <router-link :to="{ name: 'Recruitments' }">
-      <span><font-awesome-icon icon="fa-solid fa-angle-left" /></span>返回
-    </router-link>
-  </div>
-  <div class="recruitment_post_main_title_sm">{{ title }}</div>
+  <GobackAndTitle :title="title" />
   <div class="recruitment_post">
     <section class="recruitment_post_aside">
       <!-- <aside class="recruitment_post_aside"> -->
@@ -17,7 +12,10 @@
           <router-link :to="{ name: 'Recruitments' }">球員招募</router-link>
         </span>
         <div class="icon">
-          <font-awesome-icon icon="fa-solid fa-chevron-right" />
+          <font-awesome-icon
+            icon="fa-solid fa-chevron-right"
+            style="color: var(--primary-blue)"
+          />
         </div>
         <span>管理職缺</span>
       </section>
@@ -44,6 +42,7 @@
 </template>
 
 <script setup>
+import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
 import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
 import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";
@@ -128,6 +127,10 @@ const computedTotalPages = computed(() => {
 .recruitment_post {
   margin-top: 6rem;
   display: flex;
+  &_main_page {
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+  }
   &_breadcrumb {
     margin-bottom: 4rem;
     display: flex;
@@ -155,6 +158,7 @@ const computedTotalPages = computed(() => {
       padding-bottom: 1rem;
       font-size: 2rem;
       color: var(--primary-blue);
+      font-weight: 600;
       &_sm {
         display: none;
       }
