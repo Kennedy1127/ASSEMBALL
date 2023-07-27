@@ -66,6 +66,7 @@ export default createStore({
     // 頁碼區塊
     productsCurPage: 1,
     copywritingsCurPage: 1,
+    curPage: 1,
   },
 
   getters: {
