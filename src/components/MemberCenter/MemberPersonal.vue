@@ -272,6 +272,9 @@ export default {
   padding: 0.5rem 0;
   max-height: 85vh;
   overflow-y: scroll;
+  @media all and (max-width: 420px) {
+    max-width: 100%;
+  }
   &_return {
     width: 100%;
     & div {
@@ -513,7 +516,7 @@ export default {
           line-height: 19px;
           position: relative;
           right: -15%;
-          bottom: 14%;
+          bottom: 30%;
         }
         & label {
           padding-left: 0.5rem;
@@ -537,7 +540,7 @@ export default {
           line-height: 19px;
           position: relative;
           right: -15%;
-          bottom: 14%;
+          bottom: 30%;
         }
         & label {
           padding-left: 0.5rem;
@@ -561,7 +564,7 @@ export default {
           line-height: 19px;
           position: relative;
           right: -15%;
-          bottom: 14%;
+          bottom: 30%;
         }
         & label {
           padding-left: 0.5rem;
