@@ -35,7 +35,10 @@
         <RecruitmentTable />
       </div>
       <div class="recruitment_post_main_page">
-        <ProductsMainPagination />頁碼待補
+        <PaginationComponent
+          :totalPages="computedTotalPages"
+          type="BacksideRecruit"
+        />
       </div>
     </main>
   </div>

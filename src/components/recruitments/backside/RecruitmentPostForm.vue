@@ -358,13 +358,13 @@ export default {
       font-weight: 500;
       border: 0;
     }
-    & button:nth-child(3) {
-      border: 2px solid;
-      border-color: var(--secondary-gray-3);
-      color: var(--secondary-gray-3);
-      background-color: #fff;
-    }
-    & button:nth-child(1) {
+    // & button:nth-child(3) {
+    //   border: 2px solid;
+    //   border-color: var(--secondary-gray-3);
+    //   color: var(--secondary-gray-3);
+    //   background-color: #fff;
+    // }
+    & button:nth-child(2) {
       background-color: var(--primary-blue);
       color: var(--pale-white);
     }
