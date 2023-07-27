@@ -68,9 +68,14 @@
       }
     }
 
-    a:visited,
+    a:hover,
+    a:focus {
+      color: var(--primary-blue);
+    }
     li:hover {
       background-color: var(--secondary-blue-3);
+    }
+    li:hover a {
       color: var(--primary-blue);
     }
   }
@@ -79,6 +84,47 @@
     overflow: hidden;
     &_img {
       width: 100%;
+    }
+  }
+}
+@media screen and (max-width: 420px) {
+  .recruitment_aside {
+    width: 100%;
+    padding: 0;
+    background-color: var(--secondary-blue-1);
+
+    &_hitterpic,
+    &_userpic {
+      display: none;
+    }
+
+    &_list {
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      li {
+        width: 25%;
+        font-size: 1rem;
+        padding: 1.5rem 0.5rem;
+        color: #000;
+        border-right: #fff 1px solid;
+        a {
+          color: var(--pale-white);
+        }
+      }
+      li:nth-last-child(1) {
+        border: 0;
+      }
+    }
+    a:hover,
+    a:focus {
+      color: var(--pale-white);
+    }
+    li:hover {
+      background-color: var(--primary-blue);
+    }
+    li:hover a {
+      color: var(--pale-white);
     }
   }
 }

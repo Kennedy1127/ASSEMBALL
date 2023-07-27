@@ -32,6 +32,7 @@
         </div>
       </div>
     </div>
+
     <div class="product_main_detail_content">
       <div class="product_main_detail_content_title">
         <span>{{ renderProductTitle }}</span>
@@ -43,6 +44,7 @@
       >
         {{ item.title }} {{ item.text }}
       </div>
+
       <div class="detail_footer">
         <div class="detail_price">NT$ {{ renderProductPrice }}</div>
         <router-link :to="{ name: 'ProductPayment' }">
@@ -103,11 +105,27 @@ const convertPrice = (price) => {
     display: flex;
     flex-direction: row;
     justify-content: center;
+
+    @media all and (max-width: 420px) {
+      flex-direction: column;
+    }
+
     &_pic {
       width: 60%;
       display: flex;
       flex-direction: column;
       padding-left: 2rem;
+
+      @media all and (max-width: 420px) {
+        width: 100%;
+        padding-left: 0;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
       &_all {
         width: 100%;
         display: flex;
@@ -122,18 +140,36 @@ const convertPrice = (price) => {
         }
       }
     }
+
     &_content {
       width: 80%;
       margin-left: 2rem;
+
+      @media all and (max-width: 420px) {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 1.5rem;
+      }
+
       &_title {
         padding-bottom: 2rem;
+
+        @media all and (max-width: 420px) {
+          padding-bottom: 1.5rem;
+        }
+
         & span {
           color: var(--primary-black);
           font-size: 2rem;
           font-weight: 500;
           letter-spacing: 1.5px;
+
+          @media all and (max-width: 420px) {
+            font-size: 1.5rem;
+          }
         }
       }
+
       &_body {
         color: var(--secondary-gray-1);
         padding: 0.75rem 0.75rem 0.75rem 0;
@@ -145,13 +181,25 @@ const convertPrice = (price) => {
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
+
+      @media all and (max-width: 420px) {
+        flex-direction: column;
+        align-items: initial;
+        justify-content: initial;
+      }
       .detail_price {
         font-weight: 500;
         letter-spacing: 1.5px;
         font-size: 1.75rem;
         color: var(--error-red);
         padding-top: 3rem;
+
+        @media all and (max-width: 420px) {
+          font-size: 1.5rem;
+          padding-top: 1.5rem;
+        }
       }
+
       & a {
         & button {
           width: 150px;
@@ -163,6 +211,11 @@ const convertPrice = (price) => {
           color: #ffffff;
           background-color: var(--error-yellow);
           transition: all 0.09s ease-in-out;
+
+          @media all and (max-width: 420px) {
+            margin-top: 2rem;
+            width: 100%;
+          }
         }
         & button:hover {
           background-color: var(--error-red);

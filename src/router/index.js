@@ -3,12 +3,12 @@ import store from "@/store/index";
 
 const routes = [
   {
-    path: "/test",
+    path: "/",
     name: "test",
     component: () => import("@/views/test.vue"),
   },
   {
-    path: "/",
+    path: "/home",
     name: "Home",
     component: () => import("@/views/HomeView.vue"),
   },
@@ -56,7 +56,7 @@ const routes = [
   {
     path: "/product-post", //url- 網址的文字
     name: "ProductPost",
-    component: () => import("@/views/products/ProductPost.vue"), // 檔名
+    component: () => import("@/views/products/ProductPostV2.vue"), // 檔名
   },
   {
     path: "/products/products-manage",

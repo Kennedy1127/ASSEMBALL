@@ -3,7 +3,7 @@
     <div class="footer">
       <div class="wrapper">
         <div class="footer_logo">
-          <router-link to="/">
+          <router-link :to="{ name: 'Home' }">
             <img
               src="~@/assets/images/icons/footer_logo_light.svg"
               alt="footer_logo_light"
@@ -66,12 +66,6 @@ export default {
         "本網站為緯育TibaMe_前端設計工程師班第83期學員專題成果作品,本平台僅供學習、展示之用。",
       footerDetails:
         "若有抵觸有關著作權,或有第三人主張侵害智慧財產權等情事,均由學員負法律上責任,緯育公司概不負責，若有侵權疑慮，您可以私訊緯育Tibame，後續會由專人協助處理。",
-      navList: {
-        recruitment: "球隊徵人",
-        shopping: "拍賣專區",
-        team: "我的球隊",
-        novice: "新手上路",
-      },
     };
   },
 };
@@ -92,6 +86,9 @@ export default {
     padding: 2.25rem 0 2.25rem 0;
     display: flex;
     align-items: center;
+    @media all and (max-width: 420px) {
+      padding: 2rem 0 1.25rem 0;
+    }
     & img {
       cursor: pointer;
       height: 80%;
@@ -100,9 +97,22 @@ export default {
   &_list {
     display: flex;
     padding-bottom: 2rem;
+    @media all and (max-width: 420px) {
+      flex-wrap: wrap;
+      justify-content: center;
+      flex-direction: column;
+      max-width: 60%;
+    }
     & ul {
       display: flex;
       gap: 1rem;
+      @media all and (max-width: 420px) {
+        flex-wrap: wrap;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        gap: 0rem;
+      }
       & li {
         display: flex;
         align-items: center;
@@ -114,6 +124,10 @@ export default {
           color: var(--pale-white);
           cursor: pointer;
           transition: all 0.15s ease-in-out;
+          @media all and (max-width: 420px) {
+            margin: auto;
+            padding: 1rem;
+          }
           & font-awesome-icon {
             font-size: 2rem;
             transition: all 0.15s ease-in-out;
@@ -142,6 +156,10 @@ export default {
       align-items: center;
       gap: 2rem;
       margin-left: 2rem;
+      @media all and (max-width: 420px) {
+        margin: auto;
+        margin-top: 2rem;
+      }
       & > span {
         font-size: 1.25rem;
         padding: 0.25rem 0.75rem;
@@ -164,6 +182,13 @@ export default {
     font-weight: 400;
     padding: 3rem 2rem;
     text-align: center;
+    & div {
+      @media all and (max-width: 420px) {
+        text-align: left;
+        // width: 80%;
+        // margin: auto;
+      }
+    }
   }
 }
 </style>

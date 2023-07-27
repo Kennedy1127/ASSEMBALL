@@ -1,4 +1,6 @@
 <template>
+  <GobackAndTitle :title="title" />
+
   <div class="recruitment_post">
     <section class="recruitment_post_aside">
       <!-- <aside class="recruitment_post_aside"> -->
@@ -93,12 +95,20 @@
 </template>
 
 <script>
+import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
 import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
 import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";
 import ProductsMainPagination from "@/components/products/productsItems/ProductsMainPagination";
 export default {
+  data() {
+    return {
+      title: "審核應徵",
+    };
+  },
+
   components: {
+    GobackAndTitle,
     RecruitmentPostAside,
     RecruitmentSearchbar,
     RecruitmentTable,
@@ -109,6 +119,7 @@ export default {
 
 <style lang="scss">
 .recruitment_post {
+  margin-top: 6rem;
   display: flex;
   &_breadcrumb {
     margin-bottom: 4rem;
@@ -246,6 +257,11 @@ export default {
         }
       }
     }
+  }
+}
+@media screen and (max-width: 420px) {
+  .recruitment_post {
+    display: block;
   }
 }
 </style>
