@@ -93,6 +93,9 @@ export default {
   justify-content: center;
   z-index: 100;
   box-shadow: var(--shadow-heavy);
+  @media all and (max-width: 420px) {
+    box-shadow: none;
+  }
   .wrapper {
     width: 95%;
     height: 100%;

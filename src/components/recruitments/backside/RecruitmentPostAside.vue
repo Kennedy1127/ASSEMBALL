@@ -8,18 +8,38 @@
       />
     </div>
     <div class="recruitment_aside_list">
-      <li>
-        <router-link :to="{ name: 'recruitmentPost' }">新增職缺</router-link>
-      </li>
-      <li>
-        <router-link :to="{ name: 'recruitmentManage' }">管理職缺</router-link>
-      </li>
-      <li>
-        <router-link :to="{ name: 'recruitmentVerify' }">審查應徵</router-link>
-      </li>
-      <li>
-        <router-link :to="{ name: 'recruitmentHistory' }">記錄管理</router-link>
-      </li>
+      <router-link
+        :to="{ name: 'recruitmentPost' }"
+        :class="{ active: isActiveLink('recruitmentPost') }"
+        ><li :class="{ active: isActiveLink('recruitmentPost') }">
+          新增職缺
+        </li></router-link
+      >
+
+      <router-link
+        :to="{ name: 'recruitmentManage' }"
+        :class="{ active: isActiveLink('recruitmentManage') }"
+        ><li :class="{ active: isActiveLink('recruitmentManage') }">
+          管理職缺
+        </li></router-link
+      >
+
+      <router-link
+        :to="{ name: 'recruitmentVerify' }"
+        :class="{ active: isActiveLink('recruitmentVerify') }"
+        ><li :class="{ active: isActiveLink('recruitmentVerify') }">
+          審查應徵
+        </li></router-link
+      >
+
+      <router-link
+        :to="{ name: 'recruitmentHistory' }"
+        :class="{ active: isActiveLink('recruitmentHistory') }"
+      >
+        <li :class="{ active: isActiveLink('recruitmentHistory') }">
+          記錄管理
+        </li></router-link
+      >
     </div>
     <div class="recruitment_aside_hitterpic">
       <img class="recruitment_aside_hitterpic_img" />
@@ -33,9 +53,26 @@
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  methods: {
+    isActiveLink(routeName) {
+      return this.$route.name === routeName;
+    },
+  },
+};
+</script>
 
 <style lang="scss">
+//
+.recruitment_aside_list li.active {
+  background-color: var(--secondary-blue-3);
+}
+.recruitment_aside_list a.active {
+  color: var(--primary-blue);
+}
+//
+//
 .recruitment_aside {
   width: 18vw;
   height: 100%;
@@ -56,17 +93,18 @@
   }
   &_list {
     margin: 3rem 0;
-    li {
-      list-style: none;
-      text-align: center;
-      font-size: 1.25rem;
-      padding: 1.5rem 0;
-      // color: var(--secondary-gray-3);
-      cursor: pointer;
-      a {
-        color: var(--secondary-gray-3);
-        font-weight: 500;
-        letter-spacing: 1.5px;
+    a {
+      color: var(--secondary-gray-3);
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      li {
+        width: 18vw;
+        list-style: none;
+        text-align: center;
+        font-size: 1.25rem;
+        padding: 2rem 0;
+        // color: var(--secondary-gray-3);
+        cursor: pointer;
       }
     }
 
@@ -90,6 +128,13 @@
   }
 }
 @media screen and (max-width: 420px) {
+  .recruitment_aside_list li.active {
+    background-color: var(--primary-blue);
+  }
+  .recruitment_aside_list a.active {
+    color: var(--pale-white);
+  }
+
   .recruitment_aside {
     width: 100%;
     padding: 0;

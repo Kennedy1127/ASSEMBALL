@@ -22,6 +22,7 @@ export default {
   display: none;
 }
 .main_title_sm {
+  font-weight: 600;
   display: none;
 }
 
@@ -48,6 +49,7 @@ export default {
     margin-bottom: 3rem;
     text-align: center;
     font-size: 1.25rem;
+    font-weight: 600;
     color: var(--primary-blue);
     position: relative;
     &::after {
