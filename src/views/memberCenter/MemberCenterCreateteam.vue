@@ -79,20 +79,6 @@
   </section>
 </template>
 
-<!-- <script setup>
-const props = defineProps({
-  options: {
-    required: true,
-  },
-  placeholder: {
-    required: false,
-  },
-  modelValue: {
-    required: true,
-  },
-});
-</script> -->
-
 <script>
 import roles from "@/composables/tables/roles";
 import area from "@/composables/tables/area";
@@ -333,12 +319,12 @@ export default {
         border-radius: 50%;
       }
       & label {
-        margin-left: 1.5rem;
+        margin-left: 0.5rem;
         display: flex;
-        width: 100px;
+        width: 8rem;
         text-align: center;
         color: var(--secondary-blue-1);
-        padding: 0.5rem;
+        padding: 0.5rem 1rem 0.5rem 1rem;
         margin-top: 1rem;
         font-weight: 500;
         border: 2px dashed var(--secondary-blue-1);
