@@ -183,6 +183,8 @@
 </template>
 
 <script>
+import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
+
 export default {
   data() {
     return {
