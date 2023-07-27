@@ -1,10 +1,5 @@
 <template>
-  <div class="recruitment_post_goback">
-    <router-link :to="{ name: 'Recruitments' }">
-      <span><font-awesome-icon icon="fa-solid fa-angle-left" /></span>返回
-    </router-link>
-  </div>
-  <div class="recruitment_post_main_title_sm">{{ title }}</div>
+  <GobackAndTitle :title="title" />
   <div class="recruitment_post">
     <section class="recruitment_post_aside">
       <!-- <aside class="recruitment_post_aside"> -->
@@ -44,6 +39,7 @@
 </template>
 
 <script setup>
+import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
 import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
 import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";

@@ -1,10 +1,5 @@
 <template>
-  <div class="recruitment_post_goback">
-    <router-link :to="{ name: 'Recruitments' }">
-      <span><font-awesome-icon icon="fa-solid fa-angle-left" /></span>返回
-    </router-link>
-  </div>
-  <div class="recruitment_post_main_title_sm">新增職缺</div>
+  <GobackAndTitle :title="title" />
 
   <main class="recruitment_post">
     <section class="recruitment_post_aside">
@@ -44,11 +39,17 @@
 </template>
 
 <script>
+import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
 import RecruitmentPostForm from "@/components/recruitments/backside/RecruitmentPostForm";
 
 export default {
-  components: { RecruitmentPostAside, RecruitmentPostForm },
+  data() {
+    return {
+      title: "新增職缺",
+    };
+  },
+  components: { GobackAndTitle, RecruitmentPostAside, RecruitmentPostForm },
 };
 </script>
 
