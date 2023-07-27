@@ -12,8 +12,6 @@
 </template>
 
 <script>
-// import RecruitmentSelect from "@/components/recruitments/recruitment/RecruitmentSelect.vue";
-
 import RecruitmentSelector from "@/components/recruitments/backside/RecruitmentSelector.vue";
 
 export default {
@@ -52,9 +50,10 @@ export default {
     display: flex;
     gap: 1rem;
     align-items: center;
+    margin: 2rem 0 3rem 0;
   }
   &_bar {
-    padding: 0.5rem;
+    width: 380px; //不跑版設定
     display: flex;
     gap: 10px;
 
@@ -69,7 +68,7 @@ export default {
   }
   &_btn button {
     width: 200px;
-    height: 80px;
+    height: 70px;
     border-radius: var(--round);
     background-color: var(--primary-blue);
 
@@ -78,6 +77,27 @@ export default {
     font-weight: 500;
     letter-spacing: 10.5px;
     color: var(--pale-white);
+    margin-left: 1rem;
+    transition: all 0.09s ease-in-out;
+  }
+  &_btn button:hover {
+    background-color: var(--secondary-blue-1);
+  }
+}
+@media screen and (max-width: 420px) {
+  // TODO: select中間的藍線消失
+  .recruitSearchbar {
+    &_wrapper {
+      margin: 2rem 0;
+    }
+    &_bar {
+      // width: 100%;
+      margin: auto;
+    }
+
+    &_btn {
+      display: none;
+    }
   }
 }
 </style>
