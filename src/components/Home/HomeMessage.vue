@@ -41,7 +41,9 @@
     <div class="home_message_all_text" v-for="item in messageText">
       <div class="home_message_all_text_header">
         <h3>
-          <router-link to="/">{{ item.title }}</router-link>
+          <router-link :to="{ name: 'myplayerTeam' }">{{
+            item.title
+          }}</router-link>
         </h3>
         <span class="home_message_all_text_header_date">
           {{ item.date }}

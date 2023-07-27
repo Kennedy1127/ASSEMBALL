@@ -285,7 +285,7 @@ export default defineComponent({
       margin-top: auto;
       position: relative;
       left: 0%;
-      top: -0.5rem;
+      top: 0rem;
       & img {
         width: 100%;
       }
@@ -294,7 +294,7 @@ export default defineComponent({
       width: 80%;
       display: flex;
       flex-direction: column;
-      margin: auto;
+      text-align: center;
       & h2 {
         writing-mode: horizontal-tb;
         font-size: 2.5rem;
@@ -309,6 +309,7 @@ export default defineComponent({
       & p {
         writing-mode: horizontal-tb;
         font-size: 1rem;
+        font-weight: 500;
         margin-left: 0rem;
         margin-bottom: 1rem;
       }
