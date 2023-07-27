@@ -2,9 +2,13 @@
   <div class="product_post_wrap">
     <div class="goback">
       <router-link :to="{ name: 'Products' }">
-        <span><font-awesome-icon icon="fa-solid fa-angle-left" /></span>返回
+        <span>
+          <font-awesome-icon icon="fa-solid fa-angle-left" />
+        </span>
+        返回
       </router-link>
     </div>
+
     <div class="product_post">
       <div class="product_post_caution">
         <div class="product_post_caution_icon">
@@ -92,9 +96,12 @@
                   pattern="[^%&',;=?$\x22]+"
                   required
                 />
+
                 <select id="product_post_produccategory"></select>
+
                 <!-- //待修 -->
                 <select id="product_post_loation"></select>
+
                 <!-- //待修 -->
                 <input
                   type="text"
@@ -116,6 +123,7 @@
                   v-model="email"
                   required
                 />
+
                 <input
                   type="tel"
                   id="product_post_phone"
@@ -126,6 +134,7 @@
                   pattern="09\d{2}-\d{6}"
                   required
                 />
+
                 <!-- <div class="product_post_info_content_formlist_inputfile">
                   <font-awesome-icon icon="fa-solid fa-image" />
                   <font-awesome-icon icon="fa-regular fa-circle-plus" />
@@ -136,6 +145,7 @@
                     class="product_post_info_content_formlist_input"
                   />
                 </div> -->
+
                 <label for="product_post_image"
                   ><img
                     src="~@/assets/images/MemberCenter/MemberCenter_Personal_pic.svg"
@@ -143,6 +153,7 @@
                   />上傳商品圖片
                   <input type="file" id="product_post_image" />
                 </label>
+
                 <!-- //待修 -->
                 <textarea
                   id="roduct_post_comment"
@@ -172,6 +183,8 @@
 </template>
 
 <script>
+import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
+
 export default {
   data() {
     return {
@@ -218,17 +231,23 @@ export default {
     // width: 100%;
     max-width: 1200px;
     margin: auto;
+
     & a {
-      display: inline-block;
       color: var(--primary-blue);
       font-size: 1.25rem;
       font-weight: 500;
       padding-bottom: 0.5rem;
       cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      width: fit-content;
+
       & span {
         color: var(--primary-blue);
         font-size: 1.25rem;
-        padding-right: 0.5rem;
+        font-weight: 400;
       }
     }
   }
