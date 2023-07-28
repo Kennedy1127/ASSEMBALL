@@ -43,7 +43,7 @@ const routes = [
         next();
         return;
       }
-      store.commit("resetPaginationCurPage", "products");
+      store.commit("resetPaginationCurPage");
       store.commit("resetProductsFilterAndTag");
       next();
     },
@@ -78,7 +78,7 @@ const routes = [
         next();
         return;
       }
-      store.commit("resetPaginationCurPage", "copywritings");
+      store.commit("resetPaginationCurPage");
       store.commit("resetFiltersAndSearch");
       next();
     },
@@ -187,6 +187,7 @@ router.beforeEach(() => {
   store.state.isNotifyVisible = 0;
   store.state.isMemberVisible = 0;
   store.state.isPersonalVisible = 0;
+  store.state.myplayerEditOpen = 0;
 });
 
 export default router;

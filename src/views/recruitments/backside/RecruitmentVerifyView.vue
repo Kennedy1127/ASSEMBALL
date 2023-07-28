@@ -1,5 +1,8 @@
 <template>
-  <GobackAndTitle :title="title" />
+  <GobackAndTitle :title="title" /><router-link
+    :to="{ name: 'recruitmentVerifyDetail' }"
+    >審核詳細頁</router-link
+  >
   <div class="recruitment_post">
     <section class="recruitment_post_aside">
       <!-- <aside class="recruitment_post_aside"> -->

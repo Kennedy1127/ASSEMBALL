@@ -243,7 +243,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .recruitment_post_form {
   &_label {
     &_title {
@@ -299,12 +299,17 @@ export default {
       .selector-component {
         width: 100%;
         height: 50px;
-      }
-      .ivu-select-single {
-        .ivu-select-selection {
-          div:first-of-type {
-            span {
-              height: 2rem;
+
+        .ivu-select-single {
+          .ivu-select-selection {
+            border: 3px solid var(--secondary-blue-2);
+            border-radius: 10px;
+            color: var(--secondary-blue-2);
+
+            div:first-of-type {
+              span {
+                height: 2rem;
+              }
             }
           }
         }

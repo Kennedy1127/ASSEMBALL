@@ -1,5 +1,9 @@
 <template>
   <div class="overlay" @click.self="closeOverlay">
+    <slot v-if="type">
+      <MyplayerPhotoPopus @closeModal="closeOverlay" />
+    </slot>
+
     <slot v-if="type === 'apply'" name="apply">
       <CopywritingApplyModal @closeModal="closeOverlay" />
     </slot>
@@ -8,6 +12,7 @@
 
 <script setup>
 import CopywritingApplyModal from "@/components/recruitments/copywriting/CopywritingApplyModal.vue";
+import MyplayerPhotoPopus from "@/components/MyplayerTeam/MyplayerPhotoPopus.vue";
 
 const props = defineProps({
   type: {
