@@ -327,16 +327,15 @@ export default {
 
       PriceArray: [], //價格種類陣列(存放每一種價格並排除重複的)
       TypeArray: [], //商品類型陣列
-     DateArray:[],
+      DateArray: [],
 
       PriceMenuShow: false, //切換是否顯示下拉式選單
       TypeMenuShow: false,
-      DateMenuShow:false,  
+      DateMenuShow: false,
 
       currentPrice: 0, //當前篩選價格
       currentType: 0, //當前篩選類型
-      currentDate:0,  
-
+      currentDate: 0,
 
       focusProduct: [], //給V-model的陣列
     };
@@ -354,12 +353,14 @@ export default {
         (v) => v.ProductsType == this.currentType
       );
     },
-    productFilterDate(){//篩選日期
-      if(this.currentDate == 0) return this.productFilterType;
-      return this.productFilterType.filter((v)=>v.ProductsDate == this.currentDate );
-
+    productFilterDate() {
+      //篩選日期
+      if (this.currentDate == 0) return this.productFilterType;
+      return this.productFilterType.filter(
+        (v) => v.ProductsDate == this.currentDate
+      );
     },
-    
+
     ProductsList() {
       //回傳頁碼對應的十筆索引值的資料組成的陣列
       return this.productFilterDate.slice(
@@ -386,10 +387,10 @@ export default {
       this.TypeArray = Array.from(TypeSet).map((item) => ({ Type: item }));
       this.TypeMenuShow = !this.TypeMenuShow;
     },
-    DateMenu(){
-      const DateSet =new Set(this.Products.map((item) => item.ProductsDate));//Set
-      this.DateArray =Array.from(DateSet).map((item) => ({Date:item}));
-      this.DateMenuShow =!this.DateMenuShow; 
+    DateMenu() {
+      const DateSet = new Set(this.Products.map((item) => item.ProductsDate)); //Set
+      this.DateArray = Array.from(DateSet).map((item) => ({ Date: item }));
+      this.DateMenuShow = !this.DateMenuShow;
     },
 
     convertFont(str) {
