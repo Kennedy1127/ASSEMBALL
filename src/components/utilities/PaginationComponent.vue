@@ -46,10 +46,10 @@ const props = defineProps({
   },
 });
 
-// const computedCurPage = computed(
-//   () => store.state[`${props.type}CurPage`] || 1
-// );
-const computedCurPage = computed(() => store.state.curPage || 1);
+const computedCurPage = computed(
+  () => store.state[`${props.type}CurPage`] || 1
+);
+// const computedCurPage = computed(() => store.state.curPage || 1);
 const computedTotalPages = computed(() => props.totalPages || 1);
 const computedRenderPages = computed(() =>
   computedTotalPages.value > 3 ? 3 : computedTotalPages.value
