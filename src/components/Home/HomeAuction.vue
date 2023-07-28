@@ -2,10 +2,12 @@
   <div class="home_auction_title">
     <h2>
       <router-link :to="{ name: 'Products' }"
-        >棒球用品二手拍賣<Icon type="ios-arrow-dropright-circle"
+        >棒球用品<br />二手拍賣<Icon type="ios-arrow-dropright-circle"
       /></router-link>
     </h2>
-    <p>走進綠色棒球世界：延續價值的環保二手拍賣專區，讓棒球用品循環再利用</p>
+    <p>
+      走進綠色棒球世界：<br />延續價值的環保二手拍賣專區，<br />讓棒球用品循環再利用。
+    </p>
   </div>
   <div class="home_auction_all">
     <ul>
@@ -92,11 +94,17 @@ export default {
         vertical-align: baseline;
         margin-left: 0.5rem;
       }
+      & br {
+        display: none;
+      }
     }
   }
   & p {
     font-size: 1.25rem;
     color: var(--primary-blue);
+    & br {
+      display: none;
+    }
   }
 }
 .home_auction_all {
@@ -198,21 +206,124 @@ export default {
 }
 @media screen and (max-width: 420px) {
   .home_auction_title {
-    padding: 2rem 4rem 2rem 4rem;
+    padding: 1rem;
     border-bottom: 3px solid var(--primary-blue);
+    text-align: center;
     & h2 {
       & a {
         font-size: 2.5rem;
         color: var(--primary-blue);
         & i {
+          display: none;
           vertical-align: baseline;
-          margin-left: 0.5rem;
+          margin-left: 0.75rem;
         }
       }
     }
     & p {
       font-size: 1.25rem;
       color: var(--primary-blue);
+      text-align: left;
+      & br {
+        display: block;
+      }
+    }
+  }
+  .home_auction_all {
+    ul {
+      display: flex;
+      min-height: 600px;
+      height: 650px;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      list-style-type: none;
+      width: 100%;
+      min-width: 100%;
+      flex-direction: column;
+
+      @media only screen and (min-width: 1280px) {
+        flex-direction: row;
+      }
+    }
+
+    li {
+      flex: 1;
+      display: flex;
+      align-items: stretch;
+      cursor: pointer;
+      transition: all 0.35s ease;
+      cursor: pointer;
+      position: relative;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: top center;
+      overflow: hidden;
+      position: relative;
+      & h2 {
+        color: var(--secondary-blue-4);
+        margin: auto;
+        z-index: 21;
+        writing-mode: horizontal-tb;
+        font-family: "Montserrat";
+        font-size: 2.5rem;
+        text-shadow: var(--shadow-heavy);
+      }
+      & button {
+        position: absolute;
+        top: 85%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 21;
+        width: 13rem;
+        font-size: 1.25rem;
+        font-family: "Montserrat";
+        border-radius: 30px;
+        padding: 0.5rem;
+        background-color: var(--primary-blue);
+        color: #fff;
+        border: 1px solid var(--primary-blue);
+        display: none;
+        & i {
+          font-size: 1.75rem;
+          font-weight: 500;
+          margin-right: 0.5rem;
+          vertical-align: sub;
+        }
+      }
+      & button:hover {
+        border: 1px solid var(--primary-blue);
+        background-color: #fff;
+        color: var(--primary-blue);
+      }
+      &:before {
+        content: "";
+        position: absolute;
+        z-index: 20;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(15, 15, 15, 0.75);
+      }
+
+      &.active {
+        flex: 6;
+        cursor: default;
+        & h2 {
+          margin: auto;
+        }
+        & button {
+          display: block;
+        }
+        &:before {
+          background: linear-gradient(
+            180deg,
+            rgba(195, 195, 195, 0) 40%,
+            #111111 100%
+          );
+        }
+      }
     }
   }
 }

@@ -7,20 +7,24 @@
     <div class="myplayer_group_card_wrap">
       <div
         class="myplayer_group_card"
-        v-for="item in myplayer_card"
+        id="cardContainer"
+        v-for="item in visibleCards"
         :key="item.id"
       >
         <div
           class="myplayer_group_card_pic"
-          v-bind:style="{ backgroundImage: `url('${item.img}')` }"
+          v-bind:style="{
+            backgroundImage: `url('${item.img}')`,
+            display: item.isVisible ? 'flex' : 'block',
+          }"
         >
           <div class="myplayer_group_card_name">{{ item.name }}</div>
         </div>
       </div>
       <div class="myplayer_group_card_more">
-        <span>
-          觀看更多 <font-awesome-icon icon="fa-solid fa-chevron-right"
-        /></span>
+        <span v-if="hiddenCards.length > 0" @click="showMoreCards()">
+          觀看更多 <font-awesome-icon icon="fa-solid fa-chevron-right" />
+        </span>
       </div>
     </div>
   </section>
@@ -65,8 +69,46 @@ export default {
           img: require("/src/assets/images/myplayer_team/myplayer_card/player_7.jpg"),
           name: "布蘭登·哈珀",
         },
+        {
+          id: "5",
+          img: require("/src/assets/images/myplayer_team/myplayer_card/player_5.jpg"),
+          name: "湯米·坎貝爾",
+        },
+        {
+          id: "6",
+          img: require("/src/assets/images/myplayer_team/myplayer_card/player_6.jpg"),
+          name: "奧斯汀·米勒",
+        },
       ],
+      visibleCards: [],
+      hiddenCards: [],
+      showMoreBtn: true,
     };
+  },
+  methods: {
+    showMoreCards() {
+      const maxCardsToShow = Math.min(this.hiddenCards.length, 7);
+
+      for (let i = 0; i < maxCardsToShow; i++) {
+        this.hiddenCards[i].isVisible = true; // 添加isVisible属性来控制卡片显示与隐藏
+      }
+
+      this.visibleCards = [
+        ...this.visibleCards,
+        ...this.hiddenCards.slice(0, maxCardsToShow),
+      ];
+      this.hiddenCards = this.hiddenCards.slice(maxCardsToShow);
+
+      if (this.hiddenCards.length <= 0) {
+        this.showMoreBtn = false;
+      }
+    },
+  },
+  mounted() {
+    this.visibleCards = this.myplayer_card.slice(0, 7);
+    this.hiddenCards = this.myplayer_card
+      .slice(7)
+      .map((card) => ({ ...card, isVisible: false }));
   },
 };
 </script>

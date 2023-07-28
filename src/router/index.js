@@ -191,6 +191,7 @@ router.beforeEach(() => {
   store.state.isNotifyVisible = 0;
   store.state.isMemberVisible = 0;
   store.state.isPersonalVisible = 0;
+  store.state.myplayerEditOpen = 0;
 });
 
 export default router;

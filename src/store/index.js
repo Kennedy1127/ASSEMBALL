@@ -342,6 +342,16 @@ export default createStore({
     myplayerOverlayToggle(state) {
       state.myplayerPopupsOpen = !state.myplayerPopupsOpen;
     },
+    //我的球隊撈資料
+    setMyplayerTeam(state, payload) {
+      console.log(payload);
+      const team = payload.data.find(
+        (myplayerteam) => myplayerteam.team_id === payload.id
+      );
+      console.log(team);
+
+      state.myplayerTeam = { ...team };
+    },
 
     ///////////////////////////////////////
     // 頁碼區塊
@@ -452,6 +462,17 @@ export default createStore({
         const res = await axios.get("http://localhost:3000/copywritings");
         if (!res) throw new Error("Cannot fetch response");
         context.commit("setCopywritings", res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    //撈我的球隊的資料
+    async getMyplayerTeam(context, payload) {
+      try {
+        const res = await axios.get("http://localhost:3000/teams");
+        if (!res) throw new Error("Cannot fetch response");
+        // console.log(payload);
+        context.commit("setMyplayerTeam", { id: payload, data: res.data });
       } catch (err) {
         console.error(err);
       }

@@ -389,6 +389,7 @@ export default {
         padding-top: 1rem;
         display: flex;
         justify-content: space-around;
+        align-items: center;
         margin-bottom: 5px;
       }
       &_typing_box {
@@ -409,6 +410,69 @@ export default {
         cursor: pointer;
       }
     }
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .myplayer_popups_content_wrap_title {
+    font-size: 1.5rem;
+  }
+  .myplayer_popups_title_avatar_account {
+    font-size: 1.5rem;
+  }
+  .myplayer_popups_title_dot {
+    font-size: 2.5rem;
+  }
+  .myplayer_popups_title_avatar_day {
+    font-size: 1rem;
+  }
+  .myplayer_popups_content_wrap_text {
+    font-size: 1rem;
+  }
+}
+@media screen and (max-width: 767px) {
+  .myplayer_popups_content_wrap_title {
+    font-size: 1rem;
+  }
+  .myplayer_popups_title_avatar_account {
+    font-size: 1rem;
+  }
+  .myplayer_popups_title_dot {
+    font-size: 2.5rem;
+  }
+  .myplayer_popups_title_avatar_day {
+    font-size: 0.5rem;
+  }
+  .myplayer_popups_content_wrap_text {
+    font-size: 1rem;
+  }
+  .myplayer_message_popups {
+    width: 80%;
+  }
+  .myplayer_popups_title_avatar_pic {
+    width: 80px;
+    height: 80px;
+  }
+  .myplayer_popups_title_dot_wrap
+    .myplayer_popups_edit_wrap
+    .myplayer_popups_dot_edit {
+    font-size: 0.8rem;
+  }
+  .myplayer_popups_title_dot_wrap
+    .myplayer_popups_delete_wrap
+    .myplayer_popups_dot_delete {
+    font-size: 0.8rem;
+  }
+  .myplayer_popups_title_dot_wrap {
+    width: 80px;
+    height: 80px;
+    right: calc(50% - 40px);
+    bottom: 65%;
+  }
+  .myplayer_popups {
+    padding: 2rem 1rem 2rem 1rem;
+  }
+  .myplayer_popups_content_typing_arrow {
+    font-size: 2rem;
   }
 }
 </style>

@@ -116,7 +116,6 @@ export default {
       width: 100%;
       background-color: #fff;
       border-top: 3px solid var(--primary-blue);
-      overflow: hidden;
     }
     // 二手拍賣區
     .home_auction {
@@ -127,7 +126,7 @@ export default {
     .home_product {
       width: 100%;
       position: relative;
-      overflow: hidden;
+      padding: 2rem 0.5rem 2rem 0.5rem;
     }
     .home_footer {
       width: 100%;
@@ -142,7 +141,7 @@ export default {
       width: 100%;
       // 網站故事
       .home_landing {
-        height: 190vh;
+        height: 1600px;
         padding: 1.25rem;
       }
       // 跑馬燈
