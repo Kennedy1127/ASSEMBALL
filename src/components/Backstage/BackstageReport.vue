@@ -19,28 +19,64 @@
             <td class="table_row_number">會員編號</td>
             <td class="table_row_name">會員姓名</td>
             <td class="table_row_type">
+              <ul class="table_row_type_menu" v-if="TypeMenuShow">
+                <li
+                  v-for="(item, index) in TypeArray"
+                  :key="index"
+                  @click="updateType(item.Type)"
+                >
+                  {{ item.Type }}
+                </li>
+              </ul>
               檢舉類別
-              <button class="table_row_menu">
+              <button @click="TypeMenu" class="table_row_menu">
                 <font-awesome-icon icon="fa-solid fa-angle-down" />
               </button>
             </td>
             <td class="table_row_reason">
+              <ul class="table_row_reason_menu" v-if="ReasonMenuShow">
+                <li
+                  v-for="(item, index) in ReasonArray"
+                  :key="index"
+                  @click="updateReason(item.Reason)"
+                >
+                  {{ item.Reason }}
+                </li>
+              </ul>
               舉發事由
-              <button class="table_row_menu">
+              <button @click="ReasonMenu" class="table_row_menu">
                 <font-awesome-icon icon="fa-solid fa-angle-down" />
               </button>
             </td>
             <td class="table_row_link">連結</td>
 
             <td class="table_row_points">
+              <ul class="table_row_points_menu" v-if="PointsMenuShow">
+                <li
+                  v-for="(item, index) in PointsArray"
+                  :key="index"
+                  @click="updatePoints(item.Points)"
+                >
+                  {{ item.Points }}
+                </li>
+              </ul>
               違規記點
-              <button class="table_row_menu">
+              <button @click="PointsMenu" class="table_row_menu">
                 <font-awesome-icon icon="fa-solid fa-angle-down" />
               </button>
             </td>
             <td class="table_row_blockade">
+              <ul class="table_row_blockade_menu" v-if="BlockadeMenuShow">
+                <li
+                  v-for="(item, index) in BlockadeArray"
+                  :key="index"
+                  @click="updateBlockade(item.Blockade)"
+                >
+                  {{ item.Blockade }}
+                </li>
+              </ul>
               直接封鎖
-              <button class="table_row_menu">
+              <button @click="BlockadeMenu" class="table_row_menu">
                 <font-awesome-icon icon="fa-solid fa-angle-down" />
               </button>
             </td>
@@ -62,7 +98,12 @@
               {{ convertFont(item.Points) }}
             </td>
             <td class="table_row_blockade">
-                <input type="checkbox" v-model="Blockade" name="Blockade" :value=index>
+              <input
+                type="checkbox"
+                v-model="Blockade"
+                name="Blockade"
+                :value="index"
+              />
               {{ convertFont(item.Blockade) }}
             </td>
           </tr>
@@ -92,7 +133,45 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: true,
+          Blockade: "封鎖",
+        },
+        {
+          Number: "001",
+          Name: "楊佩蓉",
+          Type: "商品",
+          Reason: "商品不實",
+          Link: "####################",
+          Points: 2,
+          Blockade: "封鎖",
+
+        },
+        {
+          Number: "001",
+          Name: "楊佩蓉",
+          Type: "徵人文章",
+          Reason: "垃圾文章",
+          Link: "####################",
+          Points: 3,
+          Blockade: "封鎖",
+        },
+        {
+          Number: "001",
+          Name: "楊佩蓉",
+          Type: "留言",
+          Reason: "垃圾內容",
+          Link: "####################",
+          Points: 1,
+          Blockade: "封鎖",
+
+        },
+        {
+          Number: "001",
+          Name: "楊佩蓉",
+          Type: "留言",
+          Reason: "垃圾廣告",
+          Link: "####################",
+          Points: 1,
+          Blockade: "封鎖",
         },
         {
           Number: "001",
@@ -101,7 +180,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: true,
+          Blockade: "封鎖",
         },
         {
           Number: "001",
@@ -110,7 +189,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: true,
+          Blockade: "無封鎖",
         },
         {
           Number: "001",
@@ -119,7 +198,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: true,
+          Blockade: "無封鎖",
         },
         {
           Number: "001",
@@ -128,7 +207,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: true,
+          Blockade: "無封鎖",
         },
         {
           Number: "001",
@@ -137,7 +216,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: true,
+          Blockade: "無封鎖",
         },
         {
           Number: "001",
@@ -146,7 +225,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: true,
+          Blockade: "無封鎖",
         },
         {
           Number: "001",
@@ -155,7 +234,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: true,
+          Blockade: "無封鎖",
         },
         {
           Number: "001",
@@ -164,7 +243,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: true,
+          Blockade: "無封鎖",
         },
         {
           Number: "001",
@@ -173,7 +252,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: true,
+          Blockade: "無封鎖",
         },
         {
           Number: "001",
@@ -182,7 +261,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: true,
+          Blockade: "無封鎖",
         },
         {
           Number: "001",
@@ -191,7 +270,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: true,
+          Blockade: "無封鎖",
         },
         {
           Number: "001",
@@ -200,7 +279,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: true,
+          Blockade: "無封鎖",
         },
         {
           Number: "001",
@@ -209,7 +288,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: true,
+          Blockade: "無封鎖",
         },
         {
           Number: "001",
@@ -218,7 +297,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: true,
+          Blockade: "無封鎖",
         },
         {
           Number: "001",
@@ -227,58 +306,83 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: true,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-          Blockade: true,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-          Blockade: true,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-          Blockade: true,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-          Blockade: true,
+          Blockade: "無封鎖",
         },
       ],
-      Blockade: [], //給V-model的陣列
+
+      TypeArray: [], //臨時陣列
+      ReasonArray: [],
+      PointsArray: [],
+      BlockadeArray:[],
+
+      TypeMenuShow: false, //控制下拉式選單
+      ReasonMenuShow: false,
+      PointsMenuShow: false,
+      BlockadeMenuShow:false,
+
+      currentType: 0, //當前篩選檢舉類型
+      currentReason: 0,
+      currentPoints: 0,
+      currentBlockade:0,
     };
   },
   computed: {
+    ReportFilterType() {
+      
+      if (this.currentType == 0) return this.Report;
+      return this.Report.filter(
+        (v) => v.Type == this.currentType
+      );
+    },
+
+    ReportFilterReason() {
+      if (this.currentReason == 0) return this.ReportFilterType;
+      return this.ReportFilterType.filter(
+        (v) => v.Reason == this.currentReason
+      );
+    },
+    ReportFilterPoints() {
+      if (this.currentPoints == 0) return this.ReportFilterReason;
+      return this.ReportFilterReason.filter(
+        (v) => v.Points == this.currentPoints
+      );
+    },
+    ReportFilterBlockade() {
+      if (this.currentBlockade == 0) return this.ReportFilterPoints;
+      return this.ReportFilterPoints.filter(
+        (v) => v.Blockade == this.currentBlockade
+      );
+    },
+
     ReportList() {
       //回傳頁碼對應的十筆索引值的資料組成的陣列
-      return this.Report.slice(
+      return this.ReportFilterBlockade.slice(
         (this.page - 1) * this.perPage,
         this.page * this.perPage
       );
     },
   },
   methods: {
+    TypeMenu() {
+      const TypeSet = new Set(this.Report.map((item) => item.Type)); //Set
+      this.TypeArray = Array.from(TypeSet).map((item) => ({ Type: item }));
+      this.TypeMenuShow = !this.TypeMenuShow;
+    },
+    ReasonMenu() {
+      const ReasonSet = new Set(this.Report.map((item) => item.Reason)); //Set
+      this.ReasonArray = Array.from(ReasonSet).map((item) => ({ Reason: item }));
+      this.ReasonMenuShow = !this.ReasonMenuShow;
+    },
+    PointsMenu() {
+      const PointsSet = new Set(this.Report.map((item) => item.Points)); //Set
+      this.PointsArray = Array.from(PointsSet).map((item) => ({ Points: item }));
+      this.PointsMenuShow = !this.PointsMenuShow;
+    },
+    BlockadeMenu() {
+      const BlockadeSet = new Set(this.Report.map((item) => item.Blockade)); //Set
+      this.BlockadeArray = Array.from(BlockadeSet).map((item) => ({ Blockade: item }));
+      this.BlockadeMenuShow = !this.BlockadeMenuShow;
+    },
     convertFont(str) {
       //限制資料字數
       if (str.length > 10) {
@@ -307,6 +411,18 @@ export default {
         // console.log("陣列長度", this.Products.length / this.perPage);
         this.page++;
       }
+    },
+    updateType(e) {
+      this.currentType = e;
+    },
+    updateReason(e) {
+      this.currentReason = e;
+    },
+    updatePoints(e) {
+      this.currentPoints = e;
+    },
+    updateBlockade(e) {
+      this.currentBlockade = e;
     },
   },
 };
@@ -370,7 +486,7 @@ export default {
     }
     .Report_table {
       //表格
-   
+
       position: relative;
       width: 100%;
       display: flex;
@@ -382,13 +498,12 @@ export default {
         border-collapse: collapse;
         .table_row {
           //表格橫排
-        
+
           width: 100%;
           //表格欄位設定
           td {
             white-space: nowrap; /* 不换行 */
-            overflow: hidden; /* 超出部分隐藏 */
-            text-overflow: ellipsis; /* 显示省略号 */
+            
             border: var(--primary-black) solid;
             background-color: var(--secondary-blue-2);
             text-align: center;
@@ -402,26 +517,104 @@ export default {
           //   個別欄位設定
           &_number {
             width: 10%;
-          
           }
           &_name {
             width: 10%;
-            
           }
           &_type {
             width: 10%;
+            position: relative;
+
+            &_menu {
+              top: 2rem;
+              position: absolute;
+              width: 100%;
+              background-color: var(--pale-white);
+              border-radius: 8px;
+              height: 4rem;
+              overflow: scroll;
+              overflow-x: hidden;
+              z-index: 1;
+              li {
+                padding: 0.1rem;
+              }
+              li:hover {
+                cursor: pointer;
+                background-color: var(--secondary-gray-2);
+              }
+            }
           }
           &_reason {
             width: 10%;
+            position: relative;
+
+            &_menu {
+              top: 2rem;
+              position: absolute;
+              width: 100%;
+              background-color: var(--pale-white);
+              border-radius: 8px;
+              height: 7rem;
+              overflow: scroll;
+              overflow-x: hidden;
+              z-index: 1;
+              li {
+                padding: 0.1rem;
+              }
+              li:hover {
+                cursor: pointer;
+                background-color: var(--secondary-gray-2);
+              }
+            }
           }
           &_link {
             width: 20%;
           }
           &_points {
             width: 10%;
+            position: relative;
+
+            &_menu {
+              top: 2rem;
+              position: absolute;
+              width: 100%;
+              background-color: var(--pale-white);
+              border-radius: 8px;
+              height: 4rem;
+              overflow: scroll;
+              overflow-x: hidden;
+              z-index: 1;
+              li {
+                padding: 0.1rem;
+              }
+              li:hover {
+                cursor: pointer;
+                background-color: var(--secondary-gray-2);
+              }
+            }
           }
           &_blockade {
             width: 10%;
+            position: relative;
+
+            &_menu {
+              top: 2rem;
+              position: absolute;
+              width: 100%;
+              background-color: var(--pale-white);
+              border-radius: 8px;
+              height: 3rem;
+              overflow: scroll;
+              overflow-x: hidden;
+              z-index: 1;
+              li {
+                padding: 0.1rem;
+              }
+              li:hover {
+                cursor: pointer;
+                background-color: var(--secondary-gray-2);
+              }
+            }
           }
         }
       }
