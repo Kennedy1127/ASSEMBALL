@@ -13,9 +13,17 @@
     </div>
     <div class="wrapper">
       <div class="footer_logo">
-        <router-link to="/">
+        <router-link :to="{ name: 'Home' }">
           <img
             src="~@/assets/images/icons/home_footer_logo_light.svg"
+            alt="footer_logo_light"
+          />
+        </router-link>
+      </div>
+      <div class="footer_logo_rwd">
+        <router-link :to="{ name: 'Home' }">
+          <img
+            src="~@/assets/images/icons/footer_logo_light.svg"
             alt="footer_logo_light"
           />
         </router-link>
@@ -90,6 +98,7 @@ export default {
   background-image: url(~@/assets/images/background/background_footprint.png);
   background-size: 100%;
   background-repeat: no-repeat;
+  margin-top: 8rem;
   &_animation {
     display: flex;
     justify-content: space-between;
@@ -244,6 +253,133 @@ export default {
     font-weight: 400;
     padding: 3rem 2rem;
     text-align: center;
+  }
+}
+@media screen and (max-width: 420px) {
+  .footer {
+    width: 100%;
+    background-image: none;
+    margin-top: 0rem;
+    &_animation {
+      display: none;
+    }
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 2000px;
+    }
+    &_logo {
+      display: none;
+    }
+    &_logo_rwd {
+      padding: 2.25rem 0 2.25rem 0;
+      display: flex;
+      align-items: center;
+      @media all and (max-width: 420px) {
+        padding: 2rem 0 1.25rem 0;
+      }
+      & img {
+        cursor: pointer;
+        height: 80%;
+      }
+    }
+    &_list {
+      display: flex;
+      padding-bottom: 2rem;
+      @media all and (max-width: 420px) {
+        flex-wrap: wrap;
+        justify-content: center;
+        flex-direction: column;
+        max-width: 60%;
+      }
+      & ul {
+        display: flex;
+        gap: 1rem;
+        @media all and (max-width: 420px) {
+          flex-wrap: wrap;
+          justify-content: center;
+          flex-direction: column;
+          align-items: center;
+          gap: 0rem;
+        }
+        & li {
+          display: flex;
+          align-items: center;
+          padding: 1rem;
+          & > a {
+            font-size: 1rem;
+            padding: 1.25rem;
+            border-radius: 0.5rem;
+            color: var(--pale-white);
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+            @media all and (max-width: 420px) {
+              margin: auto;
+              padding: 1rem;
+            }
+            & font-awesome-icon {
+              font-size: 2rem;
+              transition: all 0.15s ease-in-out;
+            }
+            & > span {
+              padding-right: 1rem;
+            }
+          }
+          & > a::after {
+            content: "";
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: var(--accent-yellow);
+            border-radius: 50%;
+            transform: scale(0);
+            transition: all 0.15s ease-in-out;
+          }
+          & > a:hover::after {
+            transform: scale(1);
+          }
+        }
+      }
+      &_followicon {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-left: 2rem;
+        @media all and (max-width: 420px) {
+          margin: auto;
+          margin-top: 2rem;
+        }
+        & > span {
+          font-size: 1.25rem;
+          padding: 0.25rem 0.75rem;
+          border-radius: 50%;
+          color: var(--pale-white);
+          transition: all 0.09s ease-in;
+          cursor: pointer;
+        }
+        & > span:hover {
+          color: var(--primary-blue);
+          background-color: var(--accent-yellow);
+        }
+      }
+    }
+    &_detail {
+      width: 100%;
+      background-color: var(--primary-black);
+      color: var(--secondary-gray-2);
+      font-size: 0.875rem;
+      font-weight: 400;
+      padding: 3rem 2rem;
+      text-align: center;
+      & div {
+        @media all and (max-width: 420px) {
+          text-align: left;
+          // width: 80%;
+          // margin: auto;
+        }
+      }
+    }
   }
 }
 </style>

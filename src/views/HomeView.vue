@@ -116,7 +116,6 @@ export default {
       width: 100%;
       background-color: #fff;
       border-top: 3px solid var(--primary-blue);
-      overflow: hidden;
     }
     // 二手拍賣區
     .home_auction {
@@ -127,7 +126,7 @@ export default {
     .home_product {
       width: 100%;
       position: relative;
-      overflow: hidden;
+      padding: 2rem 0.5rem 2rem 0.5rem;
     }
     .home_footer {
       width: 100%;
