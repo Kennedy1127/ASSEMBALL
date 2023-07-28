@@ -11,11 +11,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in recruitPosts" :key="item">
-          <td>{{ item.postTitle }}</td>
-          <td>{{ item.player }}</td>
-          <td>{{ item.area }}</td>
-          <td>{{ item.postdate }}</td>
+        <tr v-for="item in $props.tableData" :key="item.id">
+          <td>{{ item.copywriting_title }}</td>
+          <td>{{ item.copywriting_role }}</td>
+          <td>{{ item.copywriting_area }}</td>
+          <td>{{ item.copywriting_date }}</td>
           <td class="Icon">
             <div class="icon-pen">
               <font-awesome-icon icon="fa-solid fa-pen" />
@@ -45,25 +45,25 @@
   <div class="recruitment_table_mobile">
     <table class="fixed_headers">
       <tbody>
-        <tr v-for="item in recruitPosts" :key="item">
+        <tr v-for="item in $props.tableData" :key="item.id">
           <td>
             <div class="td_item">
               <div class="td_title">標題</div>
-              <div>{{ item.postTitle }}</div>
+              <div>{{ item.copywriting_title }}</div>
             </div>
             <div class="td_item">
               <div class="td_title">守備位置</div>
-              <div>{{ item.player }}</div>
+              <div>{{ item.copywriting_role }}</div>
             </div>
             <div class="td_item">
               <div class="td_title">地區</div>
-              <div>{{ item.area }}</div>
+              <div>{{ item.copywriting_area }}</div>
             </div>
           </td>
           <td>
             <div class="td_item update">
               <div class="td_title">更新日期</div>
-              <div>{{ item.postdate }}</div>
+              <div>{{ item.copywriting_date }}</div>
             </div>
             <div class="icon-pen">
               <font-awesome-icon icon="fa-solid fa-pen" />
@@ -137,21 +137,27 @@ export default {
       //     </td>
     };
   },
-  // methods: {
-  //   checkURL() {
-  //     this.$route.name == "";
-  //   },
-  // },
-  // props: {
-  //   color: String,
-  // },
-  // compute: {
-  //   renderColor(){
-  //     return {
-  //       '`${props.color}`':true,
-  //     }
-  //   }
-  // },
+  props: {
+    tableData: {
+      type: Array,
+      //  default:["td-1","td-2","td-3","td-4"],
+    },
+    // methods: {
+    //   checkURL() {
+    //     this.$route.name == "";
+    //   },
+    // },
+    // props: {
+    //   color: String,
+    // },
+    // compute: {
+    //   renderColor(){
+    //     return {
+    //       '`${props.color}`':true,
+    //     }
+    //   }
+    // },
+  },
 };
 </script>
 
@@ -166,7 +172,7 @@ export default {
   table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 1.25rem;
+    font-size: 1rem;
     thead {
       color: var(--primary-blue);
       background-color: var(--secondary-blue-3);
@@ -178,6 +184,9 @@ export default {
     td {
       padding: 3rem 0;
       text-align: center;
+    }
+    td:nth-child(3) {
+      font-size: 0.875rem;
     }
     tbody tr:nth-child(2n + 1) {
       background-color: var(--secondary-blue-4);
@@ -202,7 +211,6 @@ export default {
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 1.25rem;
       thead {
         color: var(--primary-blue);
         background-color: var(--secondary-blue-3);
@@ -225,12 +233,15 @@ export default {
             // margin-bottom: 1rem;
           }
           .td_title {
-            color: var(--secondary-gray-1);
+            color: var(--primary-blue);
             margin-bottom: 0.5rem;
           }
           .td_item.update {
             flex-grow: 2;
             // margin-bottom: 8.6rem;
+            td {
+              font-size: 0.875rem;
+            }
           }
           .icon-pen {
             font-size: 2rem;

@@ -43,7 +43,7 @@ const routes = [
         next();
         return;
       }
-      store.commit("resetPaginationCurPage");
+      store.commit("resetPaginationCurPage", "products");
       store.commit("resetProductsFilterAndTag");
       next();
     },
@@ -78,7 +78,7 @@ const routes = [
         next();
         return;
       }
-      store.commit("resetPaginationCurPage");
+      store.commit("resetPaginationCurPage", "copywritings");
       store.commit("resetFiltersAndSearch");
       next();
     },
@@ -99,6 +99,10 @@ const routes = [
     name: "recruitmentManage",
     component: () =>
       import("@/views/recruitments/backside/RecruitmentManageView.vue"),
+    beforeEnter: (to, from, next) => {
+      store.commit("resetPaginationCurPage");
+      next();
+    },
   },
   {
     path: "/recruitments/recruitment-verify",
