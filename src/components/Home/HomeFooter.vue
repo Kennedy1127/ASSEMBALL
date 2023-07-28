@@ -187,6 +187,9 @@ export default {
       height: 80%;
     }
   }
+  &_logo_rwd {
+    display: none;
+  }
   &_list {
     display: flex;
     & ul {
