@@ -346,16 +346,20 @@ export default createStore({
     ///////////////////////////////////////
     // 頁碼區塊
     paginationPrevPage(state, payload) {
-      state[`${payload}CurPage`]--;
+      // state[`${payload}CurPage`]--;
+      state.curPage--;
     },
     paginationNextPage(state, payload) {
-      state[`${payload}CurPage`]++;
+      // state[`${payload}CurPage`]++;
+      state.curPage++;
     },
     paginationGoToPage(state, payload) {
-      state[`${payload.type}CurPage`] = payload.num;
+      // state[`${payload.type}CurPage`] = payload.num;
+      state.curPage = payload.num;
     },
     resetPaginationCurPage(state, payload) {
-      state[`${payload}CurPage`] = 1;
+      // state[`${payload}CurPage`] = 1;
+      state.curPage = 1;
     },
   },
 
