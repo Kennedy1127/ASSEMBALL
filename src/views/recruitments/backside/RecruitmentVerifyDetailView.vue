@@ -1,4 +1,6 @@
 <template>
+  <GobackAndTitle :title="title" />
+
   <div class="recruitment_post">
     <section class="recruitment_post_aside">
       <!-- <aside class="recruitment_post_aside"> -->
@@ -7,14 +9,14 @@
     </section>
     <main class="recruitment_post_main">
       <section class="recruitment_post_breadcrumb">
-        <div class="icon">
-          <font-awesome-icon icon="fa-solid fa-chevron-left" />
-        </div>
-        <span>
-          <router-link :to="{ name: 'recruitmentVerify' }">返回</router-link>
-        </span>
+        <router-link :to="{ name: 'recruitmentVerify' }">
+          <font-awesome-icon
+            icon="fa-solid fa-chevron-left"
+            style="color: var(--primary-blue)"
+          />
+          返回</router-link
+        >
       </section>
-
       <div class="recruitment_post_main_title">
         <div class="block"></div>
         <div>審核應徵</div>
@@ -93,12 +95,20 @@
 </template>
 
 <script>
+import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
 import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
 import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";
 import ProductsMainPagination from "@/components/products/productsItems/ProductsMainPagination";
 export default {
+  data() {
+    return {
+      title: "審核應徵",
+    };
+  },
+
   components: {
+    GobackAndTitle,
     RecruitmentPostAside,
     RecruitmentSearchbar,
     RecruitmentTable,
@@ -109,6 +119,7 @@ export default {
 
 <style lang="scss">
 .recruitment_post {
+  margin-top: 6rem;
   display: flex;
   &_breadcrumb {
     margin-bottom: 4rem;
@@ -116,6 +127,10 @@ export default {
     gap: 1.5rem;
 
     font-size: 1.25rem;
+
+    a {
+      color: var(--primary-blue);
+    }
 
     span:first-child a {
       color: var(--primary-blue);
@@ -137,6 +152,7 @@ export default {
       padding-bottom: 1rem;
       font-size: 2rem;
       color: var(--primary-blue);
+      font-weight: 600;
       .block {
         width: 1rem;
         background-color: var(--primary-blue);
@@ -243,6 +259,62 @@ export default {
         button:nth-child(2) {
           background-color: var(--secondary-blue-2);
           color: var(--secondary-gray-1);
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 420px) {
+  .recruitment_post {
+    display: block;
+    margin: 0;
+    &_aside {
+      // TODO:在思考要不要把側邊欄拿掉(設計圖原本有)
+      // display: none;
+    }
+    &_breadcrumb {
+      display: none;
+    }
+    &_main {
+      padding: 2rem;
+      &_title {
+        display: none;
+      }
+      &_content {
+        display: block;
+        &_entire {
+          width: 100%;
+        }
+        &_entire::after {
+          display: none;
+        }
+        &_SelfIntroduction_content {
+          max-width: 80vw;
+        }
+        &_personalInfo {
+          display: block;
+          &_pic {
+            // width: 6rem;
+            width: 80vw;
+            margin: auto;
+            margin-bottom: 2rem;
+          }
+          &_item {
+            &_title {
+              width: fit-content;
+              margin-right: 0.5rem;
+            }
+          }
+          &_item:nth-child(3) {
+            display: block;
+          }
+        }
+        &_btn {
+          margin-top: 2rem;
+          margin: 2rem auto auto auto;
+          button {
+            width: 100%;
+          }
         }
       }
     }

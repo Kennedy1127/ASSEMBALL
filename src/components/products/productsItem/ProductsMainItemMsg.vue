@@ -46,11 +46,21 @@
           alt="importing_pic"
         />
       </div>
+      <div v-if="store.state.isMobile" class="product_message_importing_title">
+        回覆留言：
+      </div>
       <div class="product_message_importing_text">
-        <textarea
-          placeholder="請輸入留言內容......"
-          v-model="comment"
-        ></textarea>
+        <div class="product_message_importing_text_input">
+          <textarea
+            placeholder="請輸入留言內容......"
+            v-model="comment"
+            maxlength="300"
+          ></textarea>
+
+          <div class="product_message_importing_text_count">
+            {{ computedCommentLen }}/300
+          </div>
+        </div>
         <button @click="submitComment">送出</button>
       </div>
     </div>
@@ -64,11 +74,13 @@
       <div class="product_message_notice_text">
         <div class="product_message_notice_text_title">請注意：</div>
         <div class="product_message_notice_text_detail">
-          平台僅供會員自由張貼拍賣訊息。
+          <div>平台僅供會員自由張貼拍賣訊息。</div>
           <br />
-          進行交易時，確實比對貨品規格是否符合，並留下對方真實姓名(最好記下身分證字號)、聯絡方式，務必確認完整再行付款，以免產生糾紛。
+          <div>
+            進行交易時，確實比對貨品規格是否符合，並留下對方真實姓名(最好記下身分證字號)、聯絡方式，務必確認完整再行付款，以免產生糾紛。
+          </div>
           <br />
-          建議用網站匯款方式進行交易，較有保障。
+          <div>建議用網站匯款方式進行交易，較有保障。</div>
         </div>
       </div>
     </div>
@@ -77,7 +89,9 @@
 
 <script setup>
 import { computed, ref } from "vue";
+import { useStore } from "vuex";
 
+const store = useStore();
 const props = defineProps({
   productMsgData: {
     type: Object,
@@ -86,6 +100,7 @@ const props = defineProps({
 });
 
 const comment = ref("");
+const computedCommentLen = computed(() => comment.value.length);
 
 const computedComments = computed(() => props.productMsgData);
 
@@ -107,6 +122,11 @@ const submitComment = () => {
 .product_message {
   padding: 2rem;
   padding-right: 0;
+
+  @media all and (max-width: 420px) {
+    padding: 0;
+  }
+
   &_title {
     width: 100%;
     display: flex;
@@ -116,12 +136,36 @@ const submitComment = () => {
     font-weight: 500;
     letter-spacing: 6px;
     font-size: 1.25rem;
+
+    @media all and (max-width: 420px) {
+      border-bottom: none;
+      padding: 3rem 0 1.5rem;
+
+      position: relative;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+
+        width: 40px;
+        height: 5px;
+        background-color: var(--primary-blue);
+      }
+    }
+
     &_block {
       width: 8px;
       height: 26px;
       background-color: var(--primary-blue);
+
+      @media all and (max-width: 420px) {
+        display: none;
+      }
     }
   }
+
   &_area {
     width: 100%;
     &_all,
@@ -132,28 +176,46 @@ const submitComment = () => {
       &_pic {
         width: 6rem;
         position: relative;
+
         &_user {
           width: 100%;
         }
+
         &_mark {
           position: absolute;
           top: -26px;
           left: 0px;
         }
       }
+
       &_text {
         width: 100%;
         display: flex;
         flex-direction: column;
         margin-left: 2rem;
+
+        @media all and (max-width: 420px) {
+          margin-left: 1.5rem;
+        }
+
         &_name {
           font-size: 1.25rem;
           font-weight: 500;
+
+          @media all and (max-width: 420px) {
+            font-size: 1rem;
+          }
         }
+
         &_all {
           margin-top: 1rem;
           color: var(--secondary-gray-1);
+
+          @media all and (max-width: 420px) {
+            font-size: 14px;
+          }
         }
+
         &_date {
           margin-top: 4rem;
           text-align: right;
@@ -166,16 +228,36 @@ const submitComment = () => {
       }
     }
   }
+
   &_importing {
     width: 100%;
     display: flex;
     padding: 4rem 0 4rem 0;
+
+    @media all and (max-width: 420px) {
+      flex-direction: column;
+      padding: 0;
+    }
+
     &_user_pic {
       width: 6rem;
+
+      @media all and (max-width: 420px) {
+        display: none;
+      }
+
       & img {
         width: 100%;
       }
     }
+
+    &_title {
+      margin: 1.5rem 0;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--secondary-gray-1);
+    }
+
     &_text {
       width: 100%;
       & textarea {
@@ -189,6 +271,13 @@ const submitComment = () => {
         background-color: var(--secondary-blue-4);
         border-radius: var(--round);
         border: none;
+
+        @media all and (max-width: 420px) {
+          width: 100%;
+          margin: 0;
+          min-height: 300px;
+        }
+
         &::placeholder {
           color: var(--secondary-gray-3);
         }
@@ -197,7 +286,24 @@ const submitComment = () => {
         outline: 2px var(--secondary-blue-1) solid;
         background-color: var(--pale-white);
       }
+
+      &_input {
+        position: relative;
+      }
+
+      &_count {
+        position: absolute;
+        bottom: 1rem;
+        right: 2rem;
+        font-size: 1rem;
+        color: var(--secondary-gray-3);
+
+        @media all and (max-width: 420px) {
+          right: 1rem;
+        }
+      }
     }
+
     & button {
       width: 200px;
       height: 50px;
@@ -212,8 +318,14 @@ const submitComment = () => {
       margin-left: auto;
       margin-top: 2rem;
       margin-right: 1rem;
+
+      @media all and (max-width: 420px) {
+        margin: 1.5rem 0 3rem;
+        width: 100%;
+      }
     }
   }
+
   &_notice {
     width: 100%;
     display: flex;
@@ -222,26 +334,60 @@ const submitComment = () => {
     border-radius: var(--round);
     padding: 3rem 1rem;
     margin-bottom: 2rem;
+
+    @media all and (max-width: 420px) {
+      flex-direction: column;
+      justify-content: initial;
+      padding: 1.5rem;
+      padding-top: 1rem;
+      gap: 1rem;
+    }
+
     &_icon {
       color: var(--primary-blue);
       font-size: 2.5rem;
+
+      @media all and (max-width: 420px) {
+        font-size: 2rem;
+      }
+
       & img {
         width: 100%;
       }
     }
+
     &_text {
       width: 85%;
-      font-weight: 500;
+
       background-color: #fff;
       padding: 2rem;
       border-radius: var(--round);
+
+      @media all and (max-width: 420px) {
+        width: 100%;
+        padding: 1rem 1.25rem;
+      }
+
       &_title {
         font-size: 1.25rem;
+        font-weight: 500;
         color: var(--error-red);
+
+        @media all and (max-width: 420px) {
+          font-size: 1rem;
+        }
       }
+
       &_detail {
         margin-top: 1rem;
         color: var(--secondary-gray-1);
+
+        @media all and (max-width: 420px) {
+          font-size: 14px;
+
+          display: flex;
+          flex-direction: column;
+        }
       }
     }
   }

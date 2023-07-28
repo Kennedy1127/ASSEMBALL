@@ -152,7 +152,7 @@ export default {
   &_top {
     width: 20%;
     margin-top: 10%;
-    height: 65vh;
+    cursor: pointer;
     &_title {
       font-size: 96px;
       color: var(--secondary-blue-2);
@@ -173,7 +173,7 @@ export default {
     }
     &_name {
       margin-top: 0.5rem;
-      font-size: 1rem;
+      font-size: 1.25rem;
       font-weight: 500;
       color: #fff;
       overflow: hidden;
@@ -192,9 +192,6 @@ export default {
     }
     .home_product_all_top_pic img {
       transform: scale(1.25);
-    }
-    .home_product_all_top_name {
-      font-size: 1.25rem;
     }
   }
   &_top:nth-child(2) {

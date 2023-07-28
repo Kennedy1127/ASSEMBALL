@@ -94,13 +94,21 @@ onUnmounted(() => {
 const windowTop = ref(window.top.scrollY);
 
 const computedRenderCopywritings = computed(() => {
+  // const start = store.state.isMobile
+  //   ? (store.state.copywritingsCurPage - 1) * 4
+  //   : (store.state.copywritingsCurPage - 1) * 6;
+
+  // const end = store.state.isMobile
+  //   ? store.state.copywritingsCurPage * 4
+  //   : store.state.copywritingsCurPage * 6;
+
   const start = store.state.isMobile
-    ? (store.state.copywritingsCurPage - 1) * 4
-    : (store.state.copywritingsCurPage - 1) * 6;
+    ? (store.state.curPage - 1) * 4
+    : (store.state.curPage - 1) * 6;
 
   const end = store.state.isMobile
-    ? store.state.copywritingsCurPage * 4
-    : store.state.copywritingsCurPage * 6;
+    ? store.state.curPage * 4
+    : store.state.curPage * 6;
 
   return store.getters.dateSortedFilteredCopywritings.slice(start, end);
 });
@@ -153,6 +161,7 @@ const convertDate = (copywritingDate) => {
     row-gap: 3rem;
 
     @media all and (max-width: 420px) {
+      min-height: 0;
       grid-template-columns: 1fr;
     }
   }

@@ -3,7 +3,7 @@
     <div class="products_main_header_category">
       <span>類別</span>
       <div class="block"></div>
-      <span>全部</span>
+      <span>{{ productTags[props.type] }}</span>
     </div>
 
     <div class="products_main_header_features">
@@ -29,6 +29,15 @@
     </div>
   </div>
 </template>
+
+<script setup>
+import productTags from "@/composables/tables/productTags";
+
+const props = defineProps({
+  type: Number,
+  required: true,
+});
+</script>
 
 <style scoped lang="scss">
 .products_main_header {

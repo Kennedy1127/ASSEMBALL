@@ -1,61 +1,251 @@
 <template>
   <div class="recruitment_post_form">
-    <div class="recruitment_post_form_label">
-      <label for="product_post_title" class="recruitment_post_form_label_title"
+    <div class="recruitment_post_form_item">
+      <label
+        for="recruitment_post_title"
+        class="recruitment_post_form_label_title"
         ><span class="requiredMark">*</span>徵人標題：
       </label>
-      <label for="product_post_title" class="recruitment_post_form_label_title"
+      <input
+        type="text"
+        id="recruitment_post_title"
+        class="recruitment_post_form_item_input"
+        maxlength="10"
+        value
+        placeholder="(0/10)"
+      />
+    </div>
+
+    <div class="recruitment_post_form_item">
+      <label
+        for="recruitment_post_level"
+        class="recruitment_post_form_label_title"
         ><span class="requiredMark">*</span>經歷：
       </label>
-      <label for="product_post_title" class="recruitment_post_form_label_title"
+      <div class="recruitment_post_form_item_select">
+        <SelectorComponent
+          :options="level"
+          v-model="level"
+          placeholder="選擇經歷"
+        />
+      </div>
+    </div>
+
+    <div class="recruitment_post_form_item">
+      <label
+        for="recruitment_post_player"
+        class="recruitment_post_form_label_title"
         ><span class="requiredMark">*</span>職缺：
       </label>
-      <label for="product_post_title" class="recruitment_post_form_label_title"
+      <div class="recruitment_post_form_item_select">
+        <SelectorComponent
+          :options="player"
+          v-model="player"
+          placeholder="選擇職缺"
+        />
+      </div>
+    </div>
+
+    <div class="recruitment_post_form_item">
+      <label
+        for="recruitment_post_loation"
+        class="recruitment_post_form_label_title"
         ><span class="requiredMark">*</span>所在地區(縣市)：
       </label>
+      <div class="recruitment_post_form_item_select">
+        <SelectorComponent
+          :options="location"
+          v-model="location"
+          placeholder="選擇縣市"
+        />
+      </div>
+    </div>
+
+    <div class="recruitment_post_form_item">
       <label
         for="recruitment_post_info"
         class="recruitment_post_form_label_title"
         ><span class="requiredMark">*</span>職缺說明：
       </label>
-    </div>
-    <div class="recruitment_post_form_text">
-      <input
-        type="text"
-        id="recruitment_post_title"
-        class="recruitment_post_form_text_input"
-        maxlength="10"
-        value
-        placeholder="(0/10)"
-      />
-      <select id="recruitment_post_level"></select>
-      <select id="recruitment_post_player"></select>
-      <select id="recruitment_post_loation"></select>
       <textarea
         id="recruitment_post_info"
-        cols="20"
-        rows="10"
+        cols="30"
+        rows="8"
         maxlength="100"
         value
         placeholder="(0/100)"
       ></textarea>
-      <div class="recruitment_post_form_btn">
-        <button>取消</button>
-        <button>上傳</button>
-      </div>
+    </div>
+    <div class="recruitment_post_form_btn">
+      <!-- <button>取消</button> -->
+      <button>刪除</button>
+      <button>上傳</button>
     </div>
   </div>
 </template>
 
-<script></script>
+<script>
+import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
 
-<style scoped lang="scss">
+export default {
+  components: { SelectorComponent },
+  data() {
+    return {
+      location: [
+        {
+          id: "不限地區",
+          label: "不限地區",
+        },
+        {
+          id: "基隆市",
+          label: "基隆市",
+        },
+        {
+          id: "台北市",
+          label: "台北市",
+        },
+        {
+          id: "新北市",
+          label: "新北市",
+        },
+        {
+          id: "桃園市",
+          label: "桃園市",
+        },
+        {
+          id: "新竹縣",
+          label: "新竹縣",
+        },
+        {
+          id: "新竹市",
+          label: "新竹市",
+        },
+        {
+          id: "苗栗縣",
+          label: "苗栗縣",
+        },
+        {
+          id: "台中市",
+          label: "台中市",
+        },
+        {
+          id: "彰化縣",
+          label: "彰化縣",
+        },
+        {
+          id: "南投縣",
+          label: "南投縣",
+        },
+        {
+          id: "雲林縣",
+          label: "雲林縣",
+        },
+        {
+          id: "嘉義縣",
+          label: "嘉義縣",
+        },
+        {
+          id: "嘉義市",
+          label: "嘉義市",
+        },
+        {
+          id: "台南市",
+          label: "台南市",
+        },
+        {
+          id: "高雄市",
+          label: "高雄市",
+        },
+
+        {
+          id: "屏東縣",
+          label: "屏東縣",
+        },
+        {
+          id: "宜蘭縣",
+          label: "宜蘭縣",
+        },
+        {
+          id: "花蓮縣",
+          label: "花蓮縣",
+        },
+        {
+          id: "台東縣",
+          label: "台東縣",
+        },
+        {
+          id: "澎湖縣",
+          label: "澎湖縣",
+        },
+      ],
+      player: [
+        {
+          id: -2,
+          label: "全部位置",
+        },
+        {
+          id: 0,
+          label: "投手",
+        },
+        {
+          id: 1,
+          label: "捕手",
+        },
+        {
+          id: 2,
+          label: "一壘手",
+        },
+        {
+          id: 3,
+          label: "二壘手",
+        },
+        {
+          id: 4,
+          label: "游擊手",
+        },
+        {
+          id: 5,
+          label: "三壘手",
+        },
+        {
+          id: 6,
+          label: "左外野手",
+        },
+        {
+          id: 7,
+          label: "中外野手",
+        },
+        {
+          id: 8,
+          label: "右外野手",
+        },
+      ],
+      level: [
+        {
+          id: "0",
+          label: "初心者",
+        },
+        {
+          id: "1",
+          label: "新手",
+        },
+        {
+          id: "2",
+          label: "老手",
+        },
+        {
+          id: "3",
+          label: "經歷不拘",
+        },
+      ],
+    };
+  },
+};
+</script>
+
+<style lang="scss">
 .recruitment_post_form {
-  display: flex;
-  gap: 1rem;
   &_label {
-    display: flex;
-    flex-direction: column;
     &_title {
       display: block;
       width: 200px;
@@ -68,12 +258,15 @@
       }
     }
   }
-
-  &_text {
+  // 表單的item
+  &_item {
     display: flex;
-    flex-direction: column;
+    label {
+      width: 12rem;
+      margin-right: 1rem;
+    }
     &_input {
-      width: 36rem;
+      width: 65%;
       border-radius: 10px;
       height: 3rem;
       font-size: 1.25rem;
@@ -101,7 +294,39 @@
       outline: 0;
       margin-bottom: 3.2rem;
     }
+
+    &_select {
+      .selector-component {
+        width: 100%;
+        height: 50px;
+
+        .ivu-select-single {
+          .ivu-select-selection {
+            border: 3px solid var(--secondary-blue-2);
+            border-radius: 10px;
+            color: var(--secondary-blue-2);
+
+            div:first-of-type {
+              span {
+                height: 2rem;
+              }
+            }
+          }
+        }
+      }
+
+      // div:first-of-type {
+      //   padding: 0.5rem 1rem;
+
+      i {
+        &::before {
+          color: var(--secondary-blue-1);
+        }
+      }
+      // }
+    }
     textarea {
+      width: 65%;
       font-size: 1.25rem;
       line-height: 1.75;
       outline: 0;
@@ -138,16 +363,82 @@
       font-weight: 500;
       border: 0;
     }
-    & button:nth-child(1) {
-      border: 2px solid;
-      border-color: var(--secondary-gray-3);
-      color: var(--secondary-gray-3);
-      background-color: #fff;
-    }
+    // & button:nth-child(3) {
+    //   border: 2px solid;
+    //   border-color: var(--secondary-gray-3);
+    //   color: var(--secondary-gray-3);
+    //   background-color: #fff;
+    // }
     & button:nth-child(2) {
       background-color: var(--primary-blue);
       color: var(--pale-white);
     }
+    & button:nth-child(1) {
+      background-color: var(--error-yellow);
+      color: var(--secondary-gray-1);
+    }
+  }
+}
+@media screen and (max-width: 420px) {
+  .recruitment_post_form {
+    &_item {
+      display: block;
+      margin-bottom: 1rem;
+      &_input,
+      select,
+      textarea {
+        width: 100%;
+        margin-bottom: 0;
+      }
+    }
+    &_label {
+      &_title {
+        // display: block;
+        // width: 200px;
+        text-align: initial;
+        // font-size: 1.25rem;
+        // color: var(--input-label-gray);
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    &_btn {
+      display: block;
+      button {
+        width: 100%;
+        // !important
+      }
+      & button:nth-child(2) {
+        margin: 1.25rem 0;
+      }
+    }
   }
 }
 </style>
+<!-- &_select {
+        width: 30%;
+        .selector-component {
+          width: 100%;
+          height: 50px;
+
+          .ivu-select-selection {
+            border: 2px solid var(--secondary-blue-1);
+
+            color: (--secondary-blue-1);
+
+            .ivu-select-placeholder {
+              color: var(--secondary-blue-1);
+            }
+
+            div:first-of-type {
+              padding: 0.5rem 1rem;
+
+              i {
+                &::before {
+                  color: var(--secondary-blue-1);
+                }
+              }
+            }
+          }
+        }
+      } -->

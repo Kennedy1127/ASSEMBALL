@@ -2,6 +2,18 @@
   <main class="rookieListCurve">
     <div class="wrapper">
       <!--網頁白色部分 -->
+      <div class="bread_crumbs">
+        <!--麵包屑 -->
+        <router-link :to="{ name: 'rookie' }">新手上路 </router-link>
+        <!-- <a href="#">
+                    首頁
+                </a> -->
+        <div class="bread_crumbs_arrow">
+          <span> <font-awesome-icon icon="fa-solid fa-chevron-right" /></span>
+        </div>
+
+        投手教學系列
+      </div>
       <div class="rookieListCurve_title">
         <!--大標題 -->
         <div class="rookieListCurve_title_color_block"></div>
@@ -80,6 +92,33 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+.bread_crumbs {
+  //麵包屑
+  display: flex;
+  align-content: center;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.25rem;
+  color: var(--primary-black);
+  padding-bottom: 3rem;
+
+  a {
+    display: block;
+    font-size: 1.25rem;
+    color: var(--primary-blue);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    padding-bottom: 0.2rem;
+  }
+  .bread_crumbs_arrow {
+    margin-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    span {
+      color: var(--primary-blue);
+    }
+  }
+}
+
 .rookieListCurve {
   background-color: var(--secondary-blue-4);
   padding: 4rem 0;

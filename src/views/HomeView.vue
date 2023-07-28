@@ -83,6 +83,7 @@ export default {
     }
     // 跑馬燈
     .home_marquee {
+      width: 100%;
       text-align: center;
       font-size: 1.5rem;
       background-color: var(--primary-blue);
@@ -91,75 +92,75 @@ export default {
     }
     //最新消息
     .home_news {
+      width: 100%;
       background-color: #fff;
       color: var(--primary-blue);
       display: flex;
       text-align: center;
       position: relative;
       z-index: 2;
+      overflow: hidden;
     }
     // 球隊招募
     .home_recruit {
+      width: 100%;
       background-color: #fff;
       border-top: 3px solid var(--primary-blue);
       padding: 4rem 2rem 4rem 2rem;
       display: flex;
       position: relative;
+      overflow: hidden;
     }
     // 交流留言板
     .home_message {
+      width: 100%;
       background-color: #fff;
       border-top: 3px solid var(--primary-blue);
+      overflow: hidden;
     }
     // 二手拍賣區
     .home_auction {
+      width: 100%;
       background-color: #fff;
       border-top: 3px solid var(--primary-blue);
     }
     .home_product {
+      width: 100%;
       position: relative;
       overflow: hidden;
     }
     .home_footer {
+      width: 100%;
+      overflow: hidden;
     }
   }
 }
-@media (max-width: 420px) {
+@media screen and (max-width: 420px) {
   .home {
+    width: 100%;
     .wrapper {
       width: 100%;
-      max-width: 100%;
       // 網站故事
       .home_landing {
-        width: 100%;
-        height: 200vh;
+        height: 190vh;
         padding: 1.25rem;
-        position: relative;
       }
       // 跑馬燈
       .home_marquee {
-        text-align: center;
-        font-size: 1.5rem;
-        background-color: var(--primary-blue);
-        padding-top: 2rem;
-        overflow: hidden;
+        padding-top: 1rem;
       }
       //最新消息
       .home_news {
-        background-color: #fff;
-        color: var(--primary-blue);
         display: flex;
-        text-align: center;
-        position: relative;
+        flex-direction: column;
         z-index: 2;
       }
       // 球隊招募
       .home_recruit {
-        background-color: #fff;
-        border-top: 3px solid var(--primary-blue);
-        padding: 4rem 2rem 4rem 2rem;
+        padding: 1rem 0rem 2rem 0rem;
         display: flex;
-        position: relative;
+        flex-direction: column;
+        position: none;
       }
       // 交流留言板
       .home_message {

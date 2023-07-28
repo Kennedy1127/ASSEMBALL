@@ -7,8 +7,23 @@ export default createStore({
     // 確認是否為手機用戶
     isMobile: 0,
 
+    // 讀取中
+    isLoading: 0,
+
     //////////////////////////////////////////////////////
-    // 通知、會員頁面、個人資料
+    // 確認是否登入
+    isLoggedIn: 0,
+
+    // 會員資料
+    user: {},
+
+    // 通知資料
+    userNotifies: [],
+
+    // 歷史訂單
+    userOrders: [],
+
+    // 通知、會員頁面、個人資料開關
     isNotifyVisible: 0,
     isMemberVisible: 0,
     isPersonalVisible: 0,
@@ -51,6 +66,7 @@ export default createStore({
     // 頁碼區塊
     productsCurPage: 1,
     copywritingsCurPage: 1,
+    curPage: 1,
   },
 
   getters: {
@@ -340,16 +356,20 @@ export default createStore({
     ///////////////////////////////////////
     // 頁碼區塊
     paginationPrevPage(state, payload) {
-      state[`${payload}CurPage`]--;
+      // state[`${payload}CurPage`]--;
+      state.curPage--;
     },
     paginationNextPage(state, payload) {
-      state[`${payload}CurPage`]++;
+      // state[`${payload}CurPage`]++;
+      state.curPage++;
     },
     paginationGoToPage(state, payload) {
-      state[`${payload.type}CurPage`] = payload.num;
+      // state[`${payload.type}CurPage`] = payload.num;
+      state.curPage = payload.num;
     },
     resetPaginationCurPage(state, payload) {
-      state[`${payload}CurPage`] = 1;
+      // state[`${payload}CurPage`] = 1;
+      state.curPage = 1;
     },
   },
 
