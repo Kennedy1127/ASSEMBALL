@@ -233,7 +233,7 @@ export default {
     ul {
       display: flex;
       min-height: 600px;
-      height: 50vh;
+      height: 650px;
       margin: 0;
       padding: 0;
       overflow: hidden;

@@ -538,7 +538,7 @@ export default {
     }
     &_carousel {
       margin-top: 0rem;
-      height: 60vh;
+      height: 500px;
       &_list {
         position: relative;
         list-style-type: none;

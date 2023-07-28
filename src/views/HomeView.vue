@@ -141,7 +141,7 @@ export default {
       width: 100%;
       // 網站故事
       .home_landing {
-        height: 190vh;
+        height: 1600px;
         padding: 1.25rem;
       }
       // 跑馬燈
