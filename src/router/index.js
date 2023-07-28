@@ -120,7 +120,7 @@ const routes = [
   },
   /////////////////////////////////////////
   {
-    path: "/myplayerTeam/:id",
+    path: "/myplayerTeam",
     name: "myplayerTeam",
     component: () => import("@/views/MyPlayerTeam.vue"),
   },
@@ -187,6 +187,7 @@ router.beforeEach(() => {
   store.state.isNotifyVisible = 0;
   store.state.isMemberVisible = 0;
   store.state.isPersonalVisible = 0;
+  store.state.myplayerEditOpen = 0;
 });
 
 export default router;

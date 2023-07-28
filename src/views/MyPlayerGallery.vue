@@ -5,7 +5,7 @@
         <div class="myplayer_gallery_return_arrow">
           <font-awesome-icon :icon="['fas', 'chevron-left']" />
         </div>
-        <router-link to="/myplayerTeam/1" class="myplayer_gallery_return_word"
+        <router-link to="/myplayerTeam/" class="myplayer_gallery_return_word"
           >返回</router-link
         >
       </div>
@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="myplayer_gallery_pagination">
-      <PaginationComponent />
+      <PaginationComponent v-if="isVisible" />
     </div>
     <MyplayerPhotoPopus v-if="isVisible" />
   </main>
@@ -47,6 +47,7 @@ export default {
   components: {
     PaginationComponent,
     MyplayerPhotoPopus,
+    // OverlayComponent,
   },
   data() {
     return {
@@ -221,11 +222,47 @@ export default {
   .myplayer_gallery_return_delete {
     width: 12rem;
   }
+
   .myplayer_gallery_return_delete_confirm {
     font-size: 1.5rem;
   }
   .myplayer_gallery_return_delete_icon {
     font-size: 1.5rem;
+  }
+}
+@media screen and (max-width: 420px) {
+  .myplayer_gallery_return_wrap {
+    width: initial;
+  }
+  .myplayer_gallery_return_word {
+    font-size: 1rem;
+    padding-left: 1rem;
+  }
+  .myplayer_gallery_return_delete_confirm {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+  .myplayer_gallery_return_delete_icon {
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+  }
+  .myplayer_gallery_content_add_icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(60%);
+    font-size: 3rem;
+  }
+  .myplayer_gallery_return_delete {
+    width: 11rem;
+  }
+  .myplayer_gallery_content_add {
+    width: 45%;
+    padding: 0;
+  }
+  .myplayer_gallery_content_pic {
+    width: 45%;
+    padding: 6rem 0rem 0.5rem 0.5rem;
   }
 }
 </style>

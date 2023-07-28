@@ -35,11 +35,12 @@
           </div>
         </div>
       </div>
-      <div class="myplayer_message_more_wrap">
-        <div class="myplayer_message_more_group">
-          <div class="myplayer_message_more" @click="showMorePosts">
-            觀看更多
-          </div>
+      <div
+        class="myplayer_message_more_wrap"
+        v-if="visiblePosts < myplayer_message_card.length"
+      >
+        <div class="myplayer_message_more_group" @click="showMorePosts">
+          <div class="myplayer_message_more">觀看更多</div>
           <div class="myplayer_message_more_wrap_right">
             <font-awesome-icon :icon="['fas', 'chevron-right']" />
           </div>
@@ -133,11 +134,9 @@ export default {
       this.$store.commit("myplayerPopupsToggle");
     },
     showMorePosts() {
-      this.visiblePosts += this.additionalPosts;
-      // If you want to limit the maximum number of posts shown, you can add the following check:
-      // if (this.visiblePosts > this.myplayer_message_card.length) {
-      //   this.visiblePosts = this.myplayer_message_card.length;
-      // }
+      if (this.visiblePosts < this.myplayer_message_card.length) {
+        this.visiblePosts += this.additionalPosts;
+      }
     },
   },
 };
