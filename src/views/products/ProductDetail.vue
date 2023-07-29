@@ -71,7 +71,7 @@ onMounted(() => {
   if (
     store.state.products.length === 0 ||
     store.state.products.find(
-      (product) => product.product_id === route.params.id
+      (product) => product.product_id === route.params.productId
     )
   ) {
     store.dispatch("getProductsCount");
@@ -80,7 +80,9 @@ onMounted(() => {
 });
 
 const productData = computed(() =>
-  store.state.products.find((product) => product.product_id === route.params.id)
+  store.state.products.find(
+    (product) => product.product_id === route.params.productId
+  )
 );
 
 const productItemData = computed(() => {
