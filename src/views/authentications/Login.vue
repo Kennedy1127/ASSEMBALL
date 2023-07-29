@@ -66,8 +66,8 @@
 </template>
 
 <script setup>
-import AuthenticationWrapper from "@/components/Authourize/AuthenticationWrapper.vue";
-import AuthenticationPic from "@/components/Authourize/AuthenticationPic.vue";
+import AuthenticationWrapper from "@/components/Authentication/AuthenticationWrapper.vue";
+import AuthenticationPic from "@/components/Authentication/AuthenticationPic.vue";
 import { ref } from "vue";
 
 const info = {

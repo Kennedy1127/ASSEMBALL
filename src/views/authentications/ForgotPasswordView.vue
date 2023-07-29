@@ -28,10 +28,10 @@
 </template>
 
 <script setup>
-import AuthenticationWrapper from "@/components/Authourize/AuthenticationWrapper.vue";
-import AuthenticationPic from "@/components/Authourize/AuthenticationPic.vue";
-import ForgotPasswordStepOne from "@/components/Authourize/ForgotPasswordStepOne.vue";
-import ForgotPasswordStepTwo from "@/components/Authourize/ForgotPasswordStepTwo.vue";
+import AuthenticationWrapper from "@/components/Authentication/AuthenticationWrapper.vue";
+import AuthenticationPic from "@/components/Authentication/AuthenticationPic.vue";
+import ForgotPasswordStepOne from "@/components/Authentication/ForgotPasswordStepOne.vue";
+import ForgotPasswordStepTwo from "@/components/Authentication/ForgotPasswordStepTwo.vue";
 import { ref } from "vue";
 
 const info = {

@@ -1,5 +1,5 @@
 <template>
-  <AuthenticationWrapper>
+  <AuthenticationWrapper v-if="!store.state.isMobile">
     <AuthenticationPic :info="info" />
 
     <form class="authentication_text">
@@ -39,11 +39,17 @@
       </div>
     </form>
   </AuthenticationWrapper>
+
+  <RegisterMobile v-if="store.state.isMobile" />
 </template>
 
 <script setup>
-import AuthenticationWrapper from "@/components/Authourize/AuthenticationWrapper.vue";
-import AuthenticationPic from "@/components/Authourize/AuthenticationPic.vue";
+import AuthenticationWrapper from "@/components/Authentication/AuthenticationWrapper.vue";
+import AuthenticationPic from "@/components/Authentication/AuthenticationPic.vue";
+import RegisterMobile from "@/components/Authentication/mobile/RegisterMobile.vue";
+import { useStore } from "vuex";
+
+const store = useStore();
 
 const info = {
   title: "Welcome Back !",
