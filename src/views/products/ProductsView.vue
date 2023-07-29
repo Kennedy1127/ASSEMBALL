@@ -149,11 +149,11 @@ const goToTop = (e) => {
   &_breadcrumb {
     margin-bottom: 4rem;
     display: flex;
-    gap: 0.5rem;
+    gap: 1.5rem;
     font-size: 1.25rem;
 
     @media all and (max-width: 420px) {
-      gap: 1.25rem;
+      gap: 0.5rem;
       font-size: 1rem;
       // align-items: center;
 

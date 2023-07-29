@@ -22,33 +22,63 @@
         <div class="authentication_text_title">會員註冊/Sign Up</div>
         <div class="authentication_typing_name">
           <div class="authentication_typing_name_underline">
-            <input type="text" placeholder="姓/Last Name" />
+            <input
+              type="text"
+              placeholder="姓/Last Name"
+              v-model="lastname"
+              minlength="1"
+              maxlength="5"
+              required
+            />
           </div>
 
           <div class="authentication_typing_name_underline">
-            <input type="text" placeholder="名/First Name" />
+            <input
+              type="text"
+              placeholder="名/First Name"
+              v-model="firstname"
+              minlength="1"
+              maxlength="5"
+              required
+            />
           </div>
         </div>
 
         <div class="authentication_text_underline">
-          <input type="text" placeholder="使用者名稱/User Name" />
+          <input
+            type="email"
+            placeholder="電子郵件/Email"
+            v-model="email"
+            required
+          />
         </div>
 
         <div class="authentication_text_underline">
-          <input type="email" placeholder="電子郵件/Email" />
+          <input
+            type="password"
+            placeholder="密碼/Password"
+            v-model="password"
+            minlength="5"
+            maxlength="50"
+            required
+          />
         </div>
 
         <div class="authentication_text_underline">
-          <input type="password" placeholder="密碼/Password" />
-        </div>
-
-        <div class="authentication_text_underline">
-          <input type="password" placeholder="確認密碼/Confirm Password" />
+          <input
+            type="password"
+            placeholder="確認密碼/Confirm Password"
+            v-model="confirmPassword"
+            minlength="5"
+            maxlength="50"
+            required
+          />
         </div>
 
         <div class="authentication_text_btn">
           <button>
-            註冊 <font-awesome-icon icon="fa-solid fa-chevron-right" />
+            註冊
+            <font-awesome-icon icon="fa-solid fa-chevron-right" class="icon" />
           </button>
           <div class="authentication_psw_error">輸入錯誤!</div>
         </div>
@@ -64,6 +94,16 @@ export default {
       type: String,
       default: () => "normal",
     },
+  },
+
+  data() {
+    return {
+      firstname: "",
+      lastname: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    };
   },
 };
 </script>
@@ -113,7 +153,6 @@ export default {
     .authentication_btn {
       width: 10rem;
       border-radius: 2rem;
-      padding: 0.5rem 0.25rem;
       color: var(--primary-blue);
 
       font-size: 1.25rem;

@@ -7,8 +7,23 @@ export default createStore({
     // 確認是否為手機用戶
     isMobile: 0,
 
+    // 讀取中
+    isLoading: 0,
+
     //////////////////////////////////////////////////////
-    // 通知、會員頁面、個人資料
+    // 確認是否登入
+    isLoggedIn: 0,
+
+    // 會員資料
+    user: {},
+
+    // 通知資料
+    userNotifies: [],
+
+    // 歷史訂單
+    userOrders: [],
+
+    // 通知、會員頁面、個人資料開關
     isNotifyVisible: 0,
     isMemberVisible: 0,
     isPersonalVisible: 0,
@@ -51,6 +66,7 @@ export default createStore({
     // 頁碼區塊
     productsCurPage: 1,
     copywritingsCurPage: 1,
+    curPage: 1,
   },
 
   getters: {
@@ -326,20 +342,34 @@ export default createStore({
     myplayerOverlayToggle(state) {
       state.myplayerPopupsOpen = !state.myplayerPopupsOpen;
     },
+    //我的球隊撈資料
+    setMyplayerTeam(state, payload) {
+      console.log(payload);
+      const team = payload.data.find(
+        (myplayerteam) => myplayerteam.team_id === payload.id
+      );
+      console.log(team);
+
+      state.myplayerTeam = { ...team };
+    },
 
     ///////////////////////////////////////
     // 頁碼區塊
     paginationPrevPage(state, payload) {
-      state[`${payload}CurPage`]--;
+      // state[`${payload}CurPage`]--;
+      state.curPage--;
     },
     paginationNextPage(state, payload) {
-      state[`${payload}CurPage`]++;
+      // state[`${payload}CurPage`]++;
+      state.curPage++;
     },
     paginationGoToPage(state, payload) {
-      state[`${payload.type}CurPage`] = payload.num;
+      // state[`${payload.type}CurPage`] = payload.num;
+      state.curPage = payload.num;
     },
     resetPaginationCurPage(state, payload) {
-      state[`${payload}CurPage`] = 1;
+      // state[`${payload}CurPage`] = 1;
+      state.curPage = 1;
     },
   },
 
@@ -432,6 +462,17 @@ export default createStore({
         const res = await axios.get("http://localhost:3000/copywritings");
         if (!res) throw new Error("Cannot fetch response");
         context.commit("setCopywritings", res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    //撈我的球隊的資料
+    async getMyplayerTeam(context, payload) {
+      try {
+        const res = await axios.get("http://localhost:3000/teams");
+        if (!res) throw new Error("Cannot fetch response");
+        // console.log(payload);
+        context.commit("setMyplayerTeam", { id: payload, data: res.data });
       } catch (err) {
         console.error(err);
       }

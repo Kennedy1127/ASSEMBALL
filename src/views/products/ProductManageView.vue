@@ -1,34 +1,23 @@
 <template>
   <main class="products_manage">
     <div class="wrapper">
-      <!--網頁白色部分 -->
-
-      <!-- <a class="products_manage_back_btn_link" href="#">
-        <button class="products_manage_back_btn">
-          <div class="img">
-            <img src="~@/assets/images/icons/arrow-left.png" />
-          </div>
-          <div class="text">返回</div>
-        </button>
-      </a> -->
       <div class="products_manage_back_btn_link">
         <router-link :to="{ name: 'Products' }">
-          <span><font-awesome-icon icon="fa-solid fa-angle-left" /></span>返回
+          <span> <font-awesome-icon icon="fa-solid fa-angle-left" /> </span>返回
         </router-link>
       </div>
+
       <div class="products_manage_header">
-        <!--消息管理頁首 -->
         <div class="products_manage_header_title">
           <div class="color_block"></div>
           拍賣管理
         </div>
+
         <div class="products_manage_btn_area">
-          <button class="set_time_btn">
-            <div class="set_time_btn_text">刊登時間</div>
-            <div class="set_time_btn_img">
-              <img src="~@/assets/images/icons/arrow-light-blue.png" />
-            </div>
-          </button>
+          <div class="products_manage_btn_area_select">
+            <SelectorComponent />
+          </div>
+
           <button class="del_btn">
             <div class="del_btn_text">刪除商品</div>
             <div class="del_btn_img">
@@ -37,7 +26,7 @@
           </button>
         </div>
       </div>
-      <!-- 表單 -->
+
       <section class="manage_from">
         <div class="manage_item manage_item_header">
           <div class="manage_item_list manage_checkbox">
@@ -49,6 +38,7 @@
           <div class="manage_item_list manage_item_icon">留言</div>
           <div class="manage_item_list manage_item_icon">商品修改</div>
         </div>
+
         <div v-for="item in manage" class="manage_item">
           <div class="manage_item_list manage_checkbox">
             <input type="checkbox" id="checkbox" />
@@ -61,12 +51,14 @@
           <div
             class="manage_item_list manage_item_price manage_item_price--red"
           >
-            ${{ item.price }}
+            ${{ convertPrice(item.price) }}
           </div>
           <div class="manage_item_list manage_item_date">
             {{ item.date }}
           </div>
-          <div class="manage_item_list manage_item_icon">
+          <div
+            class="manage_item_list manage_item_icon manage_item_icon--comment"
+          >
             <button>
               <div class="notify">1</div>
               <span>
@@ -77,7 +69,7 @@
               </span>
             </button>
           </div>
-          <div class="manage_item_list manage_item_icon">
+          <div class="manage_item_list manage_item_icon manage_item_icon--pen">
             <button>
               <font-awesome-icon
                 icon="fa-solid fa-pen"
@@ -86,18 +78,20 @@
             </button>
           </div>
         </div>
-        <!-- 頁碼 -->
-        <PaginationComponent />
       </section>
-      <!-- 表單 -->
+
+      <PaginationComponent />
     </div>
   </main>
 </template>
 <script>
 import PaginationComponent from "@/components/utilities/PaginationComponent";
+import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
+
 export default {
   components: {
     PaginationComponent,
+    SelectorComponent,
   },
   data() {
     return {
@@ -130,14 +124,24 @@ export default {
       ],
     };
   },
+
+  methods: {
+    convertPrice(price) {
+      return price.toLocaleString();
+    },
+
+    convertDate(inputDate) {
+      const date = new Date(inputDate);
+      return `${date.getFullYear()} / ${String(date.getMonth() + 1).padStart(
+        2,
+        0
+      )} / ${String(date.getDate()).padStart(2, 0)}`;
+    },
+  },
 };
 </script>
-<style scoped lang="scss">
-// 通知數字
 
-.wrapper {
-  margin-top: 6rem;
-}
+<style scoped lang="scss">
 .notify {
   border-radius: 50%;
   width: 25px;
@@ -176,6 +180,24 @@ button {
 // 返回按鈕
 .products_manage_back_btn_link {
   margin-bottom: 3rem;
+
+  @media all and (max-width: 420px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+
+    width: 100%;
+    height: 100px;
+    margin: 6rem 0 0;
+    padding: 1.5rem 1.5rem;
+    background-color: #fff;
+    box-shadow: var(--shadow-light);
+
+    display: flex;
+    align-items: center;
+  }
+
   & a {
     display: inline-block;
     color: var(--primary-blue);
@@ -183,6 +205,7 @@ button {
     font-weight: 500;
     padding-bottom: 0.5rem;
     cursor: pointer;
+
     & span {
       color: var(--primary-blue);
       font-size: 1.25rem;
@@ -230,44 +253,65 @@ button {
   display: flex;
   justify-content: space-between;
   margin-bottom: 2rem;
+
+  @media all and (max-width: 420px) {
+    flex-direction: column;
+
+    &_title {
+      margin-top: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--secondary-gray-3);
+    }
+  }
 }
 
 .products_manage_btn_area {
   display: flex;
   justify-content: space-between;
+  gap: 3rem;
 
-  .set_time_btn {
-    font-size: 1.25rem;
-    margin-right: 2rem;
-    width: 183px;
-    height: 44px;
-    align-content: center;
-    align-items: center;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    border: var(--secondary-blue-2) solid;
-    display: flex;
-    border-radius: 10px;
-    justify-content: space-between;
+  @media all and (max-width: 420px) {
+    flex-direction: column;
+    gap: 2rem;
+    order: -1;
+  }
 
-    &_text {
-      color: var(--secondary-gray-3);
+  &_select {
+    width: 200px;
+    height: 60px;
+
+    @media all and (max-width: 420px) {
+      width: 100%;
+    }
+
+    .selector-component {
+      height: 100%;
+      width: 100%;
     }
   }
 
   .del_btn {
-    font-size: 1.25rem;
-    width: 183px;
-    height: 44px;
-    align-content: center;
-    align-items: center;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    color: white;
+    width: 200px;
+    height: 60px;
+    padding: 1rem 1.5rem;
     display: flex;
-    border-radius: 10px;
+    align-items: center;
     justify-content: space-between;
+    border-radius: 10px;
     background-color: var(--primary-blue);
+
+    font-size: 1.25rem;
+    color: white;
+
+    @media all and (max-width: 420px) {
+      width: 100%;
+      justify-content: center;
+
+      &_img {
+        position: relative;
+        left: 6rem;
+      }
+    }
   }
 }
 
@@ -275,11 +319,22 @@ button {
   background-color: var(--secondary-blue-4);
   padding: 4rem 0;
 
+  @media all and (max-width: 420px) {
+    padding: 0;
+  }
+
   .wrapper {
     background-color: #fff;
     box-shadow: var(--shadow-heavy);
     border-radius: var(--round);
     padding: 3rem 8rem;
+
+    margin-top: 6rem;
+
+    @media all and (max-width: 420px) {
+      margin-top: 12rem;
+      padding: 2rem 1.5rem;
+    }
   }
 }
 
@@ -291,6 +346,10 @@ button {
   color: var(--secondary-gray-3);
   font-size: 1.25rem;
   justify-content: space-evenly;
+
+  @media all and (max-width: 420px) {
+    display: none;
+  }
 }
 
 // 表頭
@@ -299,6 +358,10 @@ button {
   margin-left: 2rem;
   margin-right: 2rem;
   font-size: 1.25rem;
+
+  @media all and (max-width: 420px) {
+    margin: 0;
+  }
 }
 
 .manage_item {
@@ -306,6 +369,64 @@ button {
   margin-bottom: 2rem;
   align-items: center;
   justify-content: space-evenly;
+
+  @media all and (max-width: 420px) {
+    align-items: initial;
+    justify-content: initial;
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr 2fr;
+    align-items: center;
+    column-gap: 1.5rem;
+    row-gap: 1rem;
+
+    margin-bottom: 0;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--secondary-gray-3);
+
+    &:last-child {
+      margin-bottom: 2rem;
+    }
+
+    &.manage_item_header {
+      display: none;
+    }
+
+    &_list {
+      &.manage_checkbox {
+        grid-row: 1 / span 3;
+        align-self: start;
+      }
+
+      &.manage_item_title {
+        grid-column: 2 / -1;
+        width: fit-content;
+      }
+
+      &.manage_item_price {
+        grid-column: 2 / span 1;
+      }
+
+      &.manage_item_icon {
+        width: fit-content;
+        justify-content: initial;
+
+        &--comment {
+          grid-column: 3 / span 1;
+          grid-row: 2;
+        }
+
+        &--pen {
+          grid-column: 4 / span 1;
+          grid-row: 2;
+        }
+      }
+
+      &.manage_item_date {
+        grid-column: 2 / -1;
+        width: fit-content;
+      }
+    }
+  }
 }
 
 .manage_item_title {

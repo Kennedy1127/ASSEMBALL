@@ -1,4 +1,5 @@
 <template>
+  <GobackAndTitle :title="title" />
   <div class="recruitment_post">
     <section class="recruitment_post_aside">
       <!-- <aside class="recruitment_post_aside"> -->
@@ -11,7 +12,10 @@
           <router-link :to="{ name: 'Recruitments' }">球員招募</router-link>
         </span>
         <div class="icon">
-          <font-awesome-icon icon="fa-solid fa-chevron-right" />
+          <font-awesome-icon
+            icon="fa-solid fa-chevron-right"
+            style="color: var(--primary-blue)"
+          />
         </div>
         <span>管理職缺</span>
       </section>
@@ -25,7 +29,7 @@
         <RecruitmentSearchbar :color="blue"> </RecruitmentSearchbar>
       </div>
       <div class="recruitment_post_main_table">
-        <RecruitmentTable />
+        <RecruitmentTable :tableData="computedRenderManageCopywritings" />
       </div>
       <div class="recruitment_post_main_page">
         <PaginationComponent
@@ -38,6 +42,7 @@
 </template>
 
 <script setup>
+import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
 import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
 import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";
@@ -45,33 +50,53 @@ import PaginationComponent from "@/components/utilities/PaginationComponent.vue"
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
 
+const title = ref("管理職缺");
+//把抓到的內容放進表格內
 const store = useStore();
 onMounted(() => {
   store.dispatch("getManageCopywritings"); //用index.js的 action 要用dispatch
 });
-const computedTotalPages = computed(() => {
-  // return 20;
-  if (store.state.ManageCopywritings.length === 0) return 1;
 
+// 一頁放幾個項目
+const computedRenderManageCopywritings = computed(() => {
+  const start = store.state.isMobile
+    ? (store.state.curPage - 1) * 4
+    : (store.state.curPage - 1) * 5;
+
+  const end = store.state.isMobile
+    ? store.state.curPage * 4
+    : store.state.curPage * 5;
+
+  return store.state.ManageCopywritings.slice(start, end);
+});
+const computedTotalPages = computed(() => {
+  // 計算總頁數
+  if (store.state.ManageCopywritings.length === 0) return 1;
   const len = store.state.ManageCopywritings.length; //state :return的東西
   return store.state.isMobile
-    ? len % 4 === 0
+    ? len % 4 === 0 // 手機
       ? len > 4
         ? len / 4
         : 1
       : Math.ceil(len / 4)
-    : len % 5 === 0
+    : len % 5 === 0 // 桌機板
     ? len > 5
       ? len / 5
       : 1
     : Math.ceil(len / 5);
 });
+
+// props傳去組件
 </script>
 
 <style lang="scss">
 .recruitment_post {
   margin-top: 6rem;
   display: flex;
+  &_main_page {
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+  }
   &_breadcrumb {
     margin-bottom: 4rem;
     display: flex;
@@ -83,37 +108,107 @@ const computedTotalPages = computed(() => {
       color: var(--primary-blue);
       text-decoration: underline;
       text-underline-offset: 4px;
-      // text-decoration-thickness: 2px;
     }
+  }
+  &_goback {
+    display: none;
   }
   &_main {
     width: 100%;
     padding: 2rem 5rem;
-    // background-color: red;
-    & > div {
-      margin-bottom: 3rem;
-    }
+
     &_title {
       display: flex;
       gap: 1.5rem;
       padding-bottom: 1rem;
       font-size: 2rem;
       color: var(--primary-blue);
+      font-weight: 600;
+      &_sm {
+        display: none;
+      }
       .block {
         width: 1rem;
         background-color: var(--primary-blue);
       }
     }
-    &_filter {
-    }
-    &_page {
-      margin-right: 0;
+    &_content {
+      display: flex;
+      gap: 4rem;
+      &_form {
+        width: 60%;
+      }
+      &_pic {
+        width: 40%;
+        position: relative;
+        img {
+          width: 100%;
+        }
+      }
     }
   }
 }
 @media screen and (max-width: 420px) {
   .recruitment_post {
+    margin: 0;
     display: block;
+
+    &_breadcrumb {
+      display: none;
+    }
+    &_main {
+      padding: 1rem;
+      &_title {
+        display: none;
+      }
+      &_title_sm {
+        display: block;
+        margin-bottom: 3rem;
+        text-align: center;
+        font-size: 1.25rem;
+        color: var(--primary-blue);
+        position: relative;
+      }
+      &_title_sm::after {
+        position: absolute;
+        left: calc(50% - 1.25rem);
+        top: 2.5rem;
+        content: "";
+        width: 2.5rem;
+        height: 5px;
+        background-color: var(--primary-blue);
+      }
+    }
+
+    &_goback {
+      margin-top: 6rem;
+      display: block;
+      // margin-bottom: 3rem;
+
+      & a {
+        display: inline-block;
+        color: var(--primary-blue);
+        font-size: 1.25rem;
+        font-weight: 500;
+        padding-bottom: 0.5rem;
+        cursor: pointer;
+        & span {
+          color: var(--primary-blue);
+          font-size: 1.25rem;
+          padding-right: 0.5rem;
+        }
+      }
+    }
+    &_main {
+      &_content {
+        &_form {
+          width: 100%;
+        }
+        &_pic {
+          display: none;
+        }
+      }
+    }
   }
 }
 </style>

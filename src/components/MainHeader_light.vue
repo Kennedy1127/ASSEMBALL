@@ -27,7 +27,7 @@
               >
             </li>
             <li>
-              <router-link :to="{ name: 'myplayerTeam' }"
+              <router-link :to="{ name: 'myplayerTeam', params: { id: 1 } }"
                 ><span
                   ><font-awesome-icon icon="fa-solid fa-user-group"
                 /></span>
@@ -93,6 +93,9 @@ export default {
   justify-content: center;
   z-index: 100;
   box-shadow: var(--shadow-heavy);
+  @media all and (max-width: 420px) {
+    box-shadow: none;
+  }
   .wrapper {
     width: 95%;
     height: 100%;
@@ -100,10 +103,16 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    @media all and (max-width: 420px) {
+      justify-content: center;
+    }
   }
   &_logo {
     display: flex;
     align-items: center;
+    @media all and (max-width: 420px) {
+      justify-content: center;
+    }
     & a {
       width: 75%;
       & img {
@@ -114,6 +123,9 @@ export default {
   }
   &_list {
     display: flex;
+    @media all and (max-width: 420px) {
+      display: none;
+    }
     & ul {
       display: flex;
       gap: 2rem;

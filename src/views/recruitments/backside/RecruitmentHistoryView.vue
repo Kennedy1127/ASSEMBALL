@@ -1,4 +1,6 @@
 <template>
+  <GobackAndTitle :title="title" />
+
   <div class="recruitment_post">
     <section class="recruitment_post_aside">
       <!-- <aside class="recruitment_post_aside"> -->
@@ -11,14 +13,17 @@
           <router-link :to="{ name: 'Recruitments' }">球員招募</router-link>
         </span>
         <div class="icon">
-          <font-awesome-icon icon="fa-solid fa-chevron-right" />
+          <font-awesome-icon
+            icon="fa-solid fa-chevron-right"
+            style="color: var(--primary-blue)"
+          />
         </div>
         <span>紀錄管理</span>
       </section>
 
       <div class="recruitment_post_main_title">
         <div class="block"></div>
-        <div>紀錄管理</div>
+        <div style="font-weight: 600">紀錄管理</div>
       </div>
       <div class="recruitment_post_main_filter">
         <!--RecruitmentSearchbar.vue  -->
@@ -36,12 +41,20 @@
 </template>
 
 <script>
+import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
 import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
 import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";
 import ProductsMainPagination from "@/components/products/productsItems/ProductsMainPagination";
 export default {
+  data() {
+    return {
+      title: "記錄管理",
+    };
+  },
+
   components: {
+    GobackAndTitle,
     RecruitmentPostAside,
     RecruitmentSearchbar,
     RecruitmentTable,
@@ -54,10 +67,6 @@ export default {
 .recruitment_post {
   margin-top: 6rem;
   display: flex;
-
-  // &_aside{
-
-  // }
   &_breadcrumb {
     margin-bottom: 4rem;
     display: flex;
@@ -72,34 +81,110 @@ export default {
       // text-decoration-thickness: 2px;
     }
   }
+  &_goback {
+    display: none;
+  }
   &_main {
     width: 100%;
     padding: 2rem 5rem;
     // background-color: red;
-    & > div {
-      margin-bottom: 3rem;
-    }
     &_title {
       display: flex;
       gap: 1.5rem;
       padding-bottom: 1rem;
       font-size: 2rem;
       color: var(--primary-blue);
+      &_sm {
+        display: none;
+      }
       .block {
         width: 1rem;
         background-color: var(--primary-blue);
       }
     }
-    &_filter {
-    }
-    &_page {
-      margin-right: 0;
+    &_content {
+      display: flex;
+      gap: 4rem;
+      &_form {
+        width: 60%;
+      }
+      &_pic {
+        width: 40%;
+        position: relative;
+        img {
+          width: 100%;
+        }
+      }
     }
   }
 }
 @media screen and (max-width: 420px) {
   .recruitment_post {
+    margin: 0;
     display: block;
+
+    &_breadcrumb {
+      display: none;
+    }
+    &_main {
+      padding: 1rem;
+      &_title {
+        display: none;
+      }
+      &_title_sm {
+        display: block;
+        margin-bottom: 3rem;
+        text-align: center;
+        font-size: 1.25rem;
+        color: var(--primary-blue);
+        position: relative;
+      }
+      &_title_sm::after {
+        position: absolute;
+        left: calc(50% - 1.25rem);
+        top: 2.5rem;
+        content: "";
+        width: 2.5rem;
+        height: 5px;
+        background-color: var(--primary-blue);
+      }
+    }
+
+    &_goback {
+      margin-top: 6rem;
+      display: block;
+      // margin-bottom: 3rem;
+
+      & a {
+        display: inline-block;
+        color: var(--primary-blue);
+        font-size: 1.25rem;
+        font-weight: 500;
+        padding-bottom: 0.5rem;
+        cursor: pointer;
+        & span {
+          color: var(--primary-blue);
+          font-size: 1.25rem;
+          padding-right: 0.5rem;
+        }
+      }
+    }
+    &_main {
+      &_content {
+        // display: flex;
+        // gap: 4rem;
+        &_form {
+          width: 100%;
+        }
+        &_pic {
+          display: none;
+          // position: relative;
+          // img {
+          //   width: 100%;
+          // }
+        }
+      }
+    }
   }
 }
 </style>

@@ -3,7 +3,7 @@
     <div class="products_aside_mobile_category">
       <span>類別</span>
       <div class="block"></div>
-      <span>球棒</span>
+      <span>{{ tags[props.type] }}</span>
     </div>
 
     <div class="products_aside_mobile_search">
@@ -36,11 +36,12 @@
 
 <script setup>
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
+import tags from "@/composables/tables/productTags";
 import { ref, watch } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
-const props = defineProps(["productTags"]);
+const props = defineProps(["productTags", "type"]);
 const emit = defineEmits(["filterProducts", "filterProductsByTag"]);
 
 const searchText = ref(store.state.selectedProductsText);

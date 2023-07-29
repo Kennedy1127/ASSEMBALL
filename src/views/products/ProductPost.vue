@@ -2,9 +2,13 @@
   <div class="product_post_wrap">
     <div class="goback">
       <router-link :to="{ name: 'Products' }">
-        <span><font-awesome-icon icon="fa-solid fa-angle-left" /></span>返回
+        <span>
+          <font-awesome-icon icon="fa-solid fa-angle-left" />
+        </span>
+        返回
       </router-link>
     </div>
+
     <div class="product_post">
       <div class="product_post_caution">
         <div class="product_post_caution_icon">
@@ -22,130 +26,138 @@
       </div>
 
       <div class="product_post_info">
-        <slot name="title">
-          <div class="product_post_info_title">
-            <div class="block"></div>
-            <div>上傳基本資訊</div>
-          </div>
-        </slot>
+        <div class="product_post_info_title">
+          <div class="block"></div>
+          <div>上傳基本資訊</div>
+        </div>
 
-        <div class="product_post_info_splitline"></div>
-        <div class="product_post_info_content">
-          <div class="product_post_info_content_formlist">
-            <div class="product_post_info_content_formlist_item">
-              <label
-                for="product_post_productname"
-                class="product_post_info_content_formlist_inputlabel"
-                ><span class="requiredMark">*</span>商品名稱：
-              </label>
-              <label
-                for="product_post_produccategory"
-                class="product_post_info_content_formlist_inputlabel"
-                ><span class="requiredMark">*</span>類別：
-              </label>
-              <label
-                for="product_post_loation"
-                class="product_post_info_content_formlist_inputlabel"
-                >所在縣市：
-              </label>
-              <label
-                for="product_post_price"
-                class="product_post_info_content_formlist_inputlabel"
-                ><span class="requiredMark">*</span>價錢：
-              </label>
-              <label
-                for="product_post_email"
-                class="product_post_info_content_formlist_inputlabel"
-                ><span class="requiredMark">*</span>Email：
-              </label>
-              <label
-                for="product_post_phone"
-                class="product_post_info_content_formlist_inputlabel"
-                ><span class="requiredMark">*</span>電話：
-              </label>
-              <label
-                for="product_post_image"
-                class="product_post_info_content_formlist_inputlabel"
-                ><span class="requiredMark">*</span>商品圖片：
-              </label>
-              <label
-                for="product_post_comment"
-                class="product_post_info_content_formlist_inputlabel"
-                ><span class="requiredMark">*</span>賣家留言：
-              </label>
-            </div>
-            <form
-              action=""
-              method="post"
-              name="productPost"
-              class="product_post_form"
-              @submit.prevent="submitForm"
-            >
-              <div class="product_post_info_content_formlist_text">
+        <form action="">
+          <div class="product_post_info_content">
+            <div class="product_post_info_group">
+              <div class="product_post_info_label">
+                <div class="label-star">*</div>
+                <label for="productname">商品名稱：</label>
+              </div>
+              <div class="product_post_info_input">
                 <input
                   type="text"
-                  id="product_post_productname"
-                  class="product_post_info_content_formlist_input"
+                  id="productname"
                   placeholder="請輸入商品名稱(1-10字)"
                   v-model="productname"
-                  maxlength="11"
+                  maxlength="10"
                   pattern="[^%&',;=?$\x22]+"
                   required
                 />
-                <select id="product_post_produccategory"></select>
-                <!-- //待修 -->
-                <select id="product_post_loation"></select>
-                <!-- //待修 -->
+                <div class="text-count">({{ computedProductNameLen }}/10)</div>
+              </div>
+            </div>
+
+            <div class="product_post_info_group">
+              <div class="product_post_info_label">
+                <div class="label-star">*</div>
+                <label for="">類別：</label>
+              </div>
+              <div class="product_post_info_select">
+                <SelectorComponent
+                  :options="productTags"
+                  v-model="tag"
+                  placeholder="選擇類別"
+                />
+              </div>
+            </div>
+
+            <div class="product_post_info_group">
+              <div class="product_post_info_label">
+                <label for="">所在縣市：</label>
+              </div>
+              <div class="product_post_info_select">
+                <SelectorComponent
+                  :options="productArea"
+                  v-model="area"
+                  placeholder="選擇地區"
+                />
+              </div>
+            </div>
+
+            <div class="product_post_info_group">
+              <div class="product_post_info_label">
+                <div class="label-star">*</div>
+                <label for="price">價錢：</label>
+              </div>
+              <div
+                class="product_post_info_input product_post_info_input--price"
+              >
                 <input
                   type="text"
-                  id="product_post_price"
-                  class="product_post_info_content_formlist_input"
+                  id="price"
                   placeholder="請輸入商品價格"
                   v-model="price"
                   minlength="1"
                   pattern="^[0-9]*$"
                   required
                 />
-                <!-- // 電子信箱驗證 規定只能輸入 xxx@xxx.xxx 形式 -->
+              </div>
+            </div>
+
+            <div class="product_post_info_group">
+              <div class="product_post_info_label">
+                <div class="label-star">*</div>
+                <label for="email">Email：</label>
+              </div>
+              <div class="product_post_info_input">
                 <input
                   type="email"
-                  id="product_post_email"
-                  class="product_post_info_content_formlist_input"
+                  id="email"
                   placeholder="請輸入電子信箱"
                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
                   v-model="email"
                   required
                 />
+              </div>
+            </div>
+
+            <div class="product_post_info_group">
+              <div class="product_post_info_label">
+                <div class="label-star">*</div>
+                <label for="phone">電話：</label>
+              </div>
+              <div class="product_post_info_input">
                 <input
                   type="tel"
-                  id="product_post_phone"
-                  class="product_post_info_content_formlist_input"
+                  id="phone"
                   placeholder="請輸入手機號碼(格式：09xx-xxxxxx)"
                   v-model="phone"
                   maxlength="11"
                   pattern="09\d{2}-\d{6}"
                   required
                 />
-                <!-- <div class="product_post_info_content_formlist_inputfile">
-                  <font-awesome-icon icon="fa-solid fa-image" />
-                  <font-awesome-icon icon="fa-regular fa-circle-plus" />
-  
-                  <input
-                    type="file"
-                    id="product_post_image"
-                    class="product_post_info_content_formlist_input"
-                  />
-                </div> -->
-                <label for="product_post_image"
-                  ><img
+              </div>
+            </div>
+
+            <div class="product_post_info_group">
+              <div class="product_post_info_label">
+                <div class="label-star">*</div>
+                <label for="image">商品圖片：</label>
+              </div>
+              <div class="product_post_info_upload">
+                <label for="image">
+                  <img
                     src="~@/assets/images/MemberCenter/MemberCenter_Personal_pic.svg"
                     alt="MemberCenter_Personal_pic"
                   />上傳商品圖片
-                  <input type="file" id="product_post_image" />
+                  <input type="file" id="image" />
                 </label>
-                <!-- //待修 -->
+              </div>
+            </div>
+
+            <div class="product_post_info_group">
+              <div class="product_post_info_label">
+                <div class="label-star">*</div>
+                <label for="comment">賣家留言：</label>
+              </div>
+              <div class="product_post_info_input">
                 <textarea
-                  id="roduct_post_comment"
+                  id="comment"
                   cols="60"
                   rows="10"
                   minlength="10"
@@ -154,25 +166,30 @@
                   placeholder="請填入留言版內容(10-100字)"
                   v-model="comment"
                 ></textarea>
-                <div class="product_post_info_content_formlist_btn">
-                  <!-- <button>取消</button>
-                  <button>刪除商品</button>
-                  <button>刊登商品</button> -->
-                  <input type="button" value="取消刊登" />
-                  <input type="button" value="刪除商品" />
-                  <input type="submit" value="刊登商品" />
+                <div class="text-count text-count--textarea">
+                  ({{ computedCommentLen }}/100)
                 </div>
               </div>
-            </form>
+            </div>
           </div>
-        </div>
+
+          <div class="product_post_info_btns">
+            <button>取消</button>
+            <button>刪除商品</button>
+            <button>刊登商品</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
+
 export default {
+  components: { SelectorComponent },
+
   data() {
     return {
       // 表單資料
@@ -181,8 +198,141 @@ export default {
       email: "",
       phone: "",
       comment: "",
+      tag: -1,
+      area: -1,
       ////////////////
+
+      // 下拉選單的tag分類
+      productTags: [
+        {
+          id: 1,
+          label: "球棒",
+        },
+        {
+          id: 2,
+          label: "球帽",
+        },
+        {
+          id: 3,
+          label: "球衣",
+        },
+        {
+          id: 4,
+          label: "球",
+        },
+        {
+          id: 5,
+          label: "護具",
+        },
+        {
+          id: 6,
+          label: "釘鞋",
+        },
+        {
+          id: 7,
+          label: "手套",
+        },
+      ],
+
+      // 下拉選單的地區分類
+      productArea: [
+        {
+          id: "不限地區",
+          label: "不限地區",
+        },
+        {
+          id: "基隆市",
+          label: "基隆市",
+        },
+        {
+          id: "台北市",
+          label: "台北市",
+        },
+        {
+          id: "新北市",
+          label: "新北市",
+        },
+        {
+          id: "桃園市",
+          label: "桃園市",
+        },
+        {
+          id: "新竹縣",
+          label: "新竹縣",
+        },
+        {
+          id: "新竹市",
+          label: "新竹市",
+        },
+        {
+          id: "苗栗縣",
+          label: "苗栗縣",
+        },
+        {
+          id: "台中市",
+          label: "台中市",
+        },
+        {
+          id: "彰化縣",
+          label: "彰化縣",
+        },
+        {
+          id: "南投縣",
+          label: "南投縣",
+        },
+        {
+          id: "雲林縣",
+          label: "雲林縣",
+        },
+        {
+          id: "嘉義縣",
+          label: "嘉義縣",
+        },
+        {
+          id: "嘉義市",
+          label: "嘉義市",
+        },
+        {
+          id: "台南市",
+          label: "台南市",
+        },
+        {
+          id: "高雄市",
+          label: "高雄市",
+        },
+
+        {
+          id: "屏東縣",
+          label: "屏東縣",
+        },
+        {
+          id: "宜蘭縣",
+          label: "宜蘭縣",
+        },
+        {
+          id: "花蓮縣",
+          label: "花蓮縣",
+        },
+        {
+          id: "台東縣",
+          label: "台東縣",
+        },
+        {
+          id: "澎湖縣",
+          label: "澎湖縣",
+        },
+      ],
     };
+  },
+
+  computed: {
+    computedProductNameLen() {
+      return this.productname.length;
+    },
+
+    computedCommentLen() {
+      return this.comment.length;
+    },
   },
 
   methods: {
@@ -206,11 +356,16 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .product_post_wrap {
   background-color: var(--secondary-blue-4);
   padding: 4rem 0;
   padding-top: 8rem;
+
+  @media all and (max-width: 420px) {
+    background-color: #fff;
+  }
+
   .goback {
     font-size: 1.5rem;
     color: var(--primary-blue);
@@ -218,33 +373,64 @@ export default {
     // width: 100%;
     max-width: 1200px;
     margin: auto;
+
+    @media all and (max-width: 420px) {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 2;
+
+      width: 100%;
+      height: 100px;
+      margin: 6rem 0 0;
+      padding: 1.5rem 1.5rem;
+      background-color: #fff;
+      box-shadow: var(--shadow-light);
+
+      display: flex;
+      align-items: center;
+    }
+
     & a {
-      display: inline-block;
       color: var(--primary-blue);
-      font-size: 1.25rem;
+      font-size: 1.5rem;
       font-weight: 500;
       padding-bottom: 0.5rem;
       cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      width: fit-content;
+
+      @media all and (max-width: 420px) {
+        padding-bottom: 0;
+      }
+
       & span {
         color: var(--primary-blue);
-        font-size: 1.25rem;
-        padding-right: 0.5rem;
+        font-size: 1.5rem;
+        font-weight: 400;
       }
     }
   }
+
   .product_post {
     background-color: var(--pale-white);
     box-shadow: var(--shadow-heavy);
     border-radius: var(--round);
-    padding: 4rem 0;
     width: 100%;
     max-width: 1600px;
     margin: auto;
     padding: 4rem 12rem;
-    display: flex;
-    gap: 4.5rem;
+
+    display: grid;
+    grid-template-columns: 1.5fr 3.5fr;
+    align-items: start;
+    gap: 5rem;
+
     @media screen and (max-width: 1600px) {
-      padding: 4rem rem;
+      padding: 4rem 12rem;
     }
     @media screen and (max-width: 1500px) {
       padding: 4rem 6rem;
@@ -252,28 +438,54 @@ export default {
     @media screen and (max-width: 1400px) {
       padding: 4rem 1.5rem;
     }
+
+    @media screen and (max-width: 420px) {
+      margin-top: 8rem;
+      padding: 0 1.5rem;
+      grid-template-columns: 1fr;
+      box-shadow: none;
+    }
+
     &_caution {
       width: 100%;
-      height: 100%;
       background-color: var(--secondary-blue-3);
       padding: 1.5rem;
       border-radius: 0.5rem;
+
+      @media all and (max-width: 420px) {
+        padding: 1rem;
+        padding-top: 0.5rem;
+        order: 2;
+      }
+
       &_icon {
         color: var(--primary-blue);
         font-size: 2.5rem;
         margin-bottom: 1rem;
+
+        @media all and (max-width: 420px) {
+          font-size: 2rem;
+        }
       }
+
       &_content {
         padding: 1rem;
         margin: auto;
         background-color: var(--pale-white);
         border-radius: 0.5rem;
+
         &_title {
           font-size: 1.25rem;
           margin-bottom: 1.5rem;
           color: var(--caution-red);
           font-weight: 500;
+
+          @media all and (max-width: 420px) {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+          }
         }
+
         &_text {
           font-size: 1rem;
           line-height: 1.75;
@@ -282,190 +494,257 @@ export default {
         }
       }
     }
+
     &_info {
       &_title {
         display: flex;
         gap: 1.5rem;
         padding-bottom: 2rem;
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: var(--primary-blue);
         border-bottom: 2px solid var(--secondary-gray-2);
-        margin-bottom: 3rem;
+
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-blue);
+
         .block {
           width: 1rem;
           background-color: var(--primary-blue);
         }
       }
+
       &_content {
-        &_formlist {
-          display: flex;
+        padding-top: 2rem;
+
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+
+        width: 85%;
+
+        @media screen and (max-width: 420px) {
+          width: 100%;
+          gap: 2rem;
+        }
+      }
+
+      &_group {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.25rem;
+
+        @media screen and (max-width: 420px) {
+          flex-direction: column;
           gap: 1rem;
+        }
+      }
 
-          &_inputlabel {
-            display: block;
-            width: 200px;
-            text-align: right;
-            font-size: 1.25rem;
-            color: var(--input-label-gray);
-            margin-bottom: 4rem;
-            .requiredMark {
-              color: var(--caution-red);
-            }
+      &_label {
+        flex-basis: 130px;
 
-            &_item {
-              display: flex;
-              gap: 1.5rem;
-            }
-          }
-          &_inputlabel:nth-child(7) {
-            margin-bottom: 12rem;
-          }
+        display: flex;
+        justify-content: flex-end;
+        font-size: 1.25rem;
+        font-weight: 400;
 
-          &_input {
-            width: 100%;
-            border-radius: 10px;
-            height: 3rem;
-            font-size: 1.25rem;
-            padding: 0.5rem;
-            background-color: var(--secondary-blue-4);
-            caret-color: var(--secondary-blue-1);
+        @media screen and (max-width: 420px) {
+          flex-basis: 0;
+        }
 
-            // var(--secondary-blue-4);
-            border: 0;
-            // color: var(--secondary-blue-1);
-            margin-bottom: 3rem;
-            padding-left: 1rem;
-          }
-          // &_input::placeholder {
-          //   text-align: right;
-          //   line-height: 25rem;
-          // } 先不用這個
-          &_input:focus {
+        .label-star {
+          color: var(--caution-red);
+        }
+
+        label {
+          color: var(--input-label-gray);
+        }
+      }
+
+      &_input {
+        flex: 1;
+        position: relative;
+
+        @media screen and (max-width: 420px) {
+          flex: initial;
+          width: 100%;
+        }
+
+        input,
+        textarea {
+          width: 100%;
+          height: 50px;
+          padding: 1rem;
+          border-radius: 10px;
+          background-color: var(--secondary-blue-4);
+          font-size: 1.25rem;
+          color: inherit;
+
+          &:focus {
             outline: 2px var(--secondary-blue-1) solid;
             background-color: var(--pale-white);
           }
-          &_text {
-            margin-bottom: 60px;
-            display: flex;
-            flex-direction: column;
-            select {
-              width: 14rem;
-              border-radius: 10px;
-              border: 2px solid var(--secondary-blue-1);
-              color: var(--secondary-blue-1);
-              font-size: 1.5rem;
-              outline: 0;
-              margin-bottom: 3.2rem;
-            }
-            #product_post_image {
-              display: none;
-            }
-            & label {
-              display: flex;
-              flex-direction: column;
-              text-align: center;
-              color: var(--secondary-blue-1);
-              border: 2px dashed var(--secondary-blue-1);
-              padding: 1.5rem;
-              max-width: 12rem;
-              cursor: pointer;
-              & img {
-                padding: 1rem;
-                padding-left: 1.5rem;
-                width: 8rem;
-              }
-              & input {
-                display: none;
-              }
-            }
-            & label:hover {
-              background-color: var(--secondary-blue-4);
-            }
-            textarea {
-              font-size: 1.25rem;
-              line-height: 1.75;
-              outline: 0;
-              background-color: var(--secondary-blue-4);
-              border: 0;
-              border-radius: 10px;
-              padding: 0.5rem;
-              caret-color: var(--secondary-blue-1);
-              padding-left: 1rem;
-              margin-top: 2.5rem;
-            }
-            textarea:focus {
-              outline: 2px var(--secondary-blue-1) solid;
-              background-color: var(--pale-white);
-            }
-            button {
-              width: 10rem;
-              height: 3rem;
-              border-radius: 10px;
-            }
+        }
+
+        textarea {
+          resize: none;
+          border: none;
+          min-height: 300px;
+        }
+
+        &--price {
+          flex: initial;
+          width: 30%;
+
+          @media screen and (max-width: 420px) {
+            width: 100%;
           }
-          &_inputfile {
-            width: 10rem;
-            height: 10rem;
-            flex-shrink: 0;
-            border: 2px dashed var(--secondary-blue-1);
-            color: var(--secondary-blue-1);
-            font-size: 5rem;
-            text-align: center;
-            line-height: 9rem;
-            margin-bottom: 3.5rem;
-            .svg-inline--fa.fa-plus {
-              color: var(--primary-blue);
-              margin-bottom: -0.5rem;
-              font-size: 2rem;
-              margin-left: -1rem;
-              stroke: #fff;
-            }
-          }
-          &_btn {
-            margin-top: 2rem;
-            display: flex;
-            justify-content: flex-end;
-            gap: 2rem;
-            font-size: 1.25rem;
-            & input:nth-child(n) {
-              border-radius: 10px;
-              font-weight: 500;
-              border: 0;
-              padding: 1rem 2.5rem 1rem 2.5rem;
-              cursor: pointer;
-            }
-            & input:nth-child(1) {
-              border: 2px solid;
-              border-color: var(--secondary-gray-3);
-              color: var(--secondary-gray-3);
-              background-color: #fff;
-            }
-            // & input:nth-child(1):hover {
-            //   background-color: var(--secondary-blue-1);
-            // }
-            & input:nth-child(2) {
-              background-color: var(--error-yellow);
-              color: var(--secondary-gray-1);
-              border: 0;
-            }
-            // & input:nth-child(2):hover {
-            //   background-color: var(--accent-yellow);
-            // }
-            & input:nth-child(3) {
-              background-color: var(--primary-blue);
-              color: var(--pale-white);
-            }
-            // & input:nth-child(3):hover {
-            //   background-color: var(--secondary-gray-2);
-            // }
+
+          input {
+            width: 100%;
           }
         }
-        &_splitline {
+
+        .text-count {
+          position: absolute;
+          top: 50%;
+          right: 1rem;
+          transform: translateY(-50%);
+          font-size: 14px;
+          color: var(--secondary-gray-3);
+
+          @media screen and (max-width: 420px) {
+            transform: translateY(0);
+            top: initial;
+            bottom: 0.5rem;
+            right: 0.5rem;
+          }
+
+          &--textarea {
+            transform: translateY(0);
+            top: initial;
+            bottom: 1rem;
+          }
+        }
+      }
+
+      &_select {
+        width: 30%;
+
+        @media screen and (max-width: 420px) {
           width: 100%;
-          height: 1px;
-          background-color: var(--split-gray);
-          margin: 2rem 0;
+        }
+
+        .selector-component {
+          width: 100%;
+          height: 50px;
+
+          .ivu-select-selection {
+            border: 2px solid var(--secondary-blue-1);
+
+            color: (--secondary-blue-1);
+
+            .ivu-select-placeholder {
+              color: var(--input-label-gray);
+            }
+
+            div:first-of-type {
+              padding: 0.5rem 1rem;
+
+              i {
+                &::before {
+                  color: var(--secondary-blue-1);
+                }
+              }
+            }
+          }
+        }
+      }
+
+      &_upload {
+        @media screen and (max-width: 420px) {
+          width: 100%;
+        }
+
+        label {
+          display: flex;
+          flex-direction: column;
+          text-align: center;
+          color: var(--secondary-blue-1);
+          border: 2px dashed var(--secondary-blue-1);
+          padding: 1.5rem;
+          max-width: 12rem;
+          cursor: pointer;
+
+          @media screen and (max-width: 420px) {
+            max-width: 100%;
+            min-height: 342px;
+            align-items: center;
+            justify-content: center;
+          }
+
+          img {
+            padding: 1rem;
+            padding-left: 1.5rem;
+            width: 8rem;
+
+            @media screen and (max-width: 420px) {
+              width: 10rem;
+            }
+          }
+
+          &:hover {
+            background-color: var(--secondary-blue-4);
+          }
+
+          input {
+            display: none;
+          }
+        }
+      }
+
+      &_btns {
+        width: 85%;
+        margin-top: 2rem;
+
+        display: flex;
+        justify-content: flex-end;
+        gap: 1.5rem;
+
+        @media screen and (max-width: 420px) {
+          width: 100%;
+          flex-direction: column;
+          justify-content: initial;
+        }
+
+        button {
+          border-radius: 10px;
+
+          font-size: 1.25rem;
+          font-weight: 500;
+          letter-spacing: 1.5px;
+
+          width: 150px;
+          height: 50px;
+
+          @media screen and (max-width: 420px) {
+            width: 100%;
+          }
+
+          &:first-child {
+            color: var(--secondary-gray-3);
+
+            background-color: #fff;
+            border: 2px solid var(--secondary-gray-3);
+          }
+
+          &:nth-child(2) {
+            color: var(--secondary-gray-1);
+            background-color: var(--error-yellow);
+          }
+
+          &:nth-child(3) {
+            color: var(--pale-white);
+            background-color: var(--primary-blue);
+          }
         }
       }
     }
