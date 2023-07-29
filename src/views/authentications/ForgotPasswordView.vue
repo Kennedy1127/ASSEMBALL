@@ -1,5 +1,5 @@
 <template>
-  <AuthenticationWrapper>
+  <AuthenticationWrapper v-if="!store.state.isMobile">
     <AuthenticationPic :info="info" />
 
     <div class="authentication_steps">
@@ -25,6 +25,8 @@
     />
     <ForgotPasswordStepTwo v-if="currentStep === 2" />
   </AuthenticationWrapper>
+
+  <ForgotPasswordMobile v-if="store.state.isMobile" />
 </template>
 
 <script setup>
@@ -32,7 +34,11 @@ import AuthenticationWrapper from "@/components/Authentication/AuthenticationWra
 import AuthenticationPic from "@/components/Authentication/AuthenticationPic.vue";
 import ForgotPasswordStepOne from "@/components/Authentication/ForgotPasswordStepOne.vue";
 import ForgotPasswordStepTwo from "@/components/Authentication/ForgotPasswordStepTwo.vue";
+import ForgotPasswordMobile from "@/components/Authentication/mobile/ForgotPasswordMobile.vue";
 import { ref } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
 
 const info = {
   title: "That’s ok !",

@@ -20,35 +20,13 @@ const routes = [
   {
     path: "/login",
     name: "Login",
-    component: () => import("@/views/authentications/Login.vue"),
+    component: () => import("@/views/authentications/LoginView.vue"),
   },
   {
     path: "/forgot-password",
     name: "ForgotPassword",
     component: () => import("@/views/authentications/ForgotPasswordView.vue"),
   },
-  {
-    path: "/authentication",
-    name: "Authentication",
-    component: () => import("@/views/authentications/AuthenticationView.vue"),
-  },
-
-  {
-    path: "/auth-logIn",
-    name: "LogIn",
-    component: () => import("@/views/authentications/LogInView.vue"),
-  },
-  {
-    path: "/auth-psw-forgot",
-    name: "PswForgot",
-    component: () => import("@/views/authentications/PswForgotView.vue"),
-  },
-  {
-    path: "/auth-psw-reset",
-    name: "PswReset",
-    component: () => import("@/views/authentications/PswResetView.vue"),
-  },
-
   /////////////////////////////////////////
   {
     path: "/products",
