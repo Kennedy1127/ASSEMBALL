@@ -10,13 +10,14 @@
         </div>
 
         <button class="authentication_btn">
-          <router-link :to="{ name: 'LogIn' }"
-            >登入 <font-awesome-icon icon="fa-solid fa-chevron-right"
-          /></router-link>
+          <router-link :to="{ name: 'LogIn' }">
+            登入
+            <font-awesome-icon icon="fa-solid fa-chevron-right" />
+          </router-link>
         </button>
       </div>
 
-      <form class="authentication_text" @submit="submitRegister">
+      <form class="authentication_text">
         <div class="authentication_text_slogan">Hello , Friend !</div>
         <div class="authentication_text_title">會員註冊/Sign Up</div>
         <div class="authentication_typing_name">
@@ -79,7 +80,6 @@
             註冊
             <font-awesome-icon icon="fa-solid fa-chevron-right" class="icon" />
           </button>
-
           <div class="authentication_psw_error">輸入錯誤!</div>
         </div>
       </form>
@@ -111,8 +111,7 @@ export default {
 <style scoped lang="scss">
 .authentication_wrap {
   background-color: var(--primary-blue);
-  padding: 12rem 0rem;
-  padding-top: 16rem;
+  padding: 8rem 0rem;
 }
 .authentication {
   display: flex;
@@ -152,29 +151,24 @@ export default {
     }
 
     .authentication_btn {
+      width: 10rem;
       border-radius: 2rem;
       color: var(--primary-blue);
+
       font-size: 1.25rem;
-      font-family: "Noto Sans TC";
       font-weight: 500;
+
       position: absolute;
       top: 80%;
-
-      width: 150px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
 
       a {
         width: 100%;
         height: 100%;
 
         display: flex;
-        align-items: center;
         justify-content: center;
-        gap: 1rem;
+        align-items: center;
+        gap: 0.5rem;
       }
     }
   }
@@ -252,20 +246,19 @@ export default {
       transform: translateX(-50%);
 
       button {
-        width: 150px;
-        height: 50px;
+        width: 10rem;
         border-radius: 2rem;
+        padding: 0.5rem 0.25rem;
         background-color: var(--primary-blue);
 
-        color: var(--pale-white);
         font-size: 1.25rem;
-        font-family: "Noto Sans TC";
         font-weight: 500;
+        color: var(--pale-white);
 
         display: flex;
-        align-items: center;
         justify-content: center;
-        gap: 1rem;
+        align-items: center;
+        gap: 0.5rem;
       }
     }
 

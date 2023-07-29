@@ -13,10 +13,26 @@ const routes = [
     component: () => import("@/views/HomeView.vue"),
   },
   {
+    path: "/register",
+    name: "Register",
+    component: () => import("@/views/authentications/Register.vue"),
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("@/views/authentications/Login.vue"),
+  },
+  {
+    path: "/forgot-password",
+    name: "ForgotPassword",
+    component: () => import("@/views/authentications/ForgotPassword.vue"),
+  },
+  {
     path: "/authentication",
     name: "Authentication",
     component: () => import("@/views/authentications/AuthenticationView.vue"),
   },
+
   {
     path: "/auth-logIn",
     name: "LogIn",

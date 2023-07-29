@@ -52,7 +52,10 @@ import {
   faCircleChevronDown,
   faCircleCheck,
   faEye,
+  faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
+
+import { faFacebook, faLine } from "@fortawesome/free-brands-svg-icons";
 
 library.add(
   faTrashCan,
@@ -95,7 +98,10 @@ library.add(
   faCircleChevronUp,
   faCircleChevronDown,
   faCircleCheck,
-  faEye
+  faEye,
+  faEyeSlash,
+  faFacebook,
+  faLine
 );
 
 createApp(App)
