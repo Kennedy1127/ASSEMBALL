@@ -171,6 +171,11 @@ const showPassword = ref(false);
       background-color: var(--secondary-blue-2);
 
       color: inherit;
+
+      &:focus {
+        background-color: var(--pale-white);
+        outline: 2px solid var(--secondary-blue-1);
+      }
     }
 
     &_icon {
