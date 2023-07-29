@@ -1,9 +1,6 @@
 <template>
   <div class="authentication_wrap">
     <div class="authentication">
-      <div v-if="layout !== 'normal'">
-        <slot name="form"></slot>
-      </div>
       <div class="authentication_pic">
         <div class="authentication_pic_title">Welcome Back !</div>
 
@@ -13,15 +10,13 @@
         </div>
 
         <button class="authentication_btn">
-          <router-link :to="{ name: 'LogIn' }"
-            >登入 <font-awesome-icon icon="fa-solid fa-chevron-right"
-          /></router-link>
+          <router-link :to="{ name: 'LogIn' }">
+            登入
+            <font-awesome-icon icon="fa-solid fa-chevron-right" />
+          </router-link>
         </button>
       </div>
 
-      <div v-if="layout === 'normal'">
-        <slot name="pic"></slot>
-      </div>
       <form class="authentication_text">
         <div class="authentication_text_slogan">Hello , Friend !</div>
         <div class="authentication_text_title">會員註冊/Sign Up</div>
@@ -55,59 +50,11 @@
           <button>
             註冊 <font-awesome-icon icon="fa-solid fa-chevron-right" />
           </button>
-
           <div class="authentication_psw_error">輸入錯誤!</div>
         </div>
       </form>
     </div>
   </div>
-
-  <!-- 框.vue -->
-  <!-- <div class="authentication_wrap">
-    <div class="authentication">
-      <div v-if="layout !== 'normal'">
-        <slot name="here"></slot>
-      </div>
-      <div class="authentication_pic">
-        <div class="authentication_pic_title">Welcome Back !</div>
-
-        <div class="authentication_pic_text">
-          Are you ready <br />
-          to unleash the power of baseball?
-        </div>
-
-        <button class="authentication_btn">
-          登入 <font-awesome-icon icon="fa-solid fa-chevron-right" />
-        </button>
-      </div>
-      <div v-if="layout === 'normal'">
-        <slot name="here"></slot>
-      </div>
-    </div>
-  </div> -->
-
-  <!-- 表格login.vue -->
-  <!-- <form>...</form> -->
-
-  <!-- 表格Forget.vue -->
-  <!-- <form>...</form> -->
-
-  <!-- 表格Register.vue -->
-  <!-- <form>...</form> -->
-
-  <!-- 頁面登入.vue -->
-  <!-- <框 layout="reverse">
-          <template #here>
-            <表格login />
-          </template>
-      </框> -->
-
-  <!-- 頁面註冊.vue -->
-  <!-- <框 layout="reverse">
-          <template #here>
-            <表格Register />
-          </template>
-      </框> -->
 </template>
 
 <script>
@@ -124,8 +71,7 @@ export default {
 <style scoped lang="scss">
 .authentication_wrap {
   background-color: var(--primary-blue);
-  padding: 12rem 0rem;
-  padding-top: 16rem;
+  padding: 8rem 0rem;
 }
 .authentication {
   display: flex;
@@ -165,19 +111,26 @@ export default {
     }
 
     .authentication_btn {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.5rem;
-      width: 6rem;
+      width: 10rem;
       border-radius: 2rem;
       padding: 0.5rem 0.25rem;
       color: var(--primary-blue);
+
       font-size: 1.25rem;
-      font-family: "Noto Sans TC";
       font-weight: 500;
+
       position: absolute;
       top: 80%;
+
+      a {
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+      }
     }
   }
 
@@ -254,14 +207,19 @@ export default {
       transform: translateX(-50%);
 
       button {
-        width: 6rem;
+        width: 10rem;
         border-radius: 2rem;
         padding: 0.5rem 0.25rem;
-        color: var(--pale-white);
-        font-size: 1.25rem;
         background-color: var(--primary-blue);
-        font-family: "Noto Sans TC";
+
+        font-size: 1.25rem;
         font-weight: 500;
+        color: var(--pale-white);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
       }
     }
 
