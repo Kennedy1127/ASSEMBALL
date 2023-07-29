@@ -20,7 +20,7 @@ const routes = [
   {
     path: "/login",
     name: "Login",
-    component: () => import("@/views/authentications/LoginView.vue"),
+    component: () => import("@/views//authentications/LoginView.vue"),
   },
   {
     path: "/forgot-password",

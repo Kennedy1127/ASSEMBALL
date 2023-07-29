@@ -54,10 +54,10 @@
       </button>
     </div>
     <div class="MemberCenter_btn">
-      <router-link :to="{ name: 'Authentication' }">
+      <router-link :to="{ name: 'Register' }">
         <button>註冊</button>
       </router-link>
-      <router-link :to="{ name: 'LogIn' }">
+      <router-link :to="{ name: 'Login' }">
         <button>登入</button>
       </router-link>
     </div>
