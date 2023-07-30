@@ -274,6 +274,13 @@ export default {
   overflow-y: scroll;
   @media all and (max-width: 420px) {
     max-width: 100%;
+    height: 90vh;
+    left: 0;
+    z-index: 48;
+    top: 4.2rem;
+    overflow: auto;
+    padding-bottom: 2rem;
+    // padding-top: 2rem;
   }
   &_return {
     width: 100%;

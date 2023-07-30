@@ -170,6 +170,9 @@ export default {
     border-radius: var(--round);
     padding: 3rem 8rem;
     margin-top: 2rem;
+    @media all and (max-width: 420px) {
+      padding: 2rem 2rem;
+    }
   }
   &_title {
     font-size: 1.5rem;
@@ -215,6 +218,9 @@ export default {
       align-items: center;
       color: var(--secondary-gray-3);
       padding-right: 5rem;
+      @media all and (max-width: 420px) {
+        padding-right: 0rem;
+      }
     }
     &_item {
       display: flex;
@@ -262,6 +268,9 @@ export default {
         padding: 1rem 0;
         padding-left: 1rem;
         font-size: 1rem;
+        @media all and (max-width: 420px) {
+          width: 100%;
+        }
       }
       & input:focus {
         outline: 2px solid var(--secondary-blue-1);
@@ -298,12 +307,19 @@ export default {
     &_card {
       display: flex;
       gap: 2rem;
+      @media all and (max-width: 420px) {
+        flex-direction: column;
+        gap: 1rem;
+      }
       &_creditCardNumber {
         flex: 2 1 100px;
         display: flex;
         flex-direction: column;
         padding-bottom: 0.5rem;
         padding-bottom: 3rem;
+        @media all and (max-width: 420px) {
+          padding-bottom: 1rem;
+        }
         & label {
           font-size: 1.25rem;
           color: var(--secondary-gray-1);
@@ -332,6 +348,9 @@ export default {
         flex-direction: column;
         padding-bottom: 0.5rem;
         padding-bottom: 3rem;
+        @media all and (max-width: 420px) {
+          padding-bottom: 1rem;
+        }
         & label {
           font-size: 1.25rem;
           color: var(--secondary-gray-1);

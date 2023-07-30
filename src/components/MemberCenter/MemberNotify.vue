@@ -103,13 +103,21 @@ export default {
   width: 100%;
   max-width: 25%;
   max-height: 100%;
-  max-height: 85vh;
   background-color: var(--pale-white);
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: auto;
   gap: 0.5rem;
+  @media all and (max-width: 420px) {
+    max-width: 100%;
+    max-height: 85vh;
+    left: 0;
+    z-index: 48;
+    top: 4.5rem;
+    overflow: auto;
+    padding-top: 1rem;
+  }
   &_join {
     position: relative;
     width: 100%;

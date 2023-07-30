@@ -53,6 +53,20 @@
             </div>
           </div>
         </div>
+        <!-- //手機板導覽列
+        <div class="mobile">
+          <div class="mobile_list">
+            <div class="mobile_list_hamburger"></div>
+            <div class="mobile_list_home"></div>
+            <div class="mobile_list_notify" @click="toggleNotify">
+              <span><font-awesome-icon icon="fa-solid fa-bell" /></span>
+              <div class="mobile_list_notify_num">{{ notify }}</div>
+            </div>
+            <div class="mobile_list_member" @click="toggleMember">
+              <span><font-awesome-icon icon="fa-solid fa-user" /></span>
+            </div>
+          </div>
+        </div> -->
       </div>
     </nav>
   </header>
@@ -77,9 +91,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-// header {
-//   height: 12rem;
-// }
+// 桌機版選單
 .header {
   position: fixed;
   top: 0;
@@ -89,6 +101,10 @@ export default {
   display: flex;
   justify-content: center;
   z-index: 100;
+  @media all and (max-width: 420px) {
+    height: 4.5rem;
+    z-index: 49;
+  }
   .wrapper {
     width: 95%;
     height: 100%;
@@ -107,7 +123,7 @@ export default {
       justify-content: center;
     }
     & a {
-      width: 75%;
+      width: 70%;
       & img {
         display: block;
         width: 100%;
@@ -204,4 +220,20 @@ export default {
     }
   }
 }
+
+// //手機板選單
+
+// .mobile {
+//   display: none;
+//   @media all and (max-width: 420px) {
+//     position: fixed;
+//     bottom: 0;
+//     width: 100%;
+//     height: 5rem;
+//     background-color: var(--primary-blue);
+//     display: flex;
+//     justify-content: center;
+//     z-index: 100;
+//   }
+// }
 </style>
