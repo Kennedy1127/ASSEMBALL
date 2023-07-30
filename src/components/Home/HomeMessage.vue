@@ -38,7 +38,7 @@
         />
       </div>
     </div>
-    <div v-if="showMessageText" style="z-index: 2">
+    <div v-if="showMessageTextFirst" style="z-index: 2">
       <div class="home_message_all_text" v-for="item in messageText">
         <div class="home_message_all_text_header">
           <h3>
@@ -66,8 +66,36 @@
         </div>
       </div>
     </div>
-    <div v-else style="z-index: 2">
+    <div v-else-if="showMessageTextSecond" style="z-index: 2">
       <div class="home_message_all_text" v-for="item in messageTextReplace">
+        <div class="home_message_all_text_header">
+          <h3>
+            <router-link :to="{ name: 'myplayerTeam' }">{{
+              item.title
+            }}</router-link>
+          </h3>
+          <span class="home_message_all_text_header_date">
+            {{ item.date }}
+          </span>
+          <span class="home_message_all_text_header_tag">
+            {{ item.tag }}
+          </span>
+        </div>
+        <div class="home_message_all_text_section">
+          <span class="home_message_all_text_section_text">
+            {{ item.text }}
+          </span>
+          <button
+            @click="goToMyPlayerTeam(item.id)"
+            class="home_message_all_text_section_btn"
+          >
+            <Icon type="ios-arrow-dropright-circle" />{{ item.btn }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div v-else style="z-index: 2">
+      <div class="home_message_all_text" v-for="item in messageTextReplaceTwo">
         <div class="home_message_all_text_header">
           <h3>
             <router-link :to="{ name: 'myplayerTeam' }">{{
@@ -106,7 +134,8 @@
 export default {
   data() {
     return {
-      showMessageText: false,
+      showMessageTextFirst: true,
+      showMessageTextSecond: false,
       messageText: [
         {
           title: "紐約野馬隊投手表現",
@@ -126,7 +155,7 @@ export default {
         {
           title: "球隊部署技巧分享",
           date: "2023/07/21",
-          tag: "NEW",
+          tag: "HOT",
           text: "對於這個球隊的戰術部署有什麼看法嗎？我覺得教練在換投手的時機上有待改進，有時候明......",
           btn: "更多",
           id: "1",
@@ -134,7 +163,7 @@ export default {
         {
           title: "這個賽季最熱門的球隊？",
           date: "2023/07/28",
-          tag: "HOT",
+          tag: "NEW",
           text: "哪支球隊在這個賽季的戰績最令你驚艷？我覺得小熊隊從開季以來一直保持穩定的表現，實......",
           btn: "更多",
           id: "1",
@@ -166,6 +195,7 @@ export default {
         {
           title: "最新賽事天使隊戰績分析",
           date: "2023/08/11",
+          tag: "NEW",
           text: "天使隊這此的戰績需要改進，應該更加關注防守。大家對此有什麼看法？",
           btn: "更多",
           id: "1",
@@ -173,7 +203,7 @@ export default {
         {
           title: "球迷見面會安排",
           date: "2023/07/14",
-          tag: "HOT",
+          tag: "NEW",
           text: "我建議我們球隊應該組織一次球迷見面會，讓我們更加接近球隊，有什麼好的建議嗎？",
           btn: "更多",
           id: "1",
@@ -187,6 +217,47 @@ export default {
           id: "1",
         },
       ],
+      messageTextReplaceTwo: [
+        {
+          title: "球場風采攝影紀錄",
+          date: "2023/07/08",
+          tag: "HOT",
+          text: "大家有沒有拍到球場內外美麗的風景或球員動作的照片？快來分享和一起欣賞吧！",
+          btn: "更多",
+          id: "1",
+        },
+        {
+          title: "棒球文化交流",
+          date: "2023/08/03",
+          tag: "NEW",
+          text: "台灣的棒球文化與其他國家的球隊文化有何異同？一起來探討各自的獨特之處吧！",
+          btn: "更多",
+          id: "1",
+        },
+        {
+          title: "2023球員魅力評選",
+          date: "2023/08/01",
+          text: "你們心目中最有魅力的球員是誰？一起來投票選出球隊的風采代表！",
+          tag: "NEW",
+          btn: "更多",
+          id: "1",
+        },
+        {
+          title: "二手棒球裝備分享",
+          date: "2023/07/22",
+          tag: "HOT",
+          text: "有沒有什麼好的棒球裝備推薦？球迷們來分享一下你們的使用心得或者收藏吧～",
+          btn: "更多",
+          id: "1",
+        },
+        {
+          title: "球場安全的重要性？",
+          date: "2023/06/28",
+          text: "球場的安全措施是否到位？大家有沒有什麼建議來提高球場的安全性？",
+          btn: "更多",
+          id: "1",
+        },
+      ],
     };
   },
   methods: {
@@ -195,7 +266,14 @@ export default {
       this.$router.push({ name: "myplayerTeam", params: { id } });
     },
     toggleMessageText() {
-      this.showMessageText = !this.showMessageText;
+      if (this.showMessageTextFirst) {
+        this.showMessageTextFirst = false;
+        this.showMessageTextSecond = true;
+      } else if (this.showMessageTextSecond) {
+        this.showMessageTextSecond = false;
+      } else {
+        this.showMessageTextFirst = true;
+      }
     },
   },
 };
