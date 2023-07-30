@@ -13,26 +13,20 @@ const routes = [
     component: () => import("@/views/HomeView.vue"),
   },
   {
-    path: "/authentication",
-    name: "Authentication",
-    component: () => import("@/views/authentications/AuthenticationView.vue"),
+    path: "/register",
+    name: "Register",
+    component: () => import("@/views/authentications/RegisterView.vue"),
   },
   {
-    path: "/auth-logIn",
-    name: "LogIn",
-    component: () => import("@/views/authentications/LogInView.vue"),
+    path: "/login",
+    name: "Login",
+    component: () => import("@/views//authentications/LoginView.vue"),
   },
   {
-    path: "/auth-psw-forgot",
-    name: "PswForgot",
-    component: () => import("@/views/authentications/PswForgotView.vue"),
+    path: "/forgot-password",
+    name: "ForgotPassword",
+    component: () => import("@/views/authentications/ForgotPasswordView.vue"),
   },
-  {
-    path: "/auth-psw-reset",
-    name: "PswReset",
-    component: () => import("@/views/authentications/PswResetView.vue"),
-  },
-
   /////////////////////////////////////////
   {
     path: "/products",
@@ -43,13 +37,13 @@ const routes = [
         next();
         return;
       }
-      store.commit("resetPaginationCurPage");
+      store.commit("resetPaginationCurPage", "products");
       store.commit("resetProductsFilterAndTag");
       next();
     },
   },
   {
-    path: "/products/:id",
+    path: "/products/:productId",
     name: "ProductDetail",
     component: () => import("@/views/products/ProductDetail.vue"),
   },
@@ -78,7 +72,7 @@ const routes = [
         next();
         return;
       }
-      store.commit("resetPaginationCurPage");
+      store.commit("resetPaginationCurPage", "copywritings");
       store.commit("resetFiltersAndSearch");
       next();
     },
@@ -99,6 +93,10 @@ const routes = [
     name: "recruitmentManage",
     component: () =>
       import("@/views/recruitments/backside/RecruitmentManageView.vue"),
+    beforeEnter: (to, from, next) => {
+      store.commit("resetPaginationCurPage");
+      next();
+    },
   },
   {
     path: "/recruitments/recruitment-verify",

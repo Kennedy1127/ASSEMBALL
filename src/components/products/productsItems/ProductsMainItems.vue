@@ -114,7 +114,7 @@ const convertPrice = (price) => {
 const goToProductDetail = (id) => {
   router.push({
     name: "ProductDetail",
-    params: { id },
+    params: { productId: id },
     query: { h: windowTop.value },
   });
 };

@@ -270,7 +270,7 @@ export default {
     margin: 0;
     &_aside {
       // TODO:在思考要不要把側邊欄拿掉(設計圖原本有)
-      // display: none;
+      display: none;
     }
     &_breadcrumb {
       display: none;
@@ -295,7 +295,7 @@ export default {
           display: block;
           &_pic {
             // width: 6rem;
-            width: 80vw;
+            width: 50vw;
             margin: auto;
             margin-bottom: 2rem;
           }
