@@ -38,34 +38,66 @@
         />
       </div>
     </div>
-    <div class="home_message_all_text" v-for="item in messageText">
-      <div class="home_message_all_text_header">
-        <h3>
-          <router-link :to="{ name: 'myplayerTeam' }">{{
-            item.title
-          }}</router-link>
-        </h3>
-        <span class="home_message_all_text_header_date">
-          {{ item.date }}
-        </span>
-        <span class="home_message_all_text_header_tag">
-          {{ item.tag }}
-        </span>
+    <div v-if="showMessageText" style="z-index: 2">
+      <div class="home_message_all_text" v-for="item in messageText">
+        <div class="home_message_all_text_header">
+          <h3>
+            <router-link :to="{ name: 'myplayerTeam' }">{{
+              item.title
+            }}</router-link>
+          </h3>
+          <span class="home_message_all_text_header_date">
+            {{ item.date }}
+          </span>
+          <span class="home_message_all_text_header_tag">
+            {{ item.tag }}
+          </span>
+        </div>
+        <div class="home_message_all_text_section">
+          <span class="home_message_all_text_section_text">
+            {{ item.text }}
+          </span>
+          <button
+            @click="goToMyPlayerTeam(item.id)"
+            class="home_message_all_text_section_btn"
+          >
+            <Icon type="ios-arrow-dropright-circle" />{{ item.btn }}
+          </button>
+        </div>
       </div>
-      <div class="home_message_all_text_section">
-        <span class="home_message_all_text_section_text">
-          {{ item.text }}
-        </span>
-        <button
-          @click="goToMyPlayerTeam(item.id)"
-          class="home_message_all_text_section_btn"
-        >
-          <Icon type="ios-arrow-dropright-circle" />{{ item.btn }}
-        </button>
+    </div>
+    <div v-else style="z-index: 2">
+      <div class="home_message_all_text" v-for="item in messageTextReplace">
+        <div class="home_message_all_text_header">
+          <h3>
+            <router-link :to="{ name: 'myplayerTeam' }">{{
+              item.title
+            }}</router-link>
+          </h3>
+          <span class="home_message_all_text_header_date">
+            {{ item.date }}
+          </span>
+          <span class="home_message_all_text_header_tag">
+            {{ item.tag }}
+          </span>
+        </div>
+        <div class="home_message_all_text_section">
+          <span class="home_message_all_text_section_text">
+            {{ item.text }}
+          </span>
+          <button
+            @click="goToMyPlayerTeam(item.id)"
+            class="home_message_all_text_section_btn"
+          >
+            <Icon type="ios-arrow-dropright-circle" />{{ item.btn }}
+          </button>
+        </div>
       </div>
     </div>
     <div class="home_message_all_btn">
-      <button><Icon type="ios-baseball-outline" />VIEW MORE</button>
+      <button @click="toggleMessageText">
+        <Icon type="ios-baseball-outline" />VIEW MORE
+      </button>
     </div>
   </div>
 </template>
@@ -74,6 +106,7 @@
 export default {
   data() {
     return {
+      showMessageText: false,
       messageText: [
         {
           title: "紐約野馬隊投手表現",
@@ -114,12 +147,55 @@ export default {
           id: "1",
         },
       ],
+      messageTextReplace: [
+        {
+          title: "球場美食評比",
+          date: "2023/06/18",
+          text: "上次在新莊棒球場吃到超美味的熱狗，還有其他球場的美食值得嘗試嗎？大家來分享一下自己的球場美食經驗！",
+          btn: "更多",
+          id: "1",
+        },
+        {
+          title: "2023賽季球隊前景",
+          date: "2023/08/01",
+          tag: "HOT",
+          text: "我覺得紐約小熊球隊今年的陣容非常強大，有望在賽季中取得突破性的表現！",
+          btn: "更多",
+          id: "1",
+        },
+        {
+          title: "最新賽事天使隊戰績分析",
+          date: "2023/08/11",
+          text: "天使隊這此的戰績需要改進，應該更加關注防守。大家對此有什麼看法？",
+          btn: "更多",
+          id: "1",
+        },
+        {
+          title: "球迷見面會安排",
+          date: "2023/07/14",
+          tag: "HOT",
+          text: "我建議我們球隊應該組織一次球迷見面會，讓我們更加接近球隊，有什麼好的建議嗎？",
+          btn: "更多",
+          id: "1",
+        },
+        {
+          title: "如何治癒比賽情緒？",
+          date: "2023/08/19",
+          tag: "NEW",
+          text: "雖然這次公牛隊輸掉了比賽，心情沮喪了一陣子，但我相信下一場他們會反彈，一起加油！",
+          btn: "更多",
+          id: "1",
+        },
+      ],
     };
   },
   methods: {
     goToMyPlayerTeam(id) {
       // 使用 $router.push 進行路由導航
       this.$router.push({ name: "myplayerTeam", params: { id } });
+    },
+    toggleMessageText() {
+      this.showMessageText = !this.showMessageText;
     },
   },
 };
@@ -195,7 +271,7 @@ export default {
       & img {
         width: 40%;
         position: absolute;
-        top: 2rem;
+        top: 0;
         left: 2rem;
       }
       &_phone {
@@ -232,7 +308,7 @@ export default {
   &_text {
     margin-left: auto;
     margin-right: 2rem;
-    z-index: 1;
+    z-index: 100;
     width: 56%;
     color: var(--primary-blue);
     border-bottom: 2px solid var(--secondary-blue-1);
