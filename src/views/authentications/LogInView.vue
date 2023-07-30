@@ -1,6 +1,6 @@
 <template>
   <AuthenticationWrapper v-if="!store.state.isMobile">
-    <form class="authentication_text">
+    <form class="authentication_text" @submit.prevent="handleSignin">
       <div class="authentication_text_slogan">Welocom Back !</div>
       <div class="authentication_text_title">會員登入/Log In</div>
       <div class="authentication_text_subtitle">快速登入</div>
@@ -71,10 +71,14 @@
 import AuthenticationWrapper from "@/components/Authentication/AuthenticationWrapper.vue";
 import AuthenticationPic from "@/components/Authentication/AuthenticationPic.vue";
 import LoginMobile from "@/components/Authentication/mobile/LoginMobile.vue";
+import useLogin from "@/composables/authentication/useLogin";
+import useSetPersistence from "@/composables/authentication/useSetPersistence";
 import { ref } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
+const { login } = useLogin();
+const { changePersistence } = useSetPersistence();
 
 const info = {
   title: "Hello , Friend !",
@@ -85,6 +89,11 @@ const info = {
 };
 
 const showPassword = ref(false);
+
+const handleSignin = async () => {
+  await changePersistence();
+  await login("test123@gmail.com", "123456");
+};
 </script>
 
 <style scoped lang="scss">

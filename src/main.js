@@ -104,10 +104,30 @@ library.add(
   faLine
 );
 
-createApp(App)
-  .use(store)
-  .use(router)
-  .component("font-awesome-icon", FontAwesomeIcon) //icon 設定
-  .use(ViewUIPlus)
-  .use(VCalendar, {})
-  .mount("#app");
+// firebase 狀態觀察設定
+import { auth } from "@/firebase/config";
+import { onAuthStateChanged } from "firebase/auth";
+
+// createApp(App)
+// .use(store)
+// .use(router)
+// .component("font-awesome-icon", FontAwesomeIcon) //icon 設定
+// .use(ViewUIPlus)
+// .use(VCalendar, {})
+// .mount("#app");
+
+let app;
+
+onAuthStateChanged(auth, (user) => {
+  console.log(user);
+
+  if (!app) {
+    app = createApp(App)
+      .use(store)
+      .use(router)
+      .component("font-awesome-icon", FontAwesomeIcon) //icon 設定
+      .use(ViewUIPlus)
+      .use(VCalendar, {})
+      .mount("#app");
+  }
+});

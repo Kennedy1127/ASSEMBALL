@@ -2,7 +2,7 @@
   <AuthenticationWrapper v-if="!store.state.isMobile">
     <AuthenticationPic :info="info" />
 
-    <form class="authentication_text">
+    <form class="authentication_text" @submit.prevent="handleSignup">
       <div class="authentication_text_slogan">Hello , Friend !</div>
       <div class="authentication_text_title">會員註冊/Sign Up</div>
       <div class="authentication_typing_name">
@@ -47,9 +47,11 @@
 import AuthenticationWrapper from "@/components/Authentication/AuthenticationWrapper.vue";
 import AuthenticationPic from "@/components/Authentication/AuthenticationPic.vue";
 import RegisterMobile from "@/components/Authentication/mobile/RegisterMobile.vue";
+import useSignup from "@/composables/authentication/useSignup";
 import { useStore } from "vuex";
 
 const store = useStore();
+const { signup } = useSignup();
 
 const info = {
   title: "Welcome Back !",
@@ -57,6 +59,10 @@ const info = {
   link: "Login",
   linkName: "登入",
   imgSrc: require("@/assets/images/authentication/sign-in-bg.jpg"),
+};
+
+const handleSignup = () => {
+  signup("test123@gmail.com", "123456");
 };
 </script>
 
@@ -162,3 +168,4 @@ const info = {
   }
 }
 </style>
+@/composables/authentication/useSignup
