@@ -16,12 +16,15 @@
     />
   </transition>
   <!-- 通知視窗頁面 -->
+
   <MemberNotify v-if="$store.state.isNotifyVisible" />
+
   <!-- 會員中心 > 個人資料頁面 -->
   <MemberPersonal
     v-if="$store.state.isPersonalVisible"
     @return_page="returnPage"
   />
+
   <!-- 會員中心頁面 -->
   <MemberCenter
     v-if="$store.state.isMemberVisible"
@@ -32,28 +35,29 @@
 </template>
 
 <style>
+/* 導覽列 */
 .fade-enter-active {
-  animation: fade-in 0.1s ease-in-out;
+  animation: fade-in 0.3s;
 }
 .fade-leave-active {
-  animation: fade-out 0.1s ease-in-out;
+  animation: fade-out 0.3s;
 }
 
 @keyframes fade-in {
   from {
-    opacity: 1;
+    opacity: 0;
   }
   to {
-    opacity: 0;
+    opacity: 1;
   }
 }
 
 @keyframes fade-out {
   from {
-    opacity: 0;
+    opacity: 1;
   }
   to {
-    opacity: 1;
+    opacity: 0;
   }
 }
 </style>

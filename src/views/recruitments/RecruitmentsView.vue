@@ -76,6 +76,9 @@ const toggleAside = () => {
 <style scoped lang="scss">
 .recruit {
   margin-top: 6rem;
+  @media all and (max-width: 420px) {
+    margin-top: 4rem;
+  }
 
   &_landing {
     position: relative;

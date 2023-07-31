@@ -100,13 +100,13 @@ export default {
   padding: 0.5rem 0;
   @media all and (max-width: 420px) {
     max-width: 100%;
-    height: 85vh;
+    height: 90vh;
     left: 0;
     z-index: 48;
     top: 4.2rem;
     overflow: auto;
     // padding-bottom: 5rem;
-    padding-top: 2rem;
+    padding-top: 3rem;
   }
   &_member {
     position: relative;

@@ -42,7 +42,7 @@
                 <input
                   type="text"
                   id="productname"
-                  placeholder="請輸入商品名稱(1-10字)"
+                  placeholder="請輸入商品名稱"
                   v-model="productname"
                   maxlength="10"
                   pattern="[^%&',;=?$\x22]+"
@@ -139,7 +139,16 @@
                 <div class="label-star">*</div>
                 <label for="image">商品圖片：</label>
               </div>
+              <!-- //上傳 -->
               <div class="product_post_info_upload">
+                <img :src="avatar" :alt="product_post_info_upload" />
+                <label for="product_pic"
+                  ><span><font-awesome-icon icon="fa-solid fa-plus" /></span
+                  >上傳商品照片
+                  <input type="file" id="product_pic" @change="onfile"
+                /></label>
+              </div>
+              <!-- <div class="product_post_info_upload">
                 <label for="image">
                   <img
                     src="~@/assets/images/MemberCenter/MemberCenter_Personal_pic.svg"
@@ -147,7 +156,7 @@
                   />上傳商品圖片
                   <input type="file" id="image" />
                 </label>
-              </div>
+              </div> -->
             </div>
 
             <div class="product_post_info_group">
@@ -163,7 +172,7 @@
                   minlength="10"
                   maxlength="100"
                   value
-                  placeholder="請填入留言版內容(10-100字)"
+                  placeholder="請填入留言版內容..."
                   v-model="comment"
                 ></textarea>
                 <div class="text-count text-count--textarea">
@@ -197,6 +206,7 @@ export default {
       price: "",
       email: "",
       phone: "",
+      avatar: require("@/assets/images/icons/default_avatar.svg"),
       comment: "",
       tag: -1,
       area: -1,
@@ -336,6 +346,16 @@ export default {
   },
 
   methods: {
+    //圖片設定
+    onfile(event) {
+      this.file = event.target.files[0];
+      let filereader = new FileReader();
+      filereader.readAsDataURL(this.file);
+      filereader.addEventListener("load", () => {
+        this.avatar = filereader.result;
+        console.warn(this.avatar);
+      });
+    },
     //提交表單
     submitForm() {
       alert("商品上架的資料送出成功！");
@@ -344,12 +364,14 @@ export default {
       console.log("商品價格：", this.price);
       console.log("電子信箱：", this.email);
       console.log("手機號碼：", this.phone);
+      console.log("商品照片：", this.avatar);
       console.log("賣家留言：", this.comment);
       //提交後重置表單資料
       this.productname = "";
       this.price = "";
       this.email = "";
       this.phone = "";
+      this.avatar = require("@/assets/images/icons/default_avatar.svg");
       this.comment = "";
     },
   },
@@ -363,6 +385,7 @@ export default {
   padding-top: 8rem;
 
   @media all and (max-width: 420px) {
+    padding-top: 4rem;
     background-color: #fff;
   }
 
@@ -381,9 +404,9 @@ export default {
       z-index: 2;
 
       width: 100%;
-      height: 100px;
-      margin: 6rem 0 0;
-      padding: 1.5rem 1.5rem;
+      height: 80px;
+      margin: 4.5rem 0 0;
+      padding: 1rem 1.5rem 1rem 1rem;
       background-color: #fff;
       box-shadow: var(--shadow-light);
 
@@ -405,6 +428,7 @@ export default {
 
       @media all and (max-width: 420px) {
         padding-bottom: 0;
+        font-size: 1.25rem;
       }
 
       & span {
@@ -614,8 +638,9 @@ export default {
           @media screen and (max-width: 420px) {
             transform: translateY(0);
             top: initial;
-            bottom: 0.5rem;
+            bottom: 0.75rem;
             right: 0.5rem;
+            font-size: 1.25rem;
           }
 
           &--textarea {
@@ -663,42 +688,70 @@ export default {
         @media screen and (max-width: 420px) {
           width: 100%;
         }
-
-        label {
+        & img {
+          width: 150px;
+          height: 150px;
+          @media screen and (max-width: 420px) {
+            width: 100px;
+            height: 100px;
+          }
+        }
+        & label {
           display: flex;
-          flex-direction: column;
           text-align: center;
           color: var(--secondary-blue-1);
+          padding: 0.5rem;
+          margin-top: 1rem;
+          font-weight: 500;
           border: 2px dashed var(--secondary-blue-1);
-          padding: 1.5rem;
-          max-width: 12rem;
           cursor: pointer;
-
-          @media screen and (max-width: 420px) {
-            max-width: 100%;
-            min-height: 342px;
-            align-items: center;
-            justify-content: center;
+          width: 150px;
+          & span {
+            padding-right: 0.5rem;
           }
-
-          img {
-            padding: 1rem;
-            padding-left: 1.5rem;
-            width: 8rem;
-
-            @media screen and (max-width: 420px) {
-              width: 10rem;
-            }
-          }
-
-          &:hover {
-            background-color: var(--secondary-blue-4);
-          }
-
-          input {
+          & input {
             display: none;
           }
         }
+        & label:hover {
+          background-color: var(--secondary-blue-4);
+        }
+
+        // label {
+        //   display: flex;
+        //   flex-direction: column;
+        //   text-align: center;
+        //   color: var(--secondary-blue-1);
+        //   border: 2px dashed var(--secondary-blue-1);
+        //   padding: 1.5rem;
+        //   max-width: 12rem;
+        //   cursor: pointer;
+
+        //   @media screen and (max-width: 420px) {
+        //     max-width: 100%;
+        //     min-height: 342px;
+        //     align-items: center;
+        //     justify-content: center;
+        //   }
+
+        //   img {
+        //     padding: 1rem;
+        //     padding-left: 1.5rem;
+        //     width: 8rem;
+
+        //     @media screen and (max-width: 420px) {
+        //       width: 10rem;
+        //     }
+        //   }
+
+        //   &:hover {
+        //     background-color: var(--secondary-blue-4);
+        //   }
+
+        //   input {
+        //     display: none;
+        //   }
+        // }
       }
 
       &_btns {
