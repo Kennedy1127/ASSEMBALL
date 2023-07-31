@@ -1,11 +1,7 @@
 import { db } from "@/firebase/config";
-import { doc, setDoc } from "firebase/firestore";
-import { ref } from "vue";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 
 const useData = () => {
-  const error = ref(null);
-  const isPending = ref(false);
-
   const setData = async (target, data) => {
     try {
       const dataRef = doc(db, target, data.id);
@@ -16,7 +12,17 @@ const useData = () => {
     }
   };
 
-  return { error, isPending, setData };
+  const updateData = async (target, data) => {
+    try {
+      const dataRef = doc(db, target, data.id);
+      await updateDoc(dataRef, data);
+    } catch (err) {
+      console.error("Something went wrong!");
+      // console.error(err);
+    }
+  };
+
+  return { setData, updateData };
 };
 
 export default useData;

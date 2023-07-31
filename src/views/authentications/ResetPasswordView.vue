@@ -1,46 +1,60 @@
 <template>
-  <div class="authentication_text">
-    <div class="authentication_text_slogan">Forgot Password ?</div>
-    <div class="authentication_text_title">忘記密碼</div>
-    <div class="authentication_text_instructions">
-      <div class="authentication_text_instructions_en">
-        Enter the email address associated with your account.
-      </div>
-      <div class="authentication_text_instructions_ch">
-        輸入與您的帳戶關聯的電子郵件地址。
-      </div>
-    </div>
+  <AuthenticationWrapper v-if="!store.state.isMobile">
+    <AuthenticationPic :info="info" />
 
-    <div class="authentication_text_underline">
-      <input type="email" placeholder="電子郵件/Email" />
-    </div>
-    <div class="authentication_text_codewrap">
+    <ForgotPasswordSteps :currentStep="2" />
+
+    <div class="authentication_text">
+      <div class="authentication_text_slogan">Reset Password</div>
+      <div class="authentication_text_title">重設密碼</div>
+      <div class="authentication_text_instructions">
+        <div class="authentication_text_instructions_en">
+          Membership authentication successful ! <br />
+          Please reset your password.
+        </div>
+        <div class="authentication_text_instructions_ch">
+          會員認證成功！ 請重新設置您的密碼。
+        </div>
+      </div>
+
       <div class="authentication_text_underline">
-        <input type="text" placeholder="驗證碼輸入" />
+        <input type="email" placeholder="重設密碼/Reset Password" />
       </div>
-      <div class="authentication_text_underline_code">HI2k4q0PS</div>
-    </div>
 
-    <div class="authentication_text_btn">
-      <button @click="checkStepOne">
-        下一步
-        <font-awesome-icon icon="fa-solid fa-chevron-right" />
-      </button>
+      <div class="authentication_text_underline">
+        <input type="text" placeholder="密碼確認/Confirm Password" />
+      </div>
+      <div class="authentication_psw_error">輸入錯誤!</div>
+      <div class="authentication_text_btn">
+        <button>
+          變更 <font-awesome-icon icon="fa-solid fa-chevron-right" />
+        </button>
+      </div>
     </div>
+  </AuthenticationWrapper>
 
-    <div class="authentication_psw_error">驗證碼輸入錯誤</div>
-  </div>
+  <ResetPasswordMobile v-if="store.state.isMobile" />
 </template>
 
 <script setup>
-const emit = defineEmits(["stepOneChecked"]);
+import AuthenticationWrapper from "@/components/Authentication/AuthenticationWrapper.vue";
+import AuthenticationPic from "@/components/Authentication/AuthenticationPic.vue";
+import ForgotPasswordSteps from "@/components/Authentication/ForgotPasswordSteps.vue";
+import ResetPasswordMobile from "@/components/Authentication/mobile/ResetPasswordMobile.vue";
+import { useStore } from "vuex";
 
-const checkStepOne = () => {
-  let pass = false;
-  // 驗證
-  pass = true;
-  // 驗證
-  if (pass) emit("stepOneChecked");
+const store = useStore();
+
+const info = {
+  title: "That’s ok !",
+  text: [
+    "Recover your lost password",
+    "And",
+    "Return to the glory of the baseball field!",
+  ],
+  link: "Login",
+  linkName: "登入",
+  imgSrc: require("@/assets/images/authentication/PswForgot-bg.png"),
 };
 </script>
 
@@ -48,7 +62,7 @@ const checkStepOne = () => {
 .authentication {
   &_text {
     width: 50%;
-    padding: 5rem 2rem 5rem 6rem;
+    padding: 5rem 6rem;
     background-color: var(--pale-white);
     position: relative;
     display: flex;
@@ -56,6 +70,7 @@ const checkStepOne = () => {
     color: var(--secondary-gray-1);
 
     &_slogan {
+      text-align: left;
       font-weight: bolder;
       font-size: 2.5rem;
       color: var(--primary-blue);
@@ -70,9 +85,7 @@ const checkStepOne = () => {
     &_subtitle {
       font-size: 1.25rem;
     }
-    &_codewrap {
-      display: flex;
-    }
+
     &_underline {
       border-bottom: solid 1px #000;
       color: var(--secondary-gray-1);
@@ -89,19 +102,16 @@ const checkStepOne = () => {
         color: var(--pale-white);
       }
     }
-    &_underline:nth-child(2n + 1) {
-      width: 50%;
-      display: flex;
-    }
-    &_instructions_ch {
-      font-size: 1rem;
-    }
 
     &_instructions_en {
       font-size: 1rem;
       letter-spacing: initial;
       font-family: "Montserrat", sans-serif;
       margin-bottom: 0.75rem;
+    }
+
+    &_instructions_ch {
+      font-size: 1rem;
     }
 
     input {
@@ -156,7 +166,7 @@ const checkStepOne = () => {
       width: 8rem;
       font-size: 1rem;
       color: var(--accent-red);
-      text-align: center;
+      margin-top: 1rem;
       // display: none;
     }
   }

@@ -1,14 +1,12 @@
 import { auth } from "@/firebase/config";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { ref } from "vue";
 import useData from "@/composables/data/useData";
+import useSignout from "@/composables/authentication/useSignout";
 
 const { setData } = useData();
+const { signout } = useSignout();
 
 const useSignup = () => {
-  const error = ref(null);
-  const isPending = ref(false);
-
   const signup = async (signupData) => {
     try {
       const { email, password } = signupData;
@@ -36,17 +34,20 @@ const useSignup = () => {
             template_text: "預設模板",
           },
         ],
+        notifications: [],
         access: true,
         violations: 0,
       };
+
       await setData("MEMBERS", data);
+      await signout();
     } catch (err) {
       console.error("Something went wrong!");
       // console.error(err);
     }
   };
 
-  return { error, isPending, signup };
+  return { signup };
 };
 
 export default useSignup;

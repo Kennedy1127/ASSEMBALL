@@ -8,7 +8,7 @@ export default createStore({
     isMobile: 0,
 
     // 讀取中
-    isLoading: 0,
+    isPending: false,
 
     //////////////////////////////////////////////////////
     // 確認是否登入

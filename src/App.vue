@@ -31,7 +31,7 @@
   <MainFooter v-if="$route.name !== 'Home'" />
 
   <!-- Loading 畫面 -->
-  <!-- <LoadingComponent /> -->
+  <LoadingComponent v-if="$store.state.isPending" />
 </template>
 
 <style>

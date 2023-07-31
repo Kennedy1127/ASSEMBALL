@@ -71,13 +71,13 @@
 import AuthenticationWrapper from "@/components/Authentication/AuthenticationWrapper.vue";
 import AuthenticationPic from "@/components/Authentication/AuthenticationPic.vue";
 import LoginMobile from "@/components/Authentication/mobile/LoginMobile.vue";
-import useLogin from "@/composables/authentication/useLogin";
+import useSignin from "@/composables/authentication/useSignin";
 import useSetPersistence from "@/composables/authentication/useSetPersistence";
 import { ref } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
-const { login } = useLogin();
+const { signin } = useSignin();
 const { changePersistence } = useSetPersistence();
 
 const info = {
@@ -91,8 +91,8 @@ const info = {
 const showPassword = ref(false);
 
 const handleSignin = async () => {
-  await changePersistence();
-  await login("test123@gmail.com", "123456");
+  // await changePersistence();
+  // await signin("test123@gmail.com", "123456");
 };
 </script>
 

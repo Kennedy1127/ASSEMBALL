@@ -2,28 +2,31 @@
   <AuthenticationWrapper v-if="!store.state.isMobile">
     <AuthenticationPic :info="info" />
 
-    <div class="authentication_steps">
-      <div v-for="index in 3" :key="index" class="authentication_step">
-        <div
-          :class="{
-            authentication_step_dot: true,
-            'authentication_step_dot--active': index <= currentStep,
-          }"
-        ></div>
-        <div
-          :class="{
-            authentication_step_line: true,
-            'authentication_step_line--active': index <= currentStep,
-          }"
-        ></div>
+    <ForgotPasswordSteps :currentStep="1" />
+
+    <div class="authentication_text">
+      <div class="authentication_text_slogan">Forgot Password ?</div>
+      <div class="authentication_text_title">忘記密碼</div>
+      <div class="authentication_text_instructions">
+        <div class="authentication_text_instructions_en">
+          Enter the email address associated with your account.
+        </div>
+        <div class="authentication_text_instructions_ch">
+          輸入與您的帳戶關聯的電子郵件地址。
+        </div>
+      </div>
+
+      <div class="authentication_text_underline">
+        <input type="email" placeholder="電子郵件/Email" />
+      </div>
+
+      <div class="authentication_text_btn">
+        <button @click="checkStepOne">
+          驗證信箱
+          <font-awesome-icon icon="fa-solid fa-chevron-right" />
+        </button>
       </div>
     </div>
-
-    <ForgotPasswordStepOne
-      v-if="currentStep === 1"
-      @stepOneChecked="currentStep++"
-    />
-    <ForgotPasswordStepTwo v-if="currentStep === 2" />
   </AuthenticationWrapper>
 
   <ForgotPasswordMobile v-if="store.state.isMobile" />
@@ -32,13 +35,13 @@
 <script setup>
 import AuthenticationWrapper from "@/components/Authentication/AuthenticationWrapper.vue";
 import AuthenticationPic from "@/components/Authentication/AuthenticationPic.vue";
-import ForgotPasswordStepOne from "@/components/Authentication/ForgotPasswordStepOne.vue";
-import ForgotPasswordStepTwo from "@/components/Authentication/ForgotPasswordStepTwo.vue";
+import ForgotPasswordSteps from "@/components/Authentication/ForgotPasswordSteps.vue";
 import ForgotPasswordMobile from "@/components/Authentication/mobile/ForgotPasswordMobile.vue";
-import { ref } from "vue";
+import useSendResetEmail from "@/composables/authentication/useSendResetEmail";
 import { useStore } from "vuex";
 
 const store = useStore();
+const { sendResetEmail } = useSendResetEmail();
 
 const info = {
   title: "That’s ok !",
@@ -52,61 +55,127 @@ const info = {
   imgSrc: require("@/assets/images/authentication/PswForgot-bg.png"),
 };
 
-const currentStep = ref(1);
+const handleSendResetEmail = () => {
+  // currentStep.value++;
+
+  sendResetEmail();
+};
 </script>
 
 <style scoped lang="scss">
 .authentication {
-  &_steps {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    z-index: 1;
-
-    width: 96px;
-    height: 100%;
-
+  &_text {
+    width: 50%;
+    padding: 5rem 2rem 5rem 6rem;
+    background-color: var(--pale-white);
+    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+    color: var(--secondary-gray-1);
 
-  &_step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    &_slogan {
+      font-weight: bolder;
+      font-size: 2.5rem;
+      color: var(--primary-blue);
+      font-family: "Montserrat";
+    }
 
-    &_dot {
-      width: 2rem;
-      height: 2rem;
-      border-radius: 2rem;
-      background-color: var(--secondary-gray-3);
+    &_title {
+      font-family: "Noto Sans TC";
+      font-size: 1.5rem;
+      padding: 1.25rem 0rem;
+    }
+    &_subtitle {
+      font-size: 1.25rem;
+    }
+    &_codewrap {
+      display: flex;
+    }
+    &_underline {
+      border-bottom: solid 1px #000;
+      color: var(--secondary-gray-1);
+      padding: 0.25rem;
 
-      &--active {
-        background-color: var(--primary-blue);
+      &_code {
+        margin: 2rem 0rem 0rem 2rem;
+        line-height: 3rem;
+        height: 3rem;
+        padding: 0 24px;
+        background-color: var(--secondary-blue-2);
+        border-radius: var(--round);
+        font-size: 1.25rem;
+        color: var(--pale-white);
       }
+    }
+    &_underline:nth-child(2n + 1) {
+      width: 50%;
+      display: flex;
+    }
+    &_instructions_ch {
+      font-size: 1rem;
+    }
 
-      &--middle {
-        width: 1.25rem;
-        height: 1.25rem;
+    &_instructions_en {
+      font-size: 1rem;
+      letter-spacing: initial;
+      font-family: "Montserrat", sans-serif;
+      margin-bottom: 0.75rem;
+    }
+
+    input {
+      border: 0;
+      outline: none;
+      padding-bottom: 0.25rem;
+      width: 100%;
+      margin: 2rem 0rem 0rem 0rem;
+      font-size: 1rem;
+      font-family: "Noto Sans TC";
+
+      &::placeholder {
+        color: var(--secondary-gray-3);
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 400;
       }
     }
 
-    &_line {
-      width: 2px;
-      height: 260px;
-      background-color: var(--secondary-gray-3);
+    &_btn {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
 
-      &--active {
+      position: absolute;
+      top: 80%;
+      left: 50%;
+      transform: translateX(-50%);
+
+      button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+
+        width: 10rem;
+        border-radius: 2rem;
+        padding: 0.5rem 0.25rem;
         background-color: var(--primary-blue);
+
+        color: var(--pale-white);
+        font-size: 1.25rem;
+        font-family: "Noto Sans TC";
+        font-weight: 500;
+        letter-spacing: 5px;
       }
     }
 
-    &:last-child {
-      .authentication_step_line {
-        display: none;
-      }
+    .authentication_psw_error {
+      width: 8rem;
+      font-size: 1rem;
+      color: var(--accent-red);
+      text-align: center;
+      // display: none;
     }
   }
 }

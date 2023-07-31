@@ -123,36 +123,39 @@ const toggleShowConfirmPassword = () => {
     : (confirmPasswordInput.value.type = "password");
 };
 
-const firstname = ref("testfirstname");
-const lastname = ref("testlastname");
-const username = ref("testusername");
-const email = ref("test@mail.com");
-const password = ref("testpassword");
-const confirmPassword = ref("testconfirmpassword");
+const firstname = ref("");
+const lastname = ref("");
+const username = ref("");
+const email = ref("");
+const password = ref("");
+const confirmPassword = ref("");
 const signupError = ref(null);
 
 const checkFormat = () => {
   signupError.value = null;
 
-  // if (!firstname.value || !lastname.value)
-  //   return (signupError.value = "請輸入你的姓名");
+  if (!firstname.value || !lastname.value)
+    return (signupError.value = "請輸入你的姓名");
 
-  // if (!username.value) return (signupError.value = "請輸入你的使用者名稱");
+  if (!username.value) return (signupError.value = "請輸入你的使用者名稱");
 
-  // if (!email.value) return (signupError.value = "請輸入你的EMAIL");
+  if (!email.value) return (signupError.value = "請輸入你的EMAIL");
 
-  // const validRegex =
-  //   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  const validRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-  // if (!email.value.match(validRegex))
-  //   return (signupError.value = "EMAIL格式不符，請重新填寫");
+  if (!email.value.match(validRegex))
+    return (signupError.value = "EMAIL格式不符，請重新填寫");
 
-  // if (!password.value) return (signupError.value = "請輸入你的密碼");
+  if (!password.value) return (signupError.value = "請輸入你的密碼");
 
-  // if (!confirmPassword.value) return (signupError.value = "請填寫確認密碼");
+  if (password.value.length < 6)
+    return (signupError.value = "密碼至少需要6個字母或數字");
 
-  // if (password.value !== confirmPassword.value)
-  //   return (signupError.value = "密碼確認失敗，請重新確認");
+  if (!confirmPassword.value) return (signupError.value = "請填寫確認密碼");
+
+  if (password.value !== confirmPassword.value)
+    return (signupError.value = "密碼確認失敗，請重新確認");
 };
 
 const handleSignup = async () => {
