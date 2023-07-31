@@ -14,6 +14,7 @@ const useLogin = () => {
       console.log(res);
     } catch (err) {
       console.error("Something went wrong!");
+      // console.error(err);
     }
   };
 

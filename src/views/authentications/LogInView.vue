@@ -252,6 +252,8 @@ const handleSignin = async () => {
       left: 50%;
       transform: translateX(-50%);
 
+      width: 100%;
+
       button {
         width: 10rem;
         border-radius: 2rem;
@@ -271,7 +273,7 @@ const handleSignin = async () => {
     }
 
     .authentication_psw_error {
-      width: 8rem;
+      width: 50%;
       font-size: 1rem;
       color: var(--accent-red);
       text-align: center;
