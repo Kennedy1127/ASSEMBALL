@@ -112,6 +112,9 @@ export default {
     border-radius: var(--round);
     padding: 3rem 8rem;
     margin-top: 2rem;
+    @media all and (max-width: 420px) {
+      padding: 2rem 2rem;
+    }
   }
   &_title {
     font-size: 1.5rem;
@@ -141,6 +144,10 @@ export default {
       align-items: center;
       color: var(--secondary-gray-3);
       padding-right: 5rem;
+      @media all and (max-width: 420px) {
+        flex-direction: row;
+        padding-right: 0;
+      }
     }
     &_item {
       display: flex;
@@ -152,6 +159,9 @@ export default {
       font-size: 1.25rem;
       border-bottom: 2px solid var(--secondary-gray-2);
       padding-bottom: 2rem;
+      @media all and (max-width: 420px) {
+        align-items: flex-start;
+      }
       & img {
         width: 89px;
         height: 101px;

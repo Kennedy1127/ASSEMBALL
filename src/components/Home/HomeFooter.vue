@@ -378,8 +378,7 @@ export default {
       & div {
         @media all and (max-width: 420px) {
           text-align: left;
-          // width: 80%;
-          // margin: auto;
+          padding-bottom: 3rem;
         }
       }
     }

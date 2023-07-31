@@ -5,6 +5,7 @@
       v-if="MainHeader"
       @toggle_notify="toggleNotify"
       @toggle_member="toggleMember"
+      mode="out-in"
     />
   </transition>
   <transition name="fade">
@@ -32,10 +33,10 @@
 
 <style>
 .fade-enter-active {
-  animation: fade-in 0.01s;
+  animation: fade-in 0.1s ease-in-out;
 }
 .fade-leave-active {
-  animation: fade-out 0.01s;
+  animation: fade-out 0.1s ease-in-out;
 }
 
 @keyframes fade-in {
@@ -43,13 +44,13 @@
     opacity: 1;
   }
   to {
-    opacity: 1;
+    opacity: 0;
   }
 }
 
 @keyframes fade-out {
   from {
-    opacity: 1;
+    opacity: 0;
   }
   to {
     opacity: 1;
@@ -102,6 +103,9 @@ export default {
       } else {
         this.MainHeaderLight = false;
         this.MainHeader = true;
+        this.$store.state.isNotifyVisible = false;
+        this.$store.state.isPersonalVisible = false;
+        this.$store.state.isMemberVisible = false;
       }
     },
     //切換通知頁面

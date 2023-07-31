@@ -175,6 +175,9 @@ export default {
     border-radius: var(--round);
     padding: 3rem 8rem;
     margin-top: 2rem;
+    @media all and (max-width: 420px) {
+      padding: 2rem 2rem;
+    }
   }
   &_title {
     font-size: 1.5rem;
@@ -202,6 +205,11 @@ export default {
     padding-right: 6rem;
     border-bottom: 2px solid var(--secondary-gray-2);
     margin-bottom: 2rem;
+    @media all and (max-width: 420px) {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      font-size: 1rem;
+    }
   }
   &_template {
     display: flex;
@@ -210,6 +218,12 @@ export default {
     padding: 1rem;
     padding-left: 6rem;
     padding-right: 6rem;
+    @media all and (max-width: 420px) {
+      padding-left: 0rem;
+      padding-right: 0rem;
+      align-items: flex-start;
+      gap: 1rem;
+    }
     &_add {
       font-size: 2rem;
       color: var(--primary-blue);
@@ -257,6 +271,9 @@ export default {
       color: var(--primary-blue);
       padding-left: 1rem;
       cursor: pointer;
+      @media all and (max-width: 420px) {
+        padding-left: 0rem;
+      }
     }
   }
   &_adddescribe {

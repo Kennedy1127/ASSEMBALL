@@ -232,8 +232,8 @@ export default {
   .home_auction_all {
     ul {
       display: flex;
-      min-height: 600px;
-      height: 650px;
+      min-height: 700px;
+      height: 750px;
       margin: 0;
       padding: 0;
       overflow: hidden;

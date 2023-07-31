@@ -211,7 +211,6 @@ export default {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     text-align: center;
     &_top {
       width: 80%;
