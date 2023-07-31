@@ -48,10 +48,12 @@ import AuthenticationWrapper from "@/components/Authentication/AuthenticationWra
 import AuthenticationPic from "@/components/Authentication/AuthenticationPic.vue";
 import RegisterMobile from "@/components/Authentication/mobile/RegisterMobile.vue";
 import useSignup from "@/composables/authentication/useSignup";
+import useSetPersistence from "@/composables/authentication/useSetPersistence";
 import { useStore } from "vuex";
 
 const store = useStore();
 const { signup } = useSignup();
+const { changePersistence } = useSetPersistence();
 
 const info = {
   title: "Welcome Back !",
@@ -61,8 +63,9 @@ const info = {
   imgSrc: require("@/assets/images/authentication/sign-in-bg.jpg"),
 };
 
-const handleSignup = () => {
-  signup("test123@gmail.com", "123456");
+const handleSignup = async () => {
+  // await changePersistence();
+  // await signup();
 };
 </script>
 
