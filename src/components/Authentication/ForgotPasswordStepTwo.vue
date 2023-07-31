@@ -114,12 +114,16 @@ const checkStepOne = () => {
     }
 
     &_btn {
-      margin-top: 6rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 0.5rem;
+
+      position: absolute;
+      top: 80%;
+      left: 50%;
+      transform: translateX(-50%);
 
       button {
         display: flex;
@@ -137,9 +141,6 @@ const checkStepOne = () => {
         font-family: "Noto Sans TC";
         font-weight: 500;
         letter-spacing: 5px;
-
-        position: absolute;
-        bottom: 6rem;
       }
     }
 

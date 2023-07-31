@@ -240,17 +240,17 @@ const handleSignin = async () => {
     }
 
     &_btn {
-      margin-top: 6rem;
+      // margin-top: 6rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 0.5rem;
 
-      // position: absolute;
-      // top: 80%;
-      // left: 50%;
-      // transform: translateX(-50%);
+      position: absolute;
+      top: 80%;
+      left: 50%;
+      transform: translateX(-50%);
 
       button {
         width: 10rem;
