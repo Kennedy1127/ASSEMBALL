@@ -121,7 +121,7 @@ import { onAuthStateChanged } from "firebase/auth";
 let app;
 
 onAuthStateChanged(auth, (user) => {
-  console.log(user);
+  // console.log(user);
 
   if (!app) {
     app = createApp(App)
