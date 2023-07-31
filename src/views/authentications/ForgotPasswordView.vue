@@ -56,8 +56,6 @@ const info = {
 };
 
 const handleSendResetEmail = () => {
-  // currentStep.value++;
-
   sendResetEmail();
 };
 </script>
