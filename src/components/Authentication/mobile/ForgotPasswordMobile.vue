@@ -1,25 +1,47 @@
 <template>
   <MobileAuthenticationWrapper :info="info">
-    <ForgotPasswordMobileStepOne
-      v-if="currentStep === 1"
-      @stepOneChecked="currentStep++"
-    />
-    <ForgotPasswordMobileStepTwo v-if="currentStep === 2" />
+    <form class="authentication_mobile">
+      <h3 class="authentication_mobile_title">忘記密碼</h3>
+
+      <p class="authentication_mobile_text authentication_mobile_text--en">
+        Enter the email address associated with you account.
+      </p>
+
+      <p class="authentication_mobile_text authentication_mobile_text--ch">
+        輸入與您的帳戶關聯的電子郵件地址。
+      </p>
+
+      <div class="authentication_mobile_groups">
+        <div class="authentication_mobile_group">
+          <div class="authentication_mobile_label">
+            <label for="email">電子郵件/Email</label>
+          </div>
+
+          <div class="authentication_mobile_input">
+            <input type="email" id="email" />
+          </div>
+        </div>
+      </div>
+
+      <div class="authentication_mobile_btn">
+        <button @click="checkStepOne">
+          驗證信箱
+          <font-awesome-icon icon="fa-solid fa-chevron-right" />
+        </button>
+      </div>
+
+      <div class="authentication_mobile_error">信箱輸入錯誤</div>
+    </form>
   </MobileAuthenticationWrapper>
 </template>
 
 <script setup>
 import MobileAuthenticationWrapper from "@/components/Authentication/mobile/MobileAuthenticationWrapper.vue";
-import ForgotPasswordMobileStepOne from "@/components/Authentication/mobile/ForgotPasswordMobileStepOne.vue";
-import ForgotPasswordMobileStepTwo from "@/components/Authentication/mobile/ForgotPasswordMobileStepTwo.vue";
-import { ref } from "vue";
 
 const info = {
   title: "Forgot Password?",
   type: "forgotPassword",
 };
-
-const currentStep = ref(1);
 </script>
 
 <style scoped lang="scss">
@@ -44,9 +66,6 @@ const currentStep = ref(1);
       margin: 1rem 0 0.5rem;
       font-family: "Montserrat";
       letter-spacing: -0.5px;
-    }
-
-    &--ch {
     }
   }
 
@@ -81,6 +100,11 @@ const currentStep = ref(1);
       background-color: var(--secondary-blue-2);
 
       color: inherit;
+
+      &:focus {
+        background-color: var(--pale-white);
+        outline: 2px solid var(--secondary-blue-1);
+      }
     }
 
     &_icon {
