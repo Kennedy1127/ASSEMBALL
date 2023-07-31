@@ -172,6 +172,9 @@ export default {
     border-radius: var(--round);
     padding: 3rem 8rem;
     margin-top: 2rem;
+    @media all and (max-width: 420px) {
+      padding: 2rem 2rem;
+    }
   }
   &_title {
     font-size: 1.5rem;
@@ -210,6 +213,9 @@ export default {
           font-weight: 400;
           padding-bottom: 1rem;
           padding-right: 30rem;
+          @media all and (max-width: 420px) {
+            padding-right: 0rem;
+          }
         }
         & label > span {
           color: var(--accent-red);
@@ -294,6 +300,9 @@ export default {
           font-weight: 400;
           padding-bottom: 1rem;
           padding-right: 30rem;
+          @media all and (max-width: 420px) {
+            padding-right: 0rem;
+          }
           & span {
             color: var(--accent-red);
           }

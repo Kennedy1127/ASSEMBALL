@@ -38,7 +38,7 @@
         />
       </div>
     </div>
-    <div v-if="showMessageText" style="z-index: 2">
+    <div v-if="showMessageTextFirst" style="z-index: 2">
       <div class="home_message_all_text" v-for="item in messageText">
         <div class="home_message_all_text_header">
           <h3>
@@ -49,7 +49,45 @@
           <span class="home_message_all_text_header_date">
             {{ item.date }}
           </span>
-          <span class="home_message_all_text_header_tag">
+          <span
+            :class="{
+              home_message_all_text_header_tag: true,
+              'home_message_all_text_header_tag--new': item.tag === 'NEW',
+            }"
+          >
+            {{ item.tag }}
+          </span>
+        </div>
+        <div class="home_message_all_text_section">
+          <span class="home_message_all_text_section_text">
+            {{ item.text }}
+          </span>
+          <button
+            @click="goToMyPlayerTeam(item.id)"
+            class="home_message_all_text_section_btn"
+          >
+            <Icon type="ios-arrow-dropright-circle" />{{ item.btn }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div v-else-if="showMessageTextSecond" style="z-index: 2">
+      <div class="home_message_all_text" v-for="item in messageTextReplace">
+        <div class="home_message_all_text_header">
+          <h3>
+            <router-link :to="{ name: 'myplayerTeam' }">{{
+              item.title
+            }}</router-link>
+          </h3>
+          <span class="home_message_all_text_header_date">
+            {{ item.date }}
+          </span>
+          <span
+            :class="{
+              home_message_all_text_header_tag: true,
+              'home_message_all_text_header_tag--new': item.tag === 'NEW',
+            }"
+          >
             {{ item.tag }}
           </span>
         </div>
@@ -67,7 +105,7 @@
       </div>
     </div>
     <div v-else style="z-index: 2">
-      <div class="home_message_all_text" v-for="item in messageTextReplace">
+      <div class="home_message_all_text" v-for="item in messageTextReplaceTwo">
         <div class="home_message_all_text_header">
           <h3>
             <router-link :to="{ name: 'myplayerTeam' }">{{
@@ -77,7 +115,12 @@
           <span class="home_message_all_text_header_date">
             {{ item.date }}
           </span>
-          <span class="home_message_all_text_header_tag">
+          <span
+            :class="{
+              home_message_all_text_header_tag: true,
+              'home_message_all_text_header_tag--new': item.tag === 'NEW',
+            }"
+          >
             {{ item.tag }}
           </span>
         </div>
@@ -106,7 +149,8 @@
 export default {
   data() {
     return {
-      showMessageText: false,
+      showMessageTextFirst: true,
+      showMessageTextSecond: false,
       messageText: [
         {
           title: "紐約野馬隊投手表現",
@@ -126,7 +170,7 @@ export default {
         {
           title: "球隊部署技巧分享",
           date: "2023/07/21",
-          tag: "NEW",
+          tag: "HOT",
           text: "對於這個球隊的戰術部署有什麼看法嗎？我覺得教練在換投手的時機上有待改進，有時候明......",
           btn: "更多",
           id: "1",
@@ -134,7 +178,7 @@ export default {
         {
           title: "這個賽季最熱門的球隊？",
           date: "2023/07/28",
-          tag: "HOT",
+          tag: "NEW",
           text: "哪支球隊在這個賽季的戰績最令你驚艷？我覺得小熊隊從開季以來一直保持穩定的表現，實......",
           btn: "更多",
           id: "1",
@@ -149,7 +193,7 @@ export default {
       ],
       messageTextReplace: [
         {
-          title: "球場美食評比",
+          title: "球場的美食評比",
           date: "2023/06/18",
           text: "上次在新莊棒球場吃到超美味的熱狗，還有其他球場的美食值得嘗試嗎？大家來分享一下自己的球場美食經驗！",
           btn: "更多",
@@ -166,6 +210,7 @@ export default {
         {
           title: "最新賽事天使隊戰績分析",
           date: "2023/08/11",
+          tag: "NEW",
           text: "天使隊這此的戰績需要改進，應該更加關注防守。大家對此有什麼看法？",
           btn: "更多",
           id: "1",
@@ -174,7 +219,7 @@ export default {
           title: "球迷見面會安排",
           date: "2023/07/14",
           tag: "HOT",
-          text: "我建議我們球隊應該組織一次球迷見面會，讓我們更加接近球隊，有什麼好的建議嗎？",
+          text: "我建議波士頓爆豪克應該組織一次球迷見面會，讓我們更加接近球隊，有什麼好的建議嗎？",
           btn: "更多",
           id: "1",
         },
@@ -182,7 +227,47 @@ export default {
           title: "如何治癒比賽情緒？",
           date: "2023/08/19",
           tag: "NEW",
-          text: "雖然這次公牛隊輸掉了比賽，心情沮喪了一陣子，但我相信下一場他們會反彈，一起加油！",
+          text: "雖然這次公牛隊輸掉了比賽，心情沮喪了一陣子，但我相信下一場他們會反彈，各位球迷們一起加油吧！",
+          btn: "更多",
+          id: "1",
+        },
+      ],
+      messageTextReplaceTwo: [
+        {
+          title: "球場風采攝影",
+          date: "2023/07/08",
+          text: "大家有沒有拍到球場內外美麗的風景或球員帥氣動作的瞬間？快上傳到球隊相簿分享給球迷們一起欣賞吧！",
+          btn: "更多",
+          id: "1",
+        },
+        {
+          title: "國際棒球文化交流",
+          date: "2023/08/03",
+          tag: "NEW",
+          text: "台灣的棒球文化與其他國家的球隊文化有何異同？一起來探討各自的獨特之處吧！",
+          btn: "更多",
+          id: "1",
+        },
+        {
+          title: "2023最佳魅力球員是誰？",
+          date: "2023/08/01",
+          text: "你們心目中最有魅力的球員是誰？一起來投票選出球隊的風采代表！",
+          tag: "NEW",
+          btn: "更多",
+          id: "1",
+        },
+        {
+          title: "二手棒球裝備和收藏分享",
+          date: "2023/07/22",
+          tag: "HOT",
+          text: "有沒有什麼好的棒球裝備推薦？棒球迷們快來分享一下你們的使用心得或者是多年的珍貴收藏吧～",
+          btn: "更多",
+          id: "1",
+        },
+        {
+          title: "討論球場安全的重要",
+          date: "2023/06/28",
+          text: "球場的安全措施是否到位？大家有沒有什麼建議來提高球場的安全性？分享你對球場安全措施的建議和改進想法吧！",
           btn: "更多",
           id: "1",
         },
@@ -195,7 +280,14 @@ export default {
       this.$router.push({ name: "myplayerTeam", params: { id } });
     },
     toggleMessageText() {
-      this.showMessageText = !this.showMessageText;
+      if (this.showMessageTextFirst) {
+        this.showMessageTextFirst = false;
+        this.showMessageTextSecond = true;
+      } else if (this.showMessageTextSecond) {
+        this.showMessageTextSecond = false;
+      } else {
+        this.showMessageTextFirst = true;
+      }
     },
   },
 };
@@ -335,6 +427,9 @@ export default {
         border-radius: var(--round);
         text-align: center;
         font-family: "Montserrat";
+      }
+      &_tag--new {
+        background-color: var(--error-yellow);
       }
     }
     &_section {
