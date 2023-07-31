@@ -17,21 +17,33 @@ const routes = [
     path: "/register",
     name: "Register",
     component: () => import("@/views/authentications/RegisterView.vue"),
+    beforeEnter: () => {
+      if (auth.currentUser) return { name: "Home" };
+    },
   },
   {
     path: "/login",
     name: "Login",
     component: () => import("@/views//authentications/LogInView.vue"),
+    beforeEnter: () => {
+      if (auth.currentUser) return { name: "Home" };
+    },
   },
   {
     path: "/forgot-password",
     name: "ForgotPassword",
     component: () => import("@/views/authentications/ForgotPasswordView.vue"),
+    beforeEnter: () => {
+      if (auth.currentUser) return { name: "Home" };
+    },
   },
   {
     path: "/reset-password",
     name: "ResetPassword",
     component: () => import("@/views/authentications/ResetPasswordView.vue"),
+    beforeEnter: () => {
+      if (auth.currentUser) return { name: "Home" };
+    },
   },
   /////////////////////////////////////////
   {
