@@ -31,7 +31,12 @@
         <RecruitmentSearchbar />
       </div>
       <div class="recruitment_post_main_table">
-        <RecruitmentTable />
+        <RecruitmentTable
+          :tableData="computedRenderManageCopywritings"
+          :tablekey="tablekey"
+          :title="title"
+        >
+        </RecruitmentTable>
       </div>
       <div class="recruitment_post_main_page">
         <ProductsMainPagination />頁碼待補
@@ -50,6 +55,7 @@ export default {
   data() {
     return {
       title: "記錄管理",
+      tablekey: 2,
     };
   },
 

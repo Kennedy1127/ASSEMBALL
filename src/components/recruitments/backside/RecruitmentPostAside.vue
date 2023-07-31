@@ -79,14 +79,15 @@ export default {
 
   &_userpic {
     margin: auto;
+    max-width: 80%;
     width: 10rem;
-    height: 10rem;
+
     border-radius: 10rem;
     background-color: #fff;
     overflow: hidden;
+
     &_userphoto {
-      width: 10rem;
-      height: 10rem;
+      width: 100%;
     }
   }
   &_list {

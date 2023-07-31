@@ -1,13 +1,14 @@
 <template>
   <div class="recruitment_table">
-    <table class="fixed_headers">
+    <table v-if="tablekey === 1" class="fixed_headers">
       <thead>
         <tr>
           <th>標題</th>
           <th>守備位置</th>
           <th>地區</th>
-          <th>更新日期</th>
-          <th>編輯</th>
+          <th v-if="title === '管理職缺'">更新日期</th>
+          <th v-if="title === '管理職缺'">編輯</th>
+          <th v-else :colspan="'2'">更新日期</th>
         </tr>
       </thead>
       <tbody>
@@ -16,62 +17,71 @@
           <td>{{ item.copywriting_role }}</td>
           <td>{{ item.copywriting_area }}</td>
           <td>{{ item.copywriting_date }}</td>
-          <td class="Icon">
+          <td v-if="title === '管理職缺'" class="Icon">
             <div class="icon-pen">
               <font-awesome-icon icon="fa-solid fa-pen" />
             </div>
-            <!-- <div class="icon-trashcan">
-              <font-awesome-icon icon="fa-solid fa-trash-can" />
-            </div> -->
           </td>
+          <td v-else class="Icon">
+            <button>
+              更多<font-awesome-icon icon="fa-solid fa-chevron-right" />
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-          <!-- FIXME: icon 用v-for來寫  -->
-          <!-- <td v-for="item in Icon" class="Icon" :key="item.index">
-            <div class="icon-pen">
-              <div class="icon-pen">
-                <font-awesome-icon icon="fa-solid {{ item.pen }}" />
-              </div>
-              <div class="icon-trashcan">
-                <font-awesome-icon icon="fa-solid {{ item.trashcan }}" />
-              </div>
-            </div>
-          </td> -->
-
-          <!--  -->
+    <table v-else-if="tablekey === 2" class="fixed_headers">
+      <thead>
+        <tr>
+          <th>守備位置</th>
+          <th>地區</th>
+          <th>應徵日期</th>
+          <th>姓名</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in records" :key="item">
+          <td>{{ records.A }}</td>
+          <td>{{ records.B }}</td>
+          <td>{{ records.C }}</td>
+          <td>{{ records.D }}</td>
         </tr>
       </tbody>
     </table>
   </div>
   <div class="recruitment_table_mobile">
-    <table class="fixed_headers">
-      <tbody>
-        <tr v-for="item in $props.tableData" :key="item.id">
-          <td>
-            <div class="td_item">
-              <div class="td_title">標題</div>
-              <div>{{ item.copywriting_title }}</div>
-            </div>
-            <div class="td_item">
-              <div class="td_title">守備位置</div>
-              <div>{{ item.copywriting_role }}</div>
-            </div>
-            <div class="td_item">
-              <div class="td_title">地區</div>
-              <div>{{ item.copywriting_area }}</div>
-            </div>
-          </td>
-          <td>
-            <div class="td_item update">
-              <div class="td_title">更新日期</div>
-              <div>{{ item.copywriting_date }}</div>
-            </div>
-            <div class="icon-pen">
-              <font-awesome-icon icon="fa-solid fa-pen" />
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <slot name="table1">
+      <table class="fixed_headers">
+        <tbody>
+          <tr v-for="item in $props.tableData" :key="item.id">
+            <td>
+              <div class="td_item">
+                <div class="td_title">標題</div>
+                <div>{{ item.copywriting_title }}</div>
+              </div>
+              <div class="td_item">
+                <div class="td_title">守備位置</div>
+                <div>{{ item.copywriting_role }}</div>
+              </div>
+              <div class="td_item">
+                <div class="td_title">地區</div>
+                <div>{{ item.copywriting_area }}</div>
+              </div>
+            </td>
+            <td>
+              <div class="td_item update">
+                <div class="td_title">更新日期</div>
+                <div>{{ item.copywriting_date }}</div>
+              </div>
+              <div class="icon-pen">
+                <font-awesome-icon icon="fa-solid fa-pen" />
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </slot>
   </div>
 </template>
 <!-- this.$route.name -->
@@ -80,6 +90,14 @@ import { icon } from "@fortawesome/fontawesome-svg-core";
 export default {
   data() {
     return {
+      records: [
+        { A: "捕手", B: "桃園市", C: "2023.08.05", D: "Hank Liu" },
+        { A: "捕手", B: "桃園市", C: "2023.07.05", D: "Hank Liu" },
+        { A: "捕手", B: "桃園市", C: "2023.06.05", D: "Hank Liu" },
+        { A: "捕手", B: "桃園市", C: "2023.05.05", D: "Hank Liu" },
+        { A: "捕手", B: "桃園市", C: "2023.04.05", D: "Hank Liu" },
+      ],
+
       recruitPosts: [
         {
           postTitle: "I want you ！",
@@ -140,7 +158,54 @@ export default {
   props: {
     tableData: {
       type: Array,
-      //  default:["td-1","td-2","td-3","td-4"],
+      default: [
+        {
+          postTitle: "I want you ！",
+          player: "捕手",
+          area: "桃園市",
+          postdate: "2023.07.05",
+          iconPen: "fa-solid fa-pen",
+          iconTrashCan: "fa-solid fa-trash-can",
+        },
+        {
+          postTitle: "I want you ！",
+          player: "捕手",
+          area: "桃園市",
+          postdate: "2023.07.05",
+          iconPen: "fa-solid fa-pen",
+          iconTrashCan: "fa-solid fa-trash-can",
+        },
+        {
+          postTitle: "I want you ！",
+          player: "捕手",
+          area: "桃園市",
+          postdate: "2023.07.05",
+          iconPen: "fa-solid fa-pen",
+          iconTrashCan: "fa-solid fa-trash-can",
+        },
+        {
+          postTitle: "I want you ！",
+          player: "捕手",
+          area: "桃園市",
+          postdate: "2023.07.05",
+          iconPen: "fa-solid fa-pen",
+          iconTrashCan: "fa-solid fa-trash-can",
+        },
+        {
+          postTitle: "I want you ！",
+          player: "捕手",
+          area: "桃園市",
+          postdate: "2023.07.05",
+          iconPen: "fa-solid fa-pen",
+          iconTrashCan: "fa-solid fa-trash-can",
+        },
+      ],
+    },
+    tablekey: {
+      type: Number,
+    },
+    title: {
+      type: String,
     },
     // methods: {
     //   checkURL() {
@@ -199,6 +264,15 @@ export default {
       justify-content: center;
       gap: 2rem;
       color: var(--primary-blue);
+      button {
+        font-size: 1rem;
+        letter-spacing: 5px;
+        background-color: var(--primary-blue);
+        color: var(--pale-white);
+        width: 6rem;
+        height: 2rem;
+        border-radius: 3rem;
+      }
     }
   }
 }
