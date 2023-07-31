@@ -40,7 +40,7 @@
                 <div
                   class="recruitment_post_main_content_personalInfo_item_title"
                 >
-                  地區 :
+                  地區:
                 </div>
                 <div
                   class="recruitment_post_main_content_personalInfo_item_text"
@@ -52,7 +52,7 @@
                 <div
                   class="recruitment_post_main_content_personalInfo_item_title"
                 >
-                  信箱 :
+                  信箱:
                 </div>
                 <div
                   class="recruitment_post_main_content_personalInfo_item_text"
@@ -64,13 +64,13 @@
                 <div
                   class="recruitment_post_main_content_personalInfo_item_title"
                 >
-                  經歷 :
+                  經歷:
                 </div>
                 <div
                   class="recruitment_post_main_content_personalInfo_item_text"
                 >
                   <div class="levelbox"></div>
-                  <div>初新者</div>
+                  <div>初心者</div>
                 </div>
               </div>
             </div>
@@ -165,19 +165,21 @@ export default {
         width: 70%;
         color: #535666;
         position: relative;
+        padding-right: 2.5rem;
+        border-right: 2px solid var(--secondary-gray-2);
       }
-      &_entire::after {
-        content: "";
-        position: absolute;
-        height: 100%;
-        top: 0;
-        right: 0;
-        width: 2px;
-        background-color: var(--secondary-gray-2);
-      }
+      // &_entire::after {
+      //   content: "";
+      //   position: absolute;
+      //   height: 100%;
+      //   top: 0;
+      //   right: 0;
+      //   width: 2px;
+      //   background-color: var(--secondary-gray-2);
+      // }
       &_personalInfo {
         display: flex;
-        gap: 3rem;
+        gap: 1.5rem;
         margin-bottom: 1rem;
         // width: 100%;
         &_text {
@@ -191,7 +193,7 @@ export default {
           width: 100%;
 
           &_title {
-            width: 10%;
+            letter-spacing: 5px;
             font-weight: 500;
           }
         }
@@ -199,6 +201,7 @@ export default {
           width: 20rem;
           border-radius: 20rem;
           overflow: hidden;
+          margin: auto;
           img {
             display: block;
             margin: auto;
@@ -242,7 +245,8 @@ export default {
       }
 
       &_btn {
-        margin-left: 6rem;
+        margin: 0 auto;
+        padding-left: 1rem;
         button {
           display: block;
           width: 10rem;

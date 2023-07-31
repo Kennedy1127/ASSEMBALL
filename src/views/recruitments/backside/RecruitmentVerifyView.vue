@@ -35,7 +35,11 @@
         <RecruitmentSearchbar />
       </div>
       <div class="recruitment_post_main_table">
-        <RecruitmentTable />
+        <RecruitmentTable
+          :tableData="computedRenderManageCopywritings"
+          :tablekey="tablekey"
+          :title="title"
+        />
       </div>
       <div class="recruitment_post_main_page">
         <PaginationComponent
@@ -56,6 +60,7 @@ import PaginationComponent from "@/components/utilities/PaginationComponent.vue"
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
 
+const tablekey = ref(1);
 const title = ref("審核應徵");
 
 const store = useStore();
