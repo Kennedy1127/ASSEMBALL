@@ -19,22 +19,29 @@
       </fieldset>
 
       <div class="authentication_text_underline">
-        <input type="email" placeholder="電子郵件/Email" />
+        <input type="email" placeholder="電子郵件/Email" v-model="email" />
       </div>
 
       <div
         class="authentication_text_underline authentication_text_underline--psw"
       >
-        <input type="password" placeholder="密碼/Password" />
+        <input
+          type="password"
+          placeholder="密碼/Password"
+          ref="passwordInput"
+          v-model="password"
+        />
         <font-awesome-icon
           v-if="showPassword"
           class="icon"
           icon="fa-solid fa-eye"
+          @click="toggleShowPassword"
         />
         <font-awesome-icon
           v-if="!showPassword"
           class="icon"
           :icon="['fas', 'eye-slash']"
+          @click="toggleShowPassword"
         />
       </div>
 
@@ -57,7 +64,9 @@
           登入
           <font-awesome-icon icon="fa-solid fa-chevron-right" />
         </button>
-        <div class="authentication_psw_error">輸入錯誤!</div>
+        <div v-if="signinError" class="authentication_psw_error">
+          {{ signinError }}
+        </div>
       </div>
     </form>
 
@@ -75,9 +84,11 @@ import useSignin from "@/composables/authentication/useSignin";
 import useSetPersistence from "@/composables/authentication/useSetPersistence";
 import { ref } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 const store = useStore();
-const { signin } = useSignin();
+const router = useRouter();
+const { signin, error } = useSignin();
 const { changePersistence } = useSetPersistence();
 
 const info = {
@@ -88,11 +99,52 @@ const info = {
   imgSrc: require("@/assets/images/authentication/log-in-bg.png"),
 };
 
+const passwordInput = ref();
 const showPassword = ref(false);
+const toggleShowPassword = () => {
+  showPassword.value = !showPassword.value;
+  showPassword.value === true
+    ? (passwordInput.value.type = "text")
+    : (passwordInput.value.type = "password");
+};
+
+const email = ref("");
+const password = ref("");
+const signinError = ref(null);
+
+const checkFormat = () => {
+  signinError.value = null;
+
+  const validRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+  if (!email.value.match(validRegex))
+    return (signinError.value = "EMAIL格式不符，請重新填寫");
+
+  if (!password.value) return (signinError.value = "請輸入你的登入密碼");
+};
 
 const handleSignin = async () => {
-  // await changePersistence();
-  // await signin("test123@gmail.com", "123456");
+  store.state.isPending = true;
+
+  checkFormat();
+  if (signinError.value) return (store.state.isPending = false);
+
+  const signinData = {
+    email: email.value,
+    password: password.value,
+  };
+
+  await changePersistence();
+  await signin(signinData);
+
+  if (error.value) {
+    signinError.value = "EMAIL或是密碼不符合規定，請重新確認您的EMAIL或密碼";
+    return (store.state.isPending = false);
+  }
+
+  router.push({ name: "Home" });
+  store.state.isPending = false;
 };
 </script>
 
@@ -139,8 +191,8 @@ const handleSignin = async () => {
         top: 50%;
         right: 0.25rem;
         transform: translateY(-50%);
-
         color: var(--secondary-blue-1);
+        cursor: pointer;
       }
     }
 

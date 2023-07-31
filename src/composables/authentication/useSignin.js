@@ -4,21 +4,18 @@ import { ref } from "vue";
 
 const useSignin = () => {
   const error = ref(null);
-  const isPending = ref(false);
-
-  const signin = async (email, password) => {
+  const signin = async ({ email, password }) => {
     try {
       const res = await signInWithEmailAndPassword(auth, email, password);
       if (!res) throw new Error("Could not connect to the server.");
-
-      console.log(res);
     } catch (err) {
       console.error("Something went wrong!");
+      error.value = err.message;
       // console.error(err);
     }
   };
 
-  return { error, isPending, signin };
+  return { error, signin };
 };
 
 export default useSignin;

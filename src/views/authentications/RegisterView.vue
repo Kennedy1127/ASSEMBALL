@@ -91,8 +91,10 @@ import useSignup from "@/composables/authentication/useSignup";
 import useSetPersistence from "@/composables/authentication/useSetPersistence";
 import { useStore } from "vuex";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 const store = useStore();
+const router = useRouter();
 const { signup } = useSignup();
 const { changePersistence } = useSetPersistence();
 
@@ -159,8 +161,10 @@ const checkFormat = () => {
 };
 
 const handleSignup = async () => {
+  store.state.isPending = true;
+
   checkFormat();
-  if (signupError.value) return;
+  if (signupError.value) return (store.state.isPending = false);
 
   const signupData = {
     firstname: firstname.value,
@@ -172,6 +176,9 @@ const handleSignup = async () => {
 
   await changePersistence();
   await signup(signupData);
+
+  router.push({ name: "Login" });
+  store.state.isPending = false;
 };
 </script>
 
@@ -289,4 +296,3 @@ const handleSignup = async () => {
   }
 }
 </style>
-@/composables/authentication/useSignup
