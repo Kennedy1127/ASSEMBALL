@@ -12,10 +12,9 @@ const useSignup = () => {
 
   const signup = async (signupData) => {
     signupError.value = null;
+    const { email, password } = signupData;
 
     try {
-      const { email, password } = signupData;
-
       const res = await createUserWithEmailAndPassword(auth, email, password);
       if (!res) throw new Error("Could not connect to the server.");
 

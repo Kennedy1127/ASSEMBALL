@@ -39,7 +39,10 @@
         </RecruitmentTable>
       </div>
       <div class="recruitment_post_main_page">
-        <PaginationComponent />頁碼待補
+        <PaginationComponent
+          :totalPages="computedTotalPages"
+          type="BacksideRecruit"
+        />
       </div>
     </main>
   </div>
@@ -147,6 +150,11 @@ const computedTotalPages = computed(() => {
         }
       }
     }
+  }
+
+  &_main_page {
+    padding-top: 3rem;
+    padding-bottom: 2rem;
   }
 }
 @media screen and (max-width: 420px) {
