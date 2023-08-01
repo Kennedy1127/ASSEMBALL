@@ -28,7 +28,9 @@
             {{ item.seller }}
           </div>
           <div class="MemberCenter_Order_list_item_price">{{ item.price }}</div>
-          <div class="MemberCenter_Order_list_item_date">{{ item.date }}</div>
+          <div class="MemberCenter_Order_list_item_date">
+            <span>購買日期：</span>{{ item.date }}
+          </div>
         </div>
       </div>
       <!-- //頁碼未處理 -->
@@ -125,6 +127,10 @@ export default {
     color: var(--primary-blue);
     font-weight: 600;
     margin-bottom: 2rem;
+    @media all and (max-width: 420px) {
+      padding-bottom: 2rem;
+      border-bottom: 2px solid var(--secondary-gray-2);
+    }
     & div {
       border-left: 1rem solid var(--primary-blue);
       & span {
@@ -147,11 +153,13 @@ export default {
       @media all and (max-width: 420px) {
         flex-direction: row;
         padding-right: 0;
+        display: none;
       }
     }
+
     &_item {
       display: flex;
-      flex-direction: row;
+      gap: 1rem;
       margin-bottom: 2rem;
       align-items: center;
       justify-content: space-evenly;
@@ -161,6 +169,7 @@ export default {
       padding-bottom: 2rem;
       @media all and (max-width: 420px) {
         align-items: flex-start;
+        flex-direction: column;
       }
       & img {
         width: 89px;
@@ -169,6 +178,17 @@ export default {
       &_price {
         font-weight: 600;
         color: var(--accent-red);
+      }
+      &_date {
+        @media all and (max-width: 420px) {
+          padding-top: 1rem;
+        }
+        & span {
+          display: none;
+          @media all and (max-width: 420px) {
+            display: inline-block;
+          }
+        }
       }
     }
   }

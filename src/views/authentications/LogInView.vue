@@ -1,6 +1,6 @@
 <template>
   <AuthenticationWrapper v-if="!store.state.isMobile">
-    <form class="authentication_text">
+    <form class="authentication_text" @submit.prevent="handleSignin">
       <div class="authentication_text_slogan">Welocom Back !</div>
       <div class="authentication_text_title">會員登入/Log In</div>
       <div class="authentication_text_subtitle">快速登入</div>
@@ -19,22 +19,29 @@
       </fieldset>
 
       <div class="authentication_text_underline">
-        <input type="email" placeholder="電子郵件/Email" />
+        <input type="email" placeholder="電子郵件/Email" v-model="email" />
       </div>
 
       <div
         class="authentication_text_underline authentication_text_underline--psw"
       >
-        <input type="password" placeholder="密碼/Password" />
+        <input
+          type="password"
+          placeholder="密碼/Password"
+          ref="passwordInput"
+          v-model="password"
+        />
         <font-awesome-icon
           v-if="showPassword"
           class="icon"
           icon="fa-solid fa-eye"
+          @click="toggleShowPassword"
         />
         <font-awesome-icon
           v-if="!showPassword"
           class="icon"
           :icon="['fas', 'eye-slash']"
+          @click="toggleShowPassword"
         />
       </div>
 
@@ -57,7 +64,9 @@
           登入
           <font-awesome-icon icon="fa-solid fa-chevron-right" />
         </button>
-        <div class="authentication_psw_error">輸入錯誤!</div>
+        <div v-if="signinError" class="authentication_psw_error">
+          {{ signinError }}
+        </div>
       </div>
     </form>
 
@@ -71,10 +80,16 @@
 import AuthenticationWrapper from "@/components/Authentication/AuthenticationWrapper.vue";
 import AuthenticationPic from "@/components/Authentication/AuthenticationPic.vue";
 import LoginMobile from "@/components/Authentication/mobile/LoginMobile.vue";
+import useSignin from "@/composables/authentication/useSignin";
+import useSetPersistence from "@/composables/authentication/useSetPersistence";
 import { ref } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 const store = useStore();
+const router = useRouter();
+const { signin, error } = useSignin();
+const { changePersistence } = useSetPersistence();
 
 const info = {
   title: "Hello , Friend !",
@@ -84,7 +99,53 @@ const info = {
   imgSrc: require("@/assets/images/authentication/log-in-bg.png"),
 };
 
+const passwordInput = ref();
 const showPassword = ref(false);
+const toggleShowPassword = () => {
+  showPassword.value = !showPassword.value;
+  showPassword.value === true
+    ? (passwordInput.value.type = "text")
+    : (passwordInput.value.type = "password");
+};
+
+const email = ref("");
+const password = ref("");
+const signinError = ref(null);
+
+const checkFormat = () => {
+  signinError.value = null;
+
+  const validRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+  if (!email.value.match(validRegex))
+    return (signinError.value = "EMAIL格式不符，請重新填寫");
+
+  if (!password.value) return (signinError.value = "請輸入你的登入密碼");
+};
+
+const handleSignin = async () => {
+  store.state.isPending = true;
+
+  checkFormat();
+  if (signinError.value) return (store.state.isPending = false);
+
+  const signinData = {
+    email: email.value,
+    password: password.value,
+  };
+
+  await changePersistence();
+  await signin(signinData);
+
+  if (error.value) {
+    signinError.value = "EMAIL或是密碼不符合規定，請重新確認您的EMAIL或密碼";
+    return (store.state.isPending = false);
+  }
+
+  router.push({ name: "Home" });
+  store.state.isPending = false;
+};
 </script>
 
 <style scoped lang="scss">
@@ -130,8 +191,8 @@ const showPassword = ref(false);
         top: 50%;
         right: 0.25rem;
         transform: translateY(-50%);
-
         color: var(--secondary-blue-1);
+        cursor: pointer;
       }
     }
 
@@ -231,17 +292,19 @@ const showPassword = ref(false);
     }
 
     &_btn {
-      margin-top: 6rem;
+      // margin-top: 6rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 0.5rem;
 
-      // position: absolute;
-      // top: 80%;
-      // left: 50%;
-      // transform: translateX(-50%);
+      position: absolute;
+      top: 80%;
+      left: 50%;
+      transform: translateX(-50%);
+
+      width: 100%;
 
       button {
         width: 10rem;
@@ -262,7 +325,7 @@ const showPassword = ref(false);
     }
 
     .authentication_psw_error {
-      width: 8rem;
+      width: 50%;
       font-size: 1rem;
       color: var(--accent-red);
       text-align: center;

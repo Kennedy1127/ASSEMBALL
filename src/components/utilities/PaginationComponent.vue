@@ -98,6 +98,10 @@ const movePage = (feature, num = null) => {
   gap: 1rem;
 
   font-family: "Noto Sans TC", sans-serif;
+  @media screen and (max-width: 420px) {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
 }
 
 .pagination {

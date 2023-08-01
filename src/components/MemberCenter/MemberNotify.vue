@@ -111,12 +111,13 @@ export default {
   gap: 0.5rem;
   @media all and (max-width: 420px) {
     max-width: 100%;
-    max-height: 85vh;
+    max-height: 90vh;
     left: 0;
     z-index: 48;
-    top: 4.5rem;
+    top: 4.2rem;
     overflow: auto;
     padding-top: 1rem;
+    padding-bottom: 4rem;
   }
   &_join {
     position: relative;

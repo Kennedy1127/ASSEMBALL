@@ -30,6 +30,9 @@ export default {
   .goback {
     margin-top: 6rem;
     display: block;
+    @media all and (max-width: 420px) {
+      padding-left: 1rem;
+    }
     & a {
       display: inline-block;
       color: var(--primary-blue);

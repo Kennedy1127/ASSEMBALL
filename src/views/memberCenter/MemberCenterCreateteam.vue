@@ -20,13 +20,19 @@
                 type="text"
                 name="team_name"
                 id="name"
-                placeholder="請輸入球隊名稱(1-10個字)"
+                placeholder="請輸入球隊名稱"
                 v-model="teamName"
                 minlength="1"
                 maxlength="10"
                 pattern="[^%&',;=?$\x22]+"
                 required
               />
+              <div
+                class="MemberCenter_Createteam_form_inner_name_count"
+                style="color: var(--secondary-gray-3)"
+              >
+                {{ computedCommentLenName }}/10
+              </div>
             </div>
             <!-- //地區 -->
             <div class="MemberCenter_Createteam_form_inner_region">
@@ -65,11 +71,17 @@
             rows="10"
             v-model="CreateteamIntroduction"
             minlength="10"
-            maxlength="100"
+            maxlength="200"
             value
-            placeholder="請輸入簡介內容(10-100字)"
+            placeholder="請輸入簡介內容..."
             required
           ></textarea>
+          <div
+            class="MemberCenter_Createteam_form_Introduction_count"
+            style="color: var(--secondary-gray-3)"
+          >
+            {{ computedCommentLen }}/200
+          </div>
         </div>
         <div class="MemberCenter_Createteam_form_btn">
           <input type="submit" value="送出" />
@@ -102,6 +114,13 @@ export default {
   computed: {
     items() {
       return this.$props.type === "role" ? [...this.roles] : [...this.area];
+    },
+    //數字限制
+    computedCommentLen() {
+      return this.CreateteamIntroduction.length;
+    },
+    computedCommentLenName() {
+      return this.teamName.length;
     },
   },
 
@@ -207,6 +226,7 @@ export default {
         display: flex;
         flex-direction: column;
         padding-bottom: 2rem;
+        position: relative;
         & label {
           font-size: 1.25rem;
           color: var(--secondary-gray-1);
@@ -222,15 +242,27 @@ export default {
         }
         & input {
           border: none;
+          height: 3rem;
           border-radius: var(--round);
           background-color: var(--secondary-blue-4);
-          padding: 1rem 0;
+          padding: 0.5rem 0;
           padding-left: 1rem;
           font-size: 1.25rem;
         }
         & input:focus {
           outline: 2px solid var(--secondary-blue-1);
           background-color: var(--pale-white);
+        }
+        &_count {
+          position: absolute;
+          bottom: 2.5rem;
+          right: 1.5rem;
+          font-size: 1.25rem;
+          color: var(--secondary-gray-3);
+
+          @media all and (max-width: 420px) {
+            right: 1rem;
+          }
         }
       }
       &_region {
@@ -253,7 +285,7 @@ export default {
 
             div:first-of-type {
               height: 100%;
-              padding: 1rem 1.5rem;
+              padding: 0.5rem 1.5rem;
               display: flex;
               align-items: center;
               justify-content: space-between;
@@ -326,6 +358,10 @@ export default {
         width: 150px;
         height: 150px;
         border-radius: 50%;
+        @media all and (max-width: 420px) {
+          width: 100px;
+          height: 100px;
+        }
       }
       & label {
         margin-left: 0.5rem;
@@ -338,6 +374,9 @@ export default {
         font-weight: 500;
         border: 2px dashed var(--secondary-blue-1);
         cursor: pointer;
+        @media all and (max-width: 420px) {
+          margin-left: 0rem;
+        }
         & input {
           display: none;
         }
@@ -347,6 +386,7 @@ export default {
       }
     }
     &_Introduction {
+      position: relative;
       & div {
         font-size: 1.25rem;
         color: var(--secondary-gray-1);
@@ -372,6 +412,17 @@ export default {
       textarea:focus {
         outline: 2px var(--secondary-blue-1) solid;
         background-color: var(--pale-white);
+      }
+      &_count {
+        position: absolute;
+        bottom: 1rem;
+        right: 1.5rem;
+        font-size: 1rem;
+        color: var(--secondary-gray-3);
+
+        @media all and (max-width: 420px) {
+          right: 1rem;
+        }
       }
     }
     &_btn {
