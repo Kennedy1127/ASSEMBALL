@@ -63,22 +63,35 @@ import { computed, onMounted, ref } from "vue";
 const tablekey = ref(1);
 const title = ref("審核應徵");
 
+//把抓到的內容放進表格內
 const store = useStore();
 onMounted(() => {
   store.dispatch("getManageCopywritings"); //用index.js的 action 要用dispatch
 });
-const computedTotalPages = computed(() => {
-  // return 20;
-  if (store.state.ManageCopywritings.length === 0) return 1;
 
+// 一頁放幾個項目
+const computedRenderManageCopywritings = computed(() => {
+  const start = store.state.isMobile
+    ? (store.state.curPage - 1) * 4
+    : (store.state.curPage - 1) * 5;
+
+  const end = store.state.isMobile
+    ? store.state.curPage * 4
+    : store.state.curPage * 5;
+
+  return store.state.ManageCopywritings.slice(start, end);
+});
+const computedTotalPages = computed(() => {
+  // 計算總頁數
+  if (store.state.ManageCopywritings.length === 0) return 1;
   const len = store.state.ManageCopywritings.length; //state :return的東西
   return store.state.isMobile
-    ? len % 4 === 0
+    ? len % 4 === 0 // 手機
       ? len > 4
         ? len / 4
         : 1
       : Math.ceil(len / 4)
-    : len % 5 === 0
+    : len % 5 === 0 // 桌機板
     ? len > 5
       ? len / 5
       : 1

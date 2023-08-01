@@ -32,41 +32,66 @@
       </div>
       <div class="recruitment_post_main_table">
         <RecruitmentTable
-          :tableData="computedRenderManageCopywritings"
+          :tableData="computedRenderApplyRecords"
           :tablekey="tablekey"
           :title="title"
         >
         </RecruitmentTable>
       </div>
       <div class="recruitment_post_main_page">
-        <ProductsMainPagination />頁碼待補
+        <PaginationComponent />頁碼待補
       </div>
     </main>
   </div>
 </template>
 
-<script>
+<script setup>
 import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
 import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
 import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";
-import ProductsMainPagination from "@/components/products/productsItems/ProductsMainPagination";
-export default {
-  data() {
-    return {
-      title: "記錄管理",
-      tablekey: 2,
-    };
-  },
+import PaginationComponent from "@/components/utilities/PaginationComponent.vue";
+import { useStore } from "vuex";
+import { computed, onMounted, ref } from "vue";
 
-  components: {
-    GobackAndTitle,
-    RecruitmentPostAside,
-    RecruitmentSearchbar,
-    RecruitmentTable,
-    ProductsMainPagination,
-  },
-};
+const tablekey = ref(2);
+const title = ref("記錄管理");
+
+//把抓到的內容放進表格內
+const store = useStore();
+onMounted(() => {
+  store.dispatch("getApplyRecords"); //用index.js的 action 要用dispatch
+});
+
+// 一頁放幾個項目
+const computedRenderApplyRecords = computed(() => {
+  const start = store.state.isMobile
+    ? (store.state.curPage - 1) * 4
+    : (store.state.curPage - 1) * 5;
+
+  const end = store.state.isMobile
+    ? store.state.curPage * 4
+    : store.state.curPage * 5;
+
+  return store.state.ApplyRecords.slice(start, end);
+});
+const computedTotalPages = computed(() => {
+  // 計算總頁數
+  if (store.state.ApplyRecords.length === 0) return 1;
+  const len = store.state.ApplyRecords.length; //state :return的東西
+  return store.state.isMobile
+    ? len % 4 === 0 // 手機
+      ? len > 4
+        ? len / 4
+        : 1
+      : Math.ceil(len / 4)
+    : len % 5 === 0 // 桌機板
+    ? len > 5
+      ? len / 5
+      : 1
+    : Math.ceil(len / 5);
+});
+//=======================
 </script>
 
 <style lang="scss">

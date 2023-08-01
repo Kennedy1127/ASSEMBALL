@@ -52,8 +52,9 @@ export default createStore({
     selectedCopywritingsExp: [],
     selectedCopywritingsArea: "",
     selectedCopywritingsDate: 0,
-    //----
+    //----球隊徵人招募-後台
     ManageCopywritings: [],
+    ApplyRecords: [],
 
     ///////////////////////////////////////////
     // 我的球隊區塊
@@ -321,9 +322,13 @@ export default createStore({
     },
 
     // 後台-招募文案區塊
-    // 取得後台-招募文案數量
+    // 1. 取得後台-招募文案數量
     setManageCopywritings(state, payload) {
       state.ManageCopywritings = [...payload]; //payload:要運送出來的東西
+    },
+    // 2. 取得後台-應徵數量
+    setApplyRecords(state, payload) {
+      state.ApplyRecords = [...payload]; //payload:要運送出來的東西
     },
 
     ///////////////////////////////////////
@@ -486,6 +491,17 @@ export default createStore({
         );
         if (!res) throw new Error("Cannot fetch response");
         context.commit("setManageCopywritings", res.data); //setManageCopywritings: 寫在mutation裡面
+        // context.commit("setCopywritingsCount", res.data.length);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    // 撈後台-應徵紀錄資料
+    async getApplyRecords(context) {
+      try {
+        const res = await axios.get("http://localhost:3000/candidate-apply");
+        if (!res) throw new Error("Cannot fetch response");
+        context.commit("setApplyRecords", res.data); //setManageCopywritings: 寫在mutation裡面
         // context.commit("setCopywritingsCount", res.data.length);
       } catch (err) {
         console.error(err);

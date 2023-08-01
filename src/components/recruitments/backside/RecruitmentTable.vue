@@ -1,6 +1,6 @@
 <template>
   <div class="recruitment_table">
-    <table v-if="tablekey === 1" class="fixed_headers">
+    <!-- <table v-if="tablekey === 1" class="fixed_headers">
       <thead>
         <tr>
           <th>標題</th>
@@ -29,23 +29,67 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
 
-    <table v-else-if="tablekey === 2" class="fixed_headers">
+    <table class="fixed_headers">
       <thead>
-        <tr>
-          <th>守備位置</th>
-          <th>地區</th>
-          <th>應徵日期</th>
-          <th>姓名</th>
+        <tr v-if="tablekey === 1">
+          <th v-if="title === '管理職缺'"><div>標題</div></th>
+          <th v-else :colspan="'2'"><div>標題</div></th>
+          <th><div>守備位置</div></th>
+          <th><div>地區</div></th>
+          <th v-if="title === '管理職缺'"><div>更新日期</div></th>
+          <th v-if="title === '管理職缺'">編輯</th>
+
+          <th v-else :colspan="'2'">更新日期</th>
+        </tr>
+        <tr v-else>
+          <th :colspan="'2'"><div>守備位置</div></th>
+          <th><div>地區</div></th>
+          <th><div>應徵日期</div></th>
+          <th :colspan="'2'">姓名</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in records" :key="item">
-          <td>{{ records.A }}</td>
-          <td>{{ records.B }}</td>
-          <td>{{ records.C }}</td>
-          <td>{{ records.D }}</td>
+        <tr v-for="item in $props.tableData" :key="item.id">
+          <td
+            :class="convertStatusColor()"
+            v-if="title === '審核應徵' || title === '記錄管理'"
+          ></td>
+          <td v-if="title === '管理職缺' || title === '審核應徵'">
+            {{ item.copywriting_title }}
+          </td>
+
+          <td v-else>{{ item.copywriting_role }}</td>
+
+          <td v-if="title === '管理職缺' || title === '審核應徵'">
+            {{ item.copywriting_role }}
+          </td>
+
+          <td v-else>{{ item.candidate_area }}</td>
+
+          <td v-if="title === '管理職缺' || title === '審核應徵'">
+            {{ item.copywriting_area }}
+          </td>
+
+          <td v-else>{{ item.copywriting_date }}</td>
+
+          <td v-if="title === '管理職缺' || title === '審核應徵'">
+            {{ item.copywriting_date }}
+          </td>
+
+          <td v-else>{{ item.candidate_name }}</td>
+
+          <td v-if="title === '管理職缺'" class="Icon">
+            <div class="icon-pen">
+              <font-awesome-icon icon="fa-solid fa-pen" />
+            </div>
+          </td>
+          <td v-else-if="title === '審核應徵'" class="Icon">
+            <button>
+              更多<font-awesome-icon icon="fa-solid fa-chevron-right" />
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -90,6 +134,7 @@ import { icon } from "@fortawesome/fontawesome-svg-core";
 export default {
   data() {
     return {
+      statusColor: ["yellow", "red", "green"],
       records: [
         { A: "捕手", B: "桃園市", C: "2023.08.05", D: "Hank Liu" },
         { A: "捕手", B: "桃園市", C: "2023.07.05", D: "Hank Liu" },
@@ -140,22 +185,13 @@ export default {
           iconTrashCan: "fa-solid fa-trash-can",
         },
       ],
-      Icon: { pen: "fa-pen", trashcan: "fa-trash-can" },
-      // <td>I want you ！</td>
-      //     <td>捕手</td>
-      //     <td>桃園市</td>
-      //     <td>2023.07.05</td>
-      //     <td class="Icon">
-      //       <div class="icon-pen">
-      //         <font-awesome-icon icon="fa-solid fa-pen" />
-      //       </div>
-      //       <div class="icon-trashcan">
-      //         <font-awesome-icon icon="fa-solid fa-trash-can" />
-      //       </div>
-      //     </td>
     };
   },
   props: {
+    status: {
+      type: Number,
+      default: 1,
+    },
     tableData: {
       type: Array,
       default: [
@@ -207,21 +243,11 @@ export default {
     title: {
       type: String,
     },
-    // methods: {
-    //   checkURL() {
-    //     this.$route.name == "";
-    //   },
-    // },
-    // props: {
-    //   color: String,
-    // },
-    // compute: {
-    //   renderColor(){
-    //     return {
-    //       '`${props.color}`':true,
-    //     }
-    //   }
-    // },
+  },
+  methods: {
+    convertStatusColor() {
+      return { [this.statusColor[this.$props.status]]: true };
+    },
   },
 };
 </script>
@@ -243,12 +269,28 @@ export default {
       background-color: var(--secondary-blue-3);
 
       th {
+        width: 20rem;
         padding: 0.5rem 0;
+        div {
+          border-right: 2px solid var(--primary-blue);
+        }
       }
     }
     td {
       padding: 3rem 0;
       text-align: center;
+    }
+    td:nth-child(1) {
+      width: 2px;
+      &.yellow {
+        background-color: yellow;
+      }
+      &.red {
+        background-color: red;
+      }
+      &.green {
+        background-color: green;
+      }
     }
     td:nth-child(3) {
       font-size: 0.875rem;
