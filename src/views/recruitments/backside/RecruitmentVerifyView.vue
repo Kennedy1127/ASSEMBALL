@@ -201,6 +201,11 @@ const computedTotalPages = computed(() => {
       }
     }
   }
+
+  &_main_page {
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+  }
 }
 @media screen and (max-width: 420px) {
   .recruitment_post {
