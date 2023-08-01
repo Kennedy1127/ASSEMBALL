@@ -73,8 +73,8 @@
         <button>
           註冊 <font-awesome-icon icon="fa-solid fa-chevron-right" />
         </button>
-        <div v-if="signupError" class="authentication_psw_error">
-          {{ signupError }}
+        <div v-if="error" class="authentication_psw_error">
+          {{ error }}
         </div>
       </div>
     </form>
@@ -95,7 +95,7 @@ import { useRouter } from "vue-router";
 
 const store = useStore();
 const router = useRouter();
-const { signup } = useSignup();
+const { signupError, signup } = useSignup();
 const { changePersistence } = useSetPersistence();
 
 const info = {
@@ -131,40 +131,40 @@ const username = ref("");
 const email = ref("");
 const password = ref("");
 const confirmPassword = ref("");
-const signupError = ref(null);
+const error = ref(null);
 
 const checkFormat = () => {
-  signupError.value = null;
+  error.value = null;
 
   if (!firstname.value || !lastname.value)
-    return (signupError.value = "請輸入你的姓名");
+    return (error.value = "請輸入你的姓名");
 
-  if (!username.value) return (signupError.value = "請輸入你的使用者名稱");
+  if (!username.value) return (error.value = "請輸入你的使用者名稱");
 
-  if (!email.value) return (signupError.value = "請輸入你的EMAIL");
+  if (!email.value) return (error.value = "請輸入你的EMAIL");
 
   const validRegex =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
   if (!email.value.match(validRegex))
-    return (signupError.value = "EMAIL格式不符，請重新填寫");
+    return (error.value = "EMAIL格式不符，請重新填寫");
 
-  if (!password.value) return (signupError.value = "請輸入你的密碼");
+  if (!password.value) return (error.value = "請輸入你的密碼");
 
   if (password.value.length < 6)
-    return (signupError.value = "密碼至少需要6個字母或數字");
+    return (error.value = "密碼至少需要6個字母或數字");
 
-  if (!confirmPassword.value) return (signupError.value = "請填寫確認密碼");
+  if (!confirmPassword.value) return (error.value = "請填寫確認密碼");
 
   if (password.value !== confirmPassword.value)
-    return (signupError.value = "密碼確認失敗，請重新確認");
+    return (error.value = "密碼確認失敗，請重新確認");
 };
 
 const handleSignup = async () => {
   store.state.isPending = true;
 
   checkFormat();
-  if (signupError.value) return (store.state.isPending = false);
+  if (error.value) return (store.state.isPending = false);
 
   const signupData = {
     firstname: firstname.value,
@@ -176,6 +176,13 @@ const handleSignup = async () => {
 
   await changePersistence();
   await signup(signupData);
+
+  if (signupError.value) {
+    signupError.value === "Firebase: Error (auth/email-already-in-use)."
+      ? (error.value = "註冊失敗，EMAIL已被使用")
+      : (error.value = "註冊失敗，請重新整理或洽平台管理員");
+    return (store.state.isPending = false);
+  }
 
   router.push({ name: "Login" });
   store.state.isPending = false;

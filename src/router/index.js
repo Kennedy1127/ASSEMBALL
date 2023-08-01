@@ -1,9 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import store from "@/store/index";
 import { auth } from "@/firebase/config";
-import getData from "@/composables/data/getData";
-
-const { getUser } = getData();
+import useSignout from "@/composables/authentication/useSignout";
+const { signout } = useSignout();
 
 const routes = [
   {
@@ -21,6 +20,7 @@ const routes = [
     name: "Register",
     component: () => import("@/views/authentications/RegisterView.vue"),
     beforeEnter: () => {
+      if (auth.currentUser) signout();
       if (auth.currentUser) return { name: "Home" };
     },
   },
@@ -199,17 +199,6 @@ const router = createRouter({
 });
 
 router.beforeEach(async () => {
-  // 確認是不是手機使用
-  if (window.innerWidth <= 420) {
-    store.state.isMobile = 1;
-  }
-
-  // 確認使用者登入狀態
-  if (auth.currentUser && !store.state.isLoggedIn) {
-    store.state.isLoggedIn = true;
-    if (!store.state.user.id) store.state.user = await getUser();
-  }
-
   // 在每次路由跳轉前關閉通知、會員頁面
   store.state.isNotifyVisible = 0;
   store.state.isMemberVisible = 0;

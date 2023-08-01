@@ -73,8 +73,50 @@ import MemberCenter from "@/components/MemberCenter/MemberCenter";
 import MemberPersonal from "@/components/MemberCenter/MemberPersonal";
 import MainFooter from "@/components/MainFooter.vue";
 import LoadingComponent from "@/components/utilities/LoadingComponent.vue";
+import { auth } from "@/firebase/config";
+import getData from "@/composables/data/getData";
 
 export default {
+  async beforeMount() {
+    const {
+      getUser,
+      getDocument,
+      getDocuments,
+      getSubCollectionDocument,
+      getSubCollectionDocuments,
+    } = getData();
+    const testA = await getDocument("COPYWRITINGS", "UFX8L9SRpSRjXzgCwxHk");
+    const testB = await getDocuments("COPYWRITINGS");
+    console.log(testA);
+    console.log(testB);
+
+    const testC = await getSubCollectionDocument({
+      collectionName: "PRODUCTS",
+      documentId: "VHKTJGsrIOYXBTBxFR7e",
+      subCollectionName: "COMMENTS",
+      subDocumentId: "n8w5wpDDeGWujr8Aq8Kp",
+    });
+    const testD = await getSubCollectionDocuments({
+      collectionName: "PRODUCTS",
+      documentId: "VHKTJGsrIOYXBTBxFR7e",
+      subCollectionName: "COMMENTS",
+    });
+    console.log(testC);
+    console.log(testD);
+
+    // 確認是不是手機使用
+    if (window.innerWidth <= 420) {
+      this.$store.state.isMobile = 1;
+    }
+
+    // 確認使用者登入狀態
+    if (auth.currentUser && !this.$store.state.isLoggedIn) {
+      this.$store.state.isLoggedIn = true;
+      if (!this.$store.state.user) {
+        this.$store.state.user = await getUser();
+      }
+    }
+  },
   data() {
     return {
       // 導覽列顯示
