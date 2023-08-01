@@ -35,8 +35,14 @@
               maxlength="100"
               value
               placeholder="系統預設模板內容1...."
-              v-model="Introduction_one"
+              v-model="Introductionone"
             ></textarea>
+            <div
+              class="MemberCenter_Application_template_content_count"
+              style="color: var(--secondary-gray-3)"
+            >
+              {{ computedCommentLenOne }}/200
+            </div>
           </div>
           <div class="MemberCenter_Application_template_revise">
             <span> <font-awesome-icon icon="fa-solid fa-pen" /></span>
@@ -61,8 +67,14 @@
               maxlength="100"
               value
               placeholder="系統預設模板內容2...."
-              v-model="Introduction_two"
+              v-model="Introductiontwo"
             ></textarea>
+            <div
+              class="MemberCenter_Application_template_content_count"
+              style="color: var(--secondary-gray-3)"
+            >
+              {{ computedCommentLenTwo }}/200
+            </div>
           </div>
           <div class="MemberCenter_Application_template_revise">
             <span> <font-awesome-icon icon="fa-solid fa-pen" /></span>
@@ -87,8 +99,14 @@
               maxlength="100"
               value
               placeholder="系統預設模板內容3...."
-              v-model="Introduction_three"
+              v-model="Introductionthree"
             ></textarea>
+            <div
+              class="MemberCenter_Application_template_content_count"
+              style="color: var(--secondary-gray-3)"
+            >
+              {{ computedCommentLenThree }}/200
+            </div>
           </div>
           <div class="MemberCenter_Application_template_revise">
             <span> <font-awesome-icon icon="fa-solid fa-pen" /></span>
@@ -108,7 +126,14 @@
               maxlength="100"
               value
               placeholder="系統預設模板內容1...."
+              v-model="Introductionadd"
             ></textarea>
+            <div
+              class="MemberCenter_Application_template_content_count"
+              style="color: var(--secondary-gray-3)"
+            >
+              {{ computedCommentLenAdd }}/200
+            </div>
           </div>
           <div class="MemberCenter_Application_template_revise">
             <span> <font-awesome-icon icon="fa-solid fa-pen" /></span>
@@ -127,9 +152,10 @@ export default {
   data() {
     return {
       // 表單資料
-      Introduction_one: "",
-      Introduction_two: "",
-      Introduction_three: "",
+      Introductionone: "",
+      Introductiontwo: "",
+      Introductionthree: "",
+      Introductionadd: "",
       template: [],
       /////////
       // template: [
@@ -144,6 +170,22 @@ export default {
       //   },
       // ],
     };
+  },
+
+  computed: {
+    //數字限制
+    computedCommentLenOne() {
+      return this.Introductionone.length;
+    },
+    computedCommentLenTwo() {
+      return this.Introductiontwo.length;
+    },
+    computedCommentLenThree() {
+      return this.Introductionthree.length;
+    },
+    computedCommentLenAdd() {
+      return this.Introductionadd.length;
+    },
   },
 
   methods: {
@@ -175,6 +217,9 @@ export default {
     border-radius: var(--round);
     padding: 3rem 8rem;
     margin-top: 2rem;
+    @media all and (max-width: 420px) {
+      padding: 2rem 2rem;
+    }
   }
   &_title {
     font-size: 1.5rem;
@@ -202,6 +247,11 @@ export default {
     padding-right: 6rem;
     border-bottom: 2px solid var(--secondary-gray-2);
     margin-bottom: 2rem;
+    @media all and (max-width: 420px) {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      font-size: 1rem;
+    }
   }
   &_template {
     display: flex;
@@ -210,11 +260,20 @@ export default {
     padding: 1rem;
     padding-left: 6rem;
     padding-right: 6rem;
+    @media all and (max-width: 420px) {
+      padding-left: 0rem;
+      padding-right: 0rem;
+      align-items: flex-start;
+      gap: 1rem;
+    }
     &_add {
       font-size: 2rem;
       color: var(--primary-blue);
       padding-left: 1rem;
       cursor: pointer;
+      @media all and (max-width: 420px) {
+        padding-left: 0rem;
+      }
     }
     &_tick > input {
       appearance: none;
@@ -225,6 +284,9 @@ export default {
       position: relative;
       margin-left: 1rem;
       cursor: pointer;
+      @media all and (max-width: 420px) {
+        margin-left: 0rem;
+      }
     }
     &_tick > input:checked::after {
       content: "●";
@@ -236,6 +298,7 @@ export default {
       bottom: 14%;
     }
     &_content {
+      position: relative;
       & textarea {
         width: 100%;
         font-size: 1rem;
@@ -251,12 +314,26 @@ export default {
         outline: 2px var(--secondary-blue-1) solid;
         background-color: var(--pale-white);
       }
+      &_count {
+        position: absolute;
+        bottom: 1rem;
+        right: 1rem;
+        font-size: 1rem;
+        color: var(--secondary-gray-3);
+
+        @media all and (max-width: 420px) {
+          right: 1rem;
+        }
+      }
     }
     &_revise {
       font-size: 1.75rem;
       color: var(--primary-blue);
       padding-left: 1rem;
       cursor: pointer;
+      @media all and (max-width: 420px) {
+        padding-left: 0rem;
+      }
     }
   }
   &_adddescribe {
@@ -271,6 +348,9 @@ export default {
     padding-top: 2rem;
     margin-top: 2rem;
     border-top: 2px solid var(--secondary-gray-2);
+    @media all and (max-width: 420px) {
+      padding-left: 1rem;
+    }
   }
   &_btn {
     display: flex;

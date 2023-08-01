@@ -1,49 +1,57 @@
 <template>
-  <form class="authentication_mobile">
-    <h3 class="authentication_mobile_title">重設密碼</h3>
+  <MobileAuthenticationWrapper :info="info">
+    <form class="authentication_mobile">
+      <h3 class="authentication_mobile_title">重設密碼</h3>
 
-    <p class="authentication_mobile_text authentication_mobile_text--en">
-      Membership authentication successful ! Please reset your password.
-    </p>
+      <p class="authentication_mobile_text authentication_mobile_text--en">
+        Membership authentication successful ! Please reset your password.
+      </p>
 
-    <p class="authentication_mobile_text authentication_mobile_text--ch">
-      會員認證成功！ 請重新設置您的密碼。
-    </p>
+      <p class="authentication_mobile_text authentication_mobile_text--ch">
+        會員認證成功！ 請重新設置您的密碼。
+      </p>
 
-    <div class="authentication_mobile_groups">
-      <div class="authentication_mobile_group">
-        <div class="authentication_mobile_label">
-          <label for="password">重設密碼/Password</label>
+      <div class="authentication_mobile_groups">
+        <div class="authentication_mobile_group">
+          <div class="authentication_mobile_label">
+            <label for="password">重設密碼/Password</label>
+          </div>
+
+          <div class="authentication_mobile_input">
+            <input type="password" id="password" />
+          </div>
         </div>
 
-        <div class="authentication_mobile_input">
-          <input type="password" id="password" />
+        <div class="authentication_mobile_group">
+          <div class="authentication_mobile_label">
+            <label for="confirmPassword">密碼確認/Confirm Password</label>
+          </div>
+
+          <div class="authentication_mobile_input">
+            <input type="password" id="confirmPassword" />
+          </div>
         </div>
       </div>
 
-      <div class="authentication_mobile_group">
-        <div class="authentication_mobile_label">
-          <label for="confirmPassword">密碼確認/Confirm Password</label>
-        </div>
-
-        <div class="authentication_mobile_input">
-          <input type="password" id="confirmPassword" />
-        </div>
+      <div class="authentication_mobile_btn">
+        <button>
+          變更
+          <font-awesome-icon icon="fa-solid fa-chevron-right" />
+        </button>
       </div>
-    </div>
 
-    <div class="authentication_mobile_btn">
-      <button>
-        變更
-        <font-awesome-icon icon="fa-solid fa-chevron-right" />
-      </button>
-    </div>
-
-    <div class="authentication_mobile_error">密碼輸入錯誤</div>
-  </form>
+      <div class="authentication_mobile_error">密碼輸入錯誤</div>
+    </form>
+  </MobileAuthenticationWrapper>
 </template>
 
-<script setup></script>
+<script setup>
+import MobileAuthenticationWrapper from "@/components/Authentication/mobile/MobileAuthenticationWrapper.vue";
+const info = {
+  title: "Reset Password",
+  type: "forgotPassword",
+};
+</script>
 
 <style scoped lang="scss">
 .authentication_mobile {

@@ -8,14 +8,14 @@ export default createStore({
     isMobile: 0,
 
     // 讀取中
-    isLoading: 0,
+    isPending: false,
 
     //////////////////////////////////////////////////////
     // 確認是否登入
     isLoggedIn: 0,
 
     // 會員資料
-    user: {},
+    user: null,
 
     // 通知資料
     userNotifies: [],
@@ -44,6 +44,10 @@ export default createStore({
     selectedProductsDate: -1,
 
     //////////////////////////////////////////////////////
+    //會員中心區塊
+    MemberCenterOrderManage: [],
+
+    //////////////////////////////////////////////////////
     // 招募文案區塊
     copywritings: [],
     copywritingsCount: 0,
@@ -52,8 +56,9 @@ export default createStore({
     selectedCopywritingsExp: [],
     selectedCopywritingsArea: "",
     selectedCopywritingsDate: 0,
-    //----
+    //----球隊徵人招募-後台
     ManageCopywritings: [],
+    ApplyRecords: [],
 
     ///////////////////////////////////////////
     // 我的球隊區塊
@@ -283,6 +288,12 @@ export default createStore({
     },
 
     //////////////////////////////////////////////////////
+    //會員中心區塊
+    setMemberCenterOrderManage(state, payload) {
+      state.MemberCenterOrderManage = [...payload]; //payload:要運送出來的東西
+    },
+
+    //////////////////////////////////////////////////////
     // 招募文案區塊
     // 取得招募文案數量
     setCopywritingsCount(state, payload) {
@@ -321,9 +332,13 @@ export default createStore({
     },
 
     // 後台-招募文案區塊
-    // 取得後台-招募文案數量
+    // 1. 取得後台-招募文案數量
     setManageCopywritings(state, payload) {
       state.ManageCopywritings = [...payload]; //payload:要運送出來的東西
+    },
+    // 2. 取得後台-應徵數量
+    setApplyRecords(state, payload) {
+      state.ApplyRecords = [...payload]; //payload:要運送出來的東西
     },
 
     ///////////////////////////////////////
@@ -390,7 +405,7 @@ export default createStore({
       try {
         const res = await axios.get("http://localhost:3000/home_teams");
         if (!res) throw new Error("Cannot fetch response");
-        console.log(res);
+        // console.log(res);
         // context.commit("setProductsCount", res.data.length);
       } catch (err) {
         console.error(err);
@@ -401,7 +416,7 @@ export default createStore({
       try {
         const res = await axios.get("http://localhost:3000/home_copywritings");
         if (!res) throw new Error("Cannot fetch response");
-        console.log(res);
+        // console.log(res);
         // context.commit("setProductsCount", res.data.length);
       } catch (err) {
         console.error(err);
@@ -412,7 +427,7 @@ export default createStore({
       try {
         const res = await axios.get("http://localhost:3000/home_products");
         if (!res) throw new Error("Cannot fetch response");
-        console.log(res);
+        // console.log(res);
         // context.commit("setProductsCount", res.data.length);
       } catch (err) {
         console.error(err);
@@ -438,6 +453,20 @@ export default createStore({
         const res = await axios.get("http://localhost:3000/products");
         if (!res) throw new Error("Cannot fetch response");
         context.commit("setProducts", res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    ///////////////////////////////////////
+
+    // 撈會員中心訂單資料
+    async getMemberCenterOrderManage(context) {
+      try {
+        const res = await axios.get("http://localhost:3000/member_order");
+        if (!res) throw new Error("Cannot fetch response");
+        context.commit("setMemberCenterOrderManage", res.data); //setManageCopywritings: 寫在mutation裡面
+        // context.commit("setCopywritingsCount", res.data.length);
       } catch (err) {
         console.error(err);
       }
@@ -486,6 +515,17 @@ export default createStore({
         );
         if (!res) throw new Error("Cannot fetch response");
         context.commit("setManageCopywritings", res.data); //setManageCopywritings: 寫在mutation裡面
+        // context.commit("setCopywritingsCount", res.data.length);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    // 撈後台-應徵紀錄資料
+    async getApplyRecords(context) {
+      try {
+        const res = await axios.get("http://localhost:3000/candidate-apply");
+        if (!res) throw new Error("Cannot fetch response");
+        context.commit("setApplyRecords", res.data); //setManageCopywritings: 寫在mutation裡面
         // context.commit("setCopywritingsCount", res.data.length);
       } catch (err) {
         console.error(err);

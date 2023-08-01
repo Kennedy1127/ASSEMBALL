@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import store from "@/store/index";
+import { auth } from "@/firebase/config";
+import useSignout from "@/composables/authentication/useSignout";
+const { signout } = useSignout();
 
 const routes = [
   {
@@ -16,16 +19,34 @@ const routes = [
     path: "/register",
     name: "Register",
     component: () => import("@/views/authentications/RegisterView.vue"),
+    beforeEnter: () => {
+      if (auth.currentUser) signout();
+      if (auth.currentUser) return { name: "Home" };
+    },
   },
   {
     path: "/login",
     name: "Login",
-    component: () => import("@/views//authentications/LoginView.vue"),
+    component: () => import("@/views//authentications/LogInView.vue"),
+    beforeEnter: () => {
+      if (auth.currentUser) return { name: "Home" };
+    },
   },
   {
     path: "/forgot-password",
     name: "ForgotPassword",
     component: () => import("@/views/authentications/ForgotPasswordView.vue"),
+    beforeEnter: () => {
+      if (auth.currentUser) return { name: "Home" };
+    },
+  },
+  {
+    path: "/reset-password",
+    name: "ResetPassword",
+    component: () => import("@/views/authentications/ResetPasswordView.vue"),
+    beforeEnter: () => {
+      if (auth.currentUser) return { name: "Home" };
+    },
   },
   /////////////////////////////////////////
   {
@@ -177,10 +198,7 @@ const router = createRouter({
   },
 });
 
-router.beforeEach(() => {
-  if (window.innerWidth <= 420) {
-    store.state.isMobile = 1;
-  }
+router.beforeEach(async () => {
   // 在每次路由跳轉前關閉通知、會員頁面
   store.state.isNotifyVisible = 0;
   store.state.isMemberVisible = 0;

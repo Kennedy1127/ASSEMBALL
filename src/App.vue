@@ -5,6 +5,7 @@
       v-if="MainHeader"
       @toggle_notify="toggleNotify"
       @toggle_member="toggleMember"
+      mode="out-in"
     />
   </transition>
   <transition name="fade">
@@ -15,12 +16,15 @@
     />
   </transition>
   <!-- 通知視窗頁面 -->
+
   <MemberNotify v-if="$store.state.isNotifyVisible" />
+
   <!-- 會員中心 > 個人資料頁面 -->
   <MemberPersonal
     v-if="$store.state.isPersonalVisible"
     @return_page="returnPage"
   />
+
   <!-- 會員中心頁面 -->
   <MemberCenter
     v-if="$store.state.isMemberVisible"
@@ -28,19 +32,23 @@
   />
   <router-view />
   <MainFooter v-if="$route.name !== 'Home'" />
+
+  <!-- Loading 畫面 -->
+  <LoadingComponent v-if="$store.state.isPending" />
 </template>
 
 <style>
+/* 導覽列 */
 .fade-enter-active {
-  animation: fade-in 0.01s;
+  animation: fade-in 0.3s;
 }
 .fade-leave-active {
-  animation: fade-out 0.01s;
+  animation: fade-out 0.3s;
 }
 
 @keyframes fade-in {
   from {
-    opacity: 1;
+    opacity: 0;
   }
   to {
     opacity: 1;
@@ -52,7 +60,7 @@
     opacity: 1;
   }
   to {
-    opacity: 1;
+    opacity: 0;
   }
 }
 </style>
@@ -64,8 +72,51 @@ import MemberNotify from "@/components/MemberCenter/MemberNotify";
 import MemberCenter from "@/components/MemberCenter/MemberCenter";
 import MemberPersonal from "@/components/MemberCenter/MemberPersonal";
 import MainFooter from "@/components/MainFooter.vue";
+import LoadingComponent from "@/components/utilities/LoadingComponent.vue";
+import { auth } from "@/firebase/config";
+import getData from "@/composables/data/getData";
 
 export default {
+  async beforeMount() {
+    const {
+      getUser,
+      getDocument,
+      getDocuments,
+      getSubCollectionDocument,
+      getSubCollectionDocuments,
+    } = getData();
+    const testA = await getDocument("COPYWRITINGS", "UFX8L9SRpSRjXzgCwxHk");
+    const testB = await getDocuments("COPYWRITINGS");
+    console.log(testA);
+    console.log(testB);
+
+    const testC = await getSubCollectionDocument({
+      collectionName: "PRODUCTS",
+      documentId: "VHKTJGsrIOYXBTBxFR7e",
+      subCollectionName: "COMMENTS",
+      subDocumentId: "n8w5wpDDeGWujr8Aq8Kp",
+    });
+    const testD = await getSubCollectionDocuments({
+      collectionName: "PRODUCTS",
+      documentId: "VHKTJGsrIOYXBTBxFR7e",
+      subCollectionName: "COMMENTS",
+    });
+    console.log(testC);
+    console.log(testD);
+
+    // 確認是不是手機使用
+    if (window.innerWidth <= 420) {
+      this.$store.state.isMobile = 1;
+    }
+
+    // 確認使用者登入狀態
+    if (auth.currentUser && !this.$store.state.isLoggedIn) {
+      this.$store.state.isLoggedIn = true;
+      if (!this.$store.state.user) {
+        this.$store.state.user = await getUser();
+      }
+    }
+  },
   data() {
     return {
       // 導覽列顯示
@@ -84,6 +135,7 @@ export default {
     MemberNotify,
     MemberCenter,
     MemberPersonal,
+    LoadingComponent,
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
@@ -102,6 +154,9 @@ export default {
       } else {
         this.MainHeaderLight = false;
         this.MainHeader = true;
+        this.$store.state.isNotifyVisible = false;
+        this.$store.state.isPersonalVisible = false;
+        this.$store.state.isMemberVisible = false;
       }
     },
     //切換通知頁面

@@ -123,7 +123,7 @@ watch(selectedTag, (tag) => {
         padding: 1rem;
         padding-left: 3rem;
         border-radius: var(--round);
-
+        background-color: var(--secondary-blue-4);
         font-size: 1rem;
         font-weight: 400;
 
@@ -144,7 +144,7 @@ watch(selectedTag, (tag) => {
         top: 50%;
         left: 0.5rem;
         transform: translateY(-50%);
-
+        padding-left: 0.5rem;
         cursor: pointer;
       }
     }
