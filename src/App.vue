@@ -78,7 +78,11 @@ import getData from "@/composables/data/getData";
 
 export default {
   async beforeMount() {
-    const { getUser } = getData();
+    const { getUser, getDocument, getDocuments } = getData();
+    const testA = await getDocument("COPYWRITINGS", "UFX8L9SRpSRjXzgCwxHk");
+    const testB = await getDocuments("COPYWRITINGS");
+    console.log(testA);
+    console.log(testB);
 
     // 確認是不是手機使用
     if (window.innerWidth <= 420) {

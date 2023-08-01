@@ -14,25 +14,39 @@ const getData = () => {
     }
   };
 
-  const getCollection = async () => {
+  const getDocument = async (target, id) => {
     try {
-      const docsRef = collection(
-        db,
-        "MEMBERS",
-        auth.currentUser.uid,
-        "TEMPLATES"
-      );
-      const res = await getDocs(docsRef);
-      // console.log(res);
-      // console.log(res.docs[0].data());
-      // return res.data();
+      const docRef = doc(db, target, id);
+      const res = await getDoc(docRef);
+
+      return res.data();
     } catch (err) {
       console.error("Something went wrong!");
-      console.error(err);
+      // console.error(err);
     }
   };
 
-  return { getUser, getCollection };
+  const getDocuments = async (target) => {
+    try {
+      const docRef = collection(db, target);
+      const res = await getDocs(docRef);
+
+      return res.docs.map((doc) => doc.data());
+    } catch (err) {
+      console.error("Something went wrong!");
+      // console.error(err);
+    }
+  };
+
+  const getSubCollection = async () => {
+    try {
+    } catch (err) {
+      console.error("Something went wrong!");
+      // console.error(err);
+    }
+  };
+
+  return { getUser, getDocument, getDocuments, getSubCollection };
 };
 
 export default getData;

@@ -395,7 +395,7 @@ export default createStore({
       try {
         const res = await axios.get("http://localhost:3000/home_teams");
         if (!res) throw new Error("Cannot fetch response");
-        console.log(res);
+        // console.log(res);
         // context.commit("setProductsCount", res.data.length);
       } catch (err) {
         console.error(err);
@@ -406,7 +406,7 @@ export default createStore({
       try {
         const res = await axios.get("http://localhost:3000/home_copywritings");
         if (!res) throw new Error("Cannot fetch response");
-        console.log(res);
+        // console.log(res);
         // context.commit("setProductsCount", res.data.length);
       } catch (err) {
         console.error(err);
@@ -417,7 +417,7 @@ export default createStore({
       try {
         const res = await axios.get("http://localhost:3000/home_products");
         if (!res) throw new Error("Cannot fetch response");
-        console.log(res);
+        // console.log(res);
         // context.commit("setProductsCount", res.data.length);
       } catch (err) {
         console.error(err);
