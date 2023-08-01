@@ -15,7 +15,7 @@ export default createStore({
     isLoggedIn: 0,
 
     // 會員資料
-    user: {},
+    user: null,
 
     // 通知資料
     userNotifies: [],

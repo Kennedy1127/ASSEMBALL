@@ -2,12 +2,17 @@ import { auth } from "@/firebase/config";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import useData from "@/composables/data/useData";
 import useSignout from "@/composables/authentication/useSignout";
+import { ref } from "vue";
 
-const { setData } = useData();
+const { setData, setDataSubCollection } = useData();
 const { signout } = useSignout();
 
 const useSignup = () => {
+  const signupError = ref(null);
+
   const signup = async (signupData) => {
+    signupError.value = null;
+
     try {
       const { email, password } = signupData;
 
@@ -18,7 +23,7 @@ const useSignup = () => {
         displayName: signupData.username,
       });
 
-      const data = {
+      const userData = {
         id: auth.currentUser.uid,
         firstname: signupData.firstname,
         lastname: signupData.lastname,
@@ -28,26 +33,38 @@ const useSignup = () => {
         area: "台灣",
         icon: null,
         team_id: null,
-        templates: [
-          {
-            template_status: true,
-            template_text: "預設模板",
-          },
-        ],
-        notifications: [],
         access: true,
         violations: 0,
       };
 
-      await setData("MEMBERS", data);
+      const templatesTarget = {
+        collectionName: "MEMBERS",
+        documentId: auth.currentUser.uid,
+        subCollectionName: "TEMPLATES",
+      };
+
+      const notificationsTarget = {
+        collectionName: "MEMBERS",
+        documentId: auth.currentUser.uid,
+        subCollectionName: "NOTIFICATIONS",
+      };
+
+      await setData("MEMBERS", userData);
+      await setDataSubCollection(templatesTarget, {
+        text: "預設模板",
+        status: true,
+      });
+      await setDataSubCollection(notificationsTarget, {});
+
       await signout();
     } catch (err) {
       console.error("Something went wrong!");
+      signupError.value = err.message;
       // console.error(err);
     }
   };
 
-  return { signup };
+  return { signupError, signup };
 };
 
 export default useSignup;

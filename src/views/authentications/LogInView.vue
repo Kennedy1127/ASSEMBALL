@@ -64,8 +64,8 @@
           登入
           <font-awesome-icon icon="fa-solid fa-chevron-right" />
         </button>
-        <div v-if="signinError" class="authentication_psw_error">
-          {{ signinError }}
+        <div v-if="error" class="authentication_psw_error">
+          {{ error }}
         </div>
       </div>
     </form>
@@ -88,7 +88,7 @@ import { useRouter } from "vue-router";
 
 const store = useStore();
 const router = useRouter();
-const { signin, error } = useSignin();
+const { signinError, signin } = useSignin();
 const { changePersistence } = useSetPersistence();
 
 const info = {
@@ -110,25 +110,25 @@ const toggleShowPassword = () => {
 
 const email = ref("");
 const password = ref("");
-const signinError = ref(null);
+const error = ref(null);
 
 const checkFormat = () => {
-  signinError.value = null;
+  error.value = null;
 
   const validRegex =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
   if (!email.value.match(validRegex))
-    return (signinError.value = "EMAIL格式不符，請重新填寫");
+    return (error.value = "EMAIL格式不符，請重新填寫");
 
-  if (!password.value) return (signinError.value = "請輸入你的登入密碼");
+  if (!password.value) return (error.value = "請輸入你的登入密碼");
 };
 
 const handleSignin = async () => {
   store.state.isPending = true;
 
   checkFormat();
-  if (signinError.value) return (store.state.isPending = false);
+  if (error.value) return (store.state.isPending = false);
 
   const signinData = {
     email: email.value,
@@ -138,8 +138,8 @@ const handleSignin = async () => {
   await changePersistence();
   await signin(signinData);
 
-  if (error.value) {
-    signinError.value = "EMAIL或是密碼不符合規定，請重新確認您的EMAIL或密碼";
+  if (signinError.value) {
+    error.value = "EMAIL或是密碼不符合規定，請重新確認您的EMAIL或密碼";
     return (store.state.isPending = false);
   }
 

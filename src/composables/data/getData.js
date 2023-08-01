@@ -1,11 +1,12 @@
 import { auth, db } from "@/firebase/config";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 
 const getData = () => {
   const getUser = async () => {
     try {
-      const userRef = doc(db, "MEMBERS", auth.currentUser.uid);
-      const res = await getDoc(userRef);
+      const docRef = doc(db, "MEMBERS", auth.currentUser.uid);
+      const res = await getDoc(docRef);
+
       return res.data();
     } catch (err) {
       console.error("Something went wrong!");
@@ -13,7 +14,25 @@ const getData = () => {
     }
   };
 
-  return { getUser };
+  const getCollection = async () => {
+    try {
+      const docsRef = collection(
+        db,
+        "MEMBERS",
+        auth.currentUser.uid,
+        "TEMPLATES"
+      );
+      const res = await getDocs(docsRef);
+      // console.log(res);
+      // console.log(res.docs[0].data());
+      // return res.data();
+    } catch (err) {
+      console.error("Something went wrong!");
+      console.error(err);
+    }
+  };
+
+  return { getUser, getCollection };
 };
 
 export default getData;
