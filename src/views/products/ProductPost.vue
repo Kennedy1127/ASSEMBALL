@@ -235,7 +235,10 @@
 
 <script setup>
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
+import useData from "@/composables/data/useData";
 import { computed, ref } from "vue";
+
+const { setData } = useData();
 
 const productName = ref("");
 const price = ref("");
@@ -412,16 +415,18 @@ const checkSubmitData = () => {
 
 const handleSubmit = () => {
   checkSubmitData();
-
   if (error.value) return;
-  console.log("商品名稱：", productName.value);
-  console.log("商品價格：", price.value);
-  console.log("電子信箱：", email.value);
-  console.log("手機號碼：", phone.value);
-  console.log("賣家留言：", comment.value);
-  console.log(tag.value);
-  console.log(area.value);
-  console.log(pics.value);
+
+  const submitData = {
+    productName: productName.value,
+    price: price.value,
+    email: email.value,
+    phone: phone.value,
+    comment: comment.value,
+    tag: tag.value,
+    area: area.value,
+    pics: pics.value,
+  };
 };
 </script>
 
