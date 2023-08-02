@@ -256,9 +256,6 @@ export default {
 .recruitment_table_mobile {
   display: none;
 }
-.green {
-  background-color: green;
-}
 .recruitment_table {
   table {
     width: 100%;
@@ -269,7 +266,7 @@ export default {
       background-color: var(--secondary-blue-3);
 
       th {
-        width: 20rem;
+        width: 12rem;
         padding: 0.5rem 0;
         div {
           border-right: 2px solid var(--primary-blue);
@@ -281,7 +278,7 @@ export default {
       text-align: center;
     }
     td:nth-child(1) {
-      width: 2px;
+      width: 10px;
       &.yellow {
         background-color: yellow;
       }

@@ -79,11 +79,18 @@
           </div>
         </div>
       </section>
-
-      <PaginationComponent />
+      <PaginationComponent
+        :totalPages="computedTotalPages"
+        type="BacksideRecruit"
+      />
     </div>
   </main>
 </template>
+
+<!-- <script setup>
+import { computed, onMounted, ref } from "vue";
+</script> -->
+
 <script>
 import PaginationComponent from "@/components/utilities/PaginationComponent";
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";

@@ -100,10 +100,7 @@ const computedTotalPages = computed(() => {
 .recruitment_post {
   margin-top: 6rem;
   display: flex;
-  &_main_page {
-    padding-top: 3rem;
-    padding-bottom: 2rem;
-  }
+
   &_breadcrumb {
     margin-bottom: 4rem;
     display: flex;
@@ -153,6 +150,10 @@ const computedTotalPages = computed(() => {
         }
       }
     }
+  }
+  &_main_page {
+    padding-top: 3rem;
+    padding-bottom: 2rem;
   }
 }
 @media screen and (max-width: 420px) {
