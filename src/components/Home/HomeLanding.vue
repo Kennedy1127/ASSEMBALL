@@ -19,8 +19,8 @@
         </h1>
       </div>
     </div>
-    <div class="home_landing_all_text fade-up">
-      <div class="home_landing_all_text_first">
+    <div class="home_landing_all_text">
+      <div class="home_landing_all_text_first fade-up">
         <strong
           >{{ homeLandingFirst.focusOne }}<br />
           {{ homeLandingFirst.focusTwo }}
@@ -248,9 +248,59 @@ export default {
     animation: fadeUpAnimation 2s ease forwards;
   }
 }
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 1200px) {
   .home_landing_video {
     width: 90%;
+    position: sticky;
+    top: 10rem;
+  }
+  .home_landing_all_text_first {
+    & br {
+      display: block;
+    }
+  }
+  .home_landing_all_text_center {
+    & br {
+      display: block;
+    }
+  }
+  .home_landing_all_text_last {
+    & strong {
+      & br {
+        display: block;
+      }
+    }
+    p:last-of-type {
+      & br {
+        display: block;
+      }
+    }
+  }
+}
+@media screen and (max-width: 1024px) {
+  .home_landing_all {
+    position: absolute;
+    top: 0;
+    left: 1.5rem;
+    right: 1.5rem;
+  }
+  .home_landing_all_title {
+    margin-top: 18rem;
+  }
+  .home_landing_all_title_wrapper_text:nth-child(2) {
+    display: none;
+  }
+  .home_landing_all_text_center {
+    margin-top: 10rem;
+  }
+  .home_landing_all_text_last {
+    margin-top: 10rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  .home_landing_video {
+    width: 80%;
+    overflow: hidden;
     position: sticky;
     top: 8rem;
     &_desktop {
@@ -262,6 +312,41 @@ export default {
       transform: scale(1.02);
     }
   }
+  .home_landing_all_title_wrapper_text {
+    font-size: 4rem;
+    & br {
+      display: block;
+    }
+  }
+  .home_landing_all_text_last {
+    & br {
+      display: block;
+    }
+  }
+  .home_landing_all_text {
+    & p {
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+@media screen and (max-width: 550px) {
+  .home_landing_all_text {
+    & p {
+      font-size: 1.25rem;
+    }
+    & strong {
+      font-size: 1.75rem;
+    }
+  }
+}
+@media screen and (max-width: 420px) {
+  .home_landing_video {
+    width: 90%;
+    height: auto;
+    position: sticky;
+    top: 8rem;
+  }
   .home_landing_all {
     position: absolute;
     top: 0;
@@ -272,42 +357,30 @@ export default {
       &_wrapper {
         &_text {
           font-size: 3rem;
-          & br {
-            display: block;
-          }
-        }
-        &_text:nth-child(2) {
-          display: none;
         }
       }
     }
     &_text {
       & strong {
         font-size: 1.3rem;
-        // font-weight: 500;
       }
       & p {
         font-size: 1.15rem;
-        margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
         line-height: 1.75rem;
       }
       &_first {
-        opacity: 0;
         margin-top: 2.5rem;
         & br {
           display: block;
         }
       }
       &_center {
-        opacity: 0;
         margin-top: 9rem;
         & br {
           display: block;
         }
       }
       &_last {
-        opacity: 0;
         margin-top: 9rem;
         text-align: left;
         & br {

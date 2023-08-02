@@ -5,6 +5,7 @@ import { ref } from "vue";
 const useSignin = () => {
   const signinError = ref(null);
   const signin = async ({ email, password }) => {
+    signinError.value = null;
     try {
       const res = await signInWithEmailAndPassword(auth, email, password);
       if (!res) throw new Error("Could not connect to the server.");

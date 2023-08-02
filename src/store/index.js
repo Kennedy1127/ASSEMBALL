@@ -15,7 +15,7 @@ export default createStore({
 
     //////////////////////////////////////////////////////
     // 確認是否登入
-    isLoggedIn: 0,
+    isLoggedIn: false,
 
     // 會員資料
     user: null,
@@ -45,6 +45,10 @@ export default createStore({
     selectedProductsText: "",
     selectedProductsTag: 0,
     selectedProductsDate: -1,
+
+    //////////////////////////////////////////////////////
+    //會員中心區塊
+    MemberCenterOrderManage: [],
 
     //////////////////////////////////////////////////////
     // 招募文案區塊
@@ -287,6 +291,12 @@ export default createStore({
     },
 
     //////////////////////////////////////////////////////
+    //會員中心區塊
+    setMemberCenterOrderManage(state, payload) {
+      state.MemberCenterOrderManage = [...payload]; //payload:要運送出來的東西
+    },
+
+    //////////////////////////////////////////////////////
     // 招募文案區塊
     // 取得招募文案數量
     setCopywritingsCount(state, payload) {
@@ -432,9 +442,9 @@ export default createStore({
     // 撈商品數量
     async getProductsCount(context) {
       try {
-        const res = await axios.get("http://localhost:3000/products");
-        if (!res) throw new Error("Cannot fetch response");
-        context.commit("setProductsCount", res.data.length);
+        // const res = await axios.get("http://localhost:3000/products");
+        // if (!res) throw new Error("Cannot fetch response");
+        // context.commit("setProductsCount", res.data.length);
       } catch (err) {
         console.error(err);
       }
@@ -443,9 +453,23 @@ export default createStore({
     // 撈商品資料
     async getProducts(context) {
       try {
-        const res = await axios.get("http://localhost:3000/products");
+        // const res = await axios.get("http://localhost:3000/products");
+        // if (!res) throw new Error("Cannot fetch response");
+        // context.commit("setProducts", res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    ///////////////////////////////////////
+
+    // 撈會員中心訂單資料
+    async getMemberCenterOrderManage(context) {
+      try {
+        const res = await axios.get("http://localhost:3000/member_order");
         if (!res) throw new Error("Cannot fetch response");
-        context.commit("setProducts", res.data);
+        context.commit("setMemberCenterOrderManage", res.data); //setManageCopywritings: 寫在mutation裡面
+        // context.commit("setCopywritingsCount", res.data.length);
       } catch (err) {
         console.error(err);
       }
