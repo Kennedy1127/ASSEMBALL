@@ -19,19 +19,6 @@ const useData = () => {
     }
   };
 
-  // const addData = async (target, data) => {
-  //   setDataError.value = null;
-
-  //   try {
-  //     const colRef = collection(db, target);
-  //     await addDoc(colRef, data);
-  //   } catch (err) {
-  //     console.error("Something went wrong!");
-  //     setDataError.value = err.message;
-  //     // console.error(err);
-  //   }
-  // };
-
   const setDataSubCollection = async (target, data) => {
     setDataError.value = null;
 
@@ -55,7 +42,9 @@ const useData = () => {
   const updateData = async (target, id, data = {}) => {
     try {
       const dataRef = doc(db, target, id);
-      await updateDoc(dataRef, data);
+      const res = await updateDoc(dataRef, data);
+
+      return res;
     } catch (err) {
       console.error("Something went wrong!");
       setDataError.value = err.message;

@@ -145,6 +145,7 @@ const handleSignin = async () => {
 
   router.push({ name: "Home" });
   store.state.isPending = false;
+  store.state.isLoggedIn = true;
 };
 </script>
 

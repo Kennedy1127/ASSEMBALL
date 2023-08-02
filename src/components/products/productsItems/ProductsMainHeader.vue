@@ -6,7 +6,7 @@
       <span>{{ productTags[props.type] }}</span>
     </div>
 
-    <div class="products_main_header_features">
+    <div class="products_main_header_features" v-if="store.state.isLoggedIn">
       <div class="products_main_header_feature">
         <router-link :to="{ name: 'ProductPost' }">
           <div class="icon">
@@ -32,6 +32,9 @@
 
 <script setup>
 import productTags from "@/composables/tables/productTags";
+import { useStore } from "vuex";
+
+const store = useStore();
 
 const props = defineProps({
   type: Number,

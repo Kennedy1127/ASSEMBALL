@@ -14,7 +14,7 @@ const getData = () => {
     }
   };
 
-  const getDocument = async (target, id) => {
+  const getDocument = async (target, id, condition = null) => {
     try {
       const docRef = doc(db, target, id);
       const res = await getDoc(docRef);
@@ -22,7 +22,7 @@ const getData = () => {
       return res.data();
     } catch (err) {
       console.error("Something went wrong!");
-      // console.error(err);
+      console.error(err);
     }
   };
 
