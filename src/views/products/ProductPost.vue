@@ -216,7 +216,7 @@
           </div>
 
           <div class="product_post_info_btns">
-            <button @click.prevent="console.log('cancel')">取消</button>
+            <button @click.prevent="testSubmit">取消</button>
             <button @click.prevent="console.log('delete')">刪除商品</button>
             <button>刊登商品</button>
           </div>
@@ -236,9 +236,11 @@
 <script setup>
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
 import useData from "@/composables/data/useData";
+import useStorage from "@/composables/data/useStorage";
 import { computed, ref } from "vue";
 
 const { setData } = useData();
+const { setPic } = useStorage();
 
 const productName = ref("");
 const price = ref("");
@@ -413,6 +415,11 @@ const checkSubmitData = () => {
   }
 };
 
+const testSubmit = () => {
+  const name = pics.value[0].name;
+  setPic(`images/${name}`, pics.value[0]);
+};
+
 const handleSubmit = () => {
   checkSubmitData();
   if (error.value) return;
@@ -427,6 +434,8 @@ const handleSubmit = () => {
     area: area.value,
     pics: pics.value,
   };
+
+  console.log(submitData);
 };
 </script>
 
