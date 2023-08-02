@@ -90,6 +90,10 @@ export default {
     console.log(testA);
     console.log(testB);
 
+    //----
+    const testSherry = await getDocuments("APPLYS");
+    console.log(testSherry);
+
     const testC = await getSubCollectionDocument({
       collectionName: "PRODUCTS",
       documentId: "VHKTJGsrIOYXBTBxFR7e",

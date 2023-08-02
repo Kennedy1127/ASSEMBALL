@@ -60,19 +60,19 @@
             {{ item.copywriting_title }}
           </td>
 
-          <td v-else>{{ item.copywriting_role }}</td>
+          <td v-else>{{ item.role }}</td>
 
           <td v-if="title === '管理職缺' || title === '審核應徵'">
             {{ item.copywriting_role }}
           </td>
 
-          <td v-else>{{ item.candidate_area }}</td>
+          <td v-else>{{ item.area }}</td>
 
           <td v-if="title === '管理職缺' || title === '審核應徵'">
             {{ item.copywriting_area }}
           </td>
 
-          <td v-else>{{ item.copywriting_date }}</td>
+          <td v-else>{{ item.apply_date }}</td>
 
           <td v-if="title === '管理職缺' || title === '審核應徵'">
             {{ item.copywriting_date }}
