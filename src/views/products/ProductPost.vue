@@ -109,7 +109,6 @@
                   type="email"
                   id="email"
                   placeholder="請輸入電子信箱"
-                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
                   v-model="email"
                   required
                 />
@@ -125,7 +124,7 @@
                 <input
                   type="tel"
                   id="phone"
-                  placeholder="請輸入手機號碼(格式：09xx-xxxxxx)"
+                  placeholder="請輸入手機號碼(格式：09xxxxxxxx)"
                   v-model="phone"
                   maxlength="11"
                   pattern="09\d{2}-\d{6}"
@@ -221,6 +220,13 @@
             <button @click.prevent="console.log('delete')">刪除商品</button>
             <button>刊登商品</button>
           </div>
+
+          <p
+            v-if="error"
+            class="product_post_info_error product_post_info_error--mt-1"
+          >
+            {{ error }}
+          </p>
         </form>
       </div>
     </div>
@@ -383,13 +389,39 @@ const deletePic = (index) => {
   pics.value.splice(index, 1);
 };
 
+const checkSubmitData = () => {
+  error.value = null;
+
+  if (tag.value === -1) {
+    return (error.value = "請選擇商品類別");
+  }
+
+  if (area.value === -1) {
+    area.value = "不限地區";
+  }
+
+  if (pics.value.length !== 4) {
+    return (error.value = "必須上傳至少4張商品圖片！");
+  }
+
+  if (!comment.value) {
+    return (error.value =
+      "賣家留言不得為空，為你的商品添加一些說明吧！ (最少10個字)");
+  }
+};
+
 const handleSubmit = () => {
+  checkSubmitData();
+
+  if (error.value) return;
   console.log("商品名稱：", productName.value);
   console.log("商品價格：", price.value);
   console.log("電子信箱：", email.value);
   console.log("手機號碼：", phone.value);
-  console.log("商品照片：", avatar.value);
   console.log("賣家留言：", comment.value);
+  console.log(tag.value);
+  console.log(area.value);
+  console.log(pics.value);
 };
 </script>
 
@@ -537,6 +569,7 @@ const handleSubmit = () => {
     &_info {
       &_error {
         font-size: 1rem;
+        text-align: center;
         color: var(--accent-red);
 
         &--mt-1 {
