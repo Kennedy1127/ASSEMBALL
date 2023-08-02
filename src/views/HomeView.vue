@@ -207,25 +207,10 @@ export default {
       .home_landing {
         height: 1900px;
       }
-      // 跑馬燈
-      .home_marquee {
-        width: 100%;
-        text-align: center;
-        font-size: 1.5rem;
-        background-color: var(--primary-blue);
-        padding-top: 2rem;
-        overflow: hidden;
-      }
       //最新消息
       .home_news {
-        width: 100%;
-        background-color: #fff;
-        color: var(--primary-blue);
         display: flex;
-        text-align: center;
-        position: relative;
-        z-index: 2;
-        overflow: hidden;
+        flex-direction: column;
       }
       // 球隊招募
       .home_recruit {
@@ -267,26 +252,6 @@ export default {
       // 網站故事
       .home_landing {
         height: 1820px;
-      }
-      // 跑馬燈
-      .home_marquee {
-        width: 100%;
-        text-align: center;
-        font-size: 1.5rem;
-        background-color: var(--primary-blue);
-        padding-top: 2rem;
-        overflow: hidden;
-      }
-      //最新消息
-      .home_news {
-        width: 100%;
-        background-color: #fff;
-        color: var(--primary-blue);
-        display: flex;
-        text-align: center;
-        position: relative;
-        z-index: 2;
-        overflow: hidden;
       }
       // 球隊招募
       .home_recruit {
@@ -338,9 +303,6 @@ export default {
       }
       //最新消息
       .home_news {
-        display: flex;
-        flex-direction: column;
-        z-index: 2;
       }
       // 球隊招募
       .home_recruit {
