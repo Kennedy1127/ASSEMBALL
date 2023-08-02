@@ -71,7 +71,7 @@ onMounted(() => {
   if (
     store.state.products.length === 0 ||
     store.state.products.find(
-      (product) => product.product_id === route.params.id
+      (product) => product.product_id === route.params.productId
     )
   ) {
     store.dispatch("getProductsCount");
@@ -80,7 +80,9 @@ onMounted(() => {
 });
 
 const productData = computed(() =>
-  store.state.products.find((product) => product.product_id === route.params.id)
+  store.state.products.find(
+    (product) => product.product_id === route.params.productId
+  )
 );
 
 const productItemData = computed(() => {
@@ -163,9 +165,9 @@ const goToTop = () => {
       z-index: 2;
 
       width: 100%;
-      height: 100px;
-      margin: 6rem 0 0;
-      padding: 1.5rem 1.5rem 0;
+      height: 80px;
+      margin: 4.5rem 0 0;
+      padding: 1rem 1.5rem 1rem 1rem;
       background-color: #fff;
       box-shadow: var(--shadow-light);
     }

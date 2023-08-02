@@ -31,7 +31,9 @@
           <img :src="item.imgSrc" :alt="ProductPayment_form_item_pic" />
           <div class="ProductPayment_form_item_name">{{ item.name }}</div>
           <div class="ProductPayment_form_item_price">{{ item.price }}</div>
-          <div class="ProductPayment_form_item_date">{{ item.date }}</div>
+          <div class="ProductPayment_form_item_date">
+            <span>購買日期：</span>{{ item.date }}
+          </div>
         </div>
         <div class="ProductPayment_form_title">
           <div class="ProductPayment_form_title_recipient">收件人資訊</div>
@@ -73,10 +75,16 @@
               id="creditCardNumber"
               placeholder="請輸入信用卡號(16碼)"
               v-model="creditCardNumber"
-              maxlength="17"
+              maxlength="16"
               pattern="^\d{16}$"
               required
             />
+            <div
+              class="ProductPayment_form_card_creditCardNumber_count"
+              style="color: var(--secondary-gray-3)"
+            >
+              {{ computedCommentLen }}/16
+            </div>
           </div>
           <div class="ProductPayment_form_card_creditCardDate">
             <label for="creditCardDate"><span>*</span>到期日：</label>
@@ -136,6 +144,12 @@ export default {
       ],
     };
   },
+  //數字限制
+  computed: {
+    computedCommentLen() {
+      return this.creditCardNumber.length;
+    },
+  },
   methods: {
     //提交表單
     submitForm() {
@@ -170,6 +184,9 @@ export default {
     border-radius: var(--round);
     padding: 3rem 8rem;
     margin-top: 2rem;
+    @media all and (max-width: 420px) {
+      padding: 2rem 2rem;
+    }
   }
   &_title {
     font-size: 1.5rem;
@@ -215,6 +232,24 @@ export default {
       align-items: center;
       color: var(--secondary-gray-3);
       padding-right: 5rem;
+      @media all and (max-width: 420px) {
+        padding-right: 0rem;
+      }
+      &_name {
+        @media all and (max-width: 420px) {
+          display: none;
+        }
+      }
+      &_price {
+        @media all and (max-width: 420px) {
+          display: none;
+        }
+      }
+      &_date {
+        @media all and (max-width: 420px) {
+          display: none;
+        }
+      }
     }
     &_item {
       display: flex;
@@ -225,13 +260,25 @@ export default {
       padding: 0.5rem;
       font-size: 1.25rem;
       padding-bottom: 2rem;
+      @media all and (max-width: 420px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding-bottom: 0rem;
+      }
       & img {
         width: 89px;
         height: 101px;
         margin-left: 2rem;
+        @media all and (max-width: 420px) {
+          margin-left: 0rem;
+        }
       }
       &_name {
         padding-left: 2rem;
+        @media all and (max-width: 420px) {
+          padding-left: 0rem;
+        }
       }
       &_price {
         font-weight: 600;
@@ -239,6 +286,15 @@ export default {
       }
       &_date {
         padding-right: 4rem;
+        @media all and (max-width: 420px) {
+          padding-right: 0rem;
+        }
+        & span {
+          display: none;
+          @media all and (max-width: 420px) {
+            display: inline-block;
+          }
+        }
       }
     }
     &_phone {
@@ -256,12 +312,16 @@ export default {
       }
       & input {
         width: 30%;
+        height: 3rem;
         border: none;
         border-radius: var(--round);
         background-color: var(--secondary-blue-4);
-        padding: 1rem 0;
+        padding: 0.5rem 0;
         padding-left: 1rem;
         font-size: 1rem;
+        @media all and (max-width: 420px) {
+          width: 100%;
+        }
       }
       & input:focus {
         outline: 2px solid var(--secondary-blue-1);
@@ -284,9 +344,10 @@ export default {
       }
       & input {
         border: none;
+        height: 3rem;
         border-radius: var(--round);
         background-color: var(--secondary-blue-4);
-        padding: 1rem 0;
+        padding: 0.5rem 0;
         padding-left: 1rem;
         font-size: 1rem;
       }
@@ -298,12 +359,32 @@ export default {
     &_card {
       display: flex;
       gap: 2rem;
+      @media all and (max-width: 420px) {
+        flex-direction: column;
+        gap: 1rem;
+      }
       &_creditCardNumber {
+        position: relative;
         flex: 2 1 100px;
         display: flex;
         flex-direction: column;
         padding-bottom: 0.5rem;
         padding-bottom: 3rem;
+        @media all and (max-width: 420px) {
+          padding-bottom: 1rem;
+        }
+        &_count {
+          position: absolute;
+          bottom: 3.7rem;
+          right: 1rem;
+          font-size: 1rem;
+          color: var(--secondary-gray-3);
+
+          @media all and (max-width: 420px) {
+            right: 1rem;
+            bottom: 1.7rem;
+          }
+        }
         & label {
           font-size: 1.25rem;
           color: var(--secondary-gray-1);
@@ -315,10 +396,11 @@ export default {
         }
         & input {
           width: 100%;
+          height: 3rem;
           border: none;
           border-radius: var(--round);
           background-color: var(--secondary-blue-4);
-          padding: 1rem 0;
+          padding: 0.5rem 0;
           padding-left: 1rem;
           font-size: 1rem;
         }
@@ -327,11 +409,15 @@ export default {
           background-color: var(--pale-white);
         }
       }
+
       &_creditCardDate {
         display: flex;
         flex-direction: column;
         padding-bottom: 0.5rem;
         padding-bottom: 3rem;
+        @media all and (max-width: 420px) {
+          padding-bottom: 1rem;
+        }
         & label {
           font-size: 1.25rem;
           color: var(--secondary-gray-1);
@@ -343,9 +429,10 @@ export default {
         }
         & input {
           border: none;
+          height: 3rem;
           border-radius: var(--round);
           background-color: var(--secondary-blue-4);
-          padding: 1rem 0;
+          padding: 0.5rem 0;
           padding-left: 1rem;
           font-size: 1rem;
         }
@@ -370,9 +457,10 @@ export default {
         }
         & input {
           border: none;
+          height: 3rem;
           border-radius: var(--round);
           background-color: var(--secondary-blue-4);
-          padding: 1rem 0;
+          padding: 0.5rem 0;
           padding-left: 1rem;
           font-size: 1rem;
         }

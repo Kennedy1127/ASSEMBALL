@@ -54,10 +54,10 @@
       </button>
     </div>
     <div class="MemberCenter_btn">
-      <router-link :to="{ name: 'Authentication' }">
+      <router-link :to="{ name: 'Register' }">
         <button>註冊</button>
       </router-link>
-      <router-link :to="{ name: 'LogIn' }">
+      <router-link :to="{ name: 'Login' }">
         <button>登入</button>
       </router-link>
     </div>
@@ -98,6 +98,16 @@ export default {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0;
+  @media all and (max-width: 420px) {
+    max-width: 100%;
+    height: 90vh;
+    left: 0;
+    z-index: 48;
+    top: 4.2rem;
+    overflow: auto;
+    // padding-bottom: 5rem;
+    padding-top: 3rem;
+  }
   &_member {
     position: relative;
     margin: auto;
@@ -105,6 +115,9 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    @media all and (max-width: 420px) {
+      margin: 0;
+    }
     & img {
       width: 60%;
     }
@@ -166,6 +179,7 @@ export default {
   &_btn {
     display: flex;
     gap: 2rem;
+    display: none;
     a:nth-child(1) {
       button {
         padding: 0.5rem 1.5rem;
@@ -210,7 +224,6 @@ export default {
     }
   }
   &_signout {
-    display: none; //先隱藏
     & button {
       padding: 0.5rem 1.5rem;
       border-radius: 2rem;

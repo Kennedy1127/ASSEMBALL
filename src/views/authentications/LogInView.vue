@@ -1,213 +1,172 @@
 <template>
-  <div class="authentication_wrap">
-    <AuthenticationComponent layout="normal">
-      <template #form>
-        <div class="authentication">
-          <div class="authentication_text">
-            <div class="authentication_text_slogan">Welocom Back !</div>
-            <div class="authentication_text_title">會員註冊/Sign Up</div>
-            <div class="authentication_text_subtitle">快速登入</div>
-            <div class="authentication_text_quickLogin">
-              <button class="authentication_text_quickLogin_FB">
-                <!-- faFacebook, faLine -->
-                <font-awesome-icon icon="fa-brands fa-facebook" />
-                Facebook
-              </button>
-              <button class="authentication_text_quickLogin_LINE">
-                <font-awesome-icon icon="fa-brands fa-line" />
-                LINE
-              </button>
-            </div>
-            <fieldset>
-              <legend>or</legend>
-            </fieldset>
-
-            <div class="authentication_text_underline">
-              <input type="email" placeholder="電子郵件/Email" />
-            </div>
-
-            <div class="authentication_text_underline">
-              <input
-                type="password"
-                placeholder="密碼/Password"
-              /><font-awesome-icon icon="fa-solid fa-eye" />
-            </div>
-            <div class="authentication_text_rememberPsw">
-              <label class="authentication_text_rememberPsw_checkbox">
-                <input type="checkbox" /><span>
-                  <font-awesome-icon icon="fa-solid fa-circle-check"
-                /></span>
-              </label>
-              <span class="authentication_text_rememberPsw_itemtext"
-                >記住密碼</span
-              >
-
-              <span class="authentication_text_rememberPsw_item">
-                <router-link :to="{ name: 'PswForgot' }">忘記密碼?</router-link>
-              </span>
-            </div>
-
-            <div class="authentication_text_btn">
-              <button>
-                登入 <font-awesome-icon icon="fa-solid fa-chevron-right" />
-              </button>
-
-              <div class="authentication_psw_error">輸入錯誤!</div>
-            </div>
-          </div>
-          <!-- 左邊 -->
-          <div class="authentication_pic">
-            <div class="authentication_pic_title">Hello , Friend !</div>
-
-            <div class="authentication_pic_text">
-              Welcome to our baseball family!
-            </div>
-            <router-link :to="{ name: 'Authentication' }">
-              <button class="authentication_btn">
-                註冊
-                <font-awesome-icon icon="fa-solid fa-chevron-right" /></button
-            ></router-link>
-          </div>
-        </div>
-      </template>
-    </AuthenticationComponent>
-  </div>
-
-  <!-- <Authentication :layout="reverse">
-      <template #form></template
-    ></Authentication> -->
-
-  <!-- <div class="authentication">
-      <div v-if="layout !== 'normal'">
-        <slot name="form">123</slot>
-      </div>
-      <div class="authentication_pic">
-        <div class="authentication_pic_title">Welcome Back !</div>
-
-        <div class="authentication_pic_text">
-          Are you ready <br />
-          to unleash the power of baseball?
-        </div>
-
-        <button class="authentication_btn">
-          登入 <font-awesome-icon icon="fa-solid fa-chevron-right" />
+  <AuthenticationWrapper v-if="!store.state.isMobile">
+    <form class="authentication_text" @submit.prevent="handleSignin">
+      <div class="authentication_text_slogan">Welocom Back !</div>
+      <div class="authentication_text_title">會員登入/Log In</div>
+      <div class="authentication_text_subtitle">快速登入</div>
+      <div class="authentication_text_quickLogin">
+        <button class="authentication_text_quickLogin_FB">
+          <font-awesome-icon class="icon" :icon="['fab', 'facebook']" />
+          <span>Facebook</span>
+        </button>
+        <button class="authentication_text_quickLogin_LINE">
+          <font-awesome-icon class="icon" :icon="['fab', 'line']" />
+          <span>Line</span>
         </button>
       </div>
+      <fieldset>
+        <legend>or</legend>
+      </fieldset>
 
-      <div v-if="layout === 'normal'">
-        <slot name="form"></slot>
+      <div class="authentication_text_underline">
+        <input type="email" placeholder="電子郵件/Email" v-model="email" />
       </div>
-      <form class="authentication_text">
-        <div class="authentication_text_slogan">Hello , Friend !</div>
-        <div class="authentication_text_title">會員註冊/Sign Up</div>
-        <div class="authentication_typing_name">
-          <div class="authentication_typing_name_underline">
-            <input type="text" placeholder="姓/Last Name" />
-          </div>
 
-          <div class="authentication_typing_name_underline">
-            <input type="text" placeholder="名/First Name" />
-          </div>
-        </div>
-
-        <div class="authentication_text_underline">
-          <input type="text" placeholder="使用者名稱/User Name" />
-        </div>
-
-        <div class="authentication_text_underline">
-          <input type="email" placeholder="電子郵件/Email" />
-        </div>
-
-        <div class="authentication_text_underline">
-          <input type="password" placeholder="密碼/Password" />
-        </div>
-
-        <div class="authentication_text_underline">
-          <input type="password" placeholder="確認密碼/Confirm Password" />
-        </div>
-
-        <div class="authentication_text_btn">
-          <button>
-            註冊 <font-awesome-icon icon="fa-solid fa-chevron-right" />
-          </button>
-
-          <div class="authentication_psw_error">輸入錯誤!</div>
-        </div>
-      </form>
-    </div> -->
-
-  <!-- 框.vue -->
-  <!-- <div class="authentication_wrap">
-    <div class="authentication">
-      <div v-if="layout !== 'normal'">
-        <slot name="here"></slot>
+      <div
+        class="authentication_text_underline authentication_text_underline--psw"
+      >
+        <input
+          type="password"
+          placeholder="密碼/Password"
+          ref="passwordInput"
+          v-model="password"
+        />
+        <font-awesome-icon
+          v-if="showPassword"
+          class="icon"
+          icon="fa-solid fa-eye"
+          @click="toggleShowPassword"
+        />
+        <font-awesome-icon
+          v-if="!showPassword"
+          class="icon"
+          :icon="['fas', 'eye-slash']"
+          @click="toggleShowPassword"
+        />
       </div>
-      <div class="authentication_pic">
-        <div class="authentication_pic_title">Welcome Back !</div>
 
-        <div class="authentication_pic_text">
-          Are you ready <br />
-          to unleash the power of baseball?
-        </div>
+      <div class="authentication_text_rememberPsw">
+        <span class="authentication_text_rememberPsw_itemtext">
+          <label class="authentication_text_rememberPsw_checkbox">
+            <input type="checkbox" />
+            <span>
+              <font-awesome-icon icon="fa-solid fa-circle-check" />
+            </span> </label
+          >記住密碼</span
+        >
 
-        <button class="authentication_btn">
-          登入 <font-awesome-icon icon="fa-solid fa-chevron-right" />
+        <span class="authentication_text_rememberPsw_item">
+          <router-link :to="{ name: 'ForgotPassword' }"> 忘記密碼?</router-link>
+        </span>
+      </div>
+
+      <div class="authentication_text_btn">
+        <button>
+          登入
+          <font-awesome-icon icon="fa-solid fa-chevron-right" />
         </button>
+        <div v-if="error" class="authentication_psw_error">
+          {{ error }}
+        </div>
       </div>
-      <div v-if="layout === 'normal'">
-        <slot name="here"></slot>
-      </div>
-    </div>
-  </div> -->
+    </form>
 
-  <!-- 表格login.vue -->
-  <!-- <form>...</form> -->
+    <AuthenticationPic :info="info" />
+  </AuthenticationWrapper>
 
-  <!-- 表格Forget.vue -->
-  <!-- <form>...</form> -->
-
-  <!-- 表格Register.vue -->
-  <!-- <form>...</form> -->
-
-  <!-- 頁面登入.vue -->
-  <!-- <框 layout="reverse">
-          <template #here>
-            <表格login />
-          </template>
-      </框> -->
-
-  <!-- 頁面註冊.vue -->
-  <!-- <框 layout="reverse">
-          <template #here>
-            <表格Register />
-          </template>
-      </框> -->
+  <LoginMobile
+    v-if="store.state.isMobile"
+    :error="error"
+    @mobileSignin="handleMobile"
+  />
 </template>
 
-<script>
-import AuthenticationComponent from "@/components/Authourize/AuthenticationComponent";
-export default {
-  components: { AuthenticationComponent },
-  props: {
-    layout: {
-      type: String,
-      default: () => "normal",
-    },
-  },
+<script setup>
+import AuthenticationWrapper from "@/components/Authentication/AuthenticationWrapper.vue";
+import AuthenticationPic from "@/components/Authentication/AuthenticationPic.vue";
+import LoginMobile from "@/components/Authentication/mobile/LoginMobile.vue";
+import useSignin from "@/composables/authentication/useSignin";
+import useSetPersistence from "@/composables/authentication/useSetPersistence";
+import getData from "@/composables/data/getData";
+import { ref } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+
+const store = useStore();
+const router = useRouter();
+const { signinError, signin } = useSignin();
+const { changePersistence } = useSetPersistence();
+const { getUser } = getData();
+
+const info = {
+  title: "Hello , Friend !",
+  text: ["Welcome to our baseball family!"],
+  link: "Register",
+  linkName: "註冊",
+  imgSrc: require("@/assets/images/authentication/log-in-bg.png"),
+};
+
+const passwordInput = ref();
+const showPassword = ref(false);
+const toggleShowPassword = () => {
+  showPassword.value = !showPassword.value;
+  showPassword.value === true
+    ? (passwordInput.value.type = "text")
+    : (passwordInput.value.type = "password");
+};
+
+const email = ref("");
+const password = ref("");
+const error = ref(null);
+
+const checkFormat = () => {
+  error.value = null;
+
+  const validRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+  if (!email.value.match(validRegex))
+    return (error.value = "EMAIL格式不符，請重新填寫");
+
+  if (!password.value) return (error.value = "請輸入你的登入密碼");
+};
+
+const handleMobile = (signinData) => {
+  email.value = signinData.email;
+  password.value = signinData.password;
+
+  handleSignin();
+};
+
+const handleSignin = async () => {
+  store.state.isPending = true;
+
+  checkFormat();
+  if (error.value) return (store.state.isPending = false);
+
+  const signinData = {
+    email: email.value,
+    password: password.value,
+  };
+
+  await changePersistence();
+  await signin(signinData);
+
+  if (signinError.value) {
+    error.value = "EMAIL或是密碼不符合規定，請重新確認您的EMAIL或密碼";
+    return (store.state.isPending = false);
+  }
+
+  store.state.user = await getUser();
+  store.state.isLoggedIn = true;
+
+  router.push({ name: "Home" });
+  store.state.isPending = false;
 };
 </script>
 
 <style scoped lang="scss">
 .authentication {
-  display: flex;
-  // width: 1200px;
-  // min-height: 80vh;
-  // margin: auto;
-  // border: 1px solid #0003;
-  // box-shadow: var(--shadow-wide);
-  // border-radius: 0.5rem;
-  // overflow: hidden;
-
   &_text {
     width: 50%;
     padding: 5rem 4rem;
@@ -228,8 +187,10 @@ export default {
     &_title {
       font-family: "Noto Sans TC";
       font-size: 1.5rem;
+      font-weight: 500;
       padding: 1.25rem 0rem;
     }
+
     &_subtitle {
       font-size: 1.25rem;
     }
@@ -238,6 +199,18 @@ export default {
       border-bottom: solid 1px black;
       color: var(--secondary-gray-1);
       padding: 0.25rem;
+      margin-top: 2rem;
+
+      position: relative;
+
+      .icon {
+        position: absolute;
+        top: 50%;
+        right: 0.25rem;
+        transform: translateY(-50%);
+        color: var(--secondary-blue-1);
+        cursor: pointer;
+      }
     }
 
     input {
@@ -246,7 +219,6 @@ export default {
       padding-left: 0.25rem;
       padding-bottom: 0.25rem;
       width: 100%;
-      margin: 2rem 0rem 0rem 0rem;
       font-size: 1rem;
       font-family: "Noto Sans TC";
 
@@ -273,6 +245,7 @@ export default {
         padding: 0.25rem;
       }
     }
+
     fieldset {
       border: none;
       border-top: 1px solid var(--secondary-blue-2);
@@ -282,32 +255,53 @@ export default {
         padding: 0 1rem;
       }
     }
+
     &_quickLogin {
       display: flex;
       gap: 2rem;
       margin: 1.5rem 0;
+
       button {
-        padding: 0.5rem 2rem;
         width: 50%;
+        height: 50px;
         border-radius: var(--round);
         color: var(--pale-white);
         font-size: 1.5rem;
         font-weight: 600;
+        font-family: "Montserrat";
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+
+        .icon {
+          position: absolute;
+          left: 0.875rem;
+        }
       }
+
       &_LINE {
         background-color: #1dcb42;
       }
       &_FB {
         background-color: #1a76f2;
+        span {
+          margin-left: 1.875rem;
+        }
       }
     }
 
     &_rememberPsw {
+      display: flex;
+      justify-content: space-between;
       margin-top: 1rem;
       font-size: 1.25rem;
       color: var(--secondary-gray-1);
       &_itemtext {
-        margin: 0 52% 0 3%;
+        label {
+          margin-right: 0.5rem;
+        }
       }
       input[type="checkbox"] {
         display: none;
@@ -320,18 +314,21 @@ export default {
         text-decoration: dashed;
       }
     }
+
     &_btn {
-      margin-top: 6rem;
+      // margin-top: 6rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 0.5rem;
 
-      // position: absolute;
-      // top: 80%;
-      // left: 50%;
-      // transform: translateX(-50%);
+      position: absolute;
+      top: 80%;
+      left: 50%;
+      transform: translateX(-50%);
+
+      width: 100%;
 
       button {
         width: 10rem;
@@ -342,58 +339,21 @@ export default {
         background-color: var(--primary-blue);
         font-family: "Noto Sans TC";
         font-weight: 500;
+        letter-spacing: 5px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
       }
     }
 
     .authentication_psw_error {
-      width: 8rem;
+      width: 50%;
       font-size: 1rem;
       color: var(--accent-red);
       text-align: center;
       // display: none;
-    }
-  }
-  &_pic {
-    // flex: 1;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-image: url(~@/assets/images/authentication/log-in-bg.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-    position: relative;
-
-    &_title {
-      font-size: 2.5rem;
-      color: var(--pale-white);
-      text-align: center;
-      font-family: "Montserrat", sans-serif;
-      font-weight: 700;
-    }
-
-    &_text {
-      font-size: 1.25rem;
-      color: var(--pale-white);
-      text-align: center;
-      font-family: "Montserrat", sans-serif;
-    }
-
-    .authentication_btn {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.5rem;
-      width: 10rem;
-      border-radius: 2rem;
-      padding: 0.5rem 0.25rem;
-      color: var(--primary-blue);
-      font-size: 1.25rem;
-      font-family: "Noto Sans TC";
-      font-weight: 500;
-      position: absolute;
-      top: 80%;
     }
   }
 }

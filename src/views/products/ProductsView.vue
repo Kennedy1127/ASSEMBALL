@@ -107,7 +107,7 @@ const goToTop = (e) => {
   padding-top: 10rem;
 
   @media all and (max-width: 420px) {
-    padding-top: 196px;
+    padding-top: 10rem;
     background-color: #fff;
   }
 
@@ -153,7 +153,7 @@ const goToTop = (e) => {
     font-size: 1.25rem;
 
     @media all and (max-width: 420px) {
-      gap: 0.5rem;
+      gap: 1rem;
       font-size: 1rem;
       // align-items: center;
 
@@ -163,9 +163,9 @@ const goToTop = (e) => {
       z-index: 2;
 
       width: 100%;
-      height: 100px;
-      margin: 6rem 0 0;
-      padding: 1.5rem 1.5rem 0;
+      height: 80px;
+      margin: 4.5rem 0 0;
+      padding: 1rem 1.5rem 1rem 1rem;
       background-color: #fff;
       box-shadow: var(--shadow-light);
     }

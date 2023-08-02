@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import store from "@/store/index";
+import { auth } from "@/firebase/config";
+import useSignout from "@/composables/authentication/useSignout";
+const { signout } = useSignout();
 
 const routes = [
   {
@@ -13,26 +16,38 @@ const routes = [
     component: () => import("@/views/HomeView.vue"),
   },
   {
-    path: "/authentication",
-    name: "Authentication",
-    component: () => import("@/views/authentications/AuthenticationView.vue"),
+    path: "/register",
+    name: "Register",
+    component: () => import("@/views/authentications/RegisterView.vue"),
+    beforeEnter: () => {
+      if (auth.currentUser) signout();
+      if (store.state.isLoggedIn) return { name: "Home" };
+    },
   },
   {
-    path: "/auth-logIn",
-    name: "LogIn",
-    component: () => import("@/views/authentications/LogInView.vue"),
+    path: "/login",
+    name: "Login",
+    component: () => import("@/views//authentications/LogInView.vue"),
+    beforeEnter: () => {
+      if (store.state.isLoggedIn) return { name: "Home" };
+    },
   },
   {
-    path: "/auth-psw-forgot",
-    name: "PswForgot",
-    component: () => import("@/views/authentications/PswForgotView.vue"),
+    path: "/forgot-password",
+    name: "ForgotPassword",
+    component: () => import("@/views/authentications/ForgotPasswordView.vue"),
+    beforeEnter: () => {
+      if (store.state.isLoggedIn) return { name: "Home" };
+    },
   },
   {
-    path: "/auth-psw-reset",
-    name: "PswReset",
-    component: () => import("@/views/authentications/PswResetView.vue"),
+    path: "/reset-password",
+    name: "ResetPassword",
+    component: () => import("@/views/authentications/ResetPasswordView.vue"),
+    beforeEnter: () => {
+      if (store.state.isLoggedIn) return { name: "Home" };
+    },
   },
-
   /////////////////////////////////////////
   {
     path: "/products",
@@ -43,30 +58,39 @@ const routes = [
         next();
         return;
       }
-      store.commit("resetPaginationCurPage");
+      store.commit("resetPaginationCurPage", "products");
       store.commit("resetProductsFilterAndTag");
       next();
     },
   },
   {
-    path: "/products/:id",
+    path: "/products/:productId",
     name: "ProductDetail",
     component: () => import("@/views/products/ProductDetail.vue"),
   },
   {
-    path: "/product-post", //url- 網址的文字
+    path: "/products/product-post", //url- 網址的文字
     name: "ProductPost",
     component: () => import("@/views/products/ProductPost.vue"), // 檔名
+    beforeEnter: () => {
+      if (!store.state.isLoggedIn) return { name: "Home" };
+    },
   },
   {
     path: "/products/products-manage",
     name: "ProductsManage",
     component: () => import("@/views/products/ProductManageView.vue"),
+    beforeEnter: () => {
+      if (!store.state.isLoggedIn) return { name: "Home" };
+    },
   },
   {
     path: "/products/products-payment",
     name: "ProductPayment",
     component: () => import("@/views/products/ProductPayment.vue"),
+    beforeEnter: () => {
+      if (!store.state.isLoggedIn) return { name: "Home" };
+    },
   },
   /////////////////////////////////////////
   {
@@ -78,7 +102,7 @@ const routes = [
         next();
         return;
       }
-      store.commit("resetPaginationCurPage");
+      store.commit("resetPaginationCurPage", "copywritings");
       store.commit("resetFiltersAndSearch");
       next();
     },
@@ -99,6 +123,10 @@ const routes = [
     name: "recruitmentManage",
     component: () =>
       import("@/views/recruitments/backside/RecruitmentManageView.vue"),
+    beforeEnter: (to, from, next) => {
+      store.commit("resetPaginationCurPage");
+      next();
+    },
   },
   {
     path: "/recruitments/recruitment-verify",
@@ -180,9 +208,6 @@ const router = createRouter({
 });
 
 router.beforeEach(() => {
-  if (window.innerWidth <= 420) {
-    store.state.isMobile = 1;
-  }
   // 在每次路由跳轉前關閉通知、會員頁面
   store.state.isNotifyVisible = 0;
   store.state.isMemberVisible = 0;

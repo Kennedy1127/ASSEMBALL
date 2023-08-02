@@ -5,13 +5,9 @@
       <div class="bread_crumbs">
         <!--麵包屑 -->
         <router-link :to="{ name: 'rookie' }">新手上路 </router-link>
-        <!-- <a href="#">
-                    首頁
-                </a> -->
         <div class="bread_crumbs_arrow">
           <span> <font-awesome-icon icon="fa-solid fa-chevron-right" /></span>
         </div>
-
         投手教學系列
       </div>
       <div class="rookieListCurve_title">

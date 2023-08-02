@@ -29,7 +29,12 @@
         <RecruitmentSearchbar :color="blue"> </RecruitmentSearchbar>
       </div>
       <div class="recruitment_post_main_table">
-        <RecruitmentTable />
+        <RecruitmentTable
+          :tableData="computedRenderManageCopywritings"
+          :tablekey="tablekey"
+          :title="title"
+        >
+        </RecruitmentTable>
       </div>
       <div class="recruitment_post_main_page">
         <PaginationComponent
@@ -50,87 +55,52 @@ import PaginationComponent from "@/components/utilities/PaginationComponent.vue"
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
 
-const title = ref("管理職缺");
+const tablekey = ref(1);
 
+const title = ref("管理職缺");
+//把抓到的內容放進表格內
 const store = useStore();
 onMounted(() => {
   store.dispatch("getManageCopywritings"); //用index.js的 action 要用dispatch
 });
-const computedTotalPages = computed(() => {
-  // return 20;
-  if (store.state.ManageCopywritings.length === 0) return 1;
 
+// 一頁放幾個項目
+const computedRenderManageCopywritings = computed(() => {
+  const start = store.state.isMobile
+    ? (store.state.curPage - 1) * 4
+    : (store.state.curPage - 1) * 5;
+
+  const end = store.state.isMobile
+    ? store.state.curPage * 4
+    : store.state.curPage * 5;
+
+  return store.state.ManageCopywritings.slice(start, end);
+});
+const computedTotalPages = computed(() => {
+  // 計算總頁數
+  if (store.state.ManageCopywritings.length === 0) return 1;
   const len = store.state.ManageCopywritings.length; //state :return的東西
   return store.state.isMobile
-    ? len % 4 === 0
+    ? len % 4 === 0 // 手機
       ? len > 4
         ? len / 4
         : 1
       : Math.ceil(len / 4)
-    : len % 5 === 0
+    : len % 5 === 0 // 桌機板
     ? len > 5
       ? len / 5
       : 1
     : Math.ceil(len / 5);
 });
+
+// props傳去組件
 </script>
 
 <style lang="scss">
-// .recruitment_post {
-//   margin-top: 6rem;
-//   display: flex;
-//   &_breadcrumb {
-//     margin-bottom: 4rem;
-//     display: flex;
-//     gap: 1.5rem;
-
-//     font-size: 1.25rem;
-
-//     span:first-child a {
-//       color: var(--primary-blue);
-//       text-decoration: underline;
-//       text-underline-offset: 4px;
-//       // text-decoration-thickness: 2px;
-//     }
-//   }
-//   &_main {
-//     width: 100%;
-//     padding: 2rem 5rem;
-//     // background-color: red;
-//     & > div {
-//       margin-bottom: 3rem;
-//     }
-//     &_title {
-//       display: flex;
-//       gap: 1.5rem;
-//       padding-bottom: 1rem;
-//       font-size: 2rem;
-//       color: var(--primary-blue);
-//       .block {
-//         width: 1rem;
-//         background-color: var(--primary-blue);
-//       }
-//     }
-//     &_filter {
-//     }
-//     &_page {
-//       margin-right: 0;
-//     }
-//   }
-// }
-// @media screen and (max-width: 420px) {
-//   .recruitment_post {
-//     display: block;
-//   }
-// }
-
 .recruitment_post {
   margin-top: 6rem;
   display: flex;
-  &_main_page {
-    padding-top: 3rem;
-    padding-bottom: 2rem;
-  }
+
   &_breadcrumb {
     margin-bottom: 4rem;
     display: flex;
@@ -142,7 +112,6 @@ const computedTotalPages = computed(() => {
       color: var(--primary-blue);
       text-decoration: underline;
       text-underline-offset: 4px;
-      // text-decoration-thickness: 2px;
     }
   }
   &_goback {
@@ -151,7 +120,7 @@ const computedTotalPages = computed(() => {
   &_main {
     width: 100%;
     padding: 2rem 5rem;
-    // background-color: red;
+
     &_title {
       display: flex;
       gap: 1.5rem;
@@ -181,6 +150,10 @@ const computedTotalPages = computed(() => {
         }
       }
     }
+  }
+  &_main_page {
+    padding-top: 3rem;
+    padding-bottom: 2rem;
   }
 }
 @media screen and (max-width: 420px) {
@@ -236,17 +209,11 @@ const computedTotalPages = computed(() => {
     }
     &_main {
       &_content {
-        // display: flex;
-        // gap: 4rem;
         &_form {
           width: 100%;
         }
         &_pic {
           display: none;
-          // position: relative;
-          // img {
-          //   width: 100%;
-          // }
         }
       }
     }

@@ -15,7 +15,7 @@
 
         <div class="products_manage_btn_area">
           <div class="products_manage_btn_area_select">
-            <SelectorComponent />
+            <SelectorComponent :options="productDate" placeholder="選擇日期" />
           </div>
 
           <button class="del_btn">
@@ -79,11 +79,18 @@
           </div>
         </div>
       </section>
-
-      <PaginationComponent />
+      <PaginationComponent
+        :totalPages="computedTotalPages"
+        type="BacksideRecruit"
+      />
     </div>
   </main>
 </template>
+
+<!-- <script setup>
+import { computed, onMounted, ref } from "vue";
+</script> -->
+
 <script>
 import PaginationComponent from "@/components/utilities/PaginationComponent";
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
@@ -120,6 +127,17 @@ export default {
           title: "可愛粉色球帽大拍賣",
           price: 4500,
           date: "2023/07/21 18:30:11",
+        },
+      ],
+      // 下拉選單的日期分類
+      productDate: [
+        {
+          id: 1,
+          label: "從新到舊",
+        },
+        {
+          id: 2,
+          label: "從舊到新",
         },
       ],
     };
@@ -174,6 +192,7 @@ button {
   background-color: #fff;
   & span {
     font-size: 2rem;
+    padding-left: 1rem;
   }
 }
 
@@ -188,9 +207,9 @@ button {
     z-index: 2;
 
     width: 100%;
-    height: 100px;
-    margin: 6rem 0 0;
-    padding: 1.5rem 1.5rem;
+    height: 80px;
+    margin: 4.5rem 0 0;
+    padding: 1rem 1.5rem 1rem 1rem;
     background-color: #fff;
     box-shadow: var(--shadow-light);
 
@@ -256,6 +275,7 @@ button {
 
   @media all and (max-width: 420px) {
     flex-direction: column;
+    margin-bottom: 0rem;
 
     &_title {
       margin-top: 2rem;
@@ -332,7 +352,7 @@ button {
     margin-top: 6rem;
 
     @media all and (max-width: 420px) {
-      margin-top: 12rem;
+      margin-top: 9.5rem;
       padding: 2rem 1.5rem;
     }
   }
@@ -380,7 +400,7 @@ button {
     row-gap: 1rem;
 
     margin-bottom: 0;
-    padding: 1rem 0;
+    padding: 2rem 0;
     border-bottom: 1px solid var(--secondary-gray-3);
 
     &:last-child {

@@ -1,6 +1,14 @@
 <template>
   <main class="copywriting wrapper">
     <div class="copywriting_header">
+      <div class="bread_crumbs">
+        <!--麵包屑 -->
+        <router-link :to="{ name: 'Recruitments' }">球員招募 </router-link>
+        <div class="bread_crumbs_arrow">
+          <span> <font-awesome-icon icon="fa-solid fa-chevron-right" /></span>
+        </div>
+        球隊資料
+      </div>
       <div class="copywriting_header_info">
         <h2 class="copywriting_title">
           <div class="block"></div>
@@ -209,6 +217,41 @@ const convertDate = (copywritingDate) => {
 </script>
 
 <style scoped lang="scss">
+
+//手機版麵包屑
+.bread_crumbs {
+  display: none;
+  @media all and (max-width: 420px) {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1rem;
+    color: var(--primary-black);
+    padding-bottom: 3rem;
+    color: var(--secondary-gray-1);
+  }
+
+  a {
+    @media all and (max-width: 420px) {
+      display: block;
+      font-size: 1rem;
+      color: var(--primary-blue);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      padding-bottom: 0.2rem;
+    }
+  }
+  .bread_crumbs_arrow {
+    @media all and (max-width: 420px) {
+      margin-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      span {
+        color: var(--primary-blue);
+      }
+    }
+  }
+}
 .copywriting.wrapper {
   margin-top: 6rem;
   padding-top: 6rem;
@@ -219,6 +262,7 @@ const convertDate = (copywritingDate) => {
 
   @media all and (max-width: 420px) {
     padding: 2rem 2rem 0;
+    margin-top: 4rem;
   }
 }
 .copywriting {

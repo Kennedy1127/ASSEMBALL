@@ -52,7 +52,11 @@ import {
   faCircleChevronDown,
   faCircleCheck,
   faEye,
+  faEyeSlash,
+  faHouse,
 } from "@fortawesome/free-solid-svg-icons";
+
+import { faFacebook, faLine } from "@fortawesome/free-brands-svg-icons";
 
 library.add(
   faTrashCan,
@@ -95,13 +99,37 @@ library.add(
   faCircleChevronUp,
   faCircleChevronDown,
   faCircleCheck,
-  faEye
+  faEye,
+  faEyeSlash,
+  faFacebook,
+  faLine,
+  faHouse
 );
 
-createApp(App)
-  .use(store)
-  .use(router)
-  .component("font-awesome-icon", FontAwesomeIcon) //icon 設定
-  .use(ViewUIPlus)
-  .use(VCalendar, {})
-  .mount("#app");
+// firebase 狀態觀察設定
+import { auth } from "@/firebase/config";
+import { onAuthStateChanged } from "firebase/auth";
+
+// createApp(App)
+// .use(store)
+// .use(router)
+// .component("font-awesome-icon", FontAwesomeIcon) //icon 設定
+// .use(ViewUIPlus)
+// .use(VCalendar, {})
+// .mount("#app");
+
+let app;
+
+onAuthStateChanged(auth, (user) => {
+  // console.log(user);
+
+  if (!app) {
+    app = createApp(App)
+      .use(store)
+      .use(router)
+      .component("font-awesome-icon", FontAwesomeIcon) //icon 設定
+      .use(ViewUIPlus)
+      .use(VCalendar, {})
+      .mount("#app");
+  }
+});
