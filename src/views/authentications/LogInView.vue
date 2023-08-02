@@ -73,7 +73,11 @@
     <AuthenticationPic :info="info" />
   </AuthenticationWrapper>
 
-  <LoginMobile v-if="store.state.isMobile" />
+  <LoginMobile
+    v-if="store.state.isMobile"
+    :error="error"
+    @mobileSignin="handleMobile"
+  />
 </template>
 
 <script setup>
@@ -82,6 +86,7 @@ import AuthenticationPic from "@/components/Authentication/AuthenticationPic.vue
 import LoginMobile from "@/components/Authentication/mobile/LoginMobile.vue";
 import useSignin from "@/composables/authentication/useSignin";
 import useSetPersistence from "@/composables/authentication/useSetPersistence";
+import getData from "@/composables/data/getData";
 import { ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -90,6 +95,7 @@ const store = useStore();
 const router = useRouter();
 const { signinError, signin } = useSignin();
 const { changePersistence } = useSetPersistence();
+const { getUser } = getData();
 
 const info = {
   title: "Hello , Friend !",
@@ -124,6 +130,13 @@ const checkFormat = () => {
   if (!password.value) return (error.value = "請輸入你的登入密碼");
 };
 
+const handleMobile = (signinData) => {
+  email.value = signinData.email;
+  password.value = signinData.password;
+
+  handleSignin();
+};
+
 const handleSignin = async () => {
   store.state.isPending = true;
 
@@ -142,6 +155,9 @@ const handleSignin = async () => {
     error.value = "EMAIL或是密碼不符合規定，請重新確認您的EMAIL或密碼";
     return (store.state.isPending = false);
   }
+
+  store.state.user = await getUser();
+  store.state.isLoggedIn = true;
 
   router.push({ name: "Home" });
   store.state.isPending = false;

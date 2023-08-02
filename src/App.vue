@@ -85,24 +85,24 @@ export default {
       getSubCollectionDocument,
       getSubCollectionDocuments,
     } = getData();
-    const testA = await getDocument("COPYWRITINGS", "UFX8L9SRpSRjXzgCwxHk");
-    const testB = await getDocuments("COPYWRITINGS");
-    console.log(testA);
-    console.log(testB);
+    // const testA = await getDocument("COPYWRITINGS", "UFX8L9SRpSRjXzgCwxHk");
+    // const testB = await getDocuments("COPYWRITINGS");
+    // console.log(testA);
+    // console.log(testB);
 
-    const testC = await getSubCollectionDocument({
-      collectionName: "PRODUCTS",
-      documentId: "VHKTJGsrIOYXBTBxFR7e",
-      subCollectionName: "COMMENTS",
-      subDocumentId: "n8w5wpDDeGWujr8Aq8Kp",
-    });
-    const testD = await getSubCollectionDocuments({
-      collectionName: "PRODUCTS",
-      documentId: "VHKTJGsrIOYXBTBxFR7e",
-      subCollectionName: "COMMENTS",
-    });
-    console.log(testC);
-    console.log(testD);
+    // const testC = await getSubCollectionDocument({
+    //   collectionName: "PRODUCTS",
+    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
+    //   subCollectionName: "COMMENTS",
+    //   subDocumentId: "n8w5wpDDeGWujr8Aq8Kp",
+    // });
+    // const testD = await getSubCollectionDocuments({
+    //   collectionName: "PRODUCTS",
+    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
+    //   subCollectionName: "COMMENTS",
+    // });
+    // console.log(testC);
+    // console.log(testD);
 
     // 確認是不是手機使用
     if (window.innerWidth <= 420) {
@@ -117,6 +117,7 @@ export default {
       }
     }
   },
+
   data() {
     return {
       // 導覽列顯示

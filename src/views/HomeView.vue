@@ -134,6 +134,194 @@ export default {
     }
   }
 }
+@media screen and (max-width: 1200px) {
+  .home {
+    .wrapper {
+      // 網站故事
+      .home_landing {
+        height: 1800px;
+      }
+      @media screen and (max-width: 1120px) {
+        .home_landing {
+          height: 2000px;
+        }
+      }
+      // 跑馬燈
+      .home_marquee {
+        width: 100%;
+        text-align: center;
+        font-size: 1.5rem;
+        background-color: var(--primary-blue);
+        padding-top: 2rem;
+        overflow: hidden;
+      }
+      //最新消息
+      .home_news {
+        width: 100%;
+        background-color: #fff;
+        color: var(--primary-blue);
+        display: flex;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        overflow: hidden;
+      }
+      // 球隊招募
+      .home_recruit {
+        width: 100%;
+        background-color: #fff;
+        border-top: 3px solid var(--primary-blue);
+        padding: 4rem 2rem 4rem 2rem;
+        display: flex;
+        position: relative;
+        overflow: hidden;
+      }
+      // 交流留言板
+      .home_message {
+        width: 100%;
+        background-color: #fff;
+        border-top: 3px solid var(--primary-blue);
+      }
+      // 二手拍賣區
+      .home_auction {
+        width: 100%;
+        background-color: #fff;
+        border-top: 3px solid var(--primary-blue);
+      }
+      .home_product {
+        width: 100%;
+        position: relative;
+        padding: 2rem 0.5rem 2rem 0.5rem;
+      }
+      .home_footer {
+        width: 100%;
+        overflow: hidden;
+      }
+    }
+  }
+}
+@media screen and (max-width: 1024px) {
+  .home {
+    .wrapper {
+      // 網站故事
+      .home_landing {
+        height: 1900px;
+      }
+      // 跑馬燈
+      .home_marquee {
+        width: 100%;
+        text-align: center;
+        font-size: 1.5rem;
+        background-color: var(--primary-blue);
+        padding-top: 2rem;
+        overflow: hidden;
+      }
+      //最新消息
+      .home_news {
+        width: 100%;
+        background-color: #fff;
+        color: var(--primary-blue);
+        display: flex;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        overflow: hidden;
+      }
+      // 球隊招募
+      .home_recruit {
+        width: 100%;
+        background-color: #fff;
+        border-top: 3px solid var(--primary-blue);
+        padding: 4rem 2rem 4rem 2rem;
+        display: flex;
+        position: relative;
+        overflow: hidden;
+      }
+      // 交流留言板
+      .home_message {
+        width: 100%;
+        background-color: #fff;
+        border-top: 3px solid var(--primary-blue);
+      }
+      // 二手拍賣區
+      .home_auction {
+        width: 100%;
+        background-color: #fff;
+        border-top: 3px solid var(--primary-blue);
+      }
+      .home_product {
+        width: 100%;
+        position: relative;
+        padding: 2rem 0.5rem 2rem 0.5rem;
+      }
+      .home_footer {
+        width: 100%;
+        overflow: hidden;
+      }
+    }
+  }
+}
+@media screen and (max-width: 768px) {
+  .home {
+    .wrapper {
+      // 網站故事
+      .home_landing {
+        height: 1820px;
+      }
+      // 跑馬燈
+      .home_marquee {
+        width: 100%;
+        text-align: center;
+        font-size: 1.5rem;
+        background-color: var(--primary-blue);
+        padding-top: 2rem;
+        overflow: hidden;
+      }
+      //最新消息
+      .home_news {
+        width: 100%;
+        background-color: #fff;
+        color: var(--primary-blue);
+        display: flex;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        overflow: hidden;
+      }
+      // 球隊招募
+      .home_recruit {
+        width: 100%;
+        background-color: #fff;
+        border-top: 3px solid var(--primary-blue);
+        padding: 4rem 2rem 4rem 2rem;
+        display: flex;
+        position: relative;
+        overflow: hidden;
+      }
+      // 交流留言板
+      .home_message {
+        width: 100%;
+        background-color: #fff;
+        border-top: 3px solid var(--primary-blue);
+      }
+      // 二手拍賣區
+      .home_auction {
+        width: 100%;
+        background-color: #fff;
+        border-top: 3px solid var(--primary-blue);
+      }
+      .home_product {
+        width: 100%;
+        position: relative;
+        padding: 2rem 0.5rem 2rem 0.5rem;
+      }
+      .home_footer {
+        width: 100%;
+        overflow: hidden;
+      }
+    }
+  }
+}
 @media screen and (max-width: 420px) {
   .home {
     width: 100%;
@@ -141,7 +329,7 @@ export default {
       width: 100%;
       // 網站故事
       .home_landing {
-        height: 1600px;
+        height: 1650px;
         padding: 1.25rem;
       }
       // 跑馬燈

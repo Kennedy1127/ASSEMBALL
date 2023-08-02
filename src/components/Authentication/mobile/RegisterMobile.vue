@@ -1,6 +1,6 @@
 <template>
   <MobileAuthenticationWrapper :info="info">
-    <form class="authentication_mobile">
+    <form class="authentication_mobile" @submit.prevent="handleSignup">
       <h3 class="authentication_mobile_title">會員註冊/Sign Up</h3>
 
       <div class="authentication_mobile_groups">
@@ -13,7 +13,7 @@
             </div>
 
             <div class="authentication_mobile_input">
-              <input type="text" id="lastname" />
+              <input type="text" id="lastname" v-model="lastname" />
             </div>
           </div>
 
@@ -23,7 +23,7 @@
             </div>
 
             <div class="authentication_mobile_input">
-              <input type="text" id="firstname" />
+              <input type="text" id="firstname" v-model="firstname" />
             </div>
           </div>
         </div>
@@ -34,7 +34,7 @@
           </div>
 
           <div class="authentication_mobile_input">
-            <input type="text" id="username" />
+            <input type="text" id="username" v-model="username" />
           </div>
         </div>
 
@@ -44,7 +44,7 @@
           </div>
 
           <div class="authentication_mobile_input">
-            <input type="email" id="email" />
+            <input type="email" id="email" v-model="email" />
           </div>
         </div>
 
@@ -54,18 +54,25 @@
           </div>
 
           <div class="authentication_mobile_input">
-            <input type="password" id="password" />
+            <input
+              type="password"
+              id="password"
+              v-model="password"
+              ref="passwordInput"
+            />
 
             <div class="authentication_mobile_input_icon">
               <font-awesome-icon
                 v-if="showPassword"
                 class="icon"
                 icon="fa-solid fa-eye"
+                @click="toggleShowPassword"
               />
               <font-awesome-icon
                 v-if="!showPassword"
                 class="icon"
                 :icon="['fas', 'eye-slash']"
+                @click="toggleShowPassword"
               />
             </div>
           </div>
@@ -77,18 +84,25 @@
           </div>
 
           <div class="authentication_mobile_input">
-            <input type="password" id="confirmPassword" />
+            <input
+              type="password"
+              id="confirmPassword"
+              v-model="confirmPassword"
+              ref="confirmPasswordInput"
+            />
 
             <div class="authentication_mobile_input_icon">
               <font-awesome-icon
-                v-if="showPassword"
+                v-if="showConfirmPassword"
                 class="icon"
                 icon="fa-solid fa-eye"
+                @click="toggleShowConfirmPassword"
               />
               <font-awesome-icon
-                v-if="!showPassword"
+                v-if="!showConfirmPassword"
                 class="icon"
                 :icon="['fas', 'eye-slash']"
+                @click="toggleShowConfirmPassword"
               />
             </div>
           </div>
@@ -102,7 +116,9 @@
         </button>
       </div>
 
-      <div class="authentication_mobile_error">密碼輸入錯誤</div>
+      <div v-if="props.error" class="authentication_mobile_error">
+        {{ props.error }}
+      </div>
     </form>
   </MobileAuthenticationWrapper>
 </template>
@@ -111,12 +127,58 @@
 import MobileAuthenticationWrapper from "@/components/Authentication/mobile/MobileAuthenticationWrapper.vue";
 import { ref } from "vue";
 
+const props = defineProps({
+  error: {
+    required: true,
+    default: null,
+  },
+});
+
+const emit = defineEmits(["mobileSignup"]);
+
 const info = {
   title: "Hello , Friend !",
   type: "register",
 };
 
+const passwordInput = ref();
+const confirmPasswordInput = ref();
 const showPassword = ref(false);
+const showConfirmPassword = ref(false);
+
+const toggleShowPassword = () => {
+  showPassword.value = !showPassword.value;
+  showPassword.value === true
+    ? (passwordInput.value.type = "text")
+    : (passwordInput.value.type = "password");
+};
+
+const toggleShowConfirmPassword = () => {
+  showConfirmPassword.value = !showConfirmPassword.value;
+  showConfirmPassword.value === true
+    ? (confirmPasswordInput.value.type = "text")
+    : (confirmPasswordInput.value.type = "password");
+};
+
+const firstname = ref("");
+const lastname = ref("");
+const username = ref("");
+const email = ref("");
+const password = ref("");
+const confirmPassword = ref("");
+
+const handleSignup = () => {
+  const mobileSignupData = {
+    firstname: firstname.value,
+    lastname: lastname.value,
+    username: username.value,
+    email: email.value,
+    password: password.value,
+    confirmPassword: confirmPassword.value,
+  };
+
+  emit("mobileSignup", mobileSignupData);
+};
 </script>
 
 <style scoped lang="scss">
