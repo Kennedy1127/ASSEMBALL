@@ -1,5 +1,8 @@
 import { createStore } from "vuex";
 import axios from "axios";
+import getData from "@/composables/data/getData";
+
+const { getDocuments } = getData();
 
 export default createStore({
   state: {
@@ -12,7 +15,7 @@ export default createStore({
 
     //////////////////////////////////////////////////////
     // 確認是否登入
-    isLoggedIn: 0,
+    isLoggedIn: false,
 
     // 會員資料
     user: null,
@@ -510,9 +513,10 @@ export default createStore({
     // 撈後台-招募文案資料
     async getManageCopywritings(context) {
       try {
-        const res = await axios.get(
-          "http://localhost:3000/candidate-copywritings"
-        );
+        // const res = await axios.get(
+        //   "http://localhost:3000/candidate-copywritings"
+        // );
+        get;
         if (!res) throw new Error("Cannot fetch response");
         context.commit("setManageCopywritings", res.data); //setManageCopywritings: 寫在mutation裡面
         // context.commit("setCopywritingsCount", res.data.length);
@@ -523,9 +527,10 @@ export default createStore({
     // 撈後台-應徵紀錄資料
     async getApplyRecords(context) {
       try {
-        const res = await axios.get("http://localhost:3000/candidate-apply");
-        if (!res) throw new Error("Cannot fetch response");
-        context.commit("setApplyRecords", res.data); //setManageCopywritings: 寫在mutation裡面
+        // const res = await axios.get("http://localhost:3000/candidate-apply");
+        // if (!res) throw new Error("Cannot fetch response");
+        const res = await getDocuments("APPLYS");
+        context.commit("setApplyRecords", res); //setManageCopywritings: 寫在mutation裡面
         // context.commit("setCopywritingsCount", res.data.length);
       } catch (err) {
         console.error(err);

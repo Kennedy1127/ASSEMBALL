@@ -21,7 +21,7 @@ const routes = [
     component: () => import("@/views/authentications/RegisterView.vue"),
     beforeEnter: () => {
       if (auth.currentUser) signout();
-      if (auth.currentUser) return { name: "Home" };
+      if (store.state.isLoggedIn) return { name: "Home" };
     },
   },
   {
@@ -29,7 +29,7 @@ const routes = [
     name: "Login",
     component: () => import("@/views//authentications/LogInView.vue"),
     beforeEnter: () => {
-      if (auth.currentUser) return { name: "Home" };
+      if (store.state.isLoggedIn) return { name: "Home" };
     },
   },
   {
@@ -37,7 +37,7 @@ const routes = [
     name: "ForgotPassword",
     component: () => import("@/views/authentications/ForgotPasswordView.vue"),
     beforeEnter: () => {
-      if (auth.currentUser) return { name: "Home" };
+      if (store.state.isLoggedIn) return { name: "Home" };
     },
   },
   {
@@ -45,7 +45,7 @@ const routes = [
     name: "ResetPassword",
     component: () => import("@/views/authentications/ResetPasswordView.vue"),
     beforeEnter: () => {
-      if (auth.currentUser) return { name: "Home" };
+      if (store.state.isLoggedIn) return { name: "Home" };
     },
   },
   /////////////////////////////////////////
@@ -69,19 +69,28 @@ const routes = [
     component: () => import("@/views/products/ProductDetail.vue"),
   },
   {
-    path: "/product-post", //url- 網址的文字
+    path: "/products/product-post", //url- 網址的文字
     name: "ProductPost",
     component: () => import("@/views/products/ProductPost.vue"), // 檔名
+    beforeEnter: () => {
+      // if (!store.state.isLoggedIn) return { name: "Home" };
+    },
   },
   {
     path: "/products/products-manage",
     name: "ProductsManage",
     component: () => import("@/views/products/ProductManageView.vue"),
+    beforeEnter: () => {
+      if (!store.state.isLoggedIn) return { name: "Home" };
+    },
   },
   {
     path: "/products/products-payment",
     name: "ProductPayment",
     component: () => import("@/views/products/ProductPayment.vue"),
+    beforeEnter: () => {
+      if (!store.state.isLoggedIn) return { name: "Home" };
+    },
   },
   /////////////////////////////////////////
   {
@@ -198,7 +207,7 @@ const router = createRouter({
   },
 });
 
-router.beforeEach(async () => {
+router.beforeEach(() => {
   // 在每次路由跳轉前關閉通知、會員頁面
   store.state.isNotifyVisible = 0;
   store.state.isMemberVisible = 0;

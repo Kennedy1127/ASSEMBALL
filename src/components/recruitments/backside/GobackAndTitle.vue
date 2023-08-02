@@ -26,7 +26,7 @@ export default {
   display: none;
 }
 
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 768px) {
   .goback {
     margin-top: 6rem;
     display: block;

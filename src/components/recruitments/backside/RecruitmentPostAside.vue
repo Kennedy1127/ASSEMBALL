@@ -126,7 +126,7 @@ export default {
     }
   }
 }
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 768px) {
   .recruitment_aside_list li.active {
     background-color: var(--primary-blue);
   }

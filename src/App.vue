@@ -85,10 +85,14 @@ export default {
       getSubCollectionDocument,
       getSubCollectionDocuments,
     } = getData();
-    const testA = await getDocument("COPYWRITINGS", "UFX8L9SRpSRjXzgCwxHk");
-    const testB = await getDocuments("COPYWRITINGS");
-    console.log(testA);
-    console.log(testB);
+    // const testA = await getDocument("COPYWRITINGS", "UFX8L9SRpSRjXzgCwxHk");
+    // const testB = await getDocuments("COPYWRITINGS");
+    // console.log(testA);
+    // console.log(testB);
+
+    //----
+    const testSherry = await getDocuments("APPLYS");
+    console.log(testSherry);
 
     const testC = await getSubCollectionDocument({
       collectionName: "PRODUCTS",
@@ -103,6 +107,19 @@ export default {
     });
     console.log(testC);
     console.log(testD);
+    // const testC = await getSubCollectionDocument({
+    //   collectionName: "PRODUCTS",
+    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
+    //   subCollectionName: "COMMENTS",
+    //   subDocumentId: "n8w5wpDDeGWujr8Aq8Kp",
+    // });
+    // const testD = await getSubCollectionDocuments({
+    //   collectionName: "PRODUCTS",
+    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
+    //   subCollectionName: "COMMENTS",
+    // });
+    // console.log(testC);
+    // console.log(testD);
 
     // 確認是不是手機使用
     if (window.innerWidth <= 420) {
@@ -117,6 +134,7 @@ export default {
       }
     }
   },
+
   data() {
     return {
       // 導覽列顯示
@@ -159,18 +177,41 @@ export default {
         this.$store.state.isMemberVisible = false;
       }
     },
+
+    // 滾動到頂部的方法
+    scrollToTopOnMobile() {
+      if (window.innerWidth <= 420) {
+        window.scrollTo(0, 0);
+      }
+    },
+
     //切換通知頁面
     toggleNotify() {
-      this.$store.commit("NotifyToggle");
+      if (!this.$store.state.isLoggedIn) {
+        alert("還沒登入，跳轉到登入頁面喔~");
+        this.$router.push("/login");
+        this.scrollToTopOnMobile(); // 在跳轉後滾動到頂部
+      } else {
+        this.$store.commit("NotifyToggle");
+      }
     },
+
     //切換會員頁面
     toggleMember() {
-      this.$store.commit("MemberToggle");
+      if (!this.$store.state.isLoggedIn) {
+        alert("還沒登入，跳轉到登入頁面喔~");
+        this.$router.push("/login");
+        this.scrollToTopOnMobile(); // 在跳轉後滾動到頂部
+      } else {
+        this.$store.commit("MemberToggle");
+      }
     },
+
     //會員中心 > 個人資料頁面
     enterPersonal() {
       this.$store.commit("EnterPersonal");
     },
+
     //個人資料頁面返回 > 會員中心
     returnPage() {
       this.$store.commit("ReturnPage");

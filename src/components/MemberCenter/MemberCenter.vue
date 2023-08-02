@@ -179,6 +179,7 @@ export default {
   &_btn {
     display: flex;
     gap: 2rem;
+    display: none;
     a:nth-child(1) {
       button {
         padding: 0.5rem 1.5rem;
@@ -223,7 +224,6 @@ export default {
     }
   }
   &_signout {
-    display: none; //先隱藏
     & button {
       padding: 0.5rem 1.5rem;
       border-radius: 2rem;

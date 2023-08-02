@@ -80,7 +80,11 @@
     </form>
   </AuthenticationWrapper>
 
-  <RegisterMobile v-if="store.state.isMobile" />
+  <RegisterMobile
+    v-if="store.state.isMobile"
+    :error="error"
+    @mobileSignup="handleMobile"
+  />
 </template>
 
 <script setup>
@@ -158,6 +162,17 @@ const checkFormat = () => {
 
   if (password.value !== confirmPassword.value)
     return (error.value = "密碼確認失敗，請重新確認");
+};
+
+const handleMobile = (mobileSignupData) => {
+  firstname.value = mobileSignupData.firstname;
+  lastname.value = mobileSignupData.lastname;
+  username.value = mobileSignupData.username;
+  email.value = mobileSignupData.email;
+  password.value = mobileSignupData.password;
+  confirmPassword.value = mobileSignupData.confirmPassword;
+
+  handleSignup();
 };
 
 const handleSignup = async () => {

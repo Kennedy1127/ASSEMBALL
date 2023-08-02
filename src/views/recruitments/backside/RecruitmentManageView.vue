@@ -156,7 +156,7 @@ const computedTotalPages = computed(() => {
     padding-bottom: 2rem;
   }
 }
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 768px) {
   .recruitment_post {
     margin: 0;
     display: block;

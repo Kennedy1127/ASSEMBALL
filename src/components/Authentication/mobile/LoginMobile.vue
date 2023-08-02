@@ -1,6 +1,6 @@
 <template>
   <MobileAuthenticationWrapper :info="info">
-    <form class="authentication_mobile">
+    <form class="authentication_mobile" @submit.prevent="handleSignin">
       <h3 class="authentication_mobile_title">會員登入/Log In</h3>
 
       <div class="authentication_mobile_quicklogin">
@@ -28,7 +28,7 @@
           </div>
 
           <div class="authentication_mobile_input">
-            <input type="email" id="email" />
+            <input type="email" id="email" v-model="email" />
           </div>
         </div>
 
@@ -38,18 +38,25 @@
           </div>
 
           <div class="authentication_mobile_input">
-            <input type="password" id="password" />
+            <input
+              type="password"
+              id="password"
+              v-model="password"
+              ref="passwordInput"
+            />
 
             <div class="authentication_mobile_input_icon">
               <font-awesome-icon
                 v-if="showPassword"
                 class="icon"
                 icon="fa-solid fa-eye"
+                @click="toggleShowPassword"
               />
               <font-awesome-icon
                 v-if="!showPassword"
                 class="icon"
                 :icon="['fas', 'eye-slash']"
+                @click="toggleShowPassword"
               />
             </div>
           </div>
@@ -71,7 +78,9 @@
         </button>
       </div>
 
-      <div class="authentication_mobile_error">密碼輸入錯誤</div>
+      <div v-if="props.error" class="authentication_mobile_error">
+        {{ props.error }}
+      </div>
     </form>
   </MobileAuthenticationWrapper>
 </template>
@@ -80,12 +89,39 @@
 import MobileAuthenticationWrapper from "@/components/Authentication/mobile/MobileAuthenticationWrapper.vue";
 import { ref } from "vue";
 
+const props = defineProps({
+  error: {
+    required: true,
+    default: null,
+  },
+});
+
+const emit = defineEmits(["mobileSignin"]);
+
 const info = {
   title: "Welocom Back !",
   type: "login",
 };
 
+const passwordInput = ref();
 const showPassword = ref(false);
+const toggleShowPassword = () => {
+  showPassword.value = !showPassword.value;
+  showPassword.value === true
+    ? (passwordInput.value.type = "text")
+    : (passwordInput.value.type = "password");
+};
+
+const email = ref("");
+const password = ref("");
+
+const handleSignin = () => {
+  const signinData = {
+    email: email.value,
+    password: password.value,
+  };
+  emit("mobileSignin", signinData);
+};
 </script>
 
 <style scoped lang="scss">

@@ -16,7 +16,6 @@ export default {
   data() {
     return {
       photos: [
-        // Replace these with actual photo URLs
         {
           img: require("/src/assets/images/myplayer_team/myplayerGallery/myAlbum_1.jpg"),
         },
@@ -26,7 +25,6 @@ export default {
         {
           img: require("/src/assets/images/myplayer_team/myplayerGallery/myAlbum_3.jpg"),
         },
-        // Add more photo URLs if needed
       ],
       currentPhotoIndex: 0,
     };
@@ -52,11 +50,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 .myplayer_photo {
-  width: 600px;
-  height: 400px;
-  border: 1px solid black;
+  width: 800px;
+  height: 600px;
   margin: auto;
   position: relative;
+  top: calc(50% - 300px);
   background-repeat: no-repeat;
   background-size: cover;
   &_rightArrow {
