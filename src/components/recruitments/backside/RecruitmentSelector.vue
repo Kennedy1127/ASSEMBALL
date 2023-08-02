@@ -51,7 +51,7 @@ const items = computed(() => {
   width: 50%;
 
   .ivu-select-single {
-    width: fit-content;
+    // width: fit-content;
     height: 100%;
     .ivu-select-selection:focus {
       outline: none;
@@ -73,6 +73,7 @@ const items = computed(() => {
         height: 100%;
         padding: 1rem 1.5rem;
         display: flex;
+        justify-content: center;
         align-items: center;
         gap: 1rem;
         // justify-content: space-between;

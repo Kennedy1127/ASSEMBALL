@@ -76,10 +76,12 @@
         placeholder="(0/100)"
       ></textarea>
     </div>
-    <div class="recruitment_post_form_btn">
-      <!-- <button>取消</button> -->
-      <button>刪除</button>
-      <button>上傳</button>
+    <div class="recruitment_post_form_item">
+      <div class="recruitment_post_form_btn">
+        <!-- <button>取消</button> -->
+        <button>刪除</button>
+        <button>上傳</button>
+      </div>
     </div>
   </div>
 </template>
@@ -266,7 +268,7 @@ export default {
       margin-right: 1rem;
     }
     &_input {
-      width: 65%;
+      width: 100%;
       border-radius: 10px;
       height: 3rem;
       font-size: 1.25rem;
@@ -326,7 +328,7 @@ export default {
       // }
     }
     textarea {
-      width: 65%;
+      width: 100%;
       font-size: 1.25rem;
       line-height: 1.75;
       outline: 0;
@@ -348,13 +350,16 @@ export default {
     }
   }
   &_btn {
+    width: 100%;
+    margin: auto;
     margin-top: 2rem;
     display: flex;
     justify-content: flex-end;
-    gap: 2rem;
+    gap: 30px;
     font-size: 1.25rem;
     button {
-      width: 10rem;
+      width: 150px;
+      // width: 10rem;
       height: 3rem;
       border-radius: 10px;
     }
@@ -379,6 +384,13 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 420px) {
+  .recruitment_post_form_btn {
+    margin: auto;
+  }
+}
+
 @media screen and (max-width: 420px) {
   .recruitment_post_form {
     &_item {

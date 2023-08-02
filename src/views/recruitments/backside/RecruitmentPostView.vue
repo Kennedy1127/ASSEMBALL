@@ -31,10 +31,12 @@
           <RecruitmentPostForm />
         </div>
         <div class="recruitment_post_main_content_pic">
-          <img
+          <img src="~@/assets/images/recruitment/baseman-1.png" alt="player" />
+          <img src="~@/assets/images/recruitment/baseman-2.png" alt="player" />
+          <!-- <img
             src="~@/assets/images/recruitment/Baseball-Park.png"
             alt="Baseball-Park"
-          />
+          /> -->
         </div>
       </div>
     </main>
@@ -105,16 +107,36 @@ export default {
         width: 60%;
       }
       &_pic {
+        // background-color: var(--secondary-blue-4);
+        // box-shadow: 50px 50px grey;
+        // box-shadow: 10px 5px 50px var(--secondary-blue-3);
         width: 40%;
+        // display: flex;
+        // flex-direction: column;
+        // justify-content: space-evenly;
+
         position: relative;
         img {
           width: 100%;
+          &:nth-child(2) {
+            display: block;
+            position: absolute;
+            bottom: 0;
+          }
         }
       }
     }
   }
 }
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 1024px) {
+  .recruitment_post_main_content_form {
+    width: 100%;
+  }
+  .recruitment_post_main_content_pic {
+    display: none;
+  }
+}
+@media screen and (max-width: 768px) {
   .recruitment_post {
     margin: 0;
     display: block;
@@ -171,13 +193,6 @@ export default {
         // gap: 4rem;
         &_form {
           width: 100%;
-        }
-        &_pic {
-          display: none;
-          // position: relative;
-          // img {
-          //   width: 100%;
-          // }
         }
       }
     }
