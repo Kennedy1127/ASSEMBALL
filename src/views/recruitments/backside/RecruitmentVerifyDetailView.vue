@@ -268,7 +268,8 @@ export default {
     }
   }
 }
-@media screen and (max-width: 420px) {
+
+@media screen and (max-width: 768px) {
   .recruitment_post {
     display: block;
     margin: 0;
@@ -288,18 +289,21 @@ export default {
         display: block;
         &_entire {
           width: 100%;
+          border: none;
+          padding: 0;
         }
         &_entire::after {
           display: none;
         }
         &_SelfIntroduction_content {
           max-width: 80vw;
+          margin: auto;
         }
         &_personalInfo {
           display: block;
           &_pic {
             // width: 6rem;
-            width: 50vw;
+            width: 40vw;
             margin: auto;
             margin-bottom: 2rem;
           }
@@ -314,13 +318,23 @@ export default {
           }
         }
         &_btn {
-          margin-top: 2rem;
+          display: flex;
+          padding: 0;
           margin: 2rem auto auto auto;
+          justify-content: space-around;
           button {
-            width: 100%;
+            width: 40%;
           }
         }
       }
+    }
+  }
+}
+@media screen and (max-width: 420px) {
+  .recruitment_post_main_content_btn {
+    display: block;
+    button {
+      width: 100%;
     }
   }
 }

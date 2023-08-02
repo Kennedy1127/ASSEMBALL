@@ -315,7 +315,7 @@ export default {
     }
   }
 }
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 768px) {
   .recruitment_table {
     display: none;
   }
