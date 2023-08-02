@@ -1,6 +1,6 @@
 <template>
   <div class="overlay" @click.self="closeOverlay">
-    <slot v-if="type">
+    <slot v-if="type === 'TeamGallery'">
       <MyplayerPhotoPopus @closeModal="closeOverlay" />
     </slot>
 
