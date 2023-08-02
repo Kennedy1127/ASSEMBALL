@@ -44,6 +44,7 @@ const props = defineProps({
     align-items: center;
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
     position: relative;
 
     &_title {
