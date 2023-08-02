@@ -182,11 +182,10 @@ export default {
         .myplayer_message_more_group {
           width: 15rem;
           display: flex;
-          justify-content: space-between;
+          justify-content: center;
           background-color: var(--primary-blue);
-          border: 1px solid black;
           border-radius: 2rem;
-          padding: 1rem;
+          padding: 1rem 1.5rem;
           cursor: pointer;
         }
         .myplayer_message_more {
@@ -280,7 +279,6 @@ export default {
           display: flex;
           flex-direction: row-reverse;
           padding: 1rem;
-
           .myplayer_message_area_day {
             width: 33.33333%;
             text-align: center;

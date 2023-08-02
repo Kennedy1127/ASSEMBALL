@@ -46,13 +46,14 @@
       </div>
 
       <div class="authentication_text_rememberPsw">
-        <label class="authentication_text_rememberPsw_checkbox">
-          <input type="checkbox" />
-          <span>
-            <font-awesome-icon icon="fa-solid fa-circle-check" />
-          </span>
-        </label>
-        <span class="authentication_text_rememberPsw_itemtext">記住密碼</span>
+        <span class="authentication_text_rememberPsw_itemtext">
+          <label class="authentication_text_rememberPsw_checkbox">
+            <input type="checkbox" />
+            <span>
+              <font-awesome-icon icon="fa-solid fa-circle-check" />
+            </span> </label
+          >記住密碼</span
+        >
 
         <span class="authentication_text_rememberPsw_item">
           <router-link :to="{ name: 'ForgotPassword' }"> 忘記密碼?</router-link>
@@ -275,7 +276,7 @@ const handleSignin = async () => {
 
         .icon {
           position: absolute;
-          left: 1rem;
+          left: 0.875rem;
         }
       }
 
@@ -284,15 +285,22 @@ const handleSignin = async () => {
       }
       &_FB {
         background-color: #1a76f2;
+        span {
+          margin-left: 1.875rem;
+        }
       }
     }
 
     &_rememberPsw {
+      display: flex;
+      justify-content: space-between;
       margin-top: 1rem;
       font-size: 1.25rem;
       color: var(--secondary-gray-1);
       &_itemtext {
-        margin: 0 52% 0 3%;
+        label {
+          margin-right: 0.5rem;
+        }
       }
       input[type="checkbox"] {
         display: none;

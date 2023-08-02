@@ -17,11 +17,17 @@
       </div>
     </div>
     <div class="myplayer_gallery_content">
-      <div class="myplayer_gallery_content_add">
-        <div class="myplayer_gallery_content_add_icon">
-          <font-awesome-icon :icon="['fas', 'plus']" />
-        </div>
-      </div>
+      <label for="addPhoto" class="myplayer_gallery_content_add"> </label>
+      <input
+        type="file"
+        id="addPhoto"
+        ref="fileInput"
+        @change="handleFileSelect"
+      />
+
+      <!-- <div class="myplayer_gallery_content_add_icon">
+        <font-awesome-icon :icon="['fas', 'plus']" />
+      </div> -->
       <div
         class="myplayer_gallery_content_pic"
         v-for="item in myplayerGalleryCard"
@@ -34,7 +40,8 @@
     <div class="myplayer_gallery_pagination">
       <PaginationComponent v-if="isVisible" />
     </div>
-    <MyplayerPhotoPopus v-if="isVisible" />
+    <!-- <MyplayerPhotoPopus v-if="isVisible" /> -->
+    <OverlayComponent type="TeamGallery" v-if="isVisible" />
   </main>
 </template>
 <script>
@@ -43,11 +50,14 @@
 // import ProductsMainPagination from "@components/products/productsItems/ProductsMainPagination";
 import PaginationComponent from "@/components/utilities/PaginationComponent.vue";
 import MyplayerPhotoPopus from "@/components/MyplayerTeam/MyplayerPhotoPopus.vue";
+import OverlayComponent from "@/components/utilities/OverlayComponent.vue";
+
+// const photoId = ref(null);
 export default {
   components: {
     PaginationComponent,
     MyplayerPhotoPopus,
-    // OverlayComponent,
+    OverlayComponent,
   },
   data() {
     return {
@@ -88,6 +98,24 @@ export default {
       isVisible: false,
     };
   },
+  methods: {
+    openFileExplorer() {
+      this.$refs.fileInput.click();
+    },
+
+    // Handle the selected file
+    handleFileSelect(event) {
+      const selectedFile = event.target.files[0];
+    },
+
+    previewImage(file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const dataURL = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+  },
 };
 </script>
 
@@ -124,14 +152,14 @@ export default {
       padding-left: 3rem;
     }
     &_delete {
-      width: 15rem;
+      width: 13rem;
       display: flex;
       justify-content: space-between;
       &_confirm {
-        font-size: 2rem;
+        font-size: 1.5rem;
         color: var(--pale-white);
         background-color: var(--primary-blue);
-        padding: 0.5rem;
+        padding: 0.5rem 1rem;
         border-radius: 0.5rem;
         // margin-right: 1rem;
       }
@@ -151,6 +179,13 @@ export default {
     justify-content: space-between;
     flex-wrap: wrap;
     box-sizing: border-box;
+    input {
+      position: absolute;
+      width: 100%;
+      cursor: pointer;
+      z-index: 1;
+      display: none;
+    }
     &_add {
       width: 30%;
       margin: 0rem 0rem 1rem 0rem;
@@ -158,11 +193,19 @@ export default {
       border: 3px dashed var(--secondary-blue-2);
       cursor: pointer;
       border-radius: 0.5rem;
-      &_icon {
-        text-align: center;
-        font-size: 4rem;
-        color: var(--primary-blue);
-      }
+      background-image: url(../assets/images/myplayer_team/Vector.png);
+      background-size: 15%;
+      background-position-x: calc(50%);
+      background-position-y: calc(50%);
+      background-repeat: no-repeat;
+      position: relative;
+      // position: relative;
+      // &_icon {
+      //   text-align: center;
+      //   font-size: 4rem;
+      //   color: var(--primary-blue);
+      //   position: absolute;
+      // }
     }
     &_pic {
       width: 30%;
