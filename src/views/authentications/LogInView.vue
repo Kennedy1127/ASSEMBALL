@@ -159,7 +159,6 @@ const handleSignin = async () => {
 
   store.state.user = await getUser();
   store.state.isLoggedIn = true;
-
   router.push({ name: "Home" });
   store.state.isPending = false;
 };

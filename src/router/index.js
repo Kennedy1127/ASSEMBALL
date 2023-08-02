@@ -73,7 +73,7 @@ const routes = [
     name: "ProductPost",
     component: () => import("@/views/products/ProductPost.vue"), // 檔名
     beforeEnter: () => {
-      if (!store.state.isLoggedIn) return { name: "Home" };
+      // if (!store.state.isLoggedIn) return { name: "Home" };
     },
   },
   {

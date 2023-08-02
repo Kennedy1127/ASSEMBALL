@@ -6,7 +6,7 @@
         <h2>
           這是一支名為「猛虎隊」的棒球隊，無論你是年輕或年長，無論你是否有打棒球經驗，只要你有興趣都可以在這邊找到同樣熱愛棒球的人一同出去打棒球。
         </h2>
-        <div class="myplayer_banner_text_edit">
+        <div class="myplayer_banner_text_edit" ref="myPlayer_Banner_Edit">
           <font-awesome-icon :icon="['fas', 'pen']" />
         </div>
       </section>
