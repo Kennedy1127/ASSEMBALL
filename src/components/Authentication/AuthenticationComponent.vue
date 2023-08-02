@@ -128,8 +128,8 @@ export default {
   padding-top: 16rem;
 }
 .authentication {
-  width: 1200px;
-  min-height: 80vh;
+  width: 80vw;
+  // min-height: 80vh;
   margin: auto;
   border: 1px solid #0003;
   box-shadow: var(--shadow-wide);

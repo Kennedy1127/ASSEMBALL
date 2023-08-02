@@ -90,6 +90,23 @@ export default {
     // console.log(testA);
     // console.log(testB);
 
+    //----
+    const testSherry = await getDocuments("APPLYS");
+    console.log(testSherry);
+
+    const testC = await getSubCollectionDocument({
+      collectionName: "PRODUCTS",
+      documentId: "VHKTJGsrIOYXBTBxFR7e",
+      subCollectionName: "COMMENTS",
+      subDocumentId: "n8w5wpDDeGWujr8Aq8Kp",
+    });
+    const testD = await getSubCollectionDocuments({
+      collectionName: "PRODUCTS",
+      documentId: "VHKTJGsrIOYXBTBxFR7e",
+      subCollectionName: "COMMENTS",
+    });
+    console.log(testC);
+    console.log(testD);
     // const testC = await getSubCollectionDocument({
     //   collectionName: "PRODUCTS",
     //   documentId: "VHKTJGsrIOYXBTBxFR7e",
