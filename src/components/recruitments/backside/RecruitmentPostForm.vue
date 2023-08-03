@@ -1,5 +1,5 @@
 <template>
-  <div class="recruitment_post_form">
+  <form @submit.prevent="handleSubmit" class="recruitment_post_form">
     <div class="recruitment_post_form_item">
       <label
         for="recruitment_post_title"
@@ -17,8 +17,6 @@
         />
         <div class="text-count">({{ computedCopywritingTitleNameLen }}/10)</div>
       </div>
-
-      <!--:placeholder="(/10)" -->
     </div>
 
     <div class="recruitment_post_form_item">
@@ -86,13 +84,17 @@
       </div>
     </div>
     <div class="recruitment_post_form_item">
+      <p v-if="error" class="recruitment_post_form_item_error">
+        {{ error }}
+      </p>
+
       <div class="recruitment_post_form_btn">
         <!-- <button>取消</button> -->
         <button>刪除</button>
         <button>上傳</button>
       </div>
     </div>
-  </div>
+  </form>
 </template>
 
 <script setup>
@@ -105,6 +107,24 @@ const { setData } = useData();
 const copywritingName = ref("");
 const copywritingInfo = ref("");
 
+const level = ref([
+  {
+    id: "0",
+    label: "初心者",
+  },
+  {
+    id: "1",
+    label: "新手",
+  },
+  {
+    id: "2",
+    label: "老手",
+  },
+  {
+    id: "3",
+    label: "經歷不拘",
+  },
+]);
 const location = ref([
   {
     id: "不限地區",
@@ -235,31 +255,50 @@ const player = ref([
     label: "右外野手",
   },
 ]);
-
-const level = ref([
-  {
-    id: "0",
-    label: "初心者",
-  },
-  {
-    id: "1",
-    label: "新手",
-  },
-  {
-    id: "2",
-    label: "老手",
-  },
-  {
-    id: "3",
-    label: "經歷不拘",
-  },
-]);
+const error = ref(null);
 
 // -- 取得標題的字串長度
 const computedCopywritingTitleNameLen = computed(
   () => copywritingName.value.length
 );
 const computedcopywritingInfoLen = computed(() => copywritingInfo.value.length);
+
+const checkSubmitData = () => {
+  error.value = null;
+
+  if (!copywritingName.value) {
+    return (error.value = "請輸入徵人標題");
+  }
+
+  if (level.value === -1) {
+    area.value = "經歷不拘";
+  }
+
+  if (location.value === -1) {
+    area.value = "全部位置";
+  }
+
+  if (player.value === -1) {
+    area.value = "不限地區";
+  }
+
+  if (!copywritingInfo.value) {
+    return (error.value = "請輸入職缺說明!");
+  }
+};
+
+const handleSubmit = () => {
+  checkSubmitData();
+  if (error.value) return;
+
+  const submitData = {
+    copywritingName: copywritingName.value,
+    level: level.value,
+    location: location.value,
+    player: player.value,
+    copywritingInfo: copywritingInfo.value,
+  };
+};
 </script>
 
 <style lang="scss">
@@ -279,6 +318,15 @@ const computedcopywritingInfoLen = computed(() => copywritingInfo.value.length);
   }
   // 表單的item
   &_item {
+    position: relative;
+    &_error {
+      position: absolute;
+      font-size: 1rem;
+      color: var(--caution-red);
+      right: 0;
+      top: 2rem;
+      transform: translate(0, -50%);
+    }
     display: flex;
     label {
       width: 12rem;
@@ -392,7 +440,7 @@ const computedcopywritingInfoLen = computed(() => copywritingInfo.value.length);
   &_btn {
     width: 100%;
     margin: auto;
-    margin-top: 2rem;
+    margin-top: 4rem;
     display: flex;
     justify-content: flex-end;
     gap: 30px;
