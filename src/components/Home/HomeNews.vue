@@ -424,11 +424,11 @@ export default {
               align-items: end;
               margin-left: 1rem;
               & h3 {
-                font-size: 1.25rem;
+                font-size: 1.5rem;
                 font-weight: 500;
               }
               & p {
-                font-size: 1rem;
+                font-size: 1.25rem;
                 margin-left: 1rem;
               }
               & br {
@@ -470,8 +470,6 @@ export default {
         top: 188px;
       }
     }
-
-    // 這裡開始可以放carousel中的內容
   }
 }
 .home_news_background {
@@ -495,17 +493,218 @@ export default {
       transform: rotate(360deg);
     }
   }
-  // @keyframes rotate-taichi02 {
-  //   0% {
-  //     transform: scale(0.75);
-  //   }
-  //   50% {
-  //     transform: rotate(180deg) scale(1);
-  //   }
-  //   100% {
-  //     transform: rotate(360deg) scale(1.25);
-  //   }
-  // }
+}
+@media screen and (max-width: 1200px) {
+  .home_news_subscription {
+    width: 25%;
+    &_importing {
+      & input {
+        width: 80%;
+        height: 40px;
+        border-radius: 30px;
+        padding: 1.25rem;
+        border: 2px solid var(--primary-blue);
+        background-color: var(--primary-blue);
+        color: #fff;
+        outline: none;
+      }
+    }
+  }
+  .home_news_all {
+    width: 75%;
+    &_carousel {
+      width: 100%;
+      margin-top: 2rem; // 可改
+      &_list {
+        width: 270px; // 寬度影響左右方向鍵位置，更改時要注意
+        &_item {
+          width: 285px; // 可改
+          min-height: 385px; // 可改 注意標題長度
+          .carousel_content {
+            &_title {
+              margin-top: 0.5rem;
+              & br {
+                display: block;
+              }
+            }
+          }
+        }
+        .modal {
+          &_content {
+            width: 80%;
+            height: 50vh;
+          }
+        }
+      }
+    }
+  }
+  .home_news_background {
+    width: 42%;
+    position: absolute;
+    left: 0%;
+    top: 15%;
+    z-index: -1;
+    animation: rotate-taichi 5s infinite linear;
+    user-select: none;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .home_news_subscription {
+    width: 100%;
+    border-right: 0px;
+    & h2 {
+      padding-top: 2rem;
+    }
+    &_importing {
+      & input {
+        width: 38%;
+      }
+      & span {
+        right: 34%;
+      }
+    }
+    &_hashtag {
+      display: none;
+    }
+  }
+  .home_news_all {
+    width: 100%;
+    overflow: hidden;
+    & h2 {
+      margin-top: 3rem;
+    }
+    &_carousel {
+      margin-top: 0rem;
+      height: 500px;
+      &_list {
+        position: relative;
+        list-style-type: none;
+        display: flex;
+        justify-content: center;
+        width: 320px; // 寬度影響左右方向鍵位置，更改時要注意
+        margin: 0 auto;
+        &_item {
+          position: absolute;
+          transition: transform 500ms;
+          background-color: #fff;
+          width: 350px; // 可改
+          min-height: 450px; // 可改 注意標題長度
+
+          .carousel_content {
+            padding: 1rem;
+            &_title {
+              margin-top: 0.5rem;
+              font-size: 1.25rem;
+              font-weight: 600;
+              & p {
+                font-size: 1rem;
+                font-weight: 300;
+              }
+              & br {
+                display: block;
+              }
+            }
+            &_pic {
+              width: 85%;
+              margin: auto;
+              margin-top: 0.5rem;
+            }
+          }
+        }
+        .modal {
+          &_content {
+            padding: 1.25rem;
+            position: relative;
+            width: 90%;
+            height: 60vh;
+            margin: auto;
+            margin-top: 15vh;
+            &_close {
+              position: absolute;
+              top: 0.75rem;
+              right: 1.25rem;
+              font-size: 2rem;
+              cursor: pointer;
+            }
+            &_title {
+              width: 90%;
+              display: flex;
+              align-items: start;
+              &_block {
+                width: 16px;
+                height: 70px;
+                background-color: var(--primary-blue);
+              }
+              &_text {
+                width: 100%;
+                display: flex;
+                align-items: end;
+                justify-content: space-between;
+                margin-left: 1rem;
+                text-align: left;
+                & h3 {
+                }
+                & br {
+                  display: block;
+                }
+                & p {
+                }
+              }
+            }
+            &_pic {
+              width: 100%;
+              margin-top: 1rem;
+              & img {
+                width: 100%;
+              }
+            }
+            &_text {
+              width: 100%;
+              text-align: left;
+              margin-top: 0.5rem;
+              text-indent: 2rem;
+              font-size: 1.25rem;
+            }
+          }
+        }
+        .carousel_prev {
+          top: 220px;
+          left: 0px;
+        }
+        .carousel_next {
+          right: 0px;
+          top: 220px;
+        }
+      }
+    }
+  }
+  .home_news_background {
+    width: 70%;
+    position: absolute;
+    left: 15%;
+    top: 0%;
+  }
+}
+@media screen and (max-width: 768px) {
+  .home_news_all_carousel_list .modal_content {
+    height: 70vh;
+  }
+  .home_news_subscription_importing {
+    & input {
+      width: 55%;
+    }
+    & span {
+      right: 28%;
+    }
+  }
+  .home_news_background {
+    width: 90%;
+    position: absolute;
+    left: 5%;
+    top: 5%;
+    z-index: -1;
+    animation: rotate-taichi 5s infinite linear;
+  }
 }
 @media screen and (max-width: 420px) {
   .home_news_subscription {
@@ -518,10 +717,12 @@ export default {
     }
     &_importing {
       & input {
+        width: 60%;
         &::placeholder {
         }
       }
       & span {
+        right: 26%;
       }
     }
     &_hashtag {
@@ -529,12 +730,8 @@ export default {
     }
   }
   .home_news_all {
-    width: 100%;
-    overflow: hidden;
     & h2 {
       margin-top: 2.5rem;
-      font-size: 96px;
-      font-family: "Montserrat";
     }
     &_carousel {
       margin-top: 0rem;
@@ -576,26 +773,15 @@ export default {
           }
         }
         .modal {
-          width: 100%;
-          height: 100%;
-          position: fixed;
-          top: 0;
-          left: 0;
-          background-color: rgba(0, 0, 0, 0.5);
-          z-index: 15;
-          display: flex;
-          align-items: center;
-          justify-content: center;
           &_content {
             padding: 1.25rem;
             position: relative;
             width: 90%;
-            height: 80vh;
+            height: 75vh;
             margin: auto;
-            margin-top: 15vh;
             &_close {
               position: absolute;
-              top: 0.75rem;
+              top: 0.5rem;
               right: 1.25rem;
               font-size: 2rem;
               cursor: pointer;
@@ -616,6 +802,7 @@ export default {
                 margin-left: 1rem;
                 text-align: left;
                 & h3 {
+                  font-size: 1.25rem;
                 }
                 & br {
                   display: block;

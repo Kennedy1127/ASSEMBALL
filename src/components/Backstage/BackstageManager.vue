@@ -4,12 +4,7 @@
         <!-- 視窗header -->
         <div class="Create_window_header">
           <div class="Create_window_header_title">管理員名單</div>
-          <div class="Create_window_header_search">
-            <input type="text" placeholder="搜尋" v-model="searchText" />
-            <div class="icon">
-              <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
-            </div>
-          </div>
+        
         </div>
         <!-- 表格 -->
         <div class="Create_table">
@@ -39,11 +34,11 @@
         
               <td class="table_row_state">
                 {{ convertFont(item.State) }}
-                <input type="checkbox" v-model="State" name="State" :value=index>
+                <input type="checkbox" v-model="item.State" name="State" >
               </td>
               <td class="table_row_super">
                 {{ convertFont(item.Super) }}
-                <input type="checkbox" v-model="Super" name="Super" :value=index>
+                <input type="checkbox" v-model="item.Super" name="Super" >
               </td>
              
             </tr>
@@ -75,68 +70,68 @@
           {
             Number: "001",
             Name: "狗今生",
-            State: true,
+            State: false,
             Super:true
           }, 
           {
             Number: "001",
             Name: "狗今生",
-            State: true,
+            State: false,
             Super:true
           }, 
           {
             Number: "001",
             Name: "狗今生",
-            State: true,
+            State: false,
             Super:true
           }, 
           {
             Number: "001",
             Name: "狗今生",
-            State: true,
-            Super:true
+            State: false,
+            Super:false
           }, 
           {
             Number: "001",
             Name: "狗今生",
-            State: true,
-            Super:true
+            State: false,
+            Super:false
           }, 
           {
             Number: "001",
             Name: "狗今生",
-            State: true,
-            Super:true
+            State: false,
+            Super:false
           },
           {
             Number: "001",
             Name: "狗今生",
-            State: true,
-            Super:true
+            State: false,
+            Super:false
           }, 
           {
             Number: "001",
             Name: "狗今生",
-            State: true,
-            Super:true
+            State: false,
+            Super:false
           }, 
           {
             Number: "001",
             Name: "狗今生",
-            State: true,
-            Super:true
+            State: false,
+            Super:false
           }, 
           {
             Number: "001",
             Name: "狗今生",
-            State: true,
-            Super:true
+            State: false,
+            Super:false
           }, 
           {
             Number: "001",
             Name: "狗今生",
-            State: true,
-            Super:true
+            State: false,
+            Super:false
           },   
         ],
         Super: [], //給V-model的陣列
@@ -266,8 +261,7 @@
             //表格欄位設定
             td {
               white-space: nowrap; /* 不换行 */
-              overflow: hidden; /* 超出部分隐藏 */
-              text-overflow: ellipsis; /* 显示省略号 */
+          
               border: var(--primary-black) solid;
               background-color: var(--secondary-blue-2);
               text-align: center;

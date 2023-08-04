@@ -4,11 +4,14 @@
       <!-- 視窗header -->
       <div class="Create_window_header">
         <div class="Create_window_header_title">創立球隊請求</div>
+        <button class="icon_reset" @click="Reset">
+          <font-awesome-icon icon="fa-solid fa-rotate-right" />
+        </button>
         <div class="Create_window_header_search">
-          <input type="text" placeholder="搜尋" v-model="searchText" />
-          <div class="icon">
+          <input type="text" placeholder="搜尋" v-model="SearchText" />
+          <button class="icon" @click="updateSearch">
             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
-          </div>
+          </button>
         </div>
       </div>
       <!-- 表格 -->
@@ -30,7 +33,7 @@
                 </li>
               </ul>
               地區
-              <button @click="AreaMenu" class="table_row_menu">
+              <button @click="AreaMenu" class="table_row_menu" ref="Area">
                 <font-awesome-icon icon="fa-solid fa-angle-down" />
               </button>
             </td>
@@ -45,7 +48,7 @@
                 </li>
               </ul>
               球隊性質
-              <button @click="TypeMenu" class="table_row_menu">
+              <button @click="TypeMenu" class="table_row_menu" ref="Type">
                 <font-awesome-icon icon="fa-solid fa-angle-down" />
               </button>
             </td>
@@ -72,7 +75,7 @@
             <td class="table_row_result">
               <input
                 type="checkbox"
-                v-model="Result"
+                v-model="item.Result"
                 name="Result"
                 :value="index"
               />
@@ -106,17 +109,17 @@ export default {
           Type: "老手",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+          Result: false,
         },
         {
           Number: "001",
-          Name: "狗今生",
+          Name: "阿福",
           TeamName: "天使隊",
           Area: "台南",
           Type: "初心者",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -126,7 +129,7 @@ export default {
           Type: "初心者",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -136,7 +139,7 @@ export default {
           Type: "初心者",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -146,7 +149,7 @@ export default {
           Type: "新手",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -156,7 +159,7 @@ export default {
           Type: "新手",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -166,7 +169,7 @@ export default {
           Type: "新手",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -176,7 +179,7 @@ export default {
           Type: "新手",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -186,7 +189,7 @@ export default {
           Type: "新手",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -196,7 +199,7 @@ export default {
           Type: "新手",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -206,7 +209,7 @@ export default {
           Type: "新手",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -216,7 +219,7 @@ export default {
           Type: "新手",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -226,7 +229,7 @@ export default {
           Type: "新手",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -236,7 +239,7 @@ export default {
           Type: "新手",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -246,7 +249,7 @@ export default {
           Type: "新手",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -256,7 +259,7 @@ export default {
           Type: "新手",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -266,7 +269,7 @@ export default {
           Type: "新手",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -276,7 +279,7 @@ export default {
           Type: "新手",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -286,7 +289,7 @@ export default {
           Type: "新手",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
         {
           Number: "001",
@@ -296,7 +299,7 @@ export default {
           Type: "新手",
           Illustrate:
             "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: true,
+           Result: false,
         },
       ],
       AreaArray: [], //篩選地區陣列
@@ -307,24 +310,25 @@ export default {
 
       currentArea: 0,
       currentType: 0,
+      currentSearch:"",
     };
   },
   computed: {
     CreateFilterArea() {
       if (this.currentArea == 0) return this.Create;
-      return this.Create.filter(
-        (v) => v.Area == this.currentArea
-      );
+      return this.Create.filter((v) => v.Area == this.currentArea);
     },
     CreateFilterType() {
       if (this.currentType == 0) return this.CreateFilterArea;
-      return this.CreateFilterArea.filter(
-        (v) => v.Type == this.currentType
-      );
+      return this.CreateFilterArea.filter((v) => v.Type == this.currentType);
+    },
+    CreateFilterSearch() {
+      if (this.currentSearch == "") return this.CreateFilterType;
+      return this.CreateFilterType.filter((v) => v.Name.includes(this.currentSearch));
     },
     CreateList() {
       //回傳頁碼對應的十筆索引值的資料組成的陣列
-      return this.CreateFilterType.slice(
+      return this.CreateFilterSearch.slice(
         (this.page - 1) * this.perPage,
         this.page * this.perPage
       );
@@ -342,6 +346,21 @@ export default {
       this.TypeArray = Array.from(TypeSet).map((item) => ({ Type: item }));
       this.TypeMenuShow = !this.TypeMenuShow;
     },
+    Reset() {
+      this.currentArea = 0;
+      this.currentType = 0;
+      this.currentSearch="";
+    },
+    CloseMenu(e) {
+      if (e.target.closest(".table_row_menu") === this.$refs.Area) {
+        this.AreaMenuShow = true;
+      } else if (e.target.closest(".table_row_menu") === this.$refs.Type) {
+        this.TypeMenuShow = true;
+      } else {
+        this.AreaMenuShow = false;
+        this.TypeMenuShow = false;
+      }
+    },
 
     convertFont(str) {
       //限制資料字數
@@ -351,14 +370,7 @@ export default {
         return str;
       }
     },
-    // focuscheckChange(item) {
-    //   //焦點商品checkbox切換
-    //   item.ProductsFocus = !item.ProductsFocus;
-    // },
-    // topcheckChange(item) {
-    //   //TOP商品checkbox切換
-    //   item.ProductsTop = !item.ProductsTop;
-    // },
+
     pageup() {
       if (this.page != 1) {
         //往上換頁
@@ -378,6 +390,13 @@ export default {
     updateType(e) {
       this.currentType = e;
     },
+    updateSearch() {
+      this.currentSearch = this.SearchText;
+      this.SearchText="";
+    },
+  },
+  mounted() {
+    window.addEventListener("click", this.CloseMenu); //監聽如果任意位置有被點擊觸發CloseMenu
   },
 };
 </script>
@@ -401,11 +420,23 @@ export default {
       border-bottom: var(--primary-black) solid;
       display: flex;
       justify-content: space-between;
+      position: relative;
       &_title {
         //視窗header標題
         font-size: 2.5rem;
         font-weight: 400;
         margin-left: 2rem;
+      }
+      .icon_reset {
+        font-size: 1.5rem;
+        color: var(--primary-black);
+        position: absolute;
+        top: 2rem;
+        width: 2rem;
+        height: 2rem;
+        background-color: var(--primary-blue);
+        right: 0.5rem;
+        cursor: pointer;
       }
       &_search {
         //視窗header搜尋
@@ -433,8 +464,7 @@ export default {
           top: 40%;
           right: 1.25rem;
           transform: translateY(-50%);
-
-          pointer-events: none;
+          background-color: var(--pale-white);
         }
       }
     }
@@ -476,10 +506,10 @@ export default {
             width: 10%;
           }
           &_teamName {
-            width: 10%;
+            width: 15%;
           }
           &_area {
-            width: 10%;
+            width: 15%;
             position: relative;
 
             &_menu {

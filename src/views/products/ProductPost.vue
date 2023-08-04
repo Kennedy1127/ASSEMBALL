@@ -216,7 +216,7 @@
           </div>
 
           <div class="product_post_info_btns">
-            <button @click.prevent="console.log('cancel')">取消</button>
+            <button @click.prevent="testSubmit">取消</button>
             <button @click.prevent="console.log('delete')">刪除商品</button>
             <button>刊登商品</button>
           </div>
@@ -235,7 +235,12 @@
 
 <script setup>
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
+import useData from "@/composables/data/useData";
+import useStorage from "@/composables/data/useStorage";
 import { computed, ref } from "vue";
+
+const { setData } = useData();
+const { setPic } = useStorage();
 
 const productName = ref("");
 const price = ref("");
@@ -410,18 +415,27 @@ const checkSubmitData = () => {
   }
 };
 
+const testSubmit = () => {
+  const name = pics.value[0].name;
+  setPic(`images/${name}`, pics.value[0]);
+};
+
 const handleSubmit = () => {
   checkSubmitData();
-
   if (error.value) return;
-  console.log("商品名稱：", productName.value);
-  console.log("商品價格：", price.value);
-  console.log("電子信箱：", email.value);
-  console.log("手機號碼：", phone.value);
-  console.log("賣家留言：", comment.value);
-  console.log(tag.value);
-  console.log(area.value);
-  console.log(pics.value);
+
+  const submitData = {
+    productName: productName.value,
+    price: price.value,
+    email: email.value,
+    phone: phone.value,
+    comment: comment.value,
+    tag: tag.value,
+    area: area.value,
+    pics: pics.value,
+  };
+
+  console.log(submitData);
 };
 </script>
 

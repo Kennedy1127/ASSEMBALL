@@ -7,7 +7,6 @@ const useData = () => {
 
   const setData = async (target, data) => {
     setDataError.value = null;
-
     try {
       const docRef = doc(db, target, data.id ? data.id : null);
       data.id = docRef.id;

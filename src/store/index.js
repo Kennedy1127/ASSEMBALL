@@ -442,9 +442,9 @@ export default createStore({
     // 撈商品數量
     async getProductsCount(context) {
       try {
-        // const res = await axios.get("http://localhost:3000/products");
-        // if (!res) throw new Error("Cannot fetch response");
-        // context.commit("setProductsCount", res.data.length);
+        const res = await axios.get("http://localhost:3000/products");
+        if (!res) throw new Error("Cannot fetch response");
+        context.commit("setProductsCount", res.data.length);
       } catch (err) {
         console.error(err);
       }
@@ -453,9 +453,9 @@ export default createStore({
     // 撈商品資料
     async getProducts(context) {
       try {
-        // const res = await axios.get("http://localhost:3000/products");
-        // if (!res) throw new Error("Cannot fetch response");
-        // context.commit("setProducts", res.data);
+        const res = await axios.get("http://localhost:3000/products");
+        if (!res) throw new Error("Cannot fetch response");
+        context.commit("setProducts", res.data);
       } catch (err) {
         console.error(err);
       }
