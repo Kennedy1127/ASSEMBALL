@@ -31,6 +31,7 @@
               cols="50"
               rows="10"
               maxlength="200"
+              placeholder="請輸入自我介紹模板內容..."
               @input="updateCharacterCount(item)"
               v-model="item.textareaValue"
               :disabled="item.disabled"
@@ -262,9 +263,13 @@ export default {
       color: var(--primary-blue);
       padding-left: 1rem;
       cursor: pointer;
+      transition: all 0.09s ease-in-out;
       @media all and (max-width: 420px) {
         padding-left: 0rem;
       }
+    }
+    &_add:hover {
+      color: var(--secondary-blue-1);
     }
     &_tick > input {
       appearance: none;
