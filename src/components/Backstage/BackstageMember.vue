@@ -4,11 +4,14 @@
       <!-- 視窗header -->
       <div class="Member_window_header">
         <div class="Member_window_header_title">會員名單</div>
+        <button class="icon_reset" @click="Reset">
+          <font-awesome-icon icon="fa-solid fa-rotate-right" />
+        </button>
         <div class="Member_window_header_search">
-          <input type="text" placeholder="搜尋" v-model="searchText" />
-          <div class="icon">
+          <input type="text" placeholder="搜尋" v-model="SearchText" />
+          <button class="icon" @click="updateSearch">
             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
-          </div>
+          </button>
         </div>
       </div>
       <!-- 表格 -->
@@ -29,7 +32,7 @@
                 </li>
               </ul>
               所屬球隊
-              <button @click="TeamNameMenu" class="table_row_menu">
+              <button @click="TeamNameMenu" class="table_row_menu" ref="Team">
                 <font-awesome-icon icon="fa-solid fa-angle-down" />
               </button>
             </td>
@@ -45,7 +48,7 @@
                 </li>
               </ul>
               球隊管理者
-              <button @click="ManagerMenu" class="table_row_menu">
+              <button @click="ManagerMenu" class="table_row_menu" ref="Manager">
                 <font-awesome-icon icon="fa-solid fa-angle-down" />
               </button>
             </td>
@@ -60,7 +63,11 @@
                 </li>
               </ul>
               違規次數
-              <button @click="ViolationMenu" class="table_row_menu">
+              <button
+                @click="ViolationMenu"
+                class="table_row_menu"
+                ref="Violation"
+              >
                 <font-awesome-icon icon="fa-solid fa-angle-down" />
               </button>
             </td>
@@ -76,7 +83,7 @@
                 </li>
               </ul>
               權限狀態
-              <button @click="StateMenu" class="table_row_menu">
+              <button @click="StateMenu" class="table_row_menu" ref="State">
                 <font-awesome-icon icon="fa-solid fa-angle-down" />
               </button>
             </td>
@@ -94,21 +101,16 @@
             </td>
             <td class="table_row_manager">
               {{ convertFont(item.Manager) }}
-              <input
-                type="checkbox"
-                v-model="Manager"
-                name="Manager"
-                :value="index"
-              />
+          
             </td>
             <td class="table_row_violation">
               {{ convertFont(item.Violation) }}
             </td>
             <td class="table_row_state">
-              {{ convertFont(item.State) }}
+       
               <input
                 type="checkbox"
-                v-model="State"
+                v-model="item.State"
                 name="State"
                 :value="index"
               />
@@ -127,6 +129,8 @@
   </div>
 </template>
 <script>
+import { faL } from "@fortawesome/free-solid-svg-icons";
+
 export default {
   data() {
     return {
@@ -139,31 +143,23 @@ export default {
           TeamName: "天使隊",
           Manager: "是",
           Violation: 2,
-          State: "正常",
+          State: true,
         },
         {
           Number: "001",
-          Name: "狗今生",
+          Name: "阿豪",
           TeamName: "教士隊",
-          Manager:"否",
+          Manager: "否",
           Violation: 3,
-          State: "正常",
+          State: true,
         },
         {
           Number: "001",
           Name: "狗今生",
           TeamName: "兄弟隊",
-          Manager:"是",
+          Manager: "是",
           Violation: 1,
-          State: "正常",
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "洋基隊",
-          Manager:"是",
-          Violation: 1,
-          State: "正常",
+         State: true,
         },
         {
           Number: "001",
@@ -171,7 +167,7 @@ export default {
           TeamName: "洋基隊",
           Manager: "是",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -179,7 +175,15 @@ export default {
           TeamName: "洋基隊",
           Manager: "是",
           Violation: 1,
-          State: "停權",
+         State: true,
+        },
+        {
+          Number: "001",
+          Name: "狗今生",
+          TeamName: "洋基隊",
+          Manager: "是",
+          Violation: 1,
+         State: true,
         },
         {
           Number: "001",
@@ -187,7 +191,7 @@ export default {
           TeamName: "天使隊",
           Manager: "是",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -195,7 +199,7 @@ export default {
           TeamName: "天使隊",
           Manager: "是",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -203,7 +207,7 @@ export default {
           TeamName: "天使隊",
           Manager: "是",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -211,7 +215,7 @@ export default {
           TeamName: "熱火隊",
           Manager: "是",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -219,7 +223,7 @@ export default {
           TeamName: "勇士隊",
           Manager: "是",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -227,7 +231,7 @@ export default {
           TeamName: "天使隊",
           Manager: "是",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -235,7 +239,7 @@ export default {
           TeamName: "天使隊",
           Manager: "是",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -243,7 +247,7 @@ export default {
           TeamName: "天使隊",
           Manager: "是",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -251,7 +255,7 @@ export default {
           TeamName: "天使隊",
           Manager: "是",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -259,7 +263,7 @@ export default {
           TeamName: "天使隊",
           Manager: "是",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -267,7 +271,7 @@ export default {
           TeamName: "天使隊",
           Manager: "是",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -275,7 +279,7 @@ export default {
           TeamName: "天使隊",
           Manager: "否",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -283,7 +287,7 @@ export default {
           TeamName: "天使隊",
           Manager: "否",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -291,7 +295,7 @@ export default {
           TeamName: "天使隊",
           Manager: "否",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -299,7 +303,7 @@ export default {
           TeamName: "天使隊",
           Manager: "否",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -307,7 +311,7 @@ export default {
           TeamName: "天使隊",
           Manager: "否",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -315,7 +319,7 @@ export default {
           TeamName: "天使隊",
           Manager: "否",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
         {
           Number: "001",
@@ -323,23 +327,24 @@ export default {
           TeamName: "天使隊",
           Manager: "是",
           Violation: 1,
-          State: "停權",
+         State: true,
         },
       ],
       TeamNameArray: [], //球隊名稱陣列
-      ManagerArray:[],
-      ViolationArray:[],
-      StateArray:[],
+      ManagerArray: [],
+      ViolationArray: [],
+      StateArray: [],
 
       TeamNameMenuShow: false, //切換是否顯示下拉式選單
-      ManagerMenuShow:false,
-      ViolationMenuShow:false,
-      StateMenuShow:false,
+      ManagerMenuShow: false,
+      ViolationMenuShow: false,
+      StateMenuShow: false,
 
       currentTeamName: 0, //現在球隊名稱
-      currentManager:0,
-      currentViolation:0,
-      currentState:0
+      currentManager: 0,
+      currentViolation: 0,
+      currentState: 0,
+      currentSearch: "",
     };
   },
   computed: {
@@ -349,25 +354,36 @@ export default {
       return this.Member.filter((v) => v.TeamName == this.currentTeamName); //篩選現在點擊到的球隊名稱
     },
     MemberFilterManager() {
-      if (this.currentManager == 0) return this.MemberFilterTeamName; 
-      return this.MemberFilterTeamName.filter((v) => v.Manager == this.currentManager); 
+      if (this.currentManager == 0) return this.MemberFilterTeamName;
+      return this.MemberFilterTeamName.filter(
+        (v) => v.Manager == this.currentManager
+      );
     },
 
     MemberFilterViolation() {
-     
-      if (this.currentViolation == 0) return this.MemberFilterManager; 
-      return this.MemberFilterManager.filter((v) => v.Violation == this.currentViolation); 
+      if (this.currentViolation == 0) return this.MemberFilterManager;
+      return this.MemberFilterManager.filter(
+        (v) => v.Violation == this.currentViolation
+      );
     },
 
     MemberFilterState() {
-     
-     if (this.currentState == 0) return this.MemberFilterViolation; 
-     return this.MemberFilterViolation.filter((v) => v.State == this.currentState); 
-   },
-    
+      if (this.currentState == 0) return this.MemberFilterViolation;
+      return this.MemberFilterViolation.filter(
+        (v) => v.State == this.currentState
+      );
+    },
+
+    MemberFilterSearch() {
+      if (this.currentSearch == "") return this.MemberFilterState;
+      return this.MemberFilterState.filter((v) =>
+        v.Name.includes(this.currentSearch)
+      );
+    },
+
     MemberList() {
       //回傳頁碼對應的十筆索引值的資料組成的陣列
-      return this.MemberFilterState.slice(
+      return this.MemberFilterSearch.slice(
         (this.page - 1) * this.perPage,
         this.page * this.perPage
       );
@@ -376,22 +392,28 @@ export default {
   methods: {
     TeamNameMenu() {
       const TeamNameSet = new Set(this.Member.map((e) => e.TeamName)); //把Member陣列中每個物件的TeamName提出來回傳並組成set
-      this.TeamNameArray = Array.from(TeamNameSet).map((item) => ({ TeamName: item })); //將set資料放進陣列
+      this.TeamNameArray = Array.from(TeamNameSet).map((item) => ({
+        TeamName: item,
+      })); //將set資料放進陣列
       this.TeamNameMenuShow = !this.TeamNameMenuShow;
     },
     ManagerMenu() {
-      const ManagerSet = new Set(this.Member.map((e) => e.Manager)); 
-      this.ManagerArray = Array.from(ManagerSet).map((item) => ({ Manager: item })); //將set資料放進陣列
+      const ManagerSet = new Set(this.Member.map((e) => e.Manager));
+      this.ManagerArray = Array.from(ManagerSet).map((item) => ({
+        Manager: item,
+      })); //將set資料放進陣列
       this.ManagerMenuShow = !this.ManagerMenuShow;
     },
 
     ViolationMenu() {
-      const ViolationSet = new Set(this.Member.map((e) => e.Violation)); 
-      this.ViolationArray = Array.from(ViolationSet).map((item) => ({ Violation: item })); //將set資料放進陣列
+      const ViolationSet = new Set(this.Member.map((e) => e.Violation));
+      this.ViolationArray = Array.from(ViolationSet).map((item) => ({
+        Violation: item,
+      })); //將set資料放進陣列
       this.ViolationMenuShow = !this.ViolationMenuShow;
     },
     StateMenu() {
-      const StateSet = new Set(this.Member.map((e) => e.State)); 
+      const StateSet = new Set(this.Member.map((e) => e.State));
       this.StateArray = Array.from(StateSet).map((item) => ({ State: item })); //將set資料放進陣列
       this.StateMenuShow = !this.StateMenuShow;
     },
@@ -404,14 +426,7 @@ export default {
         return str;
       }
     },
-    // focuscheckChange(item) {
-    //   //焦點商品checkbox切換
-    //   item.ProductsFocus = !item.ProductsFocus;
-    // },
-    // topcheckChange(item) {
-    //   //TOP商品checkbox切換
-    //   item.ProductsTop = !item.ProductsTop;
-    // },
+
     pageup() {
       if (this.page != 1) {
         //往上換頁
@@ -439,6 +454,39 @@ export default {
     updateState(e) {
       this.currentState = e;
     },
+    updateSearch() {
+      this.currentSearch = this.SearchText;
+      this.SearchText="";
+    },
+    Reset() {
+      this.currentTeamName = 0;
+      this.currentManager = 0;
+      this.currentViolation = 0;
+      this.currentState = 0;
+      this.currentSearch = "";
+    },
+
+    CloseMenu(e) {
+      if (e.target.closest(".table_row_menu") === this.$refs.Team) {
+        //點擊到的物件=ref時開啟選單
+        this.TeamNameMenuShow = true;
+      } else if (e.target.closest(".table_row_menu") === this.$refs.Manager) {
+        this.ManagerMenuShow = true;
+      } else if (e.target.closest(".table_row_menu") === this.$refs.Violation) {
+        this.ViolationMenuShow = true;
+      } else if (e.target.closest(".table_row_menu") === this.$refs.State) {
+        this.StateMenuShow = true;
+      } else {
+        //點擊到的物件不=ref時關閉選單
+        this.TeamNameMenuShow = false;
+        this.ManagerMenuShow = false;
+        this.ViolationMenuShow = false;
+        this.StateMenuShow = false;
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener("click", this.CloseMenu); //監聽如果任意位置有被點擊觸發CloseMenu
   },
 };
 </script>
@@ -457,6 +505,7 @@ export default {
     &_header {
       //視窗header
       padding: 1rem;
+      position: relative;
       width: 100%;
       background-color: var(--primary-blue);
       height: 111px;
@@ -468,6 +517,17 @@ export default {
         font-size: 2.5rem;
         font-weight: 400;
         margin-left: 2rem;
+      }
+      .icon_reset {
+        font-size: 1.5rem;
+        color: var(--primary-black);
+        position: absolute;
+        top: 2rem;
+        width: 2rem;
+        height: 2rem;
+        background-color: var(--primary-blue);
+        right: 0.5rem;
+        cursor: pointer;
       }
       &_search {
         //視窗header搜尋
@@ -489,14 +549,13 @@ export default {
         }
 
         .icon {
+          background-color: var(--pale-white);
           font-size: 1.5rem;
           color: var(--primary-blue);
           position: absolute;
           top: 40%;
           right: 1.25rem;
           transform: translateY(-50%);
-
-          pointer-events: none;
         }
       }
     }
