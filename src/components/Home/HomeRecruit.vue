@@ -83,13 +83,23 @@ export default defineComponent({
       snapAlign: "center",
     },
     breakpoints: {
+      // 420px and up
+      420: {
+        itemsToShow: 1.5,
+        snapAlign: "start",
+      },
       // 700px and up
-      700: {
+      768: {
         itemsToShow: 2,
-        snapAlign: "center",
+        snapAlign: "start",
       },
       // 1024 and up
       1024: {
+        itemsToShow: 2.5,
+        snapAlign: "start",
+      },
+      // 1200 and up
+      1200: {
         itemsToShow: 3,
         snapAlign: "start",
       },
@@ -274,27 +284,40 @@ export default defineComponent({
     border-radius: 50%;
   }
 }
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 1200px) {
+  .home_recruit_title {
+    &_pic {
+      width: 13%;
+      margin-top: auto;
+      position: absolute;
+      bottom: 2.25rem;
+      left: 1rem;
+    }
+  }
+}
+@media screen and (max-width: 1024px) {
+  .home_recruit_title {
+    &_pic {
+      width: 15%;
+    }
+  }
+}
+@media screen and (max-width: 768px) {
   .home_recruit_title {
     width: 100%;
     display: flex;
     border-right: 0px;
+    padding-bottom: 1.5rem;
     border-bottom: 3px solid var(--primary-blue);
     &_pic {
-      width: 20%;
-      margin-top: auto;
-      position: relative;
-      left: 0%;
-      top: 0rem;
-      & img {
-        width: 100%;
-      }
+      display: none;
     }
     &_text {
-      width: 80%;
+      width: 100%;
       display: flex;
       flex-direction: column;
       text-align: center;
+      margin-left: 0rem;
       & h2 {
         writing-mode: horizontal-tb;
         font-size: 2.5rem;
@@ -311,7 +334,6 @@ export default defineComponent({
         font-size: 1rem;
         font-weight: 500;
         margin-left: 0rem;
-        margin-bottom: 1rem;
       }
     }
   }
@@ -322,6 +344,7 @@ export default defineComponent({
       border-right: 0px;
       color: var(--primary-blue);
       margin-top: 2rem;
+      border-right: 3px solid var(--primary-blue);
       &_pic {
         width: 35%;
         margin: auto;
@@ -335,7 +358,7 @@ export default defineComponent({
         font-size: 1.5rem;
       }
       &_about {
-        width: 57%;
+        width: 70%;
         margin: auto;
         margin-top: 0.75rem;
         font-size: 1.25rem;
@@ -363,6 +386,53 @@ export default defineComponent({
         color: var(--primary-blue);
         vertical-align: middle;
       }
+    }
+  }
+}
+@media screen and (max-width: 420px) {
+  .home_recruit_title {
+    width: 100%;
+    display: flex;
+    border-right: 0px;
+    border-bottom: 3px solid var(--primary-blue);
+    padding-bottom: 1rem;
+    padding-left: 0rem;
+    &_pic {
+      display: none;
+    }
+    &_text {
+      width: 80%;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      margin: auto;
+      & h2 {
+        writing-mode: horizontal-tb;
+        font-size: 2.5rem;
+        & a {
+          color: var(--primary-blue);
+          & i {
+            vertical-align: baseline;
+            margin-left: 1rem;
+          }
+        }
+      }
+      & p {
+        writing-mode: horizontal-tb;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-left: 0rem;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+  .home_recruit_carousel {
+    width: 100%;
+    .carousel__item {
+      width: 100%;
+      border-right: 0px;
+      color: var(--primary-blue);
+      margin-top: 2rem;
     }
   }
 }
