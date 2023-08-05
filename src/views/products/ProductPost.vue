@@ -160,7 +160,6 @@
                     v-for="(pic, index) in pics"
                     :key="index"
                     class="product_post_info_upload_pic"
-                    ref="productPics"
                   >
                     <font-awesome-icon
                       class="icon"
@@ -238,8 +237,12 @@ import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
 import { timestamp } from "@/firebase/config";
 import useData from "@/composables/data/useData";
 import { computed, ref } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
-const { setData, setDataSubCollection } = useData();
+const store = useStore();
+const router = useRouter();
+const { setDataError, setData, setDataSubCollection } = useData();
 
 const productName = ref("testtest");
 const price = ref("111");
@@ -366,7 +369,6 @@ const productArea = ref([
     label: "澎湖縣",
   },
 ]);
-const productPics = ref();
 const error = ref(null);
 const picError = ref(null);
 
@@ -414,25 +416,53 @@ const checkSubmitData = () => {
   }
 };
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
+  store.state.isPending = true;
   checkSubmitData();
-  if (error.value) return;
+  if (error.value) return (store.state.isPending = false);
 
-  const submittedData = {
-    productName: productName.value,
+  const data = {
+    title: productName.value,
     price: price.value,
     email: email.value,
     phone: phone.value,
-    comment: comment.value,
     tag: tag.value,
     area: area.value,
-    date: timestamp(),
+    date: timestamp,
+    status: true,
+    home_status: -1,
+    seller_icon: "url",
+    seller_name: "棒球專家",
   };
 
-  const submittedSubCollection = {};
+  const id = await setData("PRODUCTS", data, pics.value);
+  if (setDataError.value) {
+    error.value = "商品刊登失敗，請重新整理或洽平台管理員";
+    return (store.state.isPending = false);
+  }
 
-  setData("PRODUCTS", submittedData, pics.value);
-  setDataSubCollection();
+  const subCollectionData = {
+    comment: comment.value,
+    icon: "url",
+    name: "夫魯夫魯",
+    user_id: "id",
+    date: timestamp,
+  };
+
+  const target = {
+    collectionName: "PRODUCTS",
+    documentId: id,
+    subCollectionName: "COMMENTS",
+  };
+
+  await setDataSubCollection(target, subCollectionData);
+  if (setDataError.value) {
+    error.value = "商品刊登失敗，請重新整理或洽平台管理員";
+    return (store.state.isPending = false);
+  }
+
+  store.state.isPending = false;
+  router.push({ name: "ProductDetail", params: { productId: id } });
 };
 </script>
 

@@ -24,6 +24,7 @@ const useData = () => {
       }
 
       await setDoc(docRef, data);
+      return docRef.id;
     } catch (err) {
       console.error("Something went wrong!");
       setDataError.value = err.message;
@@ -47,7 +48,7 @@ const useData = () => {
     } catch (err) {
       console.error("Something went wrong!");
       setDataError.value = err.message;
-      // console.error(err);
+      console.error(err);
     }
   };
 
@@ -60,7 +61,7 @@ const useData = () => {
     } catch (err) {
       console.error("Something went wrong!");
       setDataError.value = err.message;
-      // console.error(err);
+      console.error(err);
     }
   };
 

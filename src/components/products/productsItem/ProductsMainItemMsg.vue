@@ -29,11 +29,11 @@
             {{ item.name }}
           </div>
           <div class="product_message_area_all_text_all">
-            {{ item.text }}
+            {{ item.comment }}
           </div>
           <div class="product_message_area_all_text_date">
             <img src="~@/assets/images/products/edit.png" alt="edit" />
-            留言日期：{{ convertDate(item.date) }}
+            留言日期：{{ convertDate(item.date.toDate()) }}
           </div>
         </div>
       </div>

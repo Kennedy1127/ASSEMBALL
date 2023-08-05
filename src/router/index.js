@@ -58,7 +58,7 @@ const routes = [
         next();
         return;
       }
-      store.commit("resetPaginationCurPage", "products");
+      store.commit("resetPaginationCurPage");
       store.commit("resetProductsFilterAndTag");
       next();
     },

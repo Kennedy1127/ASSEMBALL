@@ -1,5 +1,11 @@
 import { auth, db } from "@/firebase/config";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getCountFromServer,
+} from "firebase/firestore";
 
 const getData = () => {
   const getUser = async () => {
@@ -10,7 +16,7 @@ const getData = () => {
       return res.data();
     } catch (err) {
       console.error("Something went wrong!");
-      // console.error(err);
+      console.error(err);
     }
   };
 
@@ -26,15 +32,15 @@ const getData = () => {
     }
   };
 
-  const getDocuments = async (target) => {
+  const getDocuments = async (target, condition = null) => {
     try {
-      const docRef = collection(db, target);
-      const res = await getDocs(docRef);
+      const colRef = collection(db, target);
+      const res = await getDocs(colRef);
 
       return res.docs.map((doc) => doc.data());
     } catch (err) {
       console.error("Something went wrong!");
-      // console.error(err);
+      console.error(err);
     }
   };
 
@@ -69,7 +75,18 @@ const getData = () => {
       return res.docs.map((doc) => doc.data());
     } catch (err) {
       console.error("Something went wrong!");
-      // console.error(err);
+      console.error(err);
+    }
+  };
+
+  const getCollectionCount = async (target) => {
+    try {
+      const colRef = collection(db, target);
+      const res = await getCountFromServer(colRef);
+      return res.data().count;
+    } catch (err) {
+      console.error("Something went wrong!");
+      console.error(err);
     }
   };
 
@@ -79,6 +96,7 @@ const getData = () => {
     getDocuments,
     getSubCollectionDocument,
     getSubCollectionDocuments,
+    getCollectionCount,
   };
 };
 

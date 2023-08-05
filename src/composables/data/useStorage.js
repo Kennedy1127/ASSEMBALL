@@ -8,9 +8,11 @@ const useStorage = () => {
       const urls = [];
 
       for (let i = 0; i < files.length; i++) {
-        const lastSlash = files[i].type.lastIndexOf("/");
-        const type = files[i].type.slice(lastSlash + 1);
-        const route = `${path}/product-${i + 1}.${type}`;
+        // const lastSlash = files[i].type.lastIndexOf("/");
+        // const type = files[i].type.slice(lastSlash + 1);
+        let route = "";
+
+        if (files.length === 4) route = `${path}/product-${i + 1}`;
 
         const url = await uploadPic(route, files[i]);
         urls.push(url);

@@ -1,41 +1,24 @@
 <template>
   <section class="product_main_detail">
     <div class="product_main_detail_pic">
-      <img
-        src="~@/assets/images/products/productdetail_pic1.png"
-        alt="productdetail_pic1"
-      />
+      <div class="product_main_detail_pic_big">
+        <img :src="renderPic" alt="productdetail_pic main" />
+      </div>
       <div class="product_main_detail_pic_all">
-        <div class="product_main_detail_pic_all_small">
-          <img
-            src="~@/assets/images/products/productdetail_smallpic1.png"
-            alt="productdetail_pic1"
-          />
-        </div>
-        <div class="product_main_detail_pic_all_small">
-          <img
-            src="~@/assets/images/products/productdetail_smallpic1.png"
-            alt="productdetail_pic1"
-          />
-        </div>
-        <div class="product_main_detail_pic_all_small">
-          <img
-            src="~@/assets/images/products/productdetail_smallpic1.png"
-            alt="productdetail_pic1"
-          />
-        </div>
-        <div class="product_main_detail_pic_all_small">
-          <img
-            src="~@/assets/images/products/productdetail_smallpic1.png"
-            alt="productdetail_pic1"
-          />
+        <div
+          v-for="pic in productData.pics"
+          :key="pic"
+          class="product_main_detail_pic_all_small"
+          @click="swapPic(pic)"
+        >
+          <img :src="pic" alt="productdetail_pic" />
         </div>
       </div>
     </div>
 
     <div class="product_main_detail_content">
       <div class="product_main_detail_content_title">
-        <span>{{ renderProductTitle }}</span>
+        <span>{{ productData.title }}</span>
       </div>
       <div
         v-for="(item, index) in renderProductItems"
@@ -57,31 +40,31 @@
 
 <script setup>
 import productTags from "@/composables/tables/productTags";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 const props = defineProps({
-  productItemData: {
+  productData: {
     type: Object,
     required: true,
   },
 });
 
-const renderProductTitle = computed(() => props.productItemData.product_title);
+const renderPic = ref(props.productData.pics[0]);
 
 const renderProductItems = computed(() => [
   {
     title: "刊登日期 : ",
-    text: convertDate(props.productItemData.product_date),
+    text: convertDate(props.productData.date.toDate()),
   },
-  { title: "類別 : ", text: productTags[props.productItemData.product_tag] },
-  { title: "刊登者 : ", text: props.productItemData.product_seller_name },
-  { title: "縣市 : ", text: props.productItemData.product_area },
-  { title: "Email : ", text: props.productItemData.product_email },
-  { title: "Phone : ", text: props.productItemData.product_phone },
+  { title: "類別 : ", text: productTags[props.productData.tag] },
+  { title: "刊登者 : ", text: props.productData.seller_name },
+  { title: "縣市 : ", text: props.productData.area },
+  { title: "Email : ", text: props.productData.email },
+  { title: "Phone : ", text: props.productData.phone },
 ]);
 
 const renderProductPrice = computed(() =>
-  convertPrice(props.productItemData.product_price)
+  convertPrice(props.productData.price)
 );
 
 const convertDate = (copywritingDate) => {
@@ -94,7 +77,11 @@ const convertDate = (copywritingDate) => {
 };
 
 const convertPrice = (price) => {
-  return price.toLocaleString();
+  return Number(price).toLocaleString();
+};
+
+const swapPic = (pic) => {
+  renderPic.value = pic;
 };
 </script>
 
@@ -119,10 +106,16 @@ const convertPrice = (price) => {
       @media all and (max-width: 420px) {
         width: 100%;
         padding-left: 0;
+      }
+
+      &_big {
+        width: 100%;
+        height: 360px;
 
         img {
           width: 100%;
           height: 100%;
+          object-fit: cover;
         }
       }
 
@@ -133,16 +126,20 @@ const convertPrice = (price) => {
         gap: 0.75rem;
         &_small {
           width: 25%;
+          height: 80px;
+          cursor: pointer;
           & img {
             width: 100%;
+            height: 100%;
             display: block;
+            object-fit: cover;
           }
         }
       }
     }
 
     &_content {
-      width: 80%;
+      width: 40%;
       margin-left: 2rem;
 
       @media all and (max-width: 420px) {

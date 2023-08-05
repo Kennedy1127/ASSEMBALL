@@ -2,7 +2,8 @@ import { createStore } from "vuex";
 import axios from "axios";
 import getData from "@/composables/data/getData";
 
-const { getDocuments } = getData();
+const { getDocuments, getCollectionCount, getSubCollectionDocuments } =
+  getData();
 
 export default createStore({
   state: {
@@ -83,13 +84,13 @@ export default createStore({
     // 如果文字搜尋條件符合或長度為0時，return true
     includedProductsByText: (state) => (product) => {
       if (!state.selectedProductsText) return true;
-      return product.product_title.includes(state.selectedProductsText);
+      return product.title.includes(state.selectedProductsText);
     },
 
     // 如果商品TAG符合或為-1時，return true
     includedCProductsByTag: (state) => (product) => {
       if (state.selectedProductsTag === 0) return true;
-      return state.selectedProductsTag === product.product_tag;
+      return state.selectedProductsTag === product.tag;
     },
 
     // 過濾後的商品
@@ -102,15 +103,13 @@ export default createStore({
     // 更具時間排序的商品
     dateSortedFilteredProducts(state, getters) {
       const products = [...getters.filteredProducts];
-
       state.selectedProductsDate
         ? products.sort(
-            (a, b) => new Date(b.product_date) - new Date(a.product_date)
+            (a, b) => new Date(b.date.toDate()) - new Date(a.date.toDate())
           )
         : products.sort(
-            (a, b) => new Date(a.product_date) - new Date(b.product_date)
+            (a, b) => new Date(a.date.toDate()) - new Date(b.date.toDate())
           );
-
       return products;
     },
 
@@ -442,9 +441,9 @@ export default createStore({
     // 撈商品數量
     async getProductsCount(context) {
       try {
-        const res = await axios.get("http://localhost:3000/products");
+        const res = await getCollectionCount("PRODUCTS");
         if (!res) throw new Error("Cannot fetch response");
-        context.commit("setProductsCount", res.data.length);
+        context.commit("setProductsCount", res);
       } catch (err) {
         console.error(err);
       }
@@ -453,9 +452,18 @@ export default createStore({
     // 撈商品資料
     async getProducts(context) {
       try {
-        const res = await axios.get("http://localhost:3000/products");
-        if (!res) throw new Error("Cannot fetch response");
-        context.commit("setProducts", res.data);
+        const res = await getDocuments("PRODUCTS");
+        const products = [];
+        for (let i = 0; i < res.length; i++) {
+          const comments = await getSubCollectionDocuments({
+            collectionName: "PRODUCTS",
+            documentId: res[i].id,
+            subCollectionName: "COMMENTS",
+          });
+          products.push({ ...res[i], comments });
+        }
+
+        context.commit("setProducts", products);
       } catch (err) {
         console.error(err);
       }

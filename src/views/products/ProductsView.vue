@@ -73,22 +73,27 @@ import { useStore } from "vuex";
 const store = useStore();
 const route = useRoute();
 
-onMounted(() => {
+onMounted(async () => {
+  store.state.isPending = true;
+
   // 檢查url是否有tag，有的話篩選
-  if (route.query.tag) {
-    store.commit("selectProductsTag", Number(route.query.tag));
-    store.commit("resetPaginationCurPage", "products");
-  }
+  // if (route.query.tag) {
+  //   store.commit("selectProductsTag", Number(route.query.tag));
+  //   store.commit("resetPaginationCurPage", "products");
+  // }
 
   // 掛載後撈商品數量
-  store.dispatch("getProductsCount");
+  await store.dispatch("getProductsCount");
 
   // 如果商品陣列長度為0或是商品陣列長度與商品數量不等於，則撈商品資料
   if (
     store.state.products.length === 0 ||
     store.state.products.length !== store.state.productsCount
-  )
-    store.dispatch("getProducts");
+  ) {
+    await store.dispatch("getProducts");
+  }
+
+  store.state.isPending = false;
 });
 
 const type = ref(0);
