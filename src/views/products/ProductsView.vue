@@ -46,6 +46,7 @@
             :type="type"
             @filterProducts="goToTop"
             @filterProductsByTag="goToTop"
+            @filterProductsByDateOrder="goToTop"
           />
         </aside>
 
@@ -141,9 +142,9 @@ const goToTop = (e) => {
   }
 
   &_main {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: space-between;
     width: 994px; //不跑版設定
 
     @media screen and (max-width: 420px) {

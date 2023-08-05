@@ -433,6 +433,7 @@ const handleSubmit = async () => {
     home_status: -1,
     seller_icon: "url",
     seller_name: "棒球專家",
+    seller_id: "id",
   };
 
   const id = await setData("PRODUCTS", data, pics.value);
@@ -443,8 +444,8 @@ const handleSubmit = async () => {
 
   const subCollectionData = {
     comment: comment.value,
-    icon: "url",
-    name: "夫魯夫魯",
+    icon: null,
+    name: "棒球專家",
     user_id: "id",
     date: timestamp,
   };

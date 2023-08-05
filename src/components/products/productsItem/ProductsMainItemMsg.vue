@@ -8,7 +8,7 @@
     <div class="product_message_area">
       <div
         class="product_message_area_all"
-        v-for="item in computedComments"
+        v-for="item in productMsgData.comments"
         :key="item"
       >
         <div class="product_message_area_all_pic">
@@ -19,7 +19,11 @@
           />
           <img
             class="product_message_area_all_pic_user"
-            src="~@/assets/images/products/message_pic01.png"
+            :src="
+              item.icon
+                ? item.icon
+                : require('@/assets/images/icons/main-icon.png')
+            "
             alt="message_pic01"
           />
         </div>
@@ -101,8 +105,6 @@ const props = defineProps({
 
 const comment = ref("");
 const computedCommentLen = computed(() => comment.value.length);
-
-const computedComments = computed(() => props.productMsgData);
 
 const convertDate = (copywritingDate) => {
   if (!copywritingDate) return;

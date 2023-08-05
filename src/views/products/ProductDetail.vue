@@ -86,7 +86,10 @@ const productData = computed(() =>
   store.state.products.find((product) => product.id === route.params.productId)
 );
 
-const productMsgData = computed(() => productData.value.comments);
+const productMsgData = computed(() => ({
+  comments: [...productData.value.comments],
+  seller_id: productData.value.seller_id,
+}));
 
 const goToTop = () => {
   router.push({ name: "Products" });
