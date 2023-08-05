@@ -1,20 +1,33 @@
 import { db } from "@/firebase/config";
 import { doc, setDoc, updateDoc, collection } from "firebase/firestore";
 import { ref } from "vue";
+import useStorage from "@/composables/data/useStorage";
+
+const { setPics } = useStorage();
 
 const useData = () => {
   const setDataError = ref(null);
 
-  const setData = async (target, data) => {
+  const setData = async (target, data, pics = null) => {
     setDataError.value = null;
     try {
-      const docRef = doc(db, target, data.id ? data.id : null);
+      const docRef = data.id
+        ? doc(db, target, data.id)
+        : doc(collection(db, target));
+
       data.id = docRef.id;
+
+      if (pics) {
+        const urls = await setPics(`images/${target}/${docRef.id}`, pics);
+        data.pics = [];
+        urls.forEach((url) => data.pics.push(url));
+      }
+
       await setDoc(docRef, data);
     } catch (err) {
       console.error("Something went wrong!");
       setDataError.value = err.message;
-      // console.error(err);
+      console.error(err);
     }
   };
 

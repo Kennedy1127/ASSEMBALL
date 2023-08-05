@@ -81,7 +81,7 @@ const routes = [
     name: "ProductsManage",
     component: () => import("@/views/products/ProductManageView.vue"),
     beforeEnter: () => {
-      if (!store.state.isLoggedIn) return { name: "Home" };
+      // if (!store.state.isLoggedIn) return { name: "Home" };
     },
   },
   {
@@ -89,7 +89,7 @@ const routes = [
     name: "ProductPayment",
     component: () => import("@/views/products/ProductPayment.vue"),
     beforeEnter: () => {
-      if (!store.state.isLoggedIn) return { name: "Home" };
+      // if (!store.state.isLoggedIn) return { name: "Home" };
     },
   },
   /////////////////////////////////////////

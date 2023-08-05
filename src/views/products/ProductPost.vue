@@ -216,7 +216,7 @@
           </div>
 
           <div class="product_post_info_btns">
-            <button @click.prevent="testSubmit">取消</button>
+            <button @click.prevent="console.log('cancel')">取消</button>
             <button @click.prevent="console.log('delete')">刪除商品</button>
             <button>刊登商品</button>
           </div>
@@ -235,20 +235,19 @@
 
 <script setup>
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
+import { timestamp } from "@/firebase/config";
 import useData from "@/composables/data/useData";
-import useStorage from "@/composables/data/useStorage";
 import { computed, ref } from "vue";
 
-const { setData } = useData();
-const { setPic } = useStorage();
+const { setData, setDataSubCollection } = useData();
 
-const productName = ref("");
-const price = ref("");
-const email = ref("");
-const phone = ref("");
-const comment = ref("");
+const productName = ref("testtest");
+const price = ref("111");
+const email = ref("test@mail.com");
+const phone = ref("0955-111222");
+const comment = ref("testtesttest");
 const pics = ref([]);
-const tag = ref(-1);
+const tag = ref(2);
 const area = ref(-1);
 const productTags = ref([
   {
@@ -415,16 +414,11 @@ const checkSubmitData = () => {
   }
 };
 
-const testSubmit = () => {
-  const name = pics.value[0].name;
-  setPic(`images/${name}`, pics.value[0]);
-};
-
 const handleSubmit = () => {
   checkSubmitData();
   if (error.value) return;
 
-  const submitData = {
+  const submittedData = {
     productName: productName.value,
     price: price.value,
     email: email.value,
@@ -432,10 +426,13 @@ const handleSubmit = () => {
     comment: comment.value,
     tag: tag.value,
     area: area.value,
-    pics: pics.value,
+    date: timestamp(),
   };
 
-  console.log(submitData);
+  const submittedSubCollection = {};
+
+  setData("PRODUCTS", submittedData, pics.value);
+  setDataSubCollection();
 };
 </script>
 
