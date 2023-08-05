@@ -9,21 +9,19 @@
         <div class="MemberCenter_Application_describe_content">內容撰寫</div>
         <div class="MemberCenter_Application_describe_revise">修改</div>
       </div>
-      <form
-        action=""
-        method="post"
-        name="MemberCenterApplicationform"
-        class="MemberCenter_Application_form"
-        @submit.prevent="submitForm"
-      >
-        <div class="MemberCenter_Application_template">
+      <form @submit.prevent="submitForm">
+        <!-- 渲染模板 -->
+        <div
+          class="MemberCenter_Application_template"
+          v-for="(item, index) in template"
+          :key="item.id"
+        >
           <div class="MemberCenter_Application_template_tick">
             <input
               type="radio"
               name="template"
-              value="模板1"
               id="template[0]"
-              v-model="template"
+              v-model="item.inputValue"
               required
             />
           </div>
@@ -32,90 +30,37 @@
               id="Createteam_Introduction"
               cols="50"
               rows="10"
-              maxlength="100"
-              value
-              placeholder="系統預設模板內容1...."
-              v-model="Introductionone"
+              maxlength="200"
+              placeholder="請輸入自我介紹模板內容..."
+              @input="updateCharacterCount(item)"
+              v-model="item.textareaValue"
+              :disabled="item.disabled"
             ></textarea>
             <div
               class="MemberCenter_Application_template_content_count"
               style="color: var(--secondary-gray-3)"
             >
-              {{ computedCommentLenOne }}/200
+              {{ characterCounts[item.id] }}/200
             </div>
           </div>
           <div class="MemberCenter_Application_template_revise">
-            <span> <font-awesome-icon icon="fa-solid fa-pen" /></span>
-          </div>
-        </div>
-        <div class="MemberCenter_Application_template">
-          <div class="MemberCenter_Application_template_tick">
-            <input
-              type="radio"
-              name="template"
-              value="模板2"
-              id="template[1]"
-              v-model="template"
-              required
-            />
-          </div>
-          <div class="MemberCenter_Application_template_content">
-            <textarea
-              id="Createteam_Introduction"
-              cols="50"
-              rows="10"
-              maxlength="100"
-              value
-              placeholder="系統預設模板內容2...."
-              v-model="Introductiontwo"
-            ></textarea>
-            <div
-              class="MemberCenter_Application_template_content_count"
-              style="color: var(--secondary-gray-3)"
-            >
-              {{ computedCommentLenTwo }}/200
-            </div>
-          </div>
-          <div class="MemberCenter_Application_template_revise">
-            <span> <font-awesome-icon icon="fa-solid fa-pen" /></span>
-          </div>
-        </div>
-        <div class="MemberCenter_Application_template">
-          <div class="MemberCenter_Application_template_tick">
-            <input
-              type="radio"
-              name="template"
-              value="模板3"
-              id="template[2]"
-              v-model="template"
-              required
-            />
-          </div>
-          <div class="MemberCenter_Application_template_content">
-            <textarea
-              id="Createteam_Introduction"
-              cols="50"
-              rows="10"
-              maxlength="100"
-              value
-              placeholder="系統預設模板內容3...."
-              v-model="Introductionthree"
-            ></textarea>
-            <div
-              class="MemberCenter_Application_template_content_count"
-              style="color: var(--secondary-gray-3)"
-            >
-              {{ computedCommentLenThree }}/200
-            </div>
-          </div>
-          <div class="MemberCenter_Application_template_revise">
-            <span> <font-awesome-icon icon="fa-solid fa-pen" /></span>
+            <!-- //修改 -->
+            <span>
+              <font-awesome-icon
+                :icon="['fa-solid', 'fa-pen']"
+                @click="toggleDisable(index)"
+            /></span>
+            <!-- //刪除
+            <span> <font-awesome-icon :icon="['fas', 'trash-can']" /></span> -->
           </div>
         </div>
 
         <div class="MemberCenter_Application_adddescribe">添加模板</div>
         <div class="MemberCenter_Application_template">
-          <div class="MemberCenter_Application_template_add">
+          <div
+            class="MemberCenter_Application_template_add"
+            @click="addTemplate"
+          >
             <font-awesome-icon icon="fa-solid fa-circle-plus" />
           </div>
           <div class="MemberCenter_Application_template_content">
@@ -123,9 +68,9 @@
               id="Createteam_Introduction"
               cols="50"
               rows="10"
-              maxlength="100"
+              maxlength="200"
               value
-              placeholder="系統預設模板內容1...."
+              placeholder="請輸入自我介紹模板內容..."
               v-model="Introductionadd"
             ></textarea>
             <div
@@ -151,52 +96,98 @@
 export default {
   data() {
     return {
-      // 表單資料
-      Introductionone: "",
-      Introductiontwo: "",
-      Introductionthree: "",
+      isTextareaDisabled: true,
       Introductionadd: "",
-      template: [],
       /////////
-      // template: [
-      //   {
-      //     systemContent: "系統預設內容1...",
-      //   },
-      //   {
-      //     systemContent: "系統預設內容2...",
-      //   },
-      //   {
-      //     systemContent: "系統預設內容3...",
-      //   },
-      // ],
+      template: [
+        {
+          id: 1,
+          inputValue: "",
+          textareaValue:
+            "你好，我叫楊小棒，我以投球精準和多變的球路為傲，並且在比賽中能夠在關鍵時刻保持冷靜。我的優勢是讓對手無法預測我下一球會是什麼，這讓我能夠更有效地控制比賽節奏，並幫助球隊贏得勝利，我希望能加入此球隊，擔任投手一職，透過我的專業技術和熱情，致力於為球隊拿下勝利的獎盃！",
+          disabled: true,
+        },
+        {
+          id: 2,
+          inputValue: "",
+          textareaValue:
+            "你好，我叫秦大捕，我擁有優秀的觀察力和洞察力，作為一名優秀的捕手，我在合作中是一名積極的團隊成員，願意分享我的知識和經驗，我相信我的技能和熱情使我成為這個職位的優秀候選人，如果有機會進來球隊，我將非常樂意展示我的技能和經驗。",
+          disabled: true,
+        },
+        {
+          id: 3,
+          inputValue: "",
+          textareaValue:
+            "你好，我叫葉子明，我具備優秀的打擊技巧，多年的訓練和比賽經驗讓我磨練出卓越的打擊技巧，包括優秀的揮棒姿勢、準確的擊球時機和靈活的打擊策略。在球場上，我根據場上形勢做出適時的反應，這使我在關鍵時刻能夠發揮出色的表現，我對打擊手這個職位充滿激情，並相信我的技能和潛力會為球隊帶來價值。",
+          disabled: true,
+        },
+      ],
     };
   },
 
+  //數量限制
   computed: {
-    //數字限制
-    computedCommentLenOne() {
-      return this.Introductionone.length;
+    remainingTemplates() {
+      return 5 - this.template.length;
     },
-    computedCommentLenTwo() {
-      return this.Introductiontwo.length;
+
+    characterCounts() {
+      return this.template.reduce((acc, item) => {
+        acc[item.id] = item.textareaValue.length;
+        return acc;
+      }, {});
     },
-    computedCommentLenThree() {
-      return this.Introductionthree.length;
-    },
+
     computedCommentLenAdd() {
       return this.Introductionadd.length;
     },
   },
 
   methods: {
+    //禁用切換
+    toggleDisable(index) {
+      this.template[index].disabled = !this.template[index].disabled;
+    },
+
+    addTemplate() {
+      if (this.template.length >= 5) {
+        alert("你只能製作五種模板喔！");
+        return;
+      }
+
+      const newTemplateId =
+        this.template.length > 0
+          ? this.template[this.template.length - 1].id + 1
+          : 1;
+
+      this.template.push({
+        id: newTemplateId,
+        inputValue: "",
+        textareaValue: this.Introductionadd,
+        disabled: true,
+      });
+    },
+
+    updateCharacterCount(item) {
+      item.characterCount = item.textareaValue.length;
+    },
+
     //提交表單
     submitForm() {
-      alert("模板資料儲存成功！");
-      // 表單資料確認
-      console.log("模板1：", this.Introduction_one);
-      console.log("模板2：", this.Introduction_two);
-      console.log("模板3：", this.Introduction_three);
-      console.log("系統預設：", this.template);
+      if (confirm("請問要選擇此模板當作預設嗎？") == true) {
+        alert("模板資料儲存成功！");
+
+        // 表單資料確認
+        this.template.forEach((item) => {
+          if (item.inputValue) {
+            console.log("選中的模板ID：", item.id);
+            console.log("選中的預設模板：", item.inputValue);
+            console.log("選中的模板內容：", item.textareaValue);
+          }
+        });
+      } else {
+        alert("請再次選擇一種模板。");
+      }
 
       //提交後重置表單資料
       // this.template = [];
@@ -260,6 +251,7 @@ export default {
     padding: 1rem;
     padding-left: 6rem;
     padding-right: 6rem;
+    position: relative;
     @media all and (max-width: 420px) {
       padding-left: 0rem;
       padding-right: 0rem;
@@ -271,9 +263,13 @@ export default {
       color: var(--primary-blue);
       padding-left: 1rem;
       cursor: pointer;
+      transition: all 0.09s ease-in-out;
       @media all and (max-width: 420px) {
         padding-left: 0rem;
       }
+    }
+    &_add:hover {
+      color: var(--secondary-blue-1);
     }
     &_tick > input {
       appearance: none;
@@ -314,6 +310,12 @@ export default {
         outline: 2px var(--secondary-blue-1) solid;
         background-color: var(--pale-white);
       }
+      //禁用樣式
+      textarea[disabled] {
+        background-color: #f8fafc;
+        color: var(--secondary-gray-3);
+        outline: 1px solid #d4d8dd;
+      }
       &_count {
         position: absolute;
         bottom: 1rem;
@@ -331,9 +333,17 @@ export default {
       color: var(--primary-blue);
       padding-left: 1rem;
       cursor: pointer;
+      transition: all 0.09s ease-in-out;
       @media all and (max-width: 420px) {
         padding-left: 0rem;
+        position: absolute;
+        right: 28%;
+        bottom: 10%;
+        font-size: 1.25rem;
       }
+    }
+    &_revise:hover {
+      color: var(--secondary-blue-1);
     }
   }
   &_adddescribe {
