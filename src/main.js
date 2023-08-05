@@ -52,6 +52,8 @@ import {
   faCircleChevronDown,
   faCircleCheck,
   faEye,
+  faEyeSlash,
+  faHouse,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { faFacebook, faLine } from "@fortawesome/free-brands-svg-icons";
@@ -97,7 +99,11 @@ library.add(
   faCircleChevronUp,
   faCircleChevronDown,
   faCircleCheck,
-  faEye
+  faEye,
+  faEyeSlash,
+  faHouse,
+  faFacebook,
+  faLine
 );
 
 // firebase 狀態觀察設定
