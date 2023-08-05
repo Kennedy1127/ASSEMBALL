@@ -120,7 +120,7 @@ export default {
     min-width: 100%;
     flex-direction: column;
 
-    @media only screen and (min-width: 1280px) {
+    @media only screen and (min-width: 769px) {
       flex-direction: row;
     }
   }
@@ -204,9 +204,9 @@ export default {
     }
   }
 }
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 768px) {
   .home_auction_title {
-    padding: 1rem;
+    padding: 1.5rem;
     border-bottom: 3px solid var(--primary-blue);
     text-align: center;
     & h2 {
@@ -214,26 +214,27 @@ export default {
         font-size: 2.5rem;
         color: var(--primary-blue);
         & i {
-          display: none;
           vertical-align: baseline;
-          margin-left: 0.75rem;
+          margin-left: 0.5rem;
+        }
+        & br {
+          display: none;
         }
       }
     }
     & p {
-      font-size: 1.25rem;
-      color: var(--primary-blue);
-      text-align: left;
+      font-size: 1rem;
+      font-weight: 500;
       & br {
-        display: block;
+        display: none;
       }
     }
   }
   .home_auction_all {
     ul {
       display: flex;
-      min-height: 700px;
-      height: 750px;
+      min-height: 800px;
+      height: 850px;
       margin: 0;
       padding: 0;
       overflow: hidden;
@@ -241,25 +242,9 @@ export default {
       width: 100%;
       min-width: 100%;
       flex-direction: column;
-
-      @media only screen and (min-width: 1280px) {
-        flex-direction: row;
-      }
     }
 
     li {
-      flex: 1;
-      display: flex;
-      align-items: stretch;
-      cursor: pointer;
-      transition: all 0.35s ease;
-      cursor: pointer;
-      position: relative;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: top center;
-      overflow: hidden;
-      position: relative;
       & h2 {
         color: var(--secondary-blue-4);
         margin: auto;
@@ -324,6 +309,34 @@ export default {
           );
         }
       }
+    }
+  }
+}
+@media screen and (max-width: 430px) {
+  .home_auction_title {
+    & h2 {
+      & a {
+        & i {
+          display: none;
+        }
+        & br {
+          display: none;
+        }
+      }
+    }
+    & p {
+      & br {
+        display: block;
+      }
+    }
+  }
+}
+@media screen and (max-width: 420px) {
+  .home_auction_all {
+    ul {
+      display: flex;
+      min-height: 750px;
+      height: 750px;
     }
   }
 }
