@@ -25,14 +25,14 @@
           /></label>
         </div>
       </div>
-      <!-- 姓氏 只能輸入1-5個中文字 -->
+      <!-- 姓氏 只能輸入1-5個字 -->
       <div class="MemberPersonal_form_lastname">
         <label for="lastname"><span>*</span>姓氏：</label>
         <input
           type="text"
           name="member_lastname"
           id="lastname"
-          placeholder="請輸入中文姓氏"
+          placeholder="請輸入姓氏"
           v-model="lastname"
           minlength="1"
           maxlength="5"
@@ -41,14 +41,14 @@
         />
         <div v-if="!isLastnameValid" class="error">{{ lastnameError }}</div>
       </div>
-      <!-- 名字 只能輸入1-5個中文字 -->
+      <!-- 名字 只能輸入1-5個字 -->
       <div class="MemberPersonal_form_name">
         <label for="name"><span>*</span>名字：</label>
         <input
           type="text"
           name="member_name"
           id="name"
-          placeholder="請輸入中文名字"
+          placeholder="請輸入名字"
           v-model="name"
           minlength="1"
           maxlength="5"
