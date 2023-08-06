@@ -53,19 +53,36 @@ const useData = () => {
   };
 
   const updateData = async (target, id, data = {}) => {
-    try {
-      const dataRef = doc(db, target, id);
-      const res = await updateDoc(dataRef, data);
-
-      return res;
-    } catch (err) {
-      console.error("Something went wrong!");
-      setDataError.value = err.message;
-      console.error(err);
-    }
+    // try {
+    //   const dataRef = doc(db, target, id);
+    //   const res = await updateDoc(dataRef, data);
+    //   return res;
+    // } catch (err) {
+    //   console.error("Something went wrong!");
+    //   setDataError.value = err.message;
+    //   console.error(err);
+    // }
   };
 
-  return { setDataError, setData, updateData, setDataSubCollection };
+  const updateDataSubCollection = async (target, data) => {
+    // try {
+    //   const dataRef = doc(db, target, id);
+    //   const res = await updateDoc(dataRef, data);
+    //   return res;
+    // } catch (err) {
+    //   console.error("Something went wrong!");
+    //   setDataError.value = err.message;
+    //   console.error(err);
+    // }
+  };
+
+  return {
+    setDataError,
+    setData,
+    setDataSubCollection,
+    updateData,
+    updateDataSubCollection,
+  };
 };
 
 export default useData;

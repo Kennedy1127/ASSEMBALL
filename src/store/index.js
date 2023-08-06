@@ -446,6 +446,8 @@ export default createStore({
         context.commit("setProductsCount", res);
       } catch (err) {
         console.error(err);
+        context.state.products = [];
+        context.state.productsCount = 0;
       }
     },
 
@@ -455,11 +457,15 @@ export default createStore({
         const res = await getDocuments("PRODUCTS");
         const products = [];
         for (let i = 0; i < res.length; i++) {
-          const comments = await getSubCollectionDocuments({
-            collectionName: "PRODUCTS",
-            documentId: res[i].id,
-            subCollectionName: "COMMENTS",
-          });
+          const comments = await getSubCollectionDocuments(
+            {
+              collectionName: "PRODUCTS",
+              documentId: res[i].id,
+              subCollectionName: "COMMENTS",
+            },
+            [],
+            ["date"]
+          );
           products.push({ ...res[i], comments });
         }
 

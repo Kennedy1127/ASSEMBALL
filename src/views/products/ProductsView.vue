@@ -78,10 +78,11 @@ onMounted(async () => {
   store.state.isPending = true;
 
   // 檢查url是否有tag，有的話篩選
-  // if (route.query.tag) {
-  //   store.commit("selectProductsTag", Number(route.query.tag));
-  //   store.commit("resetPaginationCurPage", "products");
-  // }
+  if (route.query.tag) {
+    store.commit("selectProductsTag", Number(route.query.tag));
+    store.commit("resetPaginationCurPage", "products");
+    type.value = Number(route.query.tag);
+  }
 
   // 掛載後撈商品數量
   await store.dispatch("getProductsCount");

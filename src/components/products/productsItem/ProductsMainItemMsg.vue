@@ -8,7 +8,7 @@
     <div class="product_message_area">
       <div
         class="product_message_area_all"
-        v-for="item in productMsgData.comments"
+        v-for="item in computedComments"
         :key="item"
       >
         <div class="product_message_area_all_pic">
@@ -37,7 +37,7 @@
           </div>
           <div class="product_message_area_all_text_date">
             <img src="~@/assets/images/products/edit.png" alt="edit" />
-            留言日期：{{ convertDate(item.date.toDate()) }}
+            留言日期：{{ convertDate(item.date) }}
           </div>
         </div>
       </div>
@@ -58,13 +58,16 @@
           <textarea
             placeholder="請輸入留言內容......"
             v-model="comment"
-            maxlength="300"
+            maxlength="100"
           ></textarea>
 
           <div class="product_message_importing_text_count">
-            {{ computedCommentLen }}/300
+            {{ computedCommentLen }}/100
           </div>
         </div>
+        <p v-if="error" class="product_message_importing_text_error">
+          {{ error }}
+        </p>
         <button @click="submitComment">送出</button>
       </div>
     </div>
@@ -92,31 +95,63 @@
 </template>
 
 <script setup>
+import { timestamp } from "@/firebase/config";
+import useData from "@/composables/data/useData";
 import { computed, ref } from "vue";
+import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 
 const store = useStore();
+const route = useRoute();
 const props = defineProps({
   productMsgData: {
     type: Object,
     required: true,
   },
 });
+const { setDataSubCollection } = useData();
 
 const comment = ref("");
+const error = ref(null);
 const computedCommentLen = computed(() => comment.value.length);
+const comments = ref([...props.productMsgData.comments]);
+const computedComments = computed(() => [...comments.value]);
 
-const convertDate = (copywritingDate) => {
-  if (!copywritingDate) return;
-  const date = new Date(copywritingDate);
+const convertDate = (msgDate) => {
+  if (!msgDate) return;
+  const date = !msgDate.toDate ? new Date() : new Date(msgDate.toDate());
   return `${date.getFullYear()} / ${String(date.getMonth() + 1).padStart(
     2,
     "0"
   )} / ${String(date.getDate()).padStart(2, "0")}`;
 };
 
-const submitComment = () => {
-  console.log(comment.value);
+const submitComment = async () => {
+  store.state.isPending = true;
+
+  if (!comment.value) {
+    error.value = "請輸入你的留言內容哦";
+    return (store.state.isPending = false);
+  }
+
+  const productTarget = {
+    collectionName: "PRODUCTS",
+    documentId: route.params.productId,
+    subCollectionName: "COMMENTS",
+  };
+
+  const subCollectionData = {
+    comment: comment.value,
+    icon: null,
+    name: "棒球專家",
+    user_id: "id",
+    date: timestamp,
+  };
+
+  await setDataSubCollection(productTarget, subCollectionData);
+  comments.value.push(subCollectionData);
+  store.state.isPending = false;
+  comment.value = "";
 };
 </script>
 
@@ -303,6 +338,13 @@ const submitComment = () => {
         @media all and (max-width: 420px) {
           right: 1rem;
         }
+      }
+
+      &_error {
+        margin-top: 1rem;
+        font-size: 1rem;
+        text-align: center;
+        color: var(--accent-red);
       }
     }
 

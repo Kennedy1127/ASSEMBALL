@@ -416,6 +416,40 @@ const checkSubmitData = () => {
   }
 };
 
+const postProduct = async (data) => {
+  const id = await setData("PRODUCTS", data, pics.value);
+  const productTarget = {
+    collectionName: "PRODUCTS",
+    documentId: id,
+    subCollectionName: "COMMENTS",
+  };
+
+  const subCollectionData = {
+    comment: comment.value,
+    icon: null,
+    name: "棒球專家",
+    user_id: "id",
+    date: timestamp,
+  };
+
+  await setDataSubCollection(productTarget, subCollectionData);
+
+  // const saleTarget = {
+  //   collectionName: "MEMBERS",
+  //   documentId: id,
+  //   subCollectionName: "SALES",
+  // };
+
+  // await setDataSubCollection(saleTarget, subCollectionData);
+
+  return id;
+};
+
+const updateProduct = async (id, data) => {
+  await setData("PRODUCTS", data, pics.value);
+  return id;
+};
+
 const handleSubmit = async () => {
   store.state.isPending = true;
   checkSubmitData();
@@ -436,27 +470,7 @@ const handleSubmit = async () => {
     seller_id: "id",
   };
 
-  const id = await setData("PRODUCTS", data, pics.value);
-  if (setDataError.value) {
-    error.value = "商品刊登失敗，請重新整理或洽平台管理員";
-    return (store.state.isPending = false);
-  }
-
-  const subCollectionData = {
-    comment: comment.value,
-    icon: null,
-    name: "棒球專家",
-    user_id: "id",
-    date: timestamp,
-  };
-
-  const target = {
-    collectionName: "PRODUCTS",
-    documentId: id,
-    subCollectionName: "COMMENTS",
-  };
-
-  await setDataSubCollection(target, subCollectionData);
+  const id = await postProduct(data);
   if (setDataError.value) {
     error.value = "商品刊登失敗，請重新整理或洽平台管理員";
     return (store.state.isPending = false);

@@ -54,6 +54,23 @@ const filterProducts = () => {
 
 <style scoped lang="scss">
 .products_aside_search {
+  .block {
+    width: 8px;
+    height: 26px;
+    background-color: var(--primary-blue);
+  }
+
+  &_title {
+    display: flex;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+    font-size: 1.25rem;
+
+    border-bottom: 2px solid var(--secondary-gray-2);
+    font-weight: 500;
+    letter-spacing: 6px;
+  }
+
   &_input {
     margin-top: 1.5rem;
     position: relative;
