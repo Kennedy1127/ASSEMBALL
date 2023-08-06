@@ -134,7 +134,7 @@ export default {
     }
   }
 }
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1280px) {
   .home {
     .wrapper {
       // 網站故事

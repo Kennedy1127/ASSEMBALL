@@ -549,7 +549,7 @@ export default {
     }
   }
 }
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1280px) {
   .home_message_all {
     padding-left: 0rem;
     &_pic {
@@ -752,16 +752,6 @@ export default {
           font-size: 1.25rem;
           margin-left: 0rem;
         }
-        &_tag {
-          width: 3.5rem;
-          font-size: 1rem;
-          margin-left: 1rem;
-          background-color: var(--caution-red);
-          color: #fff;
-          border-radius: var(--round);
-          text-align: center;
-          font-family: "Montserrat";
-        }
       }
       &_section {
         display: flex;
@@ -895,16 +885,6 @@ export default {
         &_date {
           font-size: 1.25rem;
           margin-left: 0rem;
-        }
-        &_tag {
-          width: 3.5rem;
-          font-size: 1rem;
-          margin-left: 1rem;
-          background-color: var(--caution-red);
-          color: #fff;
-          border-radius: var(--round);
-          text-align: center;
-          font-family: "Montserrat";
         }
       }
       &_section {

@@ -528,7 +528,7 @@ export default {
     }
   }
 }
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1280px) {
   .home_news_subscription {
     width: 25%;
     &_importing {
