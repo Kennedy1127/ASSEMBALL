@@ -53,6 +53,7 @@ const useData = () => {
   };
 
   const updateData = async (target, id, data = {}) => {
+    setDataError.value = null;
     // try {
     //   const dataRef = doc(db, target, id);
     //   const res = await updateDoc(dataRef, data);
@@ -65,15 +66,21 @@ const useData = () => {
   };
 
   const updateDataSubCollection = async (target, data) => {
-    // try {
-    //   const dataRef = doc(db, target, id);
-    //   const res = await updateDoc(dataRef, data);
-    //   return res;
-    // } catch (err) {
-    //   console.error("Something went wrong!");
-    //   setDataError.value = err.message;
-    //   console.error(err);
-    // }
+    setDataError.value = null;
+    try {
+      const colRef = collection(
+        db,
+        target.collectionName,
+        target.documentId,
+        target.subCollectionName,
+        target.subDocumentId
+      );
+      await updateDoc(colRef, data);
+    } catch (err) {
+      console.error("Something went wrong!");
+      setDataError.value = err.message;
+      console.error(err);
+    }
   };
 
   return {

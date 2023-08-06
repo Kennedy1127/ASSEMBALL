@@ -33,11 +33,35 @@
             {{ item.name }}
           </div>
           <div class="product_message_area_all_text_all">
-            {{ item.comment }}
+            <textarea
+              :disabled="!editMode || item.user_id !== '1'"
+              :value="item.comment"
+              @input="updateComment($event, item.comment)"
+            >
+            </textarea>
           </div>
           <div class="product_message_area_all_text_date">
-            <img src="~@/assets/images/products/edit.png" alt="edit" />
-            留言日期：{{ convertDate(item.date) }}
+            <div class="product_message_area_all_text_date_icons">
+              <font-awesome-icon
+                v-if="!editMode || item.user_id !== '1'"
+                class="icon icon--pen"
+                :icon="['fas', 'pen']"
+                @click="toggleEditComment"
+              />
+              <font-awesome-icon
+                v-if="editMode && item.user_id === '1'"
+                class="icon icon--xmark"
+                :icon="['fas', 'xmark']"
+                @click="toggleEditComment"
+              />
+              <font-awesome-icon
+                v-if="editMode && item.user_id === '1'"
+                class="icon icon--check"
+                :icon="['fas', 'check']"
+                @click="submitUpdateComment(item.id)"
+              />
+            </div>
+            <span>留言日期：{{ convertDate(item.date) }}</span>
           </div>
         </div>
       </div>
@@ -109,11 +133,12 @@ const props = defineProps({
     required: true,
   },
 });
-const { setDataSubCollection } = useData();
+const { setDataSubCollection, updateDataSubCollection } = useData();
 
 const comment = ref("");
 const error = ref(null);
 const computedCommentLen = computed(() => comment.value.length);
+
 const comments = ref([...props.productMsgData.comments]);
 const computedComments = computed(() => [...comments.value]);
 
@@ -152,6 +177,34 @@ const submitComment = async () => {
   comments.value.push(subCollectionData);
   store.state.isPending = false;
   comment.value = "";
+};
+
+const editMode = ref(false);
+const editComment = ref("aaa");
+
+const updateComment = (e, comment) => {
+  console.log(comment);
+  console.log(e);
+};
+
+const toggleEditComment = () => {
+  editMode.value = !editMode.value;
+};
+
+const submitUpdateComment = async (id) => {
+  const updateTarget = {
+    collectionName: "PRODUCTS",
+    documentId: route.params.productId,
+    subCollectionName: "COMMENTS",
+    subDocumentId: id,
+  };
+  const updateData = {
+    comment: editComment.value,
+  };
+  console.log(updateTarget);
+  console.log(updateData);
+
+  // await updateDataSubCollection();
 };
 </script>
 
@@ -246,7 +299,22 @@ const submitComment = async () => {
 
         &_all {
           margin-top: 1rem;
+          width: 50%;
           color: var(--secondary-gray-1);
+
+          textarea {
+            resize: none;
+            color: inherit;
+            width: 100%;
+            padding: 0rem 0.5rem;
+            border: none;
+            background-color: transparent;
+
+            &:focus {
+              background-color: var(--pale-white);
+              outline: 2px solid var(--secondary-blue-1);
+            }
+          }
 
           @media all and (max-width: 420px) {
             font-size: 14px;
@@ -258,8 +326,34 @@ const submitComment = async () => {
           text-align: right;
           color: var(--secondary-gray-1);
           font-size: 0.875rem;
-          & img {
-            margin-right: 1rem;
+
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          gap: 1.5rem;
+
+          &_icons {
+            font-size: 1.25rem;
+            display: flex;
+            gap: 1rem;
+            .icon {
+              cursor: pointer;
+              width: 25px;
+              height: 25px;
+              background-color: #fff;
+
+              &--pen {
+                color: var(--secondary-gray-3);
+              }
+
+              &--xmark {
+                color: var(--accent-red);
+              }
+
+              &--check {
+                color: var(--primary-blue);
+              }
+            }
           }
         }
       }
