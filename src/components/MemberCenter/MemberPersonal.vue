@@ -33,12 +33,13 @@
           name="member_lastname"
           id="lastname"
           placeholder="請輸入中文姓氏"
-          pattern="^[\u4E00-\u9FA5]{1,5}$"
           v-model="lastname"
           minlength="1"
           maxlength="5"
           required
+          @input="validateLastname"
         />
+        <div v-if="!isLastnameValid" class="error">{{ lastnameError }}</div>
       </div>
       <!-- 名字 只能輸入1-5個中文字 -->
       <div class="MemberPersonal_form_name">
@@ -48,25 +49,27 @@
           name="member_name"
           id="name"
           placeholder="請輸入中文名字"
-          pattern="^[\u4E00-\u9FA5]{1,5}$"
           v-model="name"
           minlength="1"
           maxlength="5"
           required
+          @input="validateName"
         />
+        <div v-if="!isNameValid" class="error">{{ nameError }}</div>
       </div>
       <!-- // 電子信箱驗證 規定只能輸入 xxx@xxx.xxx 形式 -->
       <div class="MemberPersonal_form_email">
         <label for="email"><span>*</span>信箱：</label>
         <input
-          type="email"
+          type="text"
           name="member_email"
           id="email"
           placeholder="請輸入電子信箱"
-          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
           v-model="email"
           required
+          @input="validateEmail"
         />
+        <div v-if="!isEmailValid" class="error">{{ emailError }}</div>
       </div>
       <!-- //地區篩選 -->
       <div class="MemberPersonal_form_region">
@@ -146,6 +149,10 @@ export default {
       email: "",
       region: "",
       experience: [],
+      //表單錯誤訊息
+      lastnameError: "",
+      nameError: "",
+      emailError: "",
       ////////////////////
       roles,
       area,
@@ -179,30 +186,79 @@ export default {
       });
     },
 
-    //提交表單
-    submitForm() {
-      alert("會員資料提交成功！");
-      // 表單資料確認
-      console.log("會員頭貼：", this.avatar);
-      console.log("姓氏：", this.lastname);
-      console.log("名字：", this.name);
-      console.log("信箱：", this.email);
-      console.log("地區：", this.region);
-      console.log("經歷：", this.experience);
+    // 表單驗證
 
-      //提交後重置表單資料
-      this.avatar = require("@/assets/images/icons/default_avatar.svg");
-      this.lastname = "";
-      this.name = "";
-      this.email = "";
-      this.region = "";
-      this.experience = [];
+    validateLastname() {
+      // 只包含中文和英文字母
+      const regex = /^[\u4e00-\u9fa5a-zA-Z]+$/;
+      this.isLastnameValid = regex.test(this.lastname.trim());
+    },
+
+    validateName() {
+      // 只包含中文和英文字母
+      const regex = /^[\u4e00-\u9fa5a-zA-Z]+$/;
+      this.isNameValid = regex.test(this.name.trim());
+    },
+
+    validateEmail() {
+      const emailRegex =
+        /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+      this.isEmailValid = emailRegex.test(this.email);
+    },
+
+    submitForm() {
+      this.lastnameError = "";
+      this.nameError = "";
+      this.emailError = "";
+
+      this.validateLastname();
+      this.validateName();
+      this.validateEmail();
+
+      if (!this.isLastnameValid || !this.isNameValid || !this.isEmailValid) {
+        alert("會員資料更新有誤，請重新檢查喔！");
+        //顯示錯誤訊息
+        if (!this.isLastnameValid) {
+          this.lastnameError = "請輸入有效的姓氏(只能包含中文和英文字母)";
+        }
+        if (!this.isNameValid) {
+          this.nameError = "請輸入有效的名字(只能包含中文和英文字母)";
+        }
+        if (!this.isEmailValid) {
+          this.emailError = "請輸入有效的電子信箱";
+        }
+      } else {
+        // 表單提交
+        alert("會員資料提交成功！");
+        // 表單資料確認
+        console.log("會員頭貼：", this.avatar);
+        console.log("姓氏：", this.lastname);
+        console.log("名字：", this.name);
+        console.log("信箱：", this.email);
+        console.log("地區：", this.region);
+        console.log("經歷：", this.experience);
+
+        //提交後重置表單資料
+        this.avatar = require("@/assets/images/icons/default_avatar.svg");
+        this.lastname = "";
+        this.name = "";
+        this.email = "";
+        this.region = "";
+        this.experience = [];
+      }
     },
   },
 };
 </script>
 
 <style scoped lang="scss">
+.error {
+  padding-top: 0.5rem;
+  padding-left: 0.25rem;
+  color: var(--accent-red);
+  font-size: 0.875rem;
+  margin-left: 0;
+}
 //地區篩選框更
 .ivu-select-selection {
   border: 2px solid #111111;

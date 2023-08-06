@@ -44,12 +44,13 @@
             type="text"
             name="ProductPayment_phone"
             id="phone"
-            placeholder="請輸入手機號碼(格式：09xx-xxxxxx)"
+            placeholder="請輸入手機號碼"
             v-model="phone"
-            maxlength="11"
-            pattern="09\d{2}-\d{6}"
+            maxlength="10"
             required
+            @input="validatePhone"
           />
+          <div v-if="!isPhone" class="error">{{ PhoneError }}</div>
         </div>
         <div class="ProductPayment_form_address">
           <label for="address"><span>*</span>收件地址：</label>
@@ -76,8 +77,8 @@
               placeholder="請輸入信用卡號(16碼)"
               v-model="creditCardNumber"
               maxlength="16"
-              pattern="^\d{16}$"
               required
+              @input="validateCard"
             />
             <div
               class="ProductPayment_form_card_creditCardNumber_count"
@@ -95,8 +96,8 @@
               v-model="creditCardDate"
               placeholder="(3碼)"
               maxlength="3"
-              pattern="^\d{3}$"
               required
+              @input="validateDate"
             />
           </div>
           <div class="ProductPayment_form_card_creditCardCVV">
@@ -108,10 +109,19 @@
               v-model="creditCardCVV"
               placeholder="(3碼)"
               maxlength="3"
-              pattern="^\d{3}$"
               required
+              @input="validateCVV"
             />
           </div>
+        </div>
+        <div v-if="!isCard" class="error" style="text-align: center">
+          {{ CardError }}
+        </div>
+        <div v-if="!isDate" class="error" style="text-align: center">
+          {{ DateError }}
+        </div>
+        <div v-if="!isCVV" class="error" style="text-align: center">
+          {{ CVVError }}
         </div>
         <div class="ProductPayment_form_btn">
           <input type="submit" value="結帳" />
@@ -133,6 +143,11 @@ export default {
       creditCardNumber: "",
       creditCardDate: "",
       creditCardCVV: "",
+      //表單錯誤訊息
+      PhoneError: "",
+      CardError: "",
+      DateError: "",
+      CVVError: "",
       ////////////////////
       ProductPaymentItem: [
         {
@@ -151,28 +166,85 @@ export default {
     },
   },
   methods: {
+    //驗證
+    validatePhone() {
+      const phoneRegex = /^09\d{8}$/;
+      this.isPhoneValid = phoneRegex.test(this.phone);
+    },
+    validateCard() {
+      const cardRegex = /^\d{16}$/;
+      this.isCardValid = cardRegex.test(this.creditCardNumber);
+    },
+    validateDate() {
+      const dateRegex = /^\d{3}$/;
+      this.isDateValid = dateRegex.test(this.creditCardDate);
+    },
+    validateCVV() {
+      const cvvRegex = /^\d{3}$/;
+      this.isCVVValid = cvvRegex.test(this.creditCardCVV);
+    },
     //提交表單
     submitForm() {
-      alert("付款資料提交成功！");
-      // 表單資料確認
-      console.log("手機號碼：", this.phone);
-      console.log("收件地址：", this.address);
-      console.log("信用卡號：", this.creditCardNumber);
-      console.log("到期日：", this.creditCardDate);
-      console.log("CVV：", this.creditCardCVV);
+      this.PhoneError = "";
+      this.CardError = "";
+      this.DateError = "";
+      this.CVVError = "";
+      this.validatePhone();
+      this.validateCard();
+      this.validateDate();
+      this.validateCVV();
 
-      //提交後重置表單資料
-      this.phone = "";
-      this.address = "";
-      this.creditCardNumber = "";
-      this.creditCardDate = "";
-      this.creditCardCVV = "";
+      //顯示錯誤訊息
+      if (
+        !this.isPhoneValid ||
+        !this.isCardValid ||
+        !this.isDateValid ||
+        !this.isCVVValid
+      ) {
+        alert("付款資料有誤，請重新檢查喔！");
+        if (!this.isPhoneValid) {
+          this.PhoneError = "請輸入有效的手機號碼 (格式：09xxxxxxxx)";
+        }
+        if (!this.isCardValid) {
+          this.CardError = "請輸入有效的信用卡號 (16位數字)";
+        }
+        if (!this.isDateValid) {
+          this.DateError = "請輸入有效的到期日 (3位數字)";
+        }
+        if (!this.isCVVValid) {
+          this.CVVError = "請輸入有效的CVV (3位數字)";
+        }
+      } else {
+        alert("付款資料提交成功！");
+        // 表單資料確認
+        console.log("手機號碼：", this.phone);
+        console.log("收件地址：", this.address);
+        console.log("信用卡號：", this.creditCardNumber);
+        console.log("到期日：", this.creditCardDate);
+        console.log("CVV：", this.creditCardCVV);
+
+        //提交後重置表單資料
+        this.phone = "";
+        this.address = "";
+        this.creditCardNumber = "";
+        this.creditCardDate = "";
+        this.creditCardCVV = "";
+      }
     },
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+
+.error {
+  padding-top: 0.5rem;
+  padding-left: 0.25rem;
+  color: var(--accent-red);
+  font-size: 1rem;
+  margin-left: 0;
+}
+
 .ProductPayment {
   background-color: var(--secondary-blue-4);
   padding: 4rem 0;
