@@ -46,6 +46,23 @@ const filterProducts = (type) => {
 .products_aside_tags {
   margin-top: 8rem;
 
+  .block {
+    width: 8px;
+    height: 26px;
+    background-color: var(--primary-blue);
+  }
+
+  &_title {
+    display: flex;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+    font-size: 1.25rem;
+
+    border-bottom: 2px solid var(--secondary-gray-2);
+    font-weight: 500;
+    letter-spacing: 6px;
+  }
+
   &_content {
     margin-top: 1rem;
 

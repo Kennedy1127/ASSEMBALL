@@ -29,7 +29,12 @@
         </div>
         <div>類別選擇</div>
       </div>
-      <SelectorComponent v-model="selectedTag" :options="productTags" />
+      <SelectorComponent
+        v-model="selectedTag"
+        :options="productTags"
+        style="margin-bottom: 1rem"
+      />
+      <SelectorComponent v-model="selectedDateOrder" :options="datesOrder" />
     </div>
   </div>
 </template>
@@ -46,6 +51,7 @@ const emit = defineEmits(["filterProducts", "filterProductsByTag"]);
 
 const searchText = ref(store.state.selectedProductsText);
 const selectedTag = ref(0);
+const selectedDateOrder = ref(1);
 const productTags = ref([
   {
     id: 0,
@@ -80,6 +86,16 @@ const productTags = ref([
     label: "手套",
   },
 ]);
+const datesOrder = ref([
+  {
+    id: 0,
+    label: "由舊到新",
+  },
+  {
+    id: 1,
+    label: "由新到舊",
+  },
+]);
 
 const filterProducts = () => {
   store.commit("selectProductsSearch", {
@@ -96,6 +112,12 @@ watch(selectedTag, (tag) => {
   store.commit("resetPaginationCurPage", "products");
 
   emit("filterProductsByTag", tag);
+});
+
+watch(selectedDateOrder, (order) => {
+  store.state.selectedProductsDate = order;
+  store.commit("resetPaginationCurPage", "products");
+  emit("filterProductsByDateOrder");
 });
 </script>
 

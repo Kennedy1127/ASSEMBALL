@@ -2,17 +2,17 @@
   <div class="home_marquee_hashtag">
     <div
       class="home_marquee_hashtag_text"
-      v-for="item in homeMarqueeProduct"
+      v-for="item in homeMarqueeProduct.text"
       :key="item"
     >
-      <router-link :to="{ name: 'Products' }">{{ item }}</router-link>
+      <router-link :to="{ name: 'Products' }">{{ item.text }}</router-link>
     </div>
     <div
       class="home_marquee_hashtag_text"
-      v-for="item in homeMarqueeProduct"
+      v-for="item in homeMarqueeProduct.text"
       :key="item"
     >
-      <router-link :to="{ name: 'Products' }">{{ item }}</router-link>
+      <router-link :to="{ name: 'Products' }">{{ item.text }}</router-link>
     </div>
   </div>
   <div class="home_marquee_hashtag">
@@ -51,32 +51,40 @@
 
 <script>
 export default {
+  async mounted() {
+    const res = await this.$store.dispatch("getHomeNews");
+    console.log(res);
+    this.homeMarqueeProduct = res[0];
+    console.log(this.homeMarqueeProduct);
+  },
+
   data() {
     return {
-      homeMarqueeProduct: [
-        "＃品牌裝備",
-        "＃球場必備",
-        "#球衣收藏",
-        "#優質裝備",
-        "#球具清倉",
-        "#耐用品",
-        "#全新球套",
-        "#團隊配備",
-        "#捕手手具",
-        "#投手球鞋",
-        "#高比重",
-        "＃品牌裝備",
-        "＃球場必備",
-        "#球衣收藏",
-        "#優質裝備",
-        "#球具清倉",
-        "#耐用品",
-        "#全新球套",
-        "#團隊配備",
-        "#捕手手具",
-        "#投手球鞋",
-        "#高比重",
-      ],
+      homeMarqueeProduct: [],
+      // homeMarqueeProduct: [
+      //   "＃品牌裝備",
+      //   "＃球場必備",
+      //   "#球衣收藏",
+      //   "#優質裝備",
+      //   "#球具清倉",
+      //   "#耐用品",
+      //   "#全新球套",
+      //   "#團隊配備",
+      //   "#捕手手具",
+      //   "#投手球鞋",
+      //   "#高比重",
+      //   "＃品牌裝備",
+      //   "＃球場必備",
+      //   "#球衣收藏",
+      //   "#優質裝備",
+      //   "#球具清倉",
+      //   "#耐用品",
+      //   "#全新球套",
+      //   "#團隊配備",
+      //   "#捕手手具",
+      //   "#投手球鞋",
+      //   "#高比重",
+      // ],
       homeMarqueeCopywriting: [
         "＃強弱組合",
         "＃人才招募",

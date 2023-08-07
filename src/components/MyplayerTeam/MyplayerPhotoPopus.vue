@@ -13,6 +13,8 @@
 </template>
 <script>
 export default {
+  props: ["sendPic", "curIndex"],
+  emits: ["goToRight", "goToLeft"],
   data() {
     return {
       photos: [
@@ -39,11 +41,13 @@ export default {
       if (this.currentPhotoIndex < this.photos.length - 1) {
         this.currentPhotoIndex++;
       }
+      this.$emit("goToRight");
     },
     prevPhoto() {
       if (this.currentPhotoIndex > 0) {
         this.currentPhotoIndex--;
       }
+      this.$emit("goToLeft");
     },
   },
 };

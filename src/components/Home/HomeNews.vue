@@ -3,10 +3,18 @@
     <h2>最新消息</h2>
     <p>訂閱我們即可接收電子報</p>
     <div class="home_news_subscription_importing">
-      <input type="email" placeholder="Email" />
-      <span>
+      <input
+        type="email"
+        placeholder="Email"
+        v-model="email"
+        @input="clearEmailIfNeeded"
+      />
+      <span @click="subscribe">
         <font-awesome-icon :icon="['fas', 'circle-arrow-right']" />
       </span>
+      <div v-if="subscribed" class="home_news_subscription_importing_popup">
+        已訂閱成功！
+      </div>
     </div>
     <div class="home_news_subscription_hashtag">
       <div
@@ -94,6 +102,8 @@
 export default {
   data() {
     return {
+      email: "", // 存储邮箱地址
+      subscribed: false, // 是否已订阅成功的标志
       newsHashtag: [
         "＃天龍國野馬",
         "＃波士頓爆豪客",
@@ -178,6 +188,19 @@ export default {
   },
 
   methods: {
+    clearEmailIfNeeded() {
+      if (this.email.endsWith("@gmail.com") && !this.subscribed) {
+        return;
+      }
+    },
+    subscribe() {
+      this.subscribed = true;
+      setTimeout(() => {
+        this.subscribed = false;
+        this.email = "";
+      }, 2000); // 2秒后隐藏小弹窗并清空输入框
+    },
+
     carouselPrev() {
       for (const item of this.itemsData) {
         const itemPos = Number(item.pos);
@@ -249,6 +272,17 @@ export default {
       top: 0.45rem;
       right: 25%;
       cursor: pointer;
+    }
+    &_popup {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #ffffff;
+      padding: 10px 20px;
+      border: 1px solid var(--secondary-gray-3);
+      border-radius: var(--round);
+      box-shadow: var(--shadow-heavy);
     }
   }
   &_hashtag {
@@ -494,7 +528,7 @@ export default {
     }
   }
 }
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1280px) {
   .home_news_subscription {
     width: 25%;
     &_importing {
@@ -695,6 +729,13 @@ export default {
     }
     & span {
       right: 28%;
+    }
+  }
+  .home_news_all_carousel_list .modal_content_title_text {
+    flex-direction: column;
+    align-items: start;
+    & p {
+      margin-left: 0rem;
     }
   }
   .home_news_background {

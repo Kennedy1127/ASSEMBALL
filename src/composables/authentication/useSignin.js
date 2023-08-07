@@ -5,6 +5,7 @@ import { ref } from "vue";
 const useSignin = () => {
   const signinError = ref(null);
   const signin = async ({ email, password }) => {
+    //登入時先把錯誤清空(第二次登入時)
     signinError.value = null;
     try {
       const res = await signInWithEmailAndPassword(auth, email, password);

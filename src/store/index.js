@@ -2,7 +2,8 @@ import { createStore } from "vuex";
 import axios from "axios";
 import getData from "@/composables/data/getData";
 
-const { getDocuments } = getData();
+const { getDocuments, getCollectionCount, getSubCollectionDocuments } =
+  getData();
 
 export default createStore({
   state: {
@@ -83,13 +84,13 @@ export default createStore({
     // 如果文字搜尋條件符合或長度為0時，return true
     includedProductsByText: (state) => (product) => {
       if (!state.selectedProductsText) return true;
-      return product.product_title.includes(state.selectedProductsText);
+      return product.title.includes(state.selectedProductsText);
     },
 
     // 如果商品TAG符合或為-1時，return true
     includedCProductsByTag: (state) => (product) => {
       if (state.selectedProductsTag === 0) return true;
-      return state.selectedProductsTag === product.product_tag;
+      return state.selectedProductsTag === product.tag;
     },
 
     // 過濾後的商品
@@ -102,15 +103,13 @@ export default createStore({
     // 更具時間排序的商品
     dateSortedFilteredProducts(state, getters) {
       const products = [...getters.filteredProducts];
-
       state.selectedProductsDate
         ? products.sort(
-            (a, b) => new Date(b.product_date) - new Date(a.product_date)
+            (a, b) => new Date(b.date.toDate()) - new Date(a.date.toDate())
           )
         : products.sort(
-            (a, b) => new Date(a.product_date) - new Date(b.product_date)
+            (a, b) => new Date(a.date.toDate()) - new Date(b.date.toDate())
           );
-
       return products;
     },
 
@@ -363,12 +362,8 @@ export default createStore({
     //我的球隊撈資料
     setMyplayerTeam(state, payload) {
       console.log(payload);
-      const team = payload.data.find(
-        (myplayerteam) => myplayerteam.team_id === payload.id
-      );
-      console.log(team);
 
-      state.myplayerTeam = { ...team };
+      state.myplayerTeam = { ...payload };
     },
 
     ///////////////////////////////////////
@@ -395,10 +390,8 @@ export default createStore({
     // 撈首頁資料
     async getHomeNews(context) {
       try {
-        const res = await axios.get("http://localhost:3000/home_news");
-        if (!res) throw new Error("Cannot fetch response");
-        console.log(res);
-        // context.commit("setProductsCount", res.data.length);
+        const res = await getDocuments("MARQUEE");
+        return res;
       } catch (err) {
         console.error(err);
       }
@@ -442,20 +435,35 @@ export default createStore({
     // 撈商品數量
     async getProductsCount(context) {
       try {
-        const res = await axios.get("http://localhost:3000/products");
+        const res = await getCollectionCount("PRODUCTS");
         if (!res) throw new Error("Cannot fetch response");
-        context.commit("setProductsCount", res.data.length);
+        context.commit("setProductsCount", res);
       } catch (err) {
         console.error(err);
+        context.state.products = [];
+        context.state.productsCount = 0;
       }
     },
 
     // 撈商品資料
     async getProducts(context) {
       try {
-        const res = await axios.get("http://localhost:3000/products");
-        if (!res) throw new Error("Cannot fetch response");
-        context.commit("setProducts", res.data);
+        const res = await getDocuments("PRODUCTS");
+        const products = [];
+        for (let i = 0; i < res.length; i++) {
+          const comments = await getSubCollectionDocuments(
+            {
+              collectionName: "PRODUCTS",
+              documentId: res[i].id,
+              subCollectionName: "COMMENTS",
+            },
+            [],
+            ["date"]
+          );
+          products.push({ ...res[i], comments });
+        }
+
+        context.commit("setProducts", products);
       } catch (err) {
         console.error(err);
       }
@@ -499,15 +507,43 @@ export default createStore({
       }
     },
     //撈我的球隊的資料
+
     async getMyplayerTeam(context, payload) {
-      try {
-        const res = await axios.get("http://localhost:3000/teams");
-        if (!res) throw new Error("Cannot fetch response");
-        // console.log(payload);
-        context.commit("setMyplayerTeam", { id: payload, data: res.data });
-      } catch (err) {
-        console.error(err);
-      }
+      const teamData = await getDocuments("TEAMS");
+      // console.log(teamData);
+
+      const teamGameData = await getSubCollectionDocuments({
+        collectionName: "TEAMS",
+        documentId: "5KhosRZOJ7TmLfECUb5D",
+        subCollectionName: "GAME",
+      });
+      // console.log(teamGameData);
+
+      //const picData=
+
+      const scheduleData = await getSubCollectionDocuments({
+        collectionName: "TEAMS",
+        documentId: "5KhosRZOJ7TmLfECUb5D",
+        subCollectionName: "SCHEDULE",
+      });
+      // console.log(scheduleData);
+
+      const teamPostData = await getSubCollectionDocuments({
+        collectionName: "TEAMS",
+        documentId: "5KhosRZOJ7TmLfECUb5D",
+        subCollectionName: "POST",
+      });
+      // console.log(teamPostData);
+
+      const allTeamData = {
+        ...teamData[0],
+        teamGameData,
+        scheduleData,
+        teamPostData,
+      };
+      // console.log(allTeamData);
+
+      context.commit("setMyplayerTeam", allTeamData);
     },
 
     // 撈後台-招募文案資料
@@ -516,9 +552,10 @@ export default createStore({
         // const res = await axios.get(
         //   "http://localhost:3000/candidate-copywritings"
         // );
-        get;
-        if (!res) throw new Error("Cannot fetch response");
-        context.commit("setManageCopywritings", res.data); //setManageCopywritings: 寫在mutation裡面
+        // get;
+        // if (!res) throw new Error("Cannot fetch response");
+        const res = await getDocuments("COPYWRITINGS");
+        context.commit("setManageCopywritings", res); //setManageCopywritings: 寫在mutation裡面
         // context.commit("setCopywritingsCount", res.data.length);
       } catch (err) {
         console.error(err);

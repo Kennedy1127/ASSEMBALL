@@ -70,11 +70,11 @@
             cols="60"
             rows="10"
             v-model="CreateteamIntroduction"
-            minlength="10"
             maxlength="200"
             value
             placeholder="請輸入簡介內容..."
             required
+            @input="validateIntroduction"
           ></textarea>
           <div
             class="MemberCenter_Createteam_form_Introduction_count"
@@ -85,6 +85,13 @@
         </div>
         <div class="MemberCenter_Createteam_form_btn">
           <input type="submit" value="送出" />
+        </div>
+        <div
+          v-if="!isIntroductionValid"
+          class="error"
+          style="color: var(--accent-red)"
+        >
+          {{ IntroductionError }}
         </div>
       </form>
     </div>
@@ -105,6 +112,8 @@ export default {
       teamName: "",
       CreateteamIntroduction: "",
       region: "",
+      //表單錯誤訊息
+      IntroductionError: "",
       ////////////////////
       roles,
       area,
@@ -143,8 +152,16 @@ export default {
       });
     },
 
+    // 驗證
+
     //提交表單
     submitForm() {
+      if (this.CreateteamIntroduction.length < 10) {
+        this.IntroductionError = "親愛的球友，球隊簡介至少需要10個字喔！";
+        return;
+      }
+      this.IntroductionError = "";
+
       alert("球隊資料提交成功！");
       // 表單資料確認
       console.log("球隊名稱：", this.teamName);
@@ -163,6 +180,14 @@ export default {
 </script>
 
 <style lang="scss">
+.error {
+  margin: auto;
+  padding-top: 0.5rem;
+  padding-left: 0.25rem;
+  color: var(--accent-red);
+  font-size: 1rem;
+}
+
 .MemberCenter_Createteam {
   background-color: var(--secondary-blue-4);
   padding: 4rem 0;

@@ -1,20 +1,34 @@
 import { db } from "@/firebase/config";
 import { doc, setDoc, updateDoc, collection } from "firebase/firestore";
 import { ref } from "vue";
+import useStorage from "@/composables/data/useStorage";
+
+const { setPics } = useStorage();
 
 const useData = () => {
   const setDataError = ref(null);
 
-  const setData = async (target, data) => {
+  const setData = async (target, data, pics = null) => {
     setDataError.value = null;
     try {
-      const docRef = doc(db, target, data.id ? data.id : null);
+      const docRef = data.id
+        ? doc(db, target, data.id)
+        : doc(collection(db, target));
+
       data.id = docRef.id;
+
+      if (pics) {
+        const urls = await setPics(`images/${target}/${docRef.id}`, pics);
+        data.pics = [];
+        urls.forEach((url) => data.pics.push(url));
+      }
+
       await setDoc(docRef, data);
+      return docRef.id;
     } catch (err) {
       console.error("Something went wrong!");
       setDataError.value = err.message;
-      // console.error(err);
+      console.error(err);
     }
   };
 
@@ -34,24 +48,48 @@ const useData = () => {
     } catch (err) {
       console.error("Something went wrong!");
       setDataError.value = err.message;
-      // console.error(err);
+      console.error(err);
     }
   };
 
-  const updateData = async (target, id, data = {}) => {
-    try {
-      const dataRef = doc(db, target, id);
-      const res = await updateDoc(dataRef, data);
+  const updateData = async (target, data) => {
+    setDataError.value = null;
+    // try {
+    //   const dataRef = doc(db, target, id);
+    //   const res = await updateDoc(dataRef, data);
+    //   return res;
+    // } catch (err) {
+    //   console.error("Something went wrong!");
+    //   setDataError.value = err.message;
+    //   console.error(err);
+    // }
+  };
 
-      return res;
+  const updateDataSubCollection = async (target, data) => {
+    setDataError.value = null;
+    try {
+      const docRef = doc(
+        db,
+        target.collectionName,
+        target.documentId,
+        target.subCollectionName,
+        target.subDocumentId
+      );
+      await updateDoc(docRef, data);
     } catch (err) {
       console.error("Something went wrong!");
       setDataError.value = err.message;
-      // console.error(err);
+      console.error(err);
     }
   };
 
-  return { setDataError, setData, updateData, setDataSubCollection };
+  return {
+    setDataError,
+    setData,
+    setDataSubCollection,
+    updateData,
+    updateDataSubCollection,
+  };
 };
 
 export default useData;

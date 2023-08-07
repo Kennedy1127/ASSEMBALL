@@ -1,23 +1,43 @@
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const useStorage = () => {
   const storage = getStorage();
 
-  const setPic = async (path, file) => {
+  const setPics = async (path, files) => {
     try {
-      console.log(path);
-      console.log(file);
-      console.log(typeof file);
-      const storageRef = ref(storage, path);
-      const res = await uploadBytes(storageRef, file);
-      console.log(res);
+      const urls = [];
+
+      for (let i = 0; i < files.length; i++) {
+        // const lastSlash = files[i].type.lastIndexOf("/");
+        // const type = files[i].type.slice(lastSlash + 1);
+        let route = "";
+
+        if (files.length === 4) route = `${path}/product-${i + 1}`;
+
+        const url = await uploadPic(route, files[i]);
+        urls.push(url);
+      }
+      return urls;
     } catch (err) {
       console.error("Somethings went wrong!");
       console.error(err);
     }
   };
 
-  return { setPic };
+  const uploadPic = async (path, file) => {
+    try {
+      const storageRef = ref(storage, path);
+      const res = await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(res.ref);
+
+      return url;
+    } catch (err) {
+      console.error("Somethings went wrong!");
+      console.error(err);
+    }
+  };
+
+  return { setPics };
 };
 
 export default useStorage;
