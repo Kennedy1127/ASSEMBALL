@@ -52,7 +52,7 @@ const useData = () => {
     }
   };
 
-  const updateData = async (target, id, data = {}) => {
+  const updateData = async (target, data) => {
     setDataError.value = null;
     // try {
     //   const dataRef = doc(db, target, id);
@@ -68,14 +68,14 @@ const useData = () => {
   const updateDataSubCollection = async (target, data) => {
     setDataError.value = null;
     try {
-      const colRef = collection(
+      const docRef = doc(
         db,
         target.collectionName,
         target.documentId,
         target.subCollectionName,
         target.subDocumentId
       );
-      await updateDoc(colRef, data);
+      await updateDoc(docRef, data);
     } catch (err) {
       console.error("Something went wrong!");
       setDataError.value = err.message;

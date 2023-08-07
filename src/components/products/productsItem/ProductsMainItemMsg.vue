@@ -35,8 +35,8 @@
           <div class="product_message_area_all_text_all">
             <textarea
               :disabled="!editMode || item.user_id !== '1'"
-              :value="item.comment"
-              @input="updateComment($event, item.comment)"
+              v-model="item.comment"
+              ref="comment"
             >
             </textarea>
           </div>
@@ -46,13 +46,13 @@
                 v-if="!editMode || item.user_id !== '1'"
                 class="icon icon--pen"
                 :icon="['fas', 'pen']"
-                @click="toggleEditComment"
+                @click="editMode = true"
               />
               <font-awesome-icon
                 v-if="editMode && item.user_id === '1'"
                 class="icon icon--xmark"
                 :icon="['fas', 'xmark']"
-                @click="toggleEditComment"
+                @click="closeEditComment"
               />
               <font-awesome-icon
                 v-if="editMode && item.user_id === '1'"
@@ -81,12 +81,12 @@
         <div class="product_message_importing_text_input">
           <textarea
             placeholder="請輸入留言內容......"
-            v-model="comment"
+            v-model="inputComment"
             maxlength="100"
           ></textarea>
 
           <div class="product_message_importing_text_count">
-            {{ computedCommentLen }}/100
+            {{ computedInputCommentLen }}/100
           </div>
         </div>
         <p v-if="error" class="product_message_importing_text_error">
@@ -135,9 +135,9 @@ const props = defineProps({
 });
 const { setDataSubCollection, updateDataSubCollection } = useData();
 
-const comment = ref("");
+const inputComment = ref("");
 const error = ref(null);
-const computedCommentLen = computed(() => comment.value.length);
+const computedInputCommentLen = computed(() => inputComment.value.length);
 
 const comments = ref([...props.productMsgData.comments]);
 const computedComments = computed(() => [...comments.value]);
@@ -154,7 +154,7 @@ const convertDate = (msgDate) => {
 const submitComment = async () => {
   store.state.isPending = true;
 
-  if (!comment.value) {
+  if (!inputComment.value) {
     error.value = "請輸入你的留言內容哦";
     return (store.state.isPending = false);
   }
@@ -166,7 +166,7 @@ const submitComment = async () => {
   };
 
   const subCollectionData = {
-    comment: comment.value,
+    comment: inputComment.value,
     icon: null,
     name: "棒球專家",
     user_id: "id",
@@ -175,20 +175,21 @@ const submitComment = async () => {
 
   await setDataSubCollection(productTarget, subCollectionData);
   comments.value.push(subCollectionData);
+  const selectedComments = store.state.products.find(
+    (product) => product.id === route.params.productId
+  ).comments;
+  selectedComments.push(subCollectionData);
   store.state.isPending = false;
-  comment.value = "";
+  inputComment.value = "";
 };
 
 const editMode = ref(false);
-const editComment = ref("aaa");
+const editComment = comments.value.find((comment) => comment.user_id === "1");
+let lastComment = editComment.comment;
 
-const updateComment = (e, comment) => {
-  console.log(comment);
-  console.log(e);
-};
-
-const toggleEditComment = () => {
-  editMode.value = !editMode.value;
+const closeEditComment = () => {
+  editMode.value = false;
+  editComment.comment = lastComment;
 };
 
 const submitUpdateComment = async (id) => {
@@ -199,12 +200,12 @@ const submitUpdateComment = async (id) => {
     subDocumentId: id,
   };
   const updateData = {
-    comment: editComment.value,
+    comment: editComment.comment,
   };
-  console.log(updateTarget);
-  console.log(updateData);
 
-  // await updateDataSubCollection();
+  await updateDataSubCollection(updateTarget, updateData);
+  lastComment = editComment.comment;
+  editMode.value = false;
 };
 </script>
 
