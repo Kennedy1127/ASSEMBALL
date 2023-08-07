@@ -530,9 +530,10 @@ export default createStore({
         // const res = await axios.get(
         //   "http://localhost:3000/candidate-copywritings"
         // );
-        get;
-        if (!res) throw new Error("Cannot fetch response");
-        context.commit("setManageCopywritings", res.data); //setManageCopywritings: 寫在mutation裡面
+        // get;
+        // if (!res) throw new Error("Cannot fetch response");
+        const res = await getDocuments("COPYWRITINGS");
+        context.commit("setManageCopywritings", res); //setManageCopywritings: 寫在mutation裡面
         // context.commit("setCopywritingsCount", res.data.length);
       } catch (err) {
         console.error(err);

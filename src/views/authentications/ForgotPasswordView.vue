@@ -17,7 +17,7 @@
       </div>
 
       <div class="authentication_text_underline">
-        <input type="email" placeholder="電子郵件/Email" />
+        <input v-model="email" type="email" placeholder="電子郵件/Email" />
       </div>
 
       <div class="authentication_text_btn">
@@ -25,6 +25,10 @@
           驗證信箱
           <font-awesome-icon icon="fa-solid fa-chevron-right" />
         </button>
+      </div>
+      <div class="authentication_text_error" v-if="error">{{ error }}</div>
+      <div class="authentication_text_emailReminder" v-if="sendEmailFinsihed">
+        驗證信已寄出，請至信箱確認!
       </div>
     </div>
   </AuthenticationWrapper>
@@ -39,9 +43,13 @@ import ForgotPasswordSteps from "@/components/Authentication/ForgotPasswordSteps
 import ForgotPasswordMobile from "@/components/Authentication/mobile/ForgotPasswordMobile.vue";
 import useSendResetEmail from "@/composables/authentication/useSendResetEmail";
 import { useStore } from "vuex";
+import { ref } from "vue";
 
 const store = useStore();
-const { sendResetEmail } = useSendResetEmail();
+const { sendResetEmail, sendEmailError } = useSendResetEmail();
+const error = ref("");
+const email = ref("");
+const sendEmailFinsihed = ref(false);
 
 const info = {
   title: "That’s ok !",
@@ -55,8 +63,35 @@ const info = {
   imgSrc: require("@/assets/images/authentication/PswForgot-bg.png"),
 };
 
-const handleSendResetEmail = () => {
-  sendResetEmail();
+const checkFormat = () => {
+  error.value = null;
+  // 1.確認email沒輸入東西.....錯誤提醒
+  if (!email.value) {
+    return (error.value = "沒輸入東西.....錯誤提醒");
+  }
+
+  const validRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+  if (!email.value.match(validRegex))
+    return (error.value = "EMAIL格式不符，請重新填寫");
+};
+
+const checkStepOne = async () => {
+  store.state.isPending = true;
+  checkFormat();
+  if (error.value) {
+    //有error結束...返回
+    return (store.state.isPending = false);
+  }
+
+  await sendResetEmail(email.value);
+  if (sendEmailError.value) {
+    store.state.isPending = false;
+    return (error.value = "此電子信箱不存在");
+  }
+  sendEmailFinsihed.value = true;
+  store.state.isPending = false;
 };
 </script>
 
@@ -149,6 +184,12 @@ const handleSendResetEmail = () => {
       left: 50%;
       transform: translateX(-50%);
 
+      & + div {
+        margin-top: 1rem;
+
+        font-size: 1rem;
+      }
+
       button {
         display: flex;
         justify-content: center;
@@ -167,13 +208,12 @@ const handleSendResetEmail = () => {
         letter-spacing: 5px;
       }
     }
-
-    .authentication_psw_error {
-      width: 8rem;
-      font-size: 1rem;
+    &_error {
       color: var(--accent-red);
-      text-align: center;
-      // display: none;
+    }
+
+    &_emailReminder {
+      color: var(--success-green);
     }
   }
 }
