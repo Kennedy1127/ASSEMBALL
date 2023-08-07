@@ -1,19 +1,22 @@
 <template>
-  <div class="recruitment_post_form">
+  <form @submit.prevent="handleSubmit" class="recruitment_post_form">
     <div class="recruitment_post_form_item">
       <label
         for="recruitment_post_title"
         class="recruitment_post_form_label_title"
         ><span class="requiredMark">*</span>徵人標題：
       </label>
-      <input
-        type="text"
-        id="recruitment_post_title"
-        class="recruitment_post_form_item_input"
-        maxlength="10"
-        value
-        placeholder="(0/10)"
-      />
+      <div class="recruitment_post_form_item_inputGroup">
+        <input
+          v-model="copywritingName"
+          type="text"
+          id="recruitment_post_title"
+          class="recruitment_post_form_item_input"
+          maxlength="10"
+          value
+        />
+        <div class="text-count">({{ computedCopywritingTitleNameLen }}/10)</div>
+      </div>
     </div>
 
     <div class="recruitment_post_form_item">
@@ -25,7 +28,7 @@
       <div class="recruitment_post_form_item_select">
         <SelectorComponent
           :options="level"
-          v-model="level"
+          v-model="exp"
           placeholder="選擇經歷"
         />
       </div>
@@ -40,7 +43,7 @@
       <div class="recruitment_post_form_item_select">
         <SelectorComponent
           :options="player"
-          v-model="player"
+          v-model="role"
           placeholder="選擇職缺"
         />
       </div>
@@ -55,7 +58,7 @@
       <div class="recruitment_post_form_item_select">
         <SelectorComponent
           :options="location"
-          v-model="location"
+          v-model="area"
           placeholder="選擇縣市"
         />
       </div>
@@ -67,179 +70,238 @@
         class="recruitment_post_form_label_title"
         ><span class="requiredMark">*</span>職缺說明：
       </label>
-      <textarea
-        id="recruitment_post_info"
-        cols="30"
-        rows="8"
-        maxlength="100"
-        value
-        placeholder="(0/100)"
-      ></textarea>
+      <div class="recruitment_post_form_item_inputGroup">
+        <textarea
+          v-model="copywritingInfo"
+          id="recruitment_post_info"
+          cols="30"
+          rows="8"
+          maxlength="100"
+          value
+        >
+        </textarea>
+        <div class="text-count">({{ computedcopywritingInfoLen }}/100)</div>
+      </div>
     </div>
-    <div class="recruitment_post_form_btn">
-      <!-- <button>取消</button> -->
-      <button>刪除</button>
-      <button>上傳</button>
+    <div class="recruitment_post_form_item">
+      <p v-if="error" class="recruitment_post_form_item_error">
+        {{ error }}
+      </p>
+
+      <div class="recruitment_post_form_btn">
+        <!-- <button>取消</button> -->
+        <button>刪除</button>
+        <button>上傳</button>
+      </div>
     </div>
-  </div>
+  </form>
 </template>
 
-<script>
+<script setup>
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
+import useData from "@/composables/data/useData";
+import { computed, ref } from "vue";
 
-export default {
-  components: { SelectorComponent },
-  data() {
-    return {
-      location: [
-        {
-          id: "不限地區",
-          label: "不限地區",
-        },
-        {
-          id: "基隆市",
-          label: "基隆市",
-        },
-        {
-          id: "台北市",
-          label: "台北市",
-        },
-        {
-          id: "新北市",
-          label: "新北市",
-        },
-        {
-          id: "桃園市",
-          label: "桃園市",
-        },
-        {
-          id: "新竹縣",
-          label: "新竹縣",
-        },
-        {
-          id: "新竹市",
-          label: "新竹市",
-        },
-        {
-          id: "苗栗縣",
-          label: "苗栗縣",
-        },
-        {
-          id: "台中市",
-          label: "台中市",
-        },
-        {
-          id: "彰化縣",
-          label: "彰化縣",
-        },
-        {
-          id: "南投縣",
-          label: "南投縣",
-        },
-        {
-          id: "雲林縣",
-          label: "雲林縣",
-        },
-        {
-          id: "嘉義縣",
-          label: "嘉義縣",
-        },
-        {
-          id: "嘉義市",
-          label: "嘉義市",
-        },
-        {
-          id: "台南市",
-          label: "台南市",
-        },
-        {
-          id: "高雄市",
-          label: "高雄市",
-        },
+const { setData } = useData();
 
-        {
-          id: "屏東縣",
-          label: "屏東縣",
-        },
-        {
-          id: "宜蘭縣",
-          label: "宜蘭縣",
-        },
-        {
-          id: "花蓮縣",
-          label: "花蓮縣",
-        },
-        {
-          id: "台東縣",
-          label: "台東縣",
-        },
-        {
-          id: "澎湖縣",
-          label: "澎湖縣",
-        },
-      ],
-      player: [
-        {
-          id: -2,
-          label: "全部位置",
-        },
-        {
-          id: 0,
-          label: "投手",
-        },
-        {
-          id: 1,
-          label: "捕手",
-        },
-        {
-          id: 2,
-          label: "一壘手",
-        },
-        {
-          id: 3,
-          label: "二壘手",
-        },
-        {
-          id: 4,
-          label: "游擊手",
-        },
-        {
-          id: 5,
-          label: "三壘手",
-        },
-        {
-          id: 6,
-          label: "左外野手",
-        },
-        {
-          id: 7,
-          label: "中外野手",
-        },
-        {
-          id: 8,
-          label: "右外野手",
-        },
-      ],
-      level: [
-        {
-          id: "0",
-          label: "初心者",
-        },
-        {
-          id: "1",
-          label: "新手",
-        },
-        {
-          id: "2",
-          label: "老手",
-        },
-        {
-          id: "3",
-          label: "經歷不拘",
-        },
-      ],
-    };
+const copywritingName = ref("");
+const copywritingInfo = ref("");
+
+const exp = ref(-1);
+const role = ref(-1);
+const area = ref(-1);
+
+const level = ref([
+  {
+    id: "0",
+    label: "初心者",
   },
+  {
+    id: "1",
+    label: "新手",
+  },
+  {
+    id: "2",
+    label: "老手",
+  },
+  {
+    id: "3",
+    label: "經歷不拘",
+  },
+]);
+const location = ref([
+  {
+    id: "不限地區",
+    label: "不限地區",
+  },
+  {
+    id: "基隆市",
+    label: "基隆市",
+  },
+  {
+    id: "台北市",
+    label: "台北市",
+  },
+  {
+    id: "新北市",
+    label: "新北市",
+  },
+  {
+    id: "桃園市",
+    label: "桃園市",
+  },
+  {
+    id: "新竹縣",
+    label: "新竹縣",
+  },
+  {
+    id: "新竹市",
+    label: "新竹市",
+  },
+  {
+    id: "苗栗縣",
+    label: "苗栗縣",
+  },
+  {
+    id: "台中市",
+    label: "台中市",
+  },
+  {
+    id: "彰化縣",
+    label: "彰化縣",
+  },
+  {
+    id: "南投縣",
+    label: "南投縣",
+  },
+  {
+    id: "雲林縣",
+    label: "雲林縣",
+  },
+  {
+    id: "嘉義縣",
+    label: "嘉義縣",
+  },
+  {
+    id: "嘉義市",
+    label: "嘉義市",
+  },
+  {
+    id: "台南市",
+    label: "台南市",
+  },
+  {
+    id: "高雄市",
+    label: "高雄市",
+  },
+
+  {
+    id: "屏東縣",
+    label: "屏東縣",
+  },
+  {
+    id: "宜蘭縣",
+    label: "宜蘭縣",
+  },
+  {
+    id: "花蓮縣",
+    label: "花蓮縣",
+  },
+  {
+    id: "台東縣",
+    label: "台東縣",
+  },
+  {
+    id: "澎湖縣",
+    label: "澎湖縣",
+  },
+]);
+
+const player = ref([
+  {
+    id: -2,
+    label: "全部位置",
+  },
+  {
+    id: 0,
+    label: "投手",
+  },
+  {
+    id: 1,
+    label: "捕手",
+  },
+  {
+    id: 2,
+    label: "一壘手",
+  },
+  {
+    id: 3,
+    label: "二壘手",
+  },
+  {
+    id: 4,
+    label: "游擊手",
+  },
+  {
+    id: 5,
+    label: "三壘手",
+  },
+  {
+    id: 6,
+    label: "左外野手",
+  },
+  {
+    id: 7,
+    label: "中外野手",
+  },
+  {
+    id: 8,
+    label: "右外野手",
+  },
+]);
+const error = ref(null);
+
+// -- 取得標題的字串長度
+const computedCopywritingTitleNameLen = computed(
+  () => copywritingName.value.length
+);
+const computedcopywritingInfoLen = computed(() => copywritingInfo.value.length);
+
+const checkSubmitData = () => {
+  error.value = null;
+
+  if (!copywritingName.value) {
+    return (error.value = "請輸入徵人標題");
+  }
+
+  if (exp.value === -1) {
+    return (error.value = "請選擇經歷");
+  }
+
+  if (role.value === -1) {
+    return (error.value = "請選擇職缺");
+  }
+
+  if (area.value === -1) {
+    return (error.value = "請選擇所在地區");
+  }
+
+  if (!copywritingInfo.value) {
+    return (error.value = "請輸入職缺說明!");
+  }
+};
+
+const handleSubmit = () => {
+  checkSubmitData();
+  if (error.value) return;
+
+  const submitData = {
+    copywritingName: copywritingName.value,
+    level: level.value,
+    location: location.value,
+    player: player.value,
+    copywritingInfo: copywritingInfo.value,
+  };
 };
 </script>
 
@@ -260,13 +322,41 @@ export default {
   }
   // 表單的item
   &_item {
+    position: relative;
+    &_error {
+      position: absolute;
+      font-size: 1rem;
+      color: var(--caution-red);
+      right: 0;
+      top: 2rem;
+      transform: translate(0, -50%);
+    }
     display: flex;
     label {
       width: 12rem;
       margin-right: 1rem;
     }
+    &_inputGroup {
+      position: relative;
+      .text-count {
+        position: absolute;
+        // top: 1.5rem;
+        right: 0.5rem;
+        transform: translate(0, -50%);
+        color: var(--secondary-gray-3);
+      }
+    }
+    &:nth-child(1) .text-count {
+      top: 1.5rem;
+    }
+
+    &:nth-child(5) .text-count {
+      height: fit-content;
+      bottom: 0.5rem;
+    }
+
     &_input {
-      width: 65%;
+      width: 100%;
       border-radius: 10px;
       height: 3rem;
       font-size: 1.25rem;
@@ -302,14 +392,23 @@ export default {
 
         .ivu-select-single {
           .ivu-select-selection {
-            border: 3px solid var(--secondary-blue-2);
+            border: 3px solid var(--secondary-blue-1);
             border-radius: 10px;
-            color: var(--secondary-blue-2);
+            color: var(--secondary-blue-1);
 
             div:first-of-type {
               span {
                 height: 2rem;
+                margin-right: 0.5rem;
               }
+              i {
+                &::before {
+                  color: var(--secondary-blue-1);
+                }
+              }
+            }
+            .ivu-select-placeholder {
+              color: var(--secondary-gray-3);
             }
           }
         }
@@ -318,15 +417,10 @@ export default {
       // div:first-of-type {
       //   padding: 0.5rem 1rem;
 
-      i {
-        &::before {
-          color: var(--secondary-blue-1);
-        }
-      }
       // }
     }
     textarea {
-      width: 65%;
+      width: 100%;
       font-size: 1.25rem;
       line-height: 1.75;
       outline: 0;
@@ -348,13 +442,16 @@ export default {
     }
   }
   &_btn {
-    margin-top: 2rem;
+    width: 100%;
+    margin: auto;
+    margin-top: 4rem;
     display: flex;
     justify-content: flex-end;
-    gap: 2rem;
+    gap: 30px;
     font-size: 1.25rem;
     button {
-      width: 10rem;
+      width: 150px;
+      // width: 10rem;
       height: 3rem;
       border-radius: 10px;
     }
@@ -379,6 +476,13 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 420px) {
+  .recruitment_post_form_btn {
+    margin: auto;
+  }
+}
+
 @media screen and (max-width: 420px) {
   .recruitment_post_form {
     &_item {

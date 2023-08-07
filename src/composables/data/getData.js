@@ -1,5 +1,14 @@
 import { auth, db } from "@/firebase/config";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getCountFromServer,
+  where,
+  query,
+  orderBy,
+} from "firebase/firestore";
 
 const getData = () => {
   const getUser = async () => {
@@ -10,11 +19,11 @@ const getData = () => {
       return res.data();
     } catch (err) {
       console.error("Something went wrong!");
-      // console.error(err);
+      console.error(err);
     }
   };
 
-  const getDocument = async (target, id, condition = null) => {
+  const getDocument = async (target, id) => {
     try {
       const docRef = doc(db, target, id);
       const res = await getDoc(docRef);
@@ -26,7 +35,7 @@ const getData = () => {
     }
   };
 
-  const getDocuments = async (target) => {
+  const getDocuments = async (target, condition = null) => {
     try {
       const docRef = collection(db, target);
       const res = await getDocs(docRef);
@@ -34,7 +43,7 @@ const getData = () => {
       return res.docs.map((doc) => doc.data());
     } catch (err) {
       console.error("Something went wrong!");
-      // console.error(err);
+      console.error(err);
     }
   };
 
@@ -56,7 +65,11 @@ const getData = () => {
     }
   };
 
-  const getSubCollectionDocuments = async (target) => {
+  const getSubCollectionDocuments = async (
+    target,
+    conditions = null,
+    orders = null
+  ) => {
     try {
       const docRef = collection(
         db,
@@ -64,12 +77,32 @@ const getData = () => {
         target.documentId,
         target.subCollectionName
       );
-      const res = await getDocs(docRef);
+
+      const q = query(
+        docRef,
+        ...conditions.map((condition) =>
+          where(condition[0], condition[1], condition[2])
+        ),
+        ...orders.map((order) => orderBy(order))
+      );
+
+      const res = await getDocs(q);
 
       return res.docs.map((doc) => doc.data());
     } catch (err) {
       console.error("Something went wrong!");
-      // console.error(err);
+      console.error(err);
+    }
+  };
+
+  const getCollectionCount = async (target) => {
+    try {
+      const colRef = collection(db, target);
+      const res = await getCountFromServer(colRef);
+      return res.data().count;
+    } catch (err) {
+      console.error("Something went wrong!");
+      console.error(err);
     }
   };
 
@@ -79,6 +112,7 @@ const getData = () => {
     getDocuments,
     getSubCollectionDocument,
     getSubCollectionDocuments,
+    getCollectionCount,
   };
 };
 

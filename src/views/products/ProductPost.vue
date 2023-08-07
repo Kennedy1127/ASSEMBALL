@@ -31,7 +31,7 @@
           <div>上傳基本資訊</div>
         </div>
 
-        <form action="">
+        <form @submit.prevent="handleSubmit">
           <div class="product_post_info_content">
             <div class="product_post_info_group">
               <div class="product_post_info_label">
@@ -43,7 +43,7 @@
                   type="text"
                   id="productname"
                   placeholder="請輸入商品名稱"
-                  v-model="productname"
+                  v-model="productName"
                   maxlength="10"
                   pattern="[^%&',;=?$\x22]+"
                   required
@@ -109,7 +109,6 @@
                   type="email"
                   id="email"
                   placeholder="請輸入電子信箱"
-                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
                   v-model="email"
                   required
                 />
@@ -125,7 +124,7 @@
                 <input
                   type="tel"
                   id="phone"
-                  placeholder="請輸入手機號碼(格式：09xx-xxxxxx)"
+                  placeholder="請輸入手機號碼(格式：09xxxxxxxx)"
                   v-model="phone"
                   maxlength="11"
                   pattern="09\d{2}-\d{6}"
@@ -141,22 +140,55 @@
               </div>
               <!-- //上傳 -->
               <div class="product_post_info_upload">
-                <img :src="avatar" :alt="product_post_info_upload" />
-                <label for="product_pic"
-                  ><span><font-awesome-icon icon="fa-solid fa-plus" /></span
-                  >上傳商品照片
-                  <input type="file" id="product_pic" @change="onfile"
-                /></label>
-              </div>
-              <!-- <div class="product_post_info_upload">
-                <label for="image">
-                  <img
-                    src="~@/assets/images/MemberCenter/MemberCenter_Personal_pic.svg"
-                    alt="MemberCenter_Personal_pic"
-                  />上傳商品圖片
-                  <input type="file" id="image" />
+                <div
+                  v-if="!computedPicIsUploaded"
+                  class="product_post_info_upload_init"
+                >
+                  <div class="product_post_info_upload_pic">
+                    <img
+                      src="@/assets/images/icons/default_avatar.svg"
+                      alt="upload icon"
+                    />
+                  </div>
+                </div>
+
+                <div
+                  v-if="computedPicIsUploaded"
+                  class="product_post_info_upload_pics"
+                >
+                  <div
+                    v-for="(pic, index) in pics"
+                    :key="index"
+                    class="product_post_info_upload_pic"
+                  >
+                    <font-awesome-icon
+                      class="icon"
+                      :icon="['fas', 'circle-xmark']"
+                      @click="deletePic(index)"
+                    />
+                    <img :src="picToUrl(pic)" alt="preview image" />
+                  </div>
+                </div>
+
+                <label for="product_pic">
+                  <span><font-awesome-icon icon="fa-solid fa-plus" /></span>
+                  上傳商品照片
+                  <input
+                    multiple
+                    type="file"
+                    id="product_pic"
+                    accept="image/*"
+                    @change="onfile"
+                  />
                 </label>
-              </div> -->
+
+                <p
+                  v-if="picError"
+                  class="product_post_info_error product_post_info_error--mt-1"
+                >
+                  {{ picError }}
+                </p>
+              </div>
             </div>
 
             <div class="product_post_info_group">
@@ -183,198 +215,269 @@
           </div>
 
           <div class="product_post_info_btns">
-            <button>取消</button>
-            <button>刪除商品</button>
+            <button @click.prevent="console.log('cancel')">取消</button>
+            <button @click.prevent="console.log('delete')">刪除商品</button>
             <button>刊登商品</button>
           </div>
+
+          <p
+            v-if="error"
+            class="product_post_info_error product_post_info_error--mt-1"
+          >
+            {{ error }}
+          </p>
         </form>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
+import { timestamp } from "@/firebase/config";
+import useData from "@/composables/data/useData";
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
-export default {
-  components: { SelectorComponent },
+const store = useStore();
+const router = useRouter();
+const { setDataError, setData, setDataSubCollection } = useData();
 
-  data() {
-    return {
-      // 表單資料
-      productname: "",
-      price: "",
-      email: "",
-      phone: "",
-      avatar: require("@/assets/images/icons/default_avatar.svg"),
-      comment: "",
-      tag: -1,
-      area: -1,
-      ////////////////
-
-      // 下拉選單的tag分類
-      productTags: [
-        {
-          id: 1,
-          label: "球棒",
-        },
-        {
-          id: 2,
-          label: "球帽",
-        },
-        {
-          id: 3,
-          label: "球衣",
-        },
-        {
-          id: 4,
-          label: "球",
-        },
-        {
-          id: 5,
-          label: "護具",
-        },
-        {
-          id: 6,
-          label: "釘鞋",
-        },
-        {
-          id: 7,
-          label: "手套",
-        },
-      ],
-
-      // 下拉選單的地區分類
-      productArea: [
-        {
-          id: "不限地區",
-          label: "不限地區",
-        },
-        {
-          id: "基隆市",
-          label: "基隆市",
-        },
-        {
-          id: "台北市",
-          label: "台北市",
-        },
-        {
-          id: "新北市",
-          label: "新北市",
-        },
-        {
-          id: "桃園市",
-          label: "桃園市",
-        },
-        {
-          id: "新竹縣",
-          label: "新竹縣",
-        },
-        {
-          id: "新竹市",
-          label: "新竹市",
-        },
-        {
-          id: "苗栗縣",
-          label: "苗栗縣",
-        },
-        {
-          id: "台中市",
-          label: "台中市",
-        },
-        {
-          id: "彰化縣",
-          label: "彰化縣",
-        },
-        {
-          id: "南投縣",
-          label: "南投縣",
-        },
-        {
-          id: "雲林縣",
-          label: "雲林縣",
-        },
-        {
-          id: "嘉義縣",
-          label: "嘉義縣",
-        },
-        {
-          id: "嘉義市",
-          label: "嘉義市",
-        },
-        {
-          id: "台南市",
-          label: "台南市",
-        },
-        {
-          id: "高雄市",
-          label: "高雄市",
-        },
-
-        {
-          id: "屏東縣",
-          label: "屏東縣",
-        },
-        {
-          id: "宜蘭縣",
-          label: "宜蘭縣",
-        },
-        {
-          id: "花蓮縣",
-          label: "花蓮縣",
-        },
-        {
-          id: "台東縣",
-          label: "台東縣",
-        },
-        {
-          id: "澎湖縣",
-          label: "澎湖縣",
-        },
-      ],
-    };
+const productName = ref("testtest");
+const price = ref("111");
+const email = ref("test@mail.com");
+const phone = ref("0955-111222");
+const comment = ref("testtesttest");
+const pics = ref([]);
+const tag = ref(2);
+const area = ref(-1);
+const productTags = ref([
+  {
+    id: 1,
+    label: "球棒",
+  },
+  {
+    id: 2,
+    label: "球帽",
+  },
+  {
+    id: 3,
+    label: "球衣",
+  },
+  {
+    id: 4,
+    label: "球",
+  },
+  {
+    id: 5,
+    label: "護具",
+  },
+  {
+    id: 6,
+    label: "釘鞋",
+  },
+  {
+    id: 7,
+    label: "手套",
+  },
+]);
+const productArea = ref([
+  {
+    id: "不限地區",
+    label: "不限地區",
+  },
+  {
+    id: "基隆市",
+    label: "基隆市",
+  },
+  {
+    id: "台北市",
+    label: "台北市",
+  },
+  {
+    id: "新北市",
+    label: "新北市",
+  },
+  {
+    id: "桃園市",
+    label: "桃園市",
+  },
+  {
+    id: "新竹縣",
+    label: "新竹縣",
+  },
+  {
+    id: "新竹市",
+    label: "新竹市",
+  },
+  {
+    id: "苗栗縣",
+    label: "苗栗縣",
+  },
+  {
+    id: "台中市",
+    label: "台中市",
+  },
+  {
+    id: "彰化縣",
+    label: "彰化縣",
+  },
+  {
+    id: "南投縣",
+    label: "南投縣",
+  },
+  {
+    id: "雲林縣",
+    label: "雲林縣",
+  },
+  {
+    id: "嘉義縣",
+    label: "嘉義縣",
+  },
+  {
+    id: "嘉義市",
+    label: "嘉義市",
+  },
+  {
+    id: "台南市",
+    label: "台南市",
+  },
+  {
+    id: "高雄市",
+    label: "高雄市",
   },
 
-  computed: {
-    computedProductNameLen() {
-      return this.productname.length;
-    },
-
-    computedCommentLen() {
-      return this.comment.length;
-    },
+  {
+    id: "屏東縣",
+    label: "屏東縣",
   },
-
-  methods: {
-    //圖片設定
-    onfile(event) {
-      this.file = event.target.files[0];
-      let filereader = new FileReader();
-      filereader.readAsDataURL(this.file);
-      filereader.addEventListener("load", () => {
-        this.avatar = filereader.result;
-        console.warn(this.avatar);
-      });
-    },
-    //提交表單
-    submitForm() {
-      alert("商品上架的資料送出成功！");
-      // 表單資料確認
-      console.log("商品名稱：", this.productname);
-      console.log("商品價格：", this.price);
-      console.log("電子信箱：", this.email);
-      console.log("手機號碼：", this.phone);
-      console.log("商品照片：", this.avatar);
-      console.log("賣家留言：", this.comment);
-      //提交後重置表單資料
-      this.productname = "";
-      this.price = "";
-      this.email = "";
-      this.phone = "";
-      this.avatar = require("@/assets/images/icons/default_avatar.svg");
-      this.comment = "";
-    },
+  {
+    id: "宜蘭縣",
+    label: "宜蘭縣",
   },
+  {
+    id: "花蓮縣",
+    label: "花蓮縣",
+  },
+  {
+    id: "台東縣",
+    label: "台東縣",
+  },
+  {
+    id: "澎湖縣",
+    label: "澎湖縣",
+  },
+]);
+const error = ref(null);
+const picError = ref(null);
+
+const computedProductNameLen = computed(() => productName.value.length);
+const computedCommentLen = computed(() => comment.value.length);
+const computedPicIsUploaded = computed(() => pics.value.length > 0);
+
+const onfile = (e) => {
+  if (!e.target.files[0]) return;
+
+  if (e.target.files.length + pics.value.length > 4) {
+    return (picError.value = "最多接受4張商品圖片！");
+  }
+
+  for (const file of e.target.files) {
+    pics.value.push(file);
+  }
+  picError.value = null;
+};
+
+const picToUrl = (pic) => URL.createObjectURL(pic);
+
+const deletePic = (index) => {
+  pics.value.splice(index, 1);
+};
+
+const checkSubmitData = () => {
+  error.value = null;
+
+  if (tag.value === -1) {
+    return (error.value = "請選擇商品類別");
+  }
+
+  if (area.value === -1) {
+    area.value = "不限地區";
+  }
+
+  if (pics.value.length !== 4) {
+    return (error.value = "必須上傳至少4張商品圖片！");
+  }
+
+  if (!comment.value) {
+    return (error.value =
+      "賣家留言不得為空，為你的商品添加一些說明吧！ (最少10個字)");
+  }
+};
+
+const postProduct = async (data) => {
+  const id = await setData("PRODUCTS", data, pics.value);
+  const productTarget = {
+    collectionName: "PRODUCTS",
+    documentId: id,
+    subCollectionName: "COMMENTS",
+  };
+
+  const subCollectionData = {
+    comment: comment.value,
+    icon: null,
+    name: "棒球專家",
+    user_id: "id",
+    date: timestamp,
+  };
+
+  await setDataSubCollection(productTarget, subCollectionData);
+
+  // const saleTarget = {
+  //   collectionName: "MEMBERS",
+  //   documentId: id,
+  //   subCollectionName: "SALES",
+  // };
+
+  // await setDataSubCollection(saleTarget, subCollectionData);
+
+  return id;
+};
+
+const updateProduct = async (id, data) => {
+  await setData("PRODUCTS", data, pics.value);
+  return id;
+};
+
+const handleSubmit = async () => {
+  store.state.isPending = true;
+  checkSubmitData();
+  if (error.value) return (store.state.isPending = false);
+
+  const data = {
+    title: productName.value,
+    price: price.value,
+    email: email.value,
+    phone: phone.value,
+    tag: tag.value,
+    area: area.value,
+    date: timestamp,
+    status: true,
+    home_status: -1,
+    seller_icon: "url",
+    seller_name: "棒球專家",
+    seller_id: "id",
+  };
+
+  const id = await postProduct(data);
+  if (setDataError.value) {
+    error.value = "商品刊登失敗，請重新整理或洽平台管理員";
+    return (store.state.isPending = false);
+  }
+
+  store.state.isPending = false;
+  router.push({ name: "ProductDetail", params: { productId: id } });
 };
 </script>
 
@@ -520,6 +623,16 @@ export default {
     }
 
     &_info {
+      &_error {
+        font-size: 1rem;
+        text-align: center;
+        color: var(--accent-red);
+
+        &--mt-1 {
+          margin-top: 1rem;
+        }
+      }
+
       &_title {
         display: flex;
         gap: 1.5rem;
@@ -685,16 +798,38 @@ export default {
       }
 
       &_upload {
+        flex: 1;
+
         @media screen and (max-width: 420px) {
           width: 100%;
         }
-        & img {
+
+        &_pic {
           width: 150px;
           height: 150px;
+
+          position: relative;
+
           @media screen and (max-width: 420px) {
             width: 100px;
             height: 100px;
           }
+
+          .icon {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 1.5rem;
+            color: var(--secondary-gray-3);
+            background-color: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+          }
+        }
+
+        & img {
+          width: 100%;
+          height: 100%;
         }
         & label {
           display: flex;
@@ -715,6 +850,12 @@ export default {
         }
         & label:hover {
           background-color: var(--secondary-blue-4);
+        }
+
+        &_pics {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
         }
 
         // label {

@@ -58,7 +58,7 @@ const routes = [
         next();
         return;
       }
-      store.commit("resetPaginationCurPage", "products");
+      store.commit("resetPaginationCurPage");
       store.commit("resetProductsFilterAndTag");
       next();
     },
@@ -73,7 +73,7 @@ const routes = [
     name: "ProductPost",
     component: () => import("@/views/products/ProductPost.vue"), // 檔名
     beforeEnter: () => {
-      if (!store.state.isLoggedIn) return { name: "Home" };
+      // if (!store.state.isLoggedIn) return { name: "Home" };
     },
   },
   {
@@ -81,7 +81,7 @@ const routes = [
     name: "ProductsManage",
     component: () => import("@/views/products/ProductManageView.vue"),
     beforeEnter: () => {
-      if (!store.state.isLoggedIn) return { name: "Home" };
+      // if (!store.state.isLoggedIn) return { name: "Home" };
     },
   },
   {
@@ -89,7 +89,7 @@ const routes = [
     name: "ProductPayment",
     component: () => import("@/views/products/ProductPayment.vue"),
     beforeEnter: () => {
-      if (!store.state.isLoggedIn) return { name: "Home" };
+      // if (!store.state.isLoggedIn) return { name: "Home" };
     },
   },
   /////////////////////////////////////////

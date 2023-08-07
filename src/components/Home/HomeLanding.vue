@@ -248,7 +248,7 @@ export default {
     animation: fadeUpAnimation 2s ease forwards;
   }
 }
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1280px) {
   .home_landing_video {
     width: 90%;
     position: sticky;

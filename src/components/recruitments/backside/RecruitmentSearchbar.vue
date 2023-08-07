@@ -2,7 +2,7 @@
   <div class="recruitSearchbar_wrapper">
     <div class="recruitSearchbar_bar">
       <RecruitmentSelector v-model="role" placeholder="守備位置" type="role" />
-      <div class="recruitSearchbar_border-left"></div>
+      <div class="recruitSearchbar_bar_border-left"></div>
       <RecruitmentSelector v-model="area" placeholder="地區" type="area" />
     </div>
     <div class="recruitSearchbar_btn">
@@ -60,12 +60,28 @@ export default {
     border: 3px solid var(--primary-blue);
 
     border-radius: var(--round);
+    position: relative;
+    &_border-left {
+      position: absolute;
+      width: 3px;
+      top: 10%;
+      height: 80%;
+      left: 50%;
+      z-index: 50;
+      background-color: var(--primary-blue);
+    }
   }
-  &_border-left {
-    width: 3px;
+  // div:nth-child(1) {
+  //   position: relative;
+  //   &::after {
+  //     position: absolute;
+  //     content: "";
+  //     right: 0;
+  //     width: 3px;
+  //     background-color: var(--primary-blue);
+  //
+  //   }
 
-    background-color: var(--primary-blue);
-  }
   &_btn button {
     width: 200px;
     height: 70px;

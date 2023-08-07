@@ -2,25 +2,20 @@
   <div class="products_main_items">
     <div
       v-for="item in computedRenderProducts"
-      :key="item.product_id"
+      :key="item.id"
       class="products_item"
-      @click="goToProductDetail(item.product_id)"
+      @click="goToProductDetail(item.id)"
     >
-      <div class="product_item_header">
-        <img src="~@/assets/images/products/bat.png" alt="product image" />
-        <!-- <img :src="item.product_pic" alt="product image" /> -->
+      <div class="products_item_header">
+        <img :src="item.pics[0]" alt="product image" />
       </div>
       <div class="products_item_content">
-        <div class="products_item_tag">
-          #{{ productTags[item.product_tag] }}
-        </div>
+        <div class="products_item_tag">#{{ productTags[item.tag] }}</div>
         <div class="products_item_date">
-          {{ convertDate(item.product_date) }}
+          {{ convertDate(item.date.toDate()) }}
         </div>
-        <h2 class="products_item_title">{{ item.product_title }}</h2>
-        <div class="products_item_price">
-          NT${{ convertPrice(item.product_price) }}
-        </div>
+        <h2 class="products_item_title">{{ item.title }}</h2>
+        <div class="products_item_price">NT${{ convertPrice(item.price) }}</div>
         <div class="products_item_seller">
           <div class="products_item_seller_icon">
             <img src="~@/assets/images/icons/main-icon.png" alt="seller icon" />
@@ -28,7 +23,7 @@
           <div class="products_item_seller_msg">
             <span>賣家留言：</span> <br />
             <p>
-              {{ item.product_comments[0].text }}
+              {{ item.comments[0].comment }}
             </p>
           </div>
         </div>
@@ -69,12 +64,13 @@ const windowTop = ref(window.top.scrollY);
 // 呈現商品
 const computedRenderProducts = computed(() => {
   const start = store.state.isMobile
-    ? (store.state.productsCurPage - 1) * 5
-    : (store.state.productsCurPage - 1) * 9;
+    ? (store.state.curPage - 1) * 5
+    : (store.state.curPage - 1) * 9;
 
   const end = store.state.isMobile
-    ? store.state.productsCurPage * 5
-    : store.state.productsCurPage * 9;
+    ? store.state.curPage * 5
+    : store.state.curPage * 9;
+
   return store.getters.dateSortedFilteredProducts.slice(start, end);
 });
 
@@ -108,7 +104,7 @@ const convertDate = (inputDate) => {
 
 // 轉換數字，1000->1,000
 const convertPrice = (price) => {
-  return price.toLocaleString();
+  return Number(price).toLocaleString();
 };
 
 const goToProductDetail = (id) => {
@@ -152,10 +148,8 @@ const goToProductDetail = (id) => {
     border-radius: 8px;
     overflow: hidden;
 
-    img {
-      width: 100%;
-      height: 100%;
-    }
+    display: flex;
+    justify-content: center;
   }
 
   &_content {
@@ -201,6 +195,7 @@ const goToProductDetail = (id) => {
     gap: 10px;
 
     &_msg {
+      flex: 1;
       padding: 0.5rem 1rem;
       border-radius: 8px;
       background-color: var(--secondary-blue-4);
@@ -220,6 +215,7 @@ const goToProductDetail = (id) => {
         -webkit-box-orient: vertical;
         overflow: hidden;
         font-size: 0.875rem;
+        word-break: break-all;
       }
 
       &::after {
