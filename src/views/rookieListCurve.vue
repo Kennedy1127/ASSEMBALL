@@ -43,7 +43,7 @@
       <div class="rookieListCurve_video">
         <iframe
           width="80%"
-          height="600px"
+         height="100%"
           src="https://www.youtube.com/embed/AfuaiiWOGCs"
           title="YouTube video player"
           frameborder="0"
@@ -113,22 +113,31 @@ export default {
       color: var(--primary-blue);
     }
   }
+  @media screen and (max-width: 420px) {
+    display: none;
+  }
 }
 
 .rookieListCurve {
   background-color: var(--secondary-blue-4);
   padding: 4rem 0;
   padding-top: 10rem;
+
   .wrapper {
     background-color: #fff;
     box-shadow: var(--shadow-heavy);
     border-radius: var(--round);
     padding: 4rem 5rem;
-    // position: relative;
+
+    position: relative;
+    @media screen and (max-width: 420px) {
+      padding: 2rem;
+    }
   }
 }
 .rookieListCurve_title {
   //大標題
+  margin-right: 1rem;
   display: flex;
   gap: 2rem;
   font-size: 2rem;
@@ -139,6 +148,14 @@ export default {
     height: 3rem;
     background-color: var(--primary-blue);
   }
+  @media screen and (max-width: 420px) {
+    font-size: 1.5rem;
+    gap: 1rem;
+    &_color_block {
+      width: 1rem;
+      height: 2.5rem;
+    }
+  }
 }
 
 .rookieListCurve_container {
@@ -147,9 +164,15 @@ export default {
   padding: 2rem;
   margin-top: 3rem;
   position: relative;
+  @media screen and (max-width: 420px) {
+    padding: 1rem;
+  }
   .rookieListCurve_textArea {
     //文字區域
     width: 60%;
+    @media screen and (max-width: 420px) {
+      width: 100%;
+    }
     .rookieListCurve_content {
       //文字段落
       color: var(--primary-black);
@@ -164,11 +187,13 @@ export default {
     display: flex;
     position: sticky;
     top: 100px;
-
     max-height: 600px;
     flex-direction: column;
     align-items: center;
     align-content: center;
+    @media screen and (max-width: 420px) {
+      display: none;
+    }
     .curve_img {
       width: 50%;
 
@@ -187,10 +212,21 @@ export default {
 .rookieListCurve_video {
   margin-top: 12rem;
   display: flex;
+  width: 100%;
+  height: 40rem;
   justify-content: center;
+
+  @media screen and (max-width: 420px){
+    margin-top: 3rem;
+    width: 100%;
+  height: 12rem;
+  }
 }
 hr {
   margin-top: 8rem;
   color: var(--secondary-gray-3);
+  @media screen and (max-width: 420px){
+    margin-top: 1rem;
+  }
 }
 </style>
