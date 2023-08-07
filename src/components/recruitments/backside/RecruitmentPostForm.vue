@@ -28,7 +28,7 @@
       <div class="recruitment_post_form_item_select">
         <SelectorComponent
           :options="level"
-          v-model="level"
+          v-model="exp"
           placeholder="選擇經歷"
         />
       </div>
@@ -43,7 +43,7 @@
       <div class="recruitment_post_form_item_select">
         <SelectorComponent
           :options="player"
-          v-model="player"
+          v-model="role"
           placeholder="選擇職缺"
         />
       </div>
@@ -58,7 +58,7 @@
       <div class="recruitment_post_form_item_select">
         <SelectorComponent
           :options="location"
-          v-model="location"
+          v-model="area"
           placeholder="選擇縣市"
         />
       </div>
@@ -106,6 +106,10 @@ const { setData } = useData();
 
 const copywritingName = ref("");
 const copywritingInfo = ref("");
+
+const exp = ref(-1);
+const role = ref(-1);
+const area = ref(-1);
 
 const level = ref([
   {
@@ -270,16 +274,16 @@ const checkSubmitData = () => {
     return (error.value = "請輸入徵人標題");
   }
 
-  if (level.value === -1) {
-    area.value = "經歷不拘";
+  if (exp.value === -1) {
+    return (error.value = "請選擇經歷");
   }
 
-  if (location.value === -1) {
-    area.value = "全部位置";
+  if (role.value === -1) {
+    return (error.value = "請選擇職缺");
   }
 
-  if (player.value === -1) {
-    area.value = "不限地區";
+  if (area.value === -1) {
+    return (error.value = "請選擇所在地區");
   }
 
   if (!copywritingInfo.value) {

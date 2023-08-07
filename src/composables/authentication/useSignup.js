@@ -48,12 +48,12 @@ const useSignup = () => {
         subCollectionName: "NOTIFICATIONS",
       };
 
-      await setData("MEMBERS", userData);
-      await setDataSubCollection(templatesTarget, {
-        text: "預設模板",
-        status: true,
-      });
-      await setDataSubCollection(notificationsTarget, {});
+      // await setData("MEMBERS", userData);
+      // await setDataSubCollection(templatesTarget, {
+      //   text: "預設模板",
+      //   status: true,
+      // });
+      // await setDataSubCollection(notificationsTarget, {});
 
       await signout();
     } catch (err) {
