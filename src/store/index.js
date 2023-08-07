@@ -387,10 +387,19 @@ export default createStore({
   },
 
   actions: {
-    // 撈首頁資料
-    async getHomeNews(context) {
+    // 撈首頁跑馬燈資料
+    async getHomeMarquee(context) {
       try {
         const res = await getDocuments("MARQUEE");
+        return res;
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    // 撈首頁NEWS資料
+    async getHomeNews(context) {
+      try {
+        const res = await getDocuments("NEWS");
         return res;
       } catch (err) {
         console.error(err);
