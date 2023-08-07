@@ -390,10 +390,8 @@ export default createStore({
     // 撈首頁資料
     async getHomeNews(context) {
       try {
-        const res = await axios.get("http://localhost:3000/home_news");
-        if (!res) throw new Error("Cannot fetch response");
-        console.log(res);
-        // context.commit("setProductsCount", res.data.length);
+        const res = await getDocuments("MARQUEE");
+        return res;
       } catch (err) {
         console.error(err);
       }

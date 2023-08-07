@@ -39,7 +39,6 @@ const getData = () => {
     try {
       const docRef = collection(db, target);
       const res = await getDocs(docRef);
-
       return res.docs.map((doc) => doc.data());
     } catch (err) {
       console.error("Something went wrong!");
