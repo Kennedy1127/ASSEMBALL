@@ -100,26 +100,41 @@
         <tbody>
           <tr v-for="item in $props.tableData" :key="item.id">
             <td>
-              <div class="td_item">
+              <div v-if="tablekey === 1" class="td_item">
                 <div class="td_title">標題</div>
-                <div>{{ item.copywriting_title }}</div>
+                <div>
+                  {{ item.title }}
+                </div>
               </div>
               <div class="td_item">
                 <div class="td_title">守備位置</div>
-                <div>{{ item.copywriting_role }}</div>
+                <div>{{ item.role }}</div>
               </div>
               <div class="td_item">
                 <div class="td_title">地區</div>
-                <div>{{ item.copywriting_area }}</div>
+                <div>{{ item.area }}</div>
               </div>
             </td>
             <td>
-              <div class="td_item update">
+              <div v-if="tablekey === 1" class="td_item update">
                 <div class="td_title">更新日期</div>
-                <div>{{ item.copywriting_date }}</div>
+                <div>{{ item.date }}</div>
               </div>
-              <div class="icon-pen">
+              <div v-else>
+                <div class="td_title">應徵日期</div>
+                <div>{{ item.apply_date }}</div>
+              </div>
+              <div v-if="title === '記錄管理'" class="td_item">
+                <div class="td_title">姓名</div>
+                <div>{{ item.candidate_name }}</div>
+              </div>
+              <div v-if="title === '管理職缺'" class="icon-pen">
                 <font-awesome-icon icon="fa-solid fa-pen" />
+              </div>
+              <div v-else-if="title === '審核應徵'" class="Icon">
+                <button>
+                  更多<font-awesome-icon icon="fa-solid fa-chevron-right" />
+                </button>
               </div>
             </td>
           </tr>
@@ -361,6 +376,15 @@ export default {
             color: var(--primary-blue);
             // text-align: right;
           }
+        }
+        button {
+          font-size: 1rem;
+          letter-spacing: 5px;
+          background-color: var(--primary-blue);
+          color: var(--pale-white);
+          width: 6rem;
+          height: 2rem;
+          border-radius: 3rem;
         }
         // td:nth(2) {
         //   display: flex;
