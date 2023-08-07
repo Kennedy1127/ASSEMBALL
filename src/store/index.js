@@ -49,7 +49,8 @@ export default createStore({
 
     //////////////////////////////////////////////////////
     //會員中心區塊
-    MemberCenterOrderManage: [],
+    memberCenter: [],
+    // memberCenterOrderManage: [],
 
     //////////////////////////////////////////////////////
     // 招募文案區塊
@@ -238,6 +239,13 @@ export default createStore({
     },
 
     //////////////////////////////////////////////////////
+    //會員中心區塊
+    setMemberCenter(state, payload) {
+      console.log([...payload]);
+      state.memberCenter = [...payload]; //payload:要運送出來的東西
+    },
+
+    //////////////////////////////////////////////////////
     // 首頁區塊
 
     // 取得首頁最新消息
@@ -287,12 +295,6 @@ export default createStore({
       state.selectedProductsText = "";
       state.selectedProductsDate = -1;
       state.selectedProductsTag = 0;
-    },
-
-    //////////////////////////////////////////////////////
-    //會員中心區塊
-    setMemberCenterOrderManage(state, payload) {
-      state.MemberCenterOrderManage = [...payload]; //payload:要運送出來的東西
     },
 
     //////////////////////////////////////////////////////
@@ -362,12 +364,8 @@ export default createStore({
     //我的球隊撈資料
     setMyplayerTeam(state, payload) {
       console.log(payload);
-      const team = payload.data.find(
-        (myplayerteam) => myplayerteam.team_id === payload.id
-      );
-      console.log(team);
 
-      state.myplayerTeam = { ...team };
+      state.myplayerTeam = { ...payload };
     },
 
     ///////////////////////////////////////
@@ -391,13 +389,20 @@ export default createStore({
   },
 
   actions: {
-    // 撈首頁資料
+    // 撈首頁跑馬燈資料
+    async getHomeMarquee(context) {
+      try {
+        const res = await getDocuments("MARQUEE");
+        return res;
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    // 撈首頁NEWS資料
     async getHomeNews(context) {
       try {
-        const res = await axios.get("http://localhost:3000/home_news");
-        if (!res) throw new Error("Cannot fetch response");
-        console.log(res);
-        // context.commit("setProductsCount", res.data.length);
+        const res = await getDocuments("NEWS");
+        return res;
       } catch (err) {
         console.error(err);
       }
@@ -477,6 +482,27 @@ export default createStore({
 
     ///////////////////////////////////////
 
+    // 撈會員中心 會員資料
+    async getMemberCenter(context) {
+      try {
+        const res = await getDocuments("MEMBERS");
+        context.commit("setMemberCenter", res);
+        // console.log(res);
+        // const allMembers = await getDocuments("MEMBERS");
+        // const user = await getUser();
+        // const userMemberData = allMembers.find(
+        //   (member) => member.id === user.id
+        // );
+        // if (userMemberData) {
+        //   context.commit("setMemberCenter", userMemberData);
+        // } else {
+        //   console.error("User data not found in MEMBERS collection.");
+        // }
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
     // 撈會員中心訂單資料
     async getMemberCenterOrderManage(context) {
       try {
@@ -512,16 +538,45 @@ export default createStore({
         console.error(err);
       }
     },
+
     //撈我的球隊的資料
+
     async getMyplayerTeam(context, payload) {
-      try {
-        const res = await axios.get("http://localhost:3000/teams");
-        if (!res) throw new Error("Cannot fetch response");
-        // console.log(payload);
-        context.commit("setMyplayerTeam", { id: payload, data: res.data });
-      } catch (err) {
-        console.error(err);
-      }
+      const teamData = await getDocuments("TEAMS");
+      // console.log(teamData);
+
+      const teamGameData = await getSubCollectionDocuments({
+        collectionName: "TEAMS",
+        documentId: "5KhosRZOJ7TmLfECUb5D",
+        subCollectionName: "GAME",
+      });
+      // console.log(teamGameData);
+
+      //const picData=
+
+      const scheduleData = await getSubCollectionDocuments({
+        collectionName: "TEAMS",
+        documentId: "5KhosRZOJ7TmLfECUb5D",
+        subCollectionName: "SCHEDULE",
+      });
+      // console.log(scheduleData);
+
+      const teamPostData = await getSubCollectionDocuments({
+        collectionName: "TEAMS",
+        documentId: "5KhosRZOJ7TmLfECUb5D",
+        subCollectionName: "POST",
+      });
+      // console.log(teamPostData);
+
+      const allTeamData = {
+        ...teamData[0],
+        teamGameData,
+        scheduleData,
+        teamPostData,
+      };
+      // console.log(allTeamData);
+
+      context.commit("setMyplayerTeam", allTeamData);
     },
 
     // 撈後台-招募文案資料

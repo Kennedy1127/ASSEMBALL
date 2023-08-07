@@ -6,7 +6,10 @@
       <span>{{ productTags[props.type] }}</span>
     </div>
 
-    <div class="products_main_header_features">
+    <div
+      v-if="store.state.isLoggedIn && auth.currentUser"
+      class="products_main_header_features"
+    >
       <div class="products_main_header_feature">
         <router-link :to="{ name: 'ProductPost' }">
           <div class="icon">
@@ -32,6 +35,7 @@
 
 <script setup>
 import productTags from "@/composables/tables/productTags";
+import { auth } from "@/firebase/config";
 import { useStore } from "vuex";
 
 const store = useStore();

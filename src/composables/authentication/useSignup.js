@@ -4,7 +4,7 @@ import useData from "@/composables/data/useData";
 import useSignout from "@/composables/authentication/useSignout";
 import { ref } from "vue";
 
-const { setData, setDataSubCollection } = useData();
+const { setData } = useData();
 const { signout } = useSignout();
 
 const useSignup = () => {
@@ -30,31 +30,13 @@ const useSignup = () => {
         email: signupData.email,
         exp: 0,
         area: "台灣",
-        icon: null,
+        pic: null,
         team_id: null,
         access: true,
         violations: 0,
       };
 
-      const templatesTarget = {
-        collectionName: "MEMBERS",
-        documentId: auth.currentUser.uid,
-        subCollectionName: "TEMPLATES",
-      };
-
-      const notificationsTarget = {
-        collectionName: "MEMBERS",
-        documentId: auth.currentUser.uid,
-        subCollectionName: "NOTIFICATIONS",
-      };
-
-      // await setData("MEMBERS", userData);
-      // await setDataSubCollection(templatesTarget, {
-      //   text: "預設模板",
-      //   status: true,
-      // });
-      // await setDataSubCollection(notificationsTarget, {});
-
+      await setData("MEMBERS", userData);
       await signout();
     } catch (err) {
       console.error("Something went wrong!");

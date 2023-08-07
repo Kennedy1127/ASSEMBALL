@@ -33,6 +33,7 @@
         v-for="item in myplayerGalleryCard"
         :key="item.id"
         v-bind:style="{ backgroundImage: `url('${item.myGalleryPic}')` }"
+        @click="openPic(item.id)"
       >
         <input type="checkbox" class="myplayer_gallery_content_pic_checkbox" />
       </div>
@@ -41,7 +42,15 @@
       <PaginationComponent v-if="isVisible" />
     </div>
     <!-- <MyplayerPhotoPopus v-if="isVisible" /> -->
-    <OverlayComponent type="TeamGallery" v-if="isVisible" />
+    <OverlayComponent
+      type="TeamGallery"
+      v-if="isVisible"
+      @closeOverlay="isVisible = false"
+      @goToRight="goToRight"
+      @goToLeft="goToLeft"
+      :sendPic="sendPic"
+      :curIndex="curIndex"
+    />
   </main>
 </template>
 <script>
@@ -95,7 +104,9 @@ export default {
           myGalleryPic: require("../assets/images/myplayer_team/myplayerGallery/myAlbum_8.jpg"),
         },
       ],
-      isVisible: false,
+      isVisible: true,
+      sendPic: require("../assets/images/myplayer_team/myplayerGallery/myAlbum_8.jpg"),
+      curIndex: 5,
     };
   },
   methods: {
@@ -114,6 +125,28 @@ export default {
         const dataURL = event.target.result;
       };
       reader.readAsDataURL(file);
+    },
+    openPic(id) {
+      const selectedCard = this.myplayerGalleryCard.find((card) => {
+        return card.id === id;
+      });
+      console.log(selectedCard);
+
+      console.log(this.sendPic);
+      this.sendPic = selectedCard.myGalleryPic;
+      console.log(this.sendPic);
+      this.curIndex = id;
+    },
+    goToRight() {
+      if (this.curIndex === this.myplayerGalleryCard.length - 1) return;
+      this.curIndex++;
+      console.log(this.curIndex);
+    },
+    goToLeft() {
+      if (this.curIndex === 0) return;
+      this.curIndex--;
+
+      console.log(this.curIndex);
     },
   },
 };

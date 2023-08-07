@@ -13,6 +13,7 @@
       >
         <div class="product_message_area_all_pic">
           <img
+            v-if="productMsgData.seller_id === item.user_id"
             class="product_message_area_all_pic_mark"
             src="~@/assets/images/products/mark.png"
             alt="mark"
@@ -34,28 +35,41 @@
           </div>
           <div class="product_message_area_all_text_all">
             <textarea
-              :disabled="!editMode || item.user_id !== '1'"
-              :value="item.comment"
-              @input="updateComment($event, item.comment)"
+              :disabled="
+                !editMode ||
+                item.user_id !== store.state.user.id ||
+                editCommentId !== item.id
+              "
+              v-model="item.comment"
+              ref="comment"
+              :class="{
+                active:
+                  editMode &&
+                  item.user_id === store.state.user.id &&
+                  editCommentId === item.id,
+              }"
             >
             </textarea>
           </div>
           <div class="product_message_area_all_text_date">
             <div class="product_message_area_all_text_date_icons">
               <font-awesome-icon
-                v-if="!editMode || item.user_id !== '1'"
+                v-if="
+                  item.user_id === store.state.user.id &&
+                  editCommentId !== item.id
+                "
                 class="icon icon--pen"
                 :icon="['fas', 'pen']"
-                @click="toggleEditComment"
+                @click="openEditComment(item.id)"
               />
               <font-awesome-icon
-                v-if="editMode && item.user_id === '1'"
+                v-if="editCommentId === item.id"
                 class="icon icon--xmark"
                 :icon="['fas', 'xmark']"
-                @click="toggleEditComment"
+                @click="closeEditComment"
               />
               <font-awesome-icon
-                v-if="editMode && item.user_id === '1'"
+                v-if="editCommentId === item.id"
                 class="icon icon--check"
                 :icon="['fas', 'check']"
                 @click="submitUpdateComment(item.id)"
@@ -81,12 +95,12 @@
         <div class="product_message_importing_text_input">
           <textarea
             placeholder="請輸入留言內容......"
-            v-model="comment"
+            v-model="inputComment"
             maxlength="100"
           ></textarea>
 
           <div class="product_message_importing_text_count">
-            {{ computedCommentLen }}/100
+            {{ computedInputCommentLen }}/100
           </div>
         </div>
         <p v-if="error" class="product_message_importing_text_error">
@@ -135,9 +149,9 @@ const props = defineProps({
 });
 const { setDataSubCollection, updateDataSubCollection } = useData();
 
-const comment = ref("");
+const inputComment = ref("");
 const error = ref(null);
-const computedCommentLen = computed(() => comment.value.length);
+const computedInputCommentLen = computed(() => inputComment.value.length);
 
 const comments = ref([...props.productMsgData.comments]);
 const computedComments = computed(() => [...comments.value]);
@@ -154,7 +168,7 @@ const convertDate = (msgDate) => {
 const submitComment = async () => {
   store.state.isPending = true;
 
-  if (!comment.value) {
+  if (!inputComment.value) {
     error.value = "請輸入你的留言內容哦";
     return (store.state.isPending = false);
   }
@@ -166,32 +180,48 @@ const submitComment = async () => {
   };
 
   const subCollectionData = {
-    comment: comment.value,
+    comment: inputComment.value,
     icon: null,
-    name: "棒球專家",
-    user_id: "id",
+    name: store.state.user.firstname + store.state.user.lastname,
+    user_id: store.state.user.id,
     date: timestamp,
   };
 
   await setDataSubCollection(productTarget, subCollectionData);
   comments.value.push(subCollectionData);
+  const selectedComments = store.state.products.find(
+    (product) => product.id === route.params.productId
+  ).comments;
+  selectedComments.push(subCollectionData);
   store.state.isPending = false;
-  comment.value = "";
+  inputComment.value = "";
 };
 
 const editMode = ref(false);
-const editComment = ref("aaa");
+const editCommentId = ref(null);
+let editComment = ref(null);
+let lastComment = null;
 
-const updateComment = (e, comment) => {
-  console.log(comment);
-  console.log(e);
+const openEditComment = (id) => {
+  editMode.value = true;
+  editComment = comments.value.find((comment) => comment.id === id);
+  editCommentId.value = id;
+  lastComment = editComment.comment;
 };
 
-const toggleEditComment = () => {
-  editMode.value = !editMode.value;
+const closeEditComment = () => {
+  editMode.value = false;
+  editComment.comment = lastComment;
+  editCommentId.value = null;
+  lastComment = null;
 };
 
 const submitUpdateComment = async (id) => {
+  if (!editComment.comment) {
+    editComment.comment = lastComment;
+    return;
+  }
+
   const updateTarget = {
     collectionName: "PRODUCTS",
     documentId: route.params.productId,
@@ -199,12 +229,13 @@ const submitUpdateComment = async (id) => {
     subDocumentId: id,
   };
   const updateData = {
-    comment: editComment.value,
+    comment: editComment.comment,
   };
-  console.log(updateTarget);
-  console.log(updateData);
 
-  // await updateDataSubCollection();
+  await updateDataSubCollection(updateTarget, updateData);
+  lastComment = editComment.comment;
+  editMode.value = false;
+  editCommentId.value = null;
 };
 </script>
 
@@ -299,18 +330,19 @@ const submitUpdateComment = async (id) => {
 
         &_all {
           margin-top: 1rem;
-          width: 50%;
+          width: 65%;
           color: var(--secondary-gray-1);
 
           textarea {
             resize: none;
             color: inherit;
             width: 100%;
+            min-height: 150px;
             padding: 0rem 0.5rem;
             border: none;
             background-color: transparent;
 
-            &:focus {
+            &.active {
               background-color: var(--pale-white);
               outline: 2px solid var(--secondary-blue-1);
             }
@@ -322,7 +354,7 @@ const submitUpdateComment = async (id) => {
         }
 
         &_date {
-          margin-top: 4rem;
+          margin-top: 1rem;
           text-align: right;
           color: var(--secondary-gray-1);
           font-size: 0.875rem;

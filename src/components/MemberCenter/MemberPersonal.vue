@@ -96,7 +96,7 @@
           <input
             type="radio"
             name="experience"
-            value="初心者"
+            :value="0"
             id="experience[0]"
             v-model="experience"
             required
@@ -107,7 +107,7 @@
           <input
             type="radio"
             name="experience"
-            value="新手"
+            :value="1"
             id="experience[1]"
             v-model="experience"
             required
@@ -118,7 +118,7 @@
           <input
             type="radio"
             name="experience"
-            value="老手"
+            :value="2"
             id="experience[2]"
             v-model="experience"
             required
@@ -136,19 +136,33 @@
 <script>
 import roles from "@/composables/tables/roles";
 import area from "@/composables/tables/area";
+import useData from "@/composables/data/useData";
+import getData from "@/composables/data/getData";
+
+const { getDocuments, getCollectionCount, getSubCollectionDocuments } =
+  getData();
+
+const { setData, updateData, setDataSubCollection } = useData();
 
 export default {
   props: ["placeholder", "type", "modelValue"],
 
+  //抓會員資料
+  async mounted() {
+    // const res = await this.$store.dispatch("getMemberCenter");
+    // console.log(res);
+    console.log(this.$store.state.user);
+  },
+
   data() {
     return {
       // 表單資料
-      avatar: require("@/assets/images/icons/default_avatar.svg"),
-      lastname: "",
-      name: "",
-      email: "",
-      region: "",
-      experience: [],
+      avatar: this.$store.state.user.pic,
+      lastname: this.$store.state.user.lastname,
+      name: this.$store.state.user.firstname,
+      email: this.$store.state.user.email,
+      region: this.$store.state.user.area,
+      experience: this.$store.state.user.exp,
       //表單錯誤訊息
       lastnameError: "",
       nameError: "",
@@ -186,6 +200,15 @@ export default {
       });
     },
 
+    async getMemberCenter(context) {
+      try {
+        const res = await getDocuments("MEMBERS");
+        context.commit("setMemberCenter", res);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
     // 表單驗證
 
     validateLastname() {
@@ -206,7 +229,7 @@ export default {
       this.isEmailValid = emailRegex.test(this.email);
     },
 
-    submitForm() {
+    async submitForm() {
       this.lastnameError = "";
       this.nameError = "";
       this.emailError = "";
@@ -231,20 +254,36 @@ export default {
         // 表單提交
         alert("會員資料提交成功！");
         // 表單資料確認
-        console.log("會員頭貼：", this.avatar);
-        console.log("姓氏：", this.lastname);
-        console.log("名字：", this.name);
-        console.log("信箱：", this.email);
-        console.log("地區：", this.region);
-        console.log("經歷：", this.experience);
 
-        //提交後重置表單資料
-        this.avatar = require("@/assets/images/icons/default_avatar.svg");
-        this.lastname = "";
-        this.name = "";
-        this.email = "";
-        this.region = "";
-        this.experience = [];
+        const data = {
+          firstname: this.name,
+          lastname: this.lastname,
+          email: this.email,
+          area: this.region,
+          exp: this.experience,
+        };
+        console.log(data);
+
+        await updateData(
+          {
+            collectionName: "MEMBERS",
+            documentId: this.$store.state.user.id,
+          },
+          data
+        );
+
+        // const newDate = await getMemberCenter(data);
+        // router.push({
+        //   params: { memberCenterDate: newDate },
+        // });
+
+        // //提交後重置表單資料
+        // this.avatar = require("@/assets/images/icons/default_avatar.svg");
+        // this.lastname = "";
+        // this.name = "";
+        // this.email = "";
+        // this.region = "";
+        // this.experience = [];
       }
     },
   },

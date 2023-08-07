@@ -2,7 +2,7 @@
 <template>
   <transition name="fade">
     <MainHeader
-      v-if="MainHeader"
+      v-if="MainHeader  && $route.name != 'Backstage' "
       @toggle_notify="toggleNotify"
       @toggle_member="toggleMember"
       mode="out-in"
@@ -90,6 +90,25 @@ export default {
     // console.log(testA);
     // console.log(testB);
 
+    // const testA = await getDocument("TEAMS", "5KhosRZOJ7TmLfECUb5D");
+    // const testB = await getDocuments("TEAMS");
+    // console.log(testA);
+    // console.log(testB);
+
+    //----
+    // const testSherry = await getDocuments("APPLYS");
+    // console.log(testSherry);
+
+    // const testC = await getSubCollectionDocument({
+    //   collectionName: "TEAMS",
+    //   documentId: "5KhosRZOJ7TmLfECUb5D",
+    //   subCollectionName: "POST",
+    //   subDocumentId: "Uud9BbmACZksHOBQeFC0",
+    // });
+    // const testD = await getSubCollectionDocuments({
+    //   collectionName: "TEAMS",
+    //   documentId: "5KhosRZOJ7TmLfECUb5D",
+    //   subCollectionName: "PIC",
     //----
     // const testSherry = await getDocuments("APPLYS");
     // console.log(testSherry);
@@ -166,7 +185,7 @@ export default {
     handleScroll() {
       const scrollPosition =
         document.documentElement.scrollTop || document.body.scrollTop;
-      if (scrollPosition > 40) {
+      if (scrollPosition > 40  && this.$route.name != 'Backstage' ) {
         this.MainHeaderLight = true;
         this.MainHeader = false;
       } else {
@@ -187,7 +206,7 @@ export default {
 
     //切換通知頁面
     toggleNotify() {
-      if (this.$store.state.isLoggedIn) {
+      if (!this.$store.state.isLoggedIn) {
         alert("還沒登入，跳轉到登入頁面喔~");
         this.$router.push("/login");
         this.scrollToTopOnMobile(); // 在跳轉後滾動到頂部
@@ -198,7 +217,7 @@ export default {
 
     //切換會員頁面
     toggleMember() {
-      if (this.$store.state.isLoggedIn) {
+      if (!this.$store.state.isLoggedIn) {
         alert("還沒登入，跳轉到登入頁面喔~");
         this.$router.push("/login");
         this.scrollToTopOnMobile(); // 在跳轉後滾動到頂部
