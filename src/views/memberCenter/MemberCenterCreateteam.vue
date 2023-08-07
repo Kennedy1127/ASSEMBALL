@@ -105,6 +105,11 @@ import area from "@/composables/tables/area";
 export default {
   props: ["placeholder", "type", "modelValue"],
 
+  async mounted() {
+    this.$store.dispatch("getMemberCenter");
+    console.log("getMemberCenter");
+  },
+
   data() {
     return {
       // 表單資料
