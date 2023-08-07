@@ -1,7 +1,13 @@
 <template>
   <div class="overlay" @click.self="closeOverlay">
     <slot v-if="type === 'TeamGallery'">
-      <MyplayerPhotoPopus @closeModal="closeOverlay" />
+      <MyplayerPhotoPopus
+        @closeModal="closeOverlay"
+        @goToRight="$emit('goToRight')"
+        @goToLeft="$emit('goToLeft')"
+        :sendPic="props.sendPic"
+        :curIndex="curIndex"
+      />
     </slot>
 
     <slot v-if="type === 'apply'" name="apply">
@@ -18,10 +24,14 @@ const props = defineProps({
   type: {
     type: String,
   },
+  sendPic: {},
+  curIndex: {},
 });
-const emit = defineEmits(["closeOverlay"]);
+
+const emit = defineEmits(["closeOverlay", "goToRight", "goToLeft"]);
 
 const closeOverlay = () => {
+  // console.log("albert");
   emit("closeOverlay");
 };
 </script>

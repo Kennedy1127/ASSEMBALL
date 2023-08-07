@@ -29,7 +29,8 @@ export default {
     MyplayerPopups,
   },
   mounted() {
-    this.$store.dispatch("getMyplayerTeam", this.$route.params.id);
+    this.$store.dispatch("getMyplayerTeam");
+    // console.log(this.$route);
   },
 };
 </script>

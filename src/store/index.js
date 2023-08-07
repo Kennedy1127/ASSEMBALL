@@ -2,7 +2,7 @@ import { createStore } from "vuex";
 import axios from "axios";
 import getData from "@/composables/data/getData";
 
-const { getDocuments } = getData();
+const { getDocuments, getSubCollectionDocuments } = getData();
 
 export default createStore({
   state: {
@@ -363,12 +363,8 @@ export default createStore({
     //我的球隊撈資料
     setMyplayerTeam(state, payload) {
       console.log(payload);
-      const team = payload.data.find(
-        (myplayerteam) => myplayerteam.team_id === payload.id
-      );
-      console.log(team);
 
-      state.myplayerTeam = { ...team };
+      state.myplayerTeam = { ...payload };
     },
 
     ///////////////////////////////////////
@@ -499,15 +495,43 @@ export default createStore({
       }
     },
     //撈我的球隊的資料
+
     async getMyplayerTeam(context, payload) {
-      try {
-        const res = await axios.get("http://localhost:3000/teams");
-        if (!res) throw new Error("Cannot fetch response");
-        // console.log(payload);
-        context.commit("setMyplayerTeam", { id: payload, data: res.data });
-      } catch (err) {
-        console.error(err);
-      }
+      const teamData = await getDocuments("TEAMS");
+      // console.log(teamData);
+
+      const teamGameData = await getSubCollectionDocuments({
+        collectionName: "TEAMS",
+        documentId: "5KhosRZOJ7TmLfECUb5D",
+        subCollectionName: "GAME",
+      });
+      // console.log(teamGameData);
+
+      //const picData=
+
+      const scheduleData = await getSubCollectionDocuments({
+        collectionName: "TEAMS",
+        documentId: "5KhosRZOJ7TmLfECUb5D",
+        subCollectionName: "SCHEDULE",
+      });
+      // console.log(scheduleData);
+
+      const teamPostData = await getSubCollectionDocuments({
+        collectionName: "TEAMS",
+        documentId: "5KhosRZOJ7TmLfECUb5D",
+        subCollectionName: "POST",
+      });
+      // console.log(teamPostData);
+
+      const allTeamData = {
+        ...teamData[0],
+        teamGameData,
+        scheduleData,
+        teamPostData,
+      };
+      // console.log(allTeamData);
+
+      context.commit("setMyplayerTeam", allTeamData);
     },
 
     // 撈後台-招募文案資料
