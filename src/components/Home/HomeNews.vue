@@ -5,7 +5,7 @@
     <div class="home_news_subscription_importing">
       <input
         type="email"
-        placeholder="Email"
+        placeholder="請輸入Email"
         v-model="email"
         @input="clearEmailIfNeeded"
       />
@@ -13,7 +13,13 @@
         <font-awesome-icon :icon="['fas', 'circle-arrow-right']" />
       </span>
       <div v-if="subscribed" class="home_news_subscription_importing_popup">
-        已訂閱成功！
+        {{ subscribedMessage }}
+      </div>
+      <div
+        v-if="!isValidEmail && attemptedToSubscribe"
+        class="home_news_subscription_importing_errorpopup"
+      >
+        Email 格式錯誤
       </div>
     </div>
     <div class="home_news_subscription_hashtag">
@@ -40,11 +46,11 @@
           <!-- carousel -->
           <div class="carousel_content">
             <div class="carousel_content_title">
-              {{ itemData.title }}<br />{{ itemData.titleBreakpoint }}
-              <p>{{ itemData.date }}</p>
+              {{ itemData.title }}<br />{{ itemData.title_breakpoint }}
+              <p>{{ itemData.formattedDate }}</p>
             </div>
             <div class="carousel_content_pic">
-              <img :src="itemData.imgSrc" alt="Image" />
+              <img :src="itemData.pic" alt="Image" />
             </div>
             <button
               :key="itemData.pos"
@@ -66,14 +72,14 @@
               <div class="modal_content_title_text">
                 <h3>
                   {{ computedModalData.title }}<br />{{
-                    computedModalData.titleBreakpoint
+                    computedModalData.title_breakpoint
                   }}
                 </h3>
-                <p>{{ computedModalData.date }}</p>
+                <p>{{ computedModalData.formattedDate }}</p>
               </div>
             </div>
             <div class="modal_content_pic">
-              <img :src="computedModalData.bigImgSrc" alt="Image" />
+              <img :src="computedModalData.popup_pic" alt="Image" />
             </div>
             <div class="modal_content_text">
               {{ computedModalData.text }}
@@ -100,10 +106,28 @@
 
 <script>
 export default {
+  async mounted() {
+    const res = await this.$store.dispatch("getHomeNews");
+    console.log(res);
+    this.itemsData = res;
+
+    const options = { year: "numeric", month: "numeric", day: "numeric" };
+    for (const item of this.itemsData) {
+      const timestamp = {
+        seconds: item.date.seconds,
+        nanoseconds: item.date.nanoseconds,
+      };
+      const date = new Date(timestamp.seconds * 1000);
+      item.formattedDate = date.toLocaleDateString(undefined, options);
+    }
+  },
+
   data() {
     return {
-      email: "", // 存储邮箱地址
-      subscribed: false, // 是否已订阅成功的标志
+      email: "",
+      subscribed: false,
+      isValidEmail: false,
+      attemptedToSubscribe: false,
       newsHashtag: [
         "＃天龍國野馬",
         "＃波士頓爆豪客",
@@ -118,58 +142,7 @@ export default {
         "＃克里夫蘭閃電",
         "＃吳興街紡織者",
       ],
-      itemsData: [
-        {
-          id: 0,
-          pos: -2,
-          imgSrc: require("@/assets/images/index/news_pic_04.jpg"),
-          title: "史上最精彩比賽！",
-          titleBreakpoint: "經典對決震撼球迷",
-          date: "2023 - 06 - 12",
-          bigImgSrc: require("@/assets/images/index/news_big_pic_04.jpg"),
-          text: "在防守比賽中，兩支球隊的表演都展現出了驚人的實力和技巧。整場比賽都充滿了懸念和戲劇性，引人矚目，以萬計的觀眾觀看直播。雖然天氣炎熱，隊員們卻熱情高漲是高漲的。他們快速奔跑、擊球、投球，讓球場充滿活力。比賽中，兩支隊伍不分上下，每一分都奮力拼搏，緊張的隊伍讓現場觀眾屏息凝視。最後，經過角逐，一方獲得了勝利，讓整個球場沸騰了。失落，但他們也表現出了運動家精神，互相擁抱，互相鼓勵。這場盛典慶祝了史上最精彩的對決之一，無論勝負，每位隊員都值得讚揚。他們的努力、汗水和奉獻都成為球迷心中永恆的記憶。",
-        },
-        {
-          id: 1,
-          pos: -1,
-          imgSrc: require("@/assets/images/index/news_pic_01.jpg"),
-          title: "重返巔峰！",
-          titleBreakpoint: "賽季中球隊展現無敵氣勢",
-          date: "2023 - 06 - 17",
-          bigImgSrc: require("@/assets/images/index/news_big_pic_01.jpg"),
-          text: "這個賽季，這支棒球隊以強大的實力和無敵的氣勢重新回到了巔峰。經過多年的努力和訓練，他們終於找到了適合自己的戰術和球員配置。每場比賽都能看到他們的精湛配合和卓越表現。球隊的主教練是他們成功的重要關鍵，他在戰術安排和心理激勵上做得非常出色。而球員們也全力以赴，發揮出個人的最佳水平。他們在比賽中互相配合，彼此信任，形成了無懈可擊的整體實力。在賽季中，這支球隊獲得了一連串的勝利，迎來了高潮。球迷們也對他們的表現感到驚嘆和自豪，球場上的加油聲此起彼落。每一場比賽都成為他們精彩人生的一部分，也為他們贏得了無數的掌聲和讚美。",
-        },
-        {
-          id: 2,
-          pos: 0,
-          imgSrc: require("@/assets/images/index/news_pic_02.jpg"),
-          title: "新秀耀眼！",
-          titleBreakpoint: "年輕球員成為球隊的希望",
-          date: "2023 - 07 - 28",
-          bigImgSrc: require("@/assets/images/index/news_big_pic_02.jpg"),
-          text: "在這支球隊中，一位年輕的新秀球員嶄露頭角，成為了球隊的新希望。雖然他在球隊中賽龍躍馬，但他卻展現出了驚人的天賦和實力。他的出現為整個球隊注入了新的生機和能量。這位新秀球員不僅在守備上做得出色，而且在攻擊方面也表現出色。他總能在關鍵時刻挺身而出，帶領球隊向勝利進軍。在他的帶領下，球隊的整體實力也得到了提升，成績有了明顯的進步。儘管他還很年輕，但這位新秀球員已經成為球迷心中的寵兒。他們期待著他未來更加耀眼的表現，相信他將成為球隊的核心球員，帶領球隊走向更多的勝利。",
-        },
-        {
-          id: 3,
-          pos: 1,
-          imgSrc: require("@/assets/images/index/news_pic_03.jpg"),
-          title: "隊長的領袖魅力！",
-          titleBreakpoint: "球場上的靈魂人物",
-          date: "2023 - 07 - 31",
-          bigImgSrc: require("@/assets/images/index/news_big_pic_03.jpg"),
-          text: "這支球隊的隊長是一位充滿領袖魅力的球員，他在球場上總是發揮著關鍵的作用。無論是在場上還是場下，他都能以身作則，帶領著全隊向前。這位隊長是一個堅毅而又有魄力的球員。他在比賽中從不退縮，無論面對多麼艱難的局面，他總是能挺身而出，帶領球隊走向勝利。同時，他也是球隊中的榜樣，鼓勵著其他球員不斷進步。在場下，這位隊長也是球隊的靈魂人物。他時刻關心著每一位隊員，關心他們的生活和訓練情況。他總是以身作則，傳遞著正能量，讓整個球隊形成了和諧的氛圍。這位隊長的領袖魅力不僅贏得了球隊的尊敬和愛戴，也贏得了球迷的喜愛和支持。他是球隊的靈魂，也是球迷心中永遠的英雄。",
-        },
-        {
-          id: 4,
-          pos: 2,
-          imgSrc: require("@/assets/images/index/news_pic_05.jpg"),
-          title: "團隊合作攜手奪冠！",
-          titleBreakpoint: "球隊的成功秘訣",
-          date: "2023 - 08 - 02",
-          bigImgSrc: require("@/assets/images/index/news_big_pic_05.jpg"),
-          text: "這支球隊的成功不僅來自於個人的實力，更來自於團隊的合作和默契。他們深知只有攜手合作，才能戰勝強大的對手，走向勝利的巔峰。球隊中的每一位球員都瞭解自己的角色和責任，他們在場上相互扶持，場下互相鼓勵。每場比賽都是一場團隊的戰役，每一分都是團隊的努力成果。主教練和教練團也發揮了重要的作用。他們在訓練中注重團隊合作，提倡相互幫助，讓球員們建立起了牢固的信任。在比賽中，球隊的戰術和配合也得到了充分的發揮。正是因為這種團隊合作的精神，這支球隊在比賽中屢創佳績，最終奪得了冠軍的榮譽。他們的成功證明了團隊合作的重要性，也激勵著更多的球隊去追求卓越。",
-        },
-      ],
+      itemsData: [],
       modalData: {
         title: "",
         imgSrc: "",
@@ -185,20 +158,30 @@ export default {
     computedModalData() {
       return this.modalData;
     },
+    subscribedMessage() {
+      return this.isValidEmail ? "已訂閱成功！" : "";
+    },
   },
 
   methods: {
     clearEmailIfNeeded() {
+      this.isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/.test(this.email);
       if (this.email.endsWith("@gmail.com") && !this.subscribed) {
         return;
       }
     },
     subscribe() {
-      this.subscribed = true;
-      setTimeout(() => {
-        this.subscribed = false;
-        this.email = "";
-      }, 2000); // 2秒后隐藏小弹窗并清空输入框
+      if (this.isValidEmail) {
+        // 只有當 isValidEmail 為 true 時才執行後續動作
+        this.subscribed = true;
+        this.attemptedToSubscribe = true;
+        setTimeout(() => {
+          this.subscribed = false;
+          this.email = "";
+        }, 2000);
+      } else {
+        this.attemptedToSubscribe = true;
+      }
     },
 
     carouselPrev() {
@@ -222,9 +205,9 @@ export default {
       const data = this.itemsData.find((item) => item.id === id);
 
       this.modalData.title = data.title;
-      this.modalData.titleBreakpoint = data.titleBreakpoint;
-      this.modalData.date = data.date;
-      this.modalData.bigImgSrc = data.bigImgSrc;
+      this.modalData.title_breakpoint = data.title_breakpoint;
+      this.modalData.formattedDate = data.formattedDate;
+      this.modalData.popup_pic = data.popup_pic;
       this.modalData.text = data.text;
     },
 
@@ -274,15 +257,10 @@ export default {
       cursor: pointer;
     }
     &_popup {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #ffffff;
-      padding: 10px 20px;
-      border: 1px solid var(--secondary-gray-3);
-      border-radius: var(--round);
-      box-shadow: var(--shadow-heavy);
+      color: var(--success-green);
+    }
+    &_errorpopup {
+      color: var(--accent-red);
     }
   }
   &_hashtag {
