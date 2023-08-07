@@ -71,12 +71,27 @@
 
       <div class="authentication_text_btn">
         <button>
+          註冊
+          <font-awesome-icon icon="fa-solid fa-chevron-right" />
+        </button>
+        <button>
+          <router-link :to="{ name: info.link }">
+            <!-- {{ info.linkName }} -->前往登入
+            <font-awesome-icon icon="fa-solid fa-chevron-right" />
+          </router-link>
+        </button>
+      </div>
+      <div v-if="error" class="authentication_psw_error">
+        {{ error }}
+      </div>
+      <!-- <div class="authentication_text_btn">
+        <button>
           註冊 <font-awesome-icon icon="fa-solid fa-chevron-right" />
         </button>
         <div v-if="error" class="authentication_psw_error">
           {{ error }}
         </div>
-      </div>
+      </div> -->
     </form>
   </AuthenticationWrapper>
 
@@ -294,26 +309,59 @@ const handleSignup = async () => {
         width: 10rem;
         border-radius: 2rem;
         padding: 0.5rem 0.25rem;
-        background-color: var(--primary-blue);
+        // background-color: var(--primary-blue);
 
         font-size: 1.25rem;
         font-weight: 500;
-        color: var(--pale-white);
+        // color: var(--pale-white);
         letter-spacing: 5px;
 
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 0.5rem;
+        &:nth-child(1) {
+          background-color: var(--primary-blue);
+          color: var(--pale-white);
+        }
+        &:nth-child(2) {
+          display: none;
+        }
       }
     }
+  }
 
-    .authentication_psw_error {
-      width: 50%;
-      font-size: 1rem;
-      color: var(--accent-red);
-      text-align: center;
-      // display: none;
+  .authentication_psw_error {
+    width: 100%;
+    font-size: 1rem;
+    color: var(--accent-red);
+    text-align: center;
+    // display: none;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .authentication {
+    &_text {
+      width: 100%;
+      &_btn {
+        margin: 2rem auto auto;
+        position: initial;
+        transform: none;
+        gap: 1rem;
+        button {
+          &:nth-child(1) {
+            background-color: var(--primary-blue);
+            color: var(--pale-white);
+          }
+          &:nth-child(2) {
+            display: block;
+            border: solid 1px var(--primary-blue);
+            background-color: var(--pale-white);
+            color: var(--primary-blue);
+          }
+        }
+      }
     }
   }
 }
