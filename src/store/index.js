@@ -362,12 +362,8 @@ export default createStore({
     //我的球隊撈資料
     setMyplayerTeam(state, payload) {
       console.log(payload);
-      const team = payload.data.find(
-        (myplayerteam) => myplayerteam.team_id === payload.id
-      );
-      console.log(team);
 
-      state.myplayerTeam = { ...team };
+      state.myplayerTeam = { ...payload };
     },
 
     ///////////////////////////////////////
@@ -513,15 +509,43 @@ export default createStore({
       }
     },
     //撈我的球隊的資料
+
     async getMyplayerTeam(context, payload) {
-      try {
-        const res = await axios.get("http://localhost:3000/teams");
-        if (!res) throw new Error("Cannot fetch response");
-        // console.log(payload);
-        context.commit("setMyplayerTeam", { id: payload, data: res.data });
-      } catch (err) {
-        console.error(err);
-      }
+      const teamData = await getDocuments("TEAMS");
+      // console.log(teamData);
+
+      const teamGameData = await getSubCollectionDocuments({
+        collectionName: "TEAMS",
+        documentId: "5KhosRZOJ7TmLfECUb5D",
+        subCollectionName: "GAME",
+      });
+      // console.log(teamGameData);
+
+      //const picData=
+
+      const scheduleData = await getSubCollectionDocuments({
+        collectionName: "TEAMS",
+        documentId: "5KhosRZOJ7TmLfECUb5D",
+        subCollectionName: "SCHEDULE",
+      });
+      // console.log(scheduleData);
+
+      const teamPostData = await getSubCollectionDocuments({
+        collectionName: "TEAMS",
+        documentId: "5KhosRZOJ7TmLfECUb5D",
+        subCollectionName: "POST",
+      });
+      // console.log(teamPostData);
+
+      const allTeamData = {
+        ...teamData[0],
+        teamGameData,
+        scheduleData,
+        teamPostData,
+      };
+      // console.log(allTeamData);
+
+      context.commit("setMyplayerTeam", allTeamData);
     },
 
     // 撈後台-招募文案資料
@@ -530,9 +554,10 @@ export default createStore({
         // const res = await axios.get(
         //   "http://localhost:3000/candidate-copywritings"
         // );
-        get;
-        if (!res) throw new Error("Cannot fetch response");
-        context.commit("setManageCopywritings", res.data); //setManageCopywritings: 寫在mutation裡面
+        // get;
+        // if (!res) throw new Error("Cannot fetch response");
+        const res = await getDocuments("COPYWRITINGS");
+        context.commit("setManageCopywritings", res); //setManageCopywritings: 寫在mutation裡面
         // context.commit("setCopywritingsCount", res.data.length);
       } catch (err) {
         console.error(err);

@@ -4,7 +4,7 @@
       <h1>我的球隊</h1>
       <section class="myplayer_banner_text">
         <h2>
-          這是一支名為「猛虎隊」的棒球隊，無論你是年輕或年長，無論你是否有打棒球經驗，只要你有興趣都可以在這邊找到同樣熱愛棒球的人一同出去打棒球。
+          {{ $store.state.myplayerTeam.intro }}
         </h2>
         <div class="myplayer_banner_text_edit" ref="myPlayer_Banner_Edit">
           <font-awesome-icon :icon="['fas', 'pen']" />
@@ -13,6 +13,9 @@
     </header>
   </main>
 </template>
+
+<script></script>
+
 <style scoped lang="scss">
 .myplayer {
   margin: 0 auto;
@@ -26,7 +29,7 @@
     align-items: center;
     height: 90vh;
     position: relative;
-    z-index: -1;
+    z-index: 0;
 
     h1 {
       font-size: 6rem;

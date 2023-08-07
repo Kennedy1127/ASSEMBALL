@@ -90,6 +90,25 @@ export default {
     // console.log(testA);
     // console.log(testB);
 
+    // const testA = await getDocument("TEAMS", "5KhosRZOJ7TmLfECUb5D");
+    // const testB = await getDocuments("TEAMS");
+    // console.log(testA);
+    // console.log(testB);
+
+    //----
+    // const testSherry = await getDocuments("APPLYS");
+    // console.log(testSherry);
+
+    // const testC = await getSubCollectionDocument({
+    //   collectionName: "TEAMS",
+    //   documentId: "5KhosRZOJ7TmLfECUb5D",
+    //   subCollectionName: "POST",
+    //   subDocumentId: "Uud9BbmACZksHOBQeFC0",
+    // });
+    // const testD = await getSubCollectionDocuments({
+    //   collectionName: "TEAMS",
+    //   documentId: "5KhosRZOJ7TmLfECUb5D",
+    //   subCollectionName: "PIC",
     //----
     // const testSherry = await getDocuments("APPLYS");
     // console.log(testSherry);

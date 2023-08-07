@@ -57,25 +57,25 @@
             v-if="title === '審核應徵' || title === '記錄管理'"
           ></td>
           <td v-if="title === '管理職缺' || title === '審核應徵'">
-            {{ item.copywriting_title }}
+            {{ item.title }}
           </td>
 
           <td v-else>{{ item.role }}</td>
 
           <td v-if="title === '管理職缺' || title === '審核應徵'">
-            {{ item.copywriting_role }}
+            {{ item.role }}
           </td>
 
           <td v-else>{{ item.area }}</td>
 
           <td v-if="title === '管理職缺' || title === '審核應徵'">
-            {{ item.copywriting_area }}
+            {{ item.area }}
           </td>
 
           <td v-else>{{ item.apply_date }}</td>
 
           <td v-if="title === '管理職缺' || title === '審核應徵'">
-            {{ item.copywriting_date }}
+            {{ item.date }}
           </td>
 
           <td v-else>{{ item.candidate_name }}</td>
