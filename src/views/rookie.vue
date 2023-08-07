@@ -1,16 +1,10 @@
 <template>
   <main class="rookie">
     <div class="wrapper">
-      <!--網頁白色部分 -->
-      <!-- <div class="background_baseball">
-        <img src="~@/assets/images/rookie/backgroundBaseball.png" />
-      </div> -->
       <div class="bread_crumbs">
         <!--麵包屑 -->
         <router-link :to="{ name: 'Home' }">首頁 </router-link>
-        <!-- <a href="#">
-                    首頁
-                </a> -->
+        <!-- 首頁 -->
         <div class="bread_crumbs_arrow">
           <span> <font-awesome-icon icon="fa-solid fa-chevron-right" /></span>
         </div>
@@ -39,9 +33,8 @@
         <!-- 教學清單區域--------------------------------- -->
         <div class="rookie_teaching_container">
           <button @click="pageup" class="change_page_btn_up">
-            <span>
               <font-awesome-icon icon="fa-solid fa-circle-chevron-up"
-            /></span>
+            />
           </button>
           <div
             v-for="item in currentList"
@@ -69,9 +62,8 @@
             </div>
           </div>
           <button @click="pagedown" class="change_page_btn_down">
-            <span
-              ><font-awesome-icon icon="fa-solid fa-circle-chevron-down"
-            /></span>
+           <font-awesome-icon icon="fa-solid fa-circle-chevron-down"
+            />
           </button>
         </div>
       </div>
@@ -177,6 +169,10 @@ export default {
     border-radius: var(--round);
     padding: 4rem 5rem;
     margin-top: 6rem;
+
+    @media screen and (max-width: 420px) {
+      padding: 1.5rem;
+    }
   }
 }
 
@@ -227,108 +223,135 @@ export default {
 
 .rookie_area {
   //新手上路區域
+
   display: flex;
   margin-top: 3rem;
-}
-
-.rookie_area_poster {
-  //新手上路大字報
-  margin-top: 3rem;
-  font-size: 4rem;
   position: relative;
-  color: var(--primary-blue);
-  font-weight: 600;
+  justify-content: space-around;
+  width: 100%;
+  @media screen and (max-width: 420px) {
+    display: block;
+    margin-top: 3rem;
+  }
+}
+.rookie_decorate {
+ 
+  .rookie_area_poster {
+    //新手上路大字報
+    margin-top: 3rem;
+    font-size: 4rem;
+    position: relative;
+    color: var(--primary-blue);
+    font-weight: 600;
 
-  span {
-    bottom: -6rem;
-    right: 2rem;
-    position: absolute;
+    span {
+      bottom: -6rem;
+      right: 2rem;
+      position: absolute;
+    }
+
+    margin-bottom: 3rem;
   }
 
-  margin-bottom: 3rem;
-}
-
-.hitter_img {
-  margin-top: 8rem;
+  .hitter_img {
+    margin-top: 8rem;
+    @media screen and (max-width: 420px) {
+      position: relative;
+      margin-top: 4rem;
+      right: 3rem;
+    }
+  }
 }
 
 .rookie_teaching_container {
   //教學清單容器
   display: flex;
   flex-direction: column;
-  width: 70%;
-  margin-left: 10rem;
+  width: 50%;
 
   position: relative;
+  @media screen and (max-width: 420px){
+    width: 100%;
+  }
+
 }
 
-.change_page_btn_up > span {
+.change_page_btn_up {
   //教學清單頁面向上切換按鈕
   font-size: 2.5rem;
   color: var(--primary-blue);
   position: absolute;
   top: -4rem;
   right: 1.5rem;
-
-  //   img {
-  //     width: 100%;
-  //   }
+  background-color: var(--pale-white);
 }
 
-.change_page_btn_down > span {
+.change_page_btn_down  {
   //教學清單頁面向下切換按鈕
   font-size: 2.5rem;
+  background-color: var(--pale-white);
   color: var(--primary-blue);
   position: absolute;
   bottom: -3rem;
   right: 1.5rem;
-
-  // img {
-  //   width: 100%;
-  // }
+  @media screen and (max-width: 420px){
+    bottom: -1rem;
+  }
 }
-
-.rookie_teaching_list {
-  //教學清單
-  padding-bottom: 2rem;
+.rookie_teaching {
   position: relative;
-  margin-bottom: 3rem;
-  border-bottom: var(--secondary-gray-3) solid;
+  width: 100%;
 
-  &_title {
-    //清單標題
-    color: var(--primary-blue);
-    font-size: 1.5rem;
+  .rookie_teaching_list {
+    //教學清單
+    padding-bottom: 2rem;
     position: relative;
-    font-weight: 600;
-
-    &_arrow {
-      position: absolute;
-      left: -2rem;
+    margin-bottom: 3rem;
+    border-bottom: var(--secondary-gray-3) solid;
+   width: 100%;
+ 
+    @media screen and (max-width: 420px) {
+      position: relative;
     }
-  }
 
-  &_content {
-    font-size: 1.25rem;
-    color: var(--secondary-gray-1);
-    width: 80%;
-    margin-top: 1rem;
-    max-height: 6rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-  }
+    &_title {
+      //清單標題
+      color: var(--primary-blue);
+      font-size: 1.5rem;
+      position: relative;
+      font-weight: 600;
+      @media screen and (max-width: 420px) {
+     margin-left: 2rem;
+    }
 
-  //內文
-  &_more_btn {
-    position: absolute;
-    right: 0;
-    font-size: 1rem;
-    color: var(--primary-blue);
-    font-weight: 600;
-    background-color: #fff;
+      &_arrow {
+        position: absolute;
+        left: -2rem;
+      }
+    }
+
+    &_content {
+      font-size: 1.25rem;
+      color: var(--secondary-gray-1);
+      width: 100%;
+      margin-top: 1rem;
+      max-height: 6rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
+
+    //內文
+    &_more_btn {
+      position: absolute;
+      right: 0;
+      font-size: 1rem;
+      color: var(--primary-blue);
+      font-weight: 600;
+      background-color: #fff;
+    }
   }
 }
 

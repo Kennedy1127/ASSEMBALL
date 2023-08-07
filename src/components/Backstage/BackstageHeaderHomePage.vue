@@ -8,7 +8,7 @@
       <button @click="doChange('BackstageHomepageNews')" class="Backstage_header_list">首頁最新消息</button>
       <button @click="doChange('BackstageHomepageProducts')" class="Backstage_header_list">首頁商品</button>
       <button @click="doChange('BackstageRecruitmentArticle')" class="Backstage_header_list">首頁徵人文章</button>
-      <button class="Backstage_header_ikon"></button>
+  
     </div>
 </template>
 
@@ -52,10 +52,5 @@ export default {
     font-size: 1rem;
     background-color: var(--secondary-blue-2);
   }
-  .Backstage_header_ikon {
-    width: 1rem;
-    height: 1rem;
-    border-radius: 8px;
-    background-color: var(--accent-yellow);
-  }
+
 }</style>

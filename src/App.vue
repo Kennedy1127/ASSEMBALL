@@ -2,7 +2,7 @@
 <template>
   <transition name="fade">
     <MainHeader
-      v-if="MainHeader"
+      v-if="MainHeader  && $route.name != 'Backstage' "
       @toggle_notify="toggleNotify"
       @toggle_member="toggleMember"
       mode="out-in"
@@ -185,7 +185,7 @@ export default {
     handleScroll() {
       const scrollPosition =
         document.documentElement.scrollTop || document.body.scrollTop;
-      if (scrollPosition > 40) {
+      if (scrollPosition > 40  && this.$route.name != 'Backstage' ) {
         this.MainHeaderLight = true;
         this.MainHeader = false;
       } else {

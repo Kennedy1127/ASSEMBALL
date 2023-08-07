@@ -428,7 +428,7 @@ const postProduct = async (data) => {
     comment: comment.value,
     icon: null,
     name: "棒球專家",
-    user_id: "id",
+    user_id: store.state.user.id,
     date: timestamp,
   };
 
@@ -465,9 +465,9 @@ const handleSubmit = async () => {
     date: timestamp,
     status: true,
     home_status: -1,
-    seller_icon: "url",
-    seller_name: "棒球專家",
-    seller_id: "id",
+    seller_icon: store.state.user.pic,
+    seller_name: store.state.user.firstname + store.state.user.lastname,
+    seller_id: store.state.user.id,
   };
 
   const id = await postProduct(data);
