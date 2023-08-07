@@ -49,7 +49,8 @@ export default createStore({
 
     //////////////////////////////////////////////////////
     //會員中心區塊
-    MemberCenterOrderManage: [],
+    memberCenter: [],
+    // memberCenterOrderManage: [],
 
     //////////////////////////////////////////////////////
     // 招募文案區塊
@@ -238,6 +239,13 @@ export default createStore({
     },
 
     //////////////////////////////////////////////////////
+    //會員中心區塊
+    setMemberCenter(state, payload) {
+      console.log([...payload]);
+      state.memberCenter = [...payload]; //payload:要運送出來的東西
+    },
+
+    //////////////////////////////////////////////////////
     // 首頁區塊
 
     // 取得首頁最新消息
@@ -287,12 +295,6 @@ export default createStore({
       state.selectedProductsText = "";
       state.selectedProductsDate = -1;
       state.selectedProductsTag = 0;
-    },
-
-    //////////////////////////////////////////////////////
-    //會員中心區塊
-    setMemberCenterOrderManage(state, payload) {
-      state.MemberCenterOrderManage = [...payload]; //payload:要運送出來的東西
     },
 
     //////////////////////////////////////////////////////
@@ -473,6 +475,27 @@ export default createStore({
 
     ///////////////////////////////////////
 
+    // 撈會員中心 會員資料
+    async getMemberCenter(context) {
+      try {
+        const res = await getDocuments("MEMBERS");
+        context.commit("setMemberCenter", res);
+        // console.log(res);
+        // const allMembers = await getDocuments("MEMBERS");
+        // const user = await getUser();
+        // const userMemberData = allMembers.find(
+        //   (member) => member.id === user.id
+        // );
+        // if (userMemberData) {
+        //   context.commit("setMemberCenter", userMemberData);
+        // } else {
+        //   console.error("User data not found in MEMBERS collection.");
+        // }
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
     // 撈會員中心訂單資料
     async getMemberCenterOrderManage(context) {
       try {
@@ -508,6 +531,7 @@ export default createStore({
         console.error(err);
       }
     },
+
     //撈我的球隊的資料
 
     async getMyplayerTeam(context, payload) {
