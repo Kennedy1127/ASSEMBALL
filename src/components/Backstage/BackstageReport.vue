@@ -4,11 +4,14 @@
       <!-- 視窗header -->
       <div class="Report_window_header">
         <div class="Report_window_header_title">檢舉內容</div>
+        <button class="icon_reset" @click="Reset">
+          <font-awesome-icon icon="fa-solid fa-rotate-right" />
+        </button>
         <div class="Report_window_header_search">
-          <input type="text" placeholder="搜尋" v-model="searchText" />
-          <div class="icon">
+          <input type="text" placeholder="搜尋" v-model="SearchText" />
+          <button class="icon" @click="updateSearch">
             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
-          </div>
+          </button>
         </div>
       </div>
       <!-- 表格 -->
@@ -29,7 +32,7 @@
                 </li>
               </ul>
               檢舉類別
-              <button @click="TypeMenu" class="table_row_menu">
+              <button @click="TypeMenu" class="table_row_menu" ref="Type">
                 <font-awesome-icon icon="fa-solid fa-angle-down" />
               </button>
             </td>
@@ -44,7 +47,7 @@
                 </li>
               </ul>
               舉發事由
-              <button @click="ReasonMenu" class="table_row_menu">
+              <button @click="ReasonMenu" class="table_row_menu" ref="Reason">
                 <font-awesome-icon icon="fa-solid fa-angle-down" />
               </button>
             </td>
@@ -61,7 +64,7 @@
                 </li>
               </ul>
               違規記點
-              <button @click="PointsMenu" class="table_row_menu">
+              <button @click="PointsMenu" class="table_row_menu" ref="Points">
                 <font-awesome-icon icon="fa-solid fa-angle-down" />
               </button>
             </td>
@@ -76,7 +79,7 @@
                 </li>
               </ul>
               直接封鎖
-              <button @click="BlockadeMenu" class="table_row_menu">
+              <button @click="BlockadeMenu" class="table_row_menu" ref="Blockade">
                 <font-awesome-icon icon="fa-solid fa-angle-down" />
               </button>
             </td>
@@ -100,7 +103,7 @@
             <td class="table_row_blockade">
               <input
                 type="checkbox"
-                v-model="Blockade"
+                v-model="item.Blockade"
                 name="Blockade"
                 :value="index"
               />
@@ -133,16 +136,16 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: "封鎖",
+          Blockade: false,
         },
         {
           Number: "001",
-          Name: "楊佩蓉",
+          Name: "阿狗",
           Type: "商品",
           Reason: "商品不實",
           Link: "####################",
           Points: 2,
-          Blockade: "封鎖",
+          Blockade: false,
 
         },
         {
@@ -152,7 +155,7 @@ export default {
           Reason: "垃圾文章",
           Link: "####################",
           Points: 3,
-          Blockade: "封鎖",
+          Blockade: false,
         },
         {
           Number: "001",
@@ -161,7 +164,7 @@ export default {
           Reason: "垃圾內容",
           Link: "####################",
           Points: 1,
-          Blockade: "封鎖",
+          Blockade: false,
 
         },
         {
@@ -171,7 +174,7 @@ export default {
           Reason: "垃圾廣告",
           Link: "####################",
           Points: 1,
-          Blockade: "封鎖",
+          Blockade: false,
         },
         {
           Number: "001",
@@ -180,7 +183,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: "封鎖",
+          Blockade: false,
         },
         {
           Number: "001",
@@ -189,7 +192,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: "無封鎖",
+            Blockade: false,
         },
         {
           Number: "001",
@@ -198,7 +201,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: "無封鎖",
+            Blockade: false,
         },
         {
           Number: "001",
@@ -207,7 +210,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: "無封鎖",
+            Blockade: false,
         },
         {
           Number: "001",
@@ -216,7 +219,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: "無封鎖",
+            Blockade: false,
         },
         {
           Number: "001",
@@ -225,7 +228,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: "無封鎖",
+            Blockade: false,
         },
         {
           Number: "001",
@@ -234,7 +237,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: "無封鎖",
+            Blockade: false,
         },
         {
           Number: "001",
@@ -243,7 +246,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: "無封鎖",
+            Blockade: false,
         },
         {
           Number: "001",
@@ -252,7 +255,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: "無封鎖",
+            Blockade: false,
         },
         {
           Number: "001",
@@ -261,7 +264,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: "無封鎖",
+            Blockade: false,
         },
         {
           Number: "001",
@@ -270,7 +273,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: "無封鎖",
+            Blockade: false,
         },
         {
           Number: "001",
@@ -279,7 +282,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: "無封鎖",
+            Blockade: false,
         },
         {
           Number: "001",
@@ -288,7 +291,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: "無封鎖",
+            Blockade: false,
         },
         {
           Number: "001",
@@ -297,7 +300,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: "無封鎖",
+            Blockade: false,
         },
         {
           Number: "001",
@@ -306,7 +309,7 @@ export default {
           Reason: "辱罵他人",
           Link: "####################",
           Points: 1,
-          Blockade: "無封鎖",
+            Blockade: false,
         },
       ],
 
@@ -324,6 +327,7 @@ export default {
       currentReason: 0,
       currentPoints: 0,
       currentBlockade:0,
+      currentSearch:"",
     };
   },
   computed: {
@@ -348,15 +352,21 @@ export default {
       );
     },
     ReportFilterBlockade() {
-      if (this.currentBlockade == 0) return this.ReportFilterPoints;
+      if (this.currentBlockade === 0) return this.ReportFilterPoints;
       return this.ReportFilterPoints.filter(
         (v) => v.Blockade == this.currentBlockade
+      );
+    },
+    ReportFilterSearch() {
+      if (this.currentSearch == "") return this.ReportFilterBlockade;
+      return this.ReportFilterBlockade.filter(
+        (v) => v.Name.includes(this.currentSearch)
       );
     },
 
     ReportList() {
       //回傳頁碼對應的十筆索引值的資料組成的陣列
-      return this.ReportFilterBlockade.slice(
+      return this.ReportFilterSearch.slice(
         (this.page - 1) * this.perPage,
         this.page * this.perPage
       );
@@ -391,14 +401,27 @@ export default {
         return str;
       }
     },
-    // focuscheckChange(item) {
-    //   //焦點商品checkbox切換
-    //   item.ProductsFocus = !item.ProductsFocus;
-    // },
-    // topcheckChange(item) {
-    //   //TOP商品checkbox切換
-    //   item.ProductsTop = !item.ProductsTop;
-    // },
+    CloseMenu(e) {
+      if (e.target.closest(".table_row_menu") === this.$refs.Type) {
+        this.TypeMenuShow = true;
+      } else if (e.target.closest(".table_row_menu") === this.$refs.Reason) {
+        this.ReasonMenuShow = true;
+      } else if (e.target.closest(".table_row_menu") === this.$refs.Points) {
+        this.PointsMenuShow = true;
+      } else if (e.target.closest(".table_row_menu") === this.$refs. Blockade) {
+        this. BlockadeMenuShow = true;
+      } 
+      
+      
+      else {
+        this.TypeMenuShow = false;
+        this.ReasonMenuShow = false;
+        this.PointsMenuShow = false;
+        this. BlockadeMenuShow = false;
+
+      }
+    },
+ 
     pageup() {
       if (this.page != 1) {
         //往上換頁
@@ -424,7 +447,22 @@ export default {
     updateBlockade(e) {
       this.currentBlockade = e;
     },
+    updateSearch(){
+      this.currentSearch=this.SearchText;
+      this.SearchText="";
+    },
+    Reset(){
+      this.currentType = 0;
+      this.currentReason = 0;
+      this.currentPoints = 0;
+      this.currentBlockade = 0;
+      this.currentSearch="";
+    }
   },
+  mounted(){
+    window.addEventListener("click", this.CloseMenu); //監聽如果任意位置有被點擊觸發CloseMenu
+
+  }
 };
 </script>
 <style scoped lang="scss">
@@ -447,11 +485,23 @@ export default {
       border-bottom: var(--primary-black) solid;
       display: flex;
       justify-content: space-between;
+      position: relative;
       &_title {
         //視窗header標題
         font-size: 2.5rem;
         font-weight: 400;
         margin-left: 2rem;
+      }
+      .icon_reset {
+        font-size: 1.5rem;
+        color: var(--primary-black);
+        position: absolute;
+        top: 2rem;
+        width: 2rem;
+        height: 2rem;
+        background-color: var(--primary-blue);
+        right: 0.5rem;
+        cursor: pointer;
       }
       &_search {
         //視窗header搜尋
@@ -479,8 +529,7 @@ export default {
           top: 40%;
           right: 1.25rem;
           transform: translateY(-50%);
-
-          pointer-events: none;
+background-color: var(--pale-white);
         }
       }
     }
@@ -503,7 +552,6 @@ export default {
           //表格欄位設定
           td {
             white-space: nowrap; /* 不换行 */
-            
             border: var(--primary-black) solid;
             background-color: var(--secondary-blue-2);
             text-align: center;

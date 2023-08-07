@@ -91,22 +91,22 @@ export default {
     // console.log(testB);
 
     //----
-    const testSherry = await getDocuments("APPLYS");
-    console.log(testSherry);
+    // const testSherry = await getDocuments("APPLYS");
+    // console.log(testSherry);
 
-    const testC = await getSubCollectionDocument({
-      collectionName: "PRODUCTS",
-      documentId: "VHKTJGsrIOYXBTBxFR7e",
-      subCollectionName: "COMMENTS",
-      subDocumentId: "n8w5wpDDeGWujr8Aq8Kp",
-    });
-    const testD = await getSubCollectionDocuments({
-      collectionName: "PRODUCTS",
-      documentId: "VHKTJGsrIOYXBTBxFR7e",
-      subCollectionName: "COMMENTS",
-    });
-    console.log(testC);
-    console.log(testD);
+    // const testC = await getSubCollectionDocument({
+    //   collectionName: "PRODUCTS",
+    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
+    //   subCollectionName: "COMMENTS",
+    //   subDocumentId: "n8w5wpDDeGWujr8Aq8Kp",
+    // });
+    // const testD = await getSubCollectionDocuments({
+    //   collectionName: "PRODUCTS",
+    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
+    //   subCollectionName: "COMMENTS",
+    // });
+    // console.log(testC);
+    // console.log(testD);
     // const testC = await getSubCollectionDocument({
     //   collectionName: "PRODUCTS",
     //   documentId: "VHKTJGsrIOYXBTBxFR7e",
@@ -187,7 +187,7 @@ export default {
 
     //切換通知頁面
     toggleNotify() {
-      if (!this.$store.state.isLoggedIn) {
+      if (this.$store.state.isLoggedIn) {
         alert("還沒登入，跳轉到登入頁面喔~");
         this.$router.push("/login");
         this.scrollToTopOnMobile(); // 在跳轉後滾動到頂部
@@ -198,7 +198,7 @@ export default {
 
     //切換會員頁面
     toggleMember() {
-      if (!this.$store.state.isLoggedIn) {
+      if (this.$store.state.isLoggedIn) {
         alert("還沒登入，跳轉到登入頁面喔~");
         this.$router.push("/login");
         this.scrollToTopOnMobile(); // 在跳轉後滾動到頂部
