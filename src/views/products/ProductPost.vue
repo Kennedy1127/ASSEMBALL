@@ -245,8 +245,15 @@ import { useRoute, useRouter } from "vue-router";
 const store = useStore();
 const route = useRoute();
 const router = useRouter();
-const { setDataError, setData, setDataSubCollection } = useData();
-const { getDocument } = getData();
+import { auth } from "@/firebase/config";
+const {
+  setDataError,
+  setData,
+  setDataSubCollection,
+  updateData,
+  updateDataSubCollection,
+} = useData();
+const { getDocument, getSubCollectionDocuments } = getData();
 const { getPics } = useStorage();
 
 onMounted(async () => {
@@ -262,11 +269,24 @@ onMounted(async () => {
   tag.value = productData.tag;
   area.value = productData.area;
 
-  const picsData = await getPics(4, `images/PRODUCTS/${route.query.id}`);
-  console.log(new File([picsData], "test.png", { type: "image/png" }));
-  // pics.value = [new File([picsData], "test", { type: "image/png" })];
+  const picsData = await getPics(
+    4,
+    `images/PRODUCTS/${route.query.id}`,
+    "product"
+  );
+  pics.value = [...picsData];
 
-  comment.value = "";
+  const commentData = await getSubCollectionDocuments(
+    {
+      collectionName: "PRODUCTS",
+      documentId: route.query.id,
+      subCollectionName: "COMMENTS",
+    },
+    [["user_id", "==", auth.currentUser.uid]]
+  );
+
+  comment.value = commentData[0].comment;
+  commentId.value = commentData[0].id;
   store.state.isPending = false;
 });
 
@@ -275,6 +295,7 @@ const price = ref("");
 const email = ref("");
 const phone = ref("");
 const comment = ref("");
+const commentId = ref("");
 const pics = ref([]);
 const tag = ref(-1);
 const area = ref(-1);
@@ -415,11 +436,7 @@ const onfile = (e) => {
   picError.value = null;
 };
 
-const picToUrl = (pic) => {
-  console.log(pic);
-  return URL.createObjectURL(pic);
-  return typeof pic === "object" ? URL.createObjectURL(pic) : pic;
-};
+const picToUrl = (pic) => URL.createObjectURL(pic);
 
 const deletePic = (index) => {
   pics.value.splice(index, 1);
@@ -482,9 +499,31 @@ const postProduct = async (data) => {
   return id;
 };
 
-const updateProduct = async (id, data) => {
-  await setData("PRODUCTS", data, pics.value);
-  return id;
+const updateProduct = async (data) => {
+  await updateData(
+    {
+      collectionName: "PRODUCTS",
+      documentId: route.query.id,
+    },
+    data,
+    pics.value,
+    "product"
+  );
+
+  const commentData = {
+    comment: comment.value,
+  };
+  await updateDataSubCollection(
+    {
+      collectionName: "PRODUCTS",
+      documentId: route.query.id,
+      subCollectionName: "COMMENTS",
+      subDocumentId: commentId.value,
+    },
+    commentData
+  );
+
+  return route.query.id;
 };
 
 const handleSubmit = async () => {
@@ -507,7 +546,10 @@ const handleSubmit = async () => {
     seller_id: store.state.user.id,
   };
 
-  const id = await postProduct(data);
+  const id = route.query.id
+    ? await updateProduct(data)
+    : await postProduct(data);
+
   if (setDataError.value) {
     error.value = "商品刊登失敗，請重新整理或洽平台管理員";
     return (store.state.isPending = false);

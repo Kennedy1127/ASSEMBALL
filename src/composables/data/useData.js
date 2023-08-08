@@ -3,7 +3,7 @@ import { doc, setDoc, updateDoc, collection } from "firebase/firestore";
 import { ref } from "vue";
 import useStorage from "@/composables/data/useStorage";
 
-const { setPics } = useStorage();
+const { setPics, updatePics } = useStorage();
 
 const useData = () => {
   const setDataError = ref(null);
@@ -52,10 +52,19 @@ const useData = () => {
     }
   };
 
-  const updateData = async (target, data) => {
+  const updateData = async (target, data, pics = null, filename = null) => {
     setDataError.value = null;
     try {
       const docRef = doc(db, target.collectionName, target.documentId);
+
+      if (pics && filename) {
+        await updatePics(
+          `images/${target.collectionName}/${docRef.id}`,
+          pics,
+          filename
+        );
+      }
+
       await updateDoc(docRef, data);
     } catch (err) {
       console.error("Something went wrong!");
