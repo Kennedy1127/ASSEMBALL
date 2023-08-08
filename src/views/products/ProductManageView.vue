@@ -54,7 +54,9 @@
             ${{ convertPrice(item.price) }}
           </div>
           <div class="manage_item_list manage_item_date">
-            {{ item.date }}
+            {{ convertDate(item.date.toDate()) }}
+            <br />
+            {{ convertTime(item.date.toDate()) }}
           </div>
           <div
             class="manage_item_list manage_item_icon manage_item_icon--comment"
@@ -70,7 +72,7 @@
             </button>
           </div>
           <div class="manage_item_list manage_item_icon manage_item_icon--pen">
-            <button>
+            <button @click="goEdit(item.product_id)">
               <font-awesome-icon
                 icon="fa-solid fa-pen"
                 style="color: #1e60cd"
@@ -79,17 +81,13 @@
           </div>
         </div>
       </section>
-      <PaginationComponent
+      <!-- <PaginationComponent
         :totalPages="computedTotalPages"
         type="BacksideRecruit"
-      />
+      /> -->
     </div>
   </main>
 </template>
-
-<!-- <script setup>
-import { computed, onMounted, ref } from "vue";
-</script> -->
 
 <script>
 import PaginationComponent from "@/components/utilities/PaginationComponent";
@@ -100,35 +98,47 @@ export default {
     PaginationComponent,
     SelectorComponent,
   },
+
+  async mounted() {
+    const res = await this.$store.dispatch("getProductManage", {
+      collectionName: "MEMBERS",
+      documentId: this.$store.state.user.id,
+      subCollectionName: "PRODUCTMANAGE",
+    });
+
+    this.manage = [...res];
+  },
+
   data() {
     return {
-      manage: [
-        {
-          title: "棒球界lv精品球棒帶回家！",
-          price: 4500,
-          date: "2023/07/21 18:30:11",
-        },
-        {
-          title: "帥氣二手球衣等待中",
-          price: 4500,
-          date: "2023/07/21 18:30:11",
-        },
-        {
-          title: "捕手手套大特價販賣",
-          price: 4500,
-          date: "2023/07/21 18:30:11",
-        },
-        {
-          title: "棒球SSR球鞋獨家專賣！",
-          price: 4500,
-          date: "2023/07/21 18:30:11",
-        },
-        {
-          title: "可愛粉色球帽大拍賣",
-          price: 4500,
-          date: "2023/07/21 18:30:11",
-        },
-      ],
+      manage: [],
+      // manage: [
+      //   {
+      //     title: "棒球界lv精品球棒帶回家！",
+      //     price: 4500,
+      //     date: "2023/07/21 18:30:11",
+      //   },
+      //   {
+      //     title: "帥氣二手球衣等待中",
+      //     price: 4500,
+      //     date: "2023/07/21 18:30:11",
+      //   },
+      //   {
+      //     title: "捕手手套大特價販賣",
+      //     price: 4500,
+      //     date: "2023/07/21 18:30:11",
+      //   },
+      //   {
+      //     title: "棒球SSR球鞋獨家專賣！",
+      //     price: 4500,
+      //     date: "2023/07/21 18:30:11",
+      //   },
+      //   {
+      //     title: "可愛粉色球帽大拍賣",
+      //     price: 4500,
+      //     date: "2023/07/21 18:30:11",
+      //   },
+      // ],
       // 下拉選單的日期分類
       productDate: [
         {
@@ -145,7 +155,7 @@ export default {
 
   methods: {
     convertPrice(price) {
-      return price.toLocaleString();
+      return Number(price).toLocaleString();
     },
 
     convertDate(inputDate) {
@@ -154,6 +164,15 @@ export default {
         2,
         0
       )} / ${String(date.getDate()).padStart(2, 0)}`;
+    },
+
+    convertTime(inputDate) {
+      const date = new Date(inputDate);
+      return `${date.getHours()} : ${date.getMinutes()} : ${date.getSeconds()}`;
+    },
+
+    goEdit(id) {
+      this.$router.push({ name: "ProductPost", query: { id } });
     },
   },
 };

@@ -451,6 +451,7 @@ export default createStore({
         console.error(err);
         context.state.products = [];
         context.state.productsCount = 0;
+        return err;
       }
     },
 
@@ -487,6 +488,17 @@ export default createStore({
         if (!res) throw new Error("Cannot fetch response");
         context.commit("setMemberCenterOrderManage", res.data); //setManageCopywritings: 寫在mutation裡面
         // context.commit("setCopywritingsCount", res.data.length);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
+    // 撈訂單管理
+    async getProductManage(context, payload) {
+      try {
+        const res = await getSubCollectionDocuments(payload);
+        if (!res) throw new Error("Cannot fetch response");
+        return res;
       } catch (err) {
         console.error(err);
       }

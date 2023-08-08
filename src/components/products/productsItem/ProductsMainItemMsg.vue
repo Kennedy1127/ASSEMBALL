@@ -84,7 +84,11 @@
     <div class="product_message_importing">
       <div class="product_message_importing_user_pic">
         <img
-          src="~@/assets/images/products/importing_pic.png"
+          :src="
+            store.state.user.pic
+              ? store.state.user.pic
+              : require('@/assets/images/icons/main-icon.png')
+          "
           alt="importing_pic"
         />
       </div>
@@ -181,18 +185,21 @@ const submitComment = async () => {
 
   const subCollectionData = {
     comment: inputComment.value,
-    icon: null,
+    icon: store.state.user.pic ? store.state.user.pic : null,
     name: store.state.user.firstname + store.state.user.lastname,
     user_id: store.state.user.id,
     date: timestamp,
+    read: false,
   };
 
   await setDataSubCollection(productTarget, subCollectionData);
   comments.value.push(subCollectionData);
+
   const selectedComments = store.state.products.find(
     (product) => product.id === route.params.productId
   ).comments;
   selectedComments.push(subCollectionData);
+
   store.state.isPending = false;
   inputComment.value = "";
 };

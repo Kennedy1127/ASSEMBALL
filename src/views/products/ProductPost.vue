@@ -236,13 +236,18 @@
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
 import { timestamp } from "@/firebase/config";
 import useData from "@/composables/data/useData";
-import { computed, ref } from "vue";
+import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const store = useStore();
+const route = useRoute();
 const router = useRouter();
 const { setDataError, setData, setDataSubCollection } = useData();
+
+onMounted(() => {
+  // console.log(store.state.)
+});
 
 const productName = ref("testtest");
 const price = ref("111");
@@ -424,24 +429,31 @@ const postProduct = async (data) => {
     subCollectionName: "COMMENTS",
   };
 
-  const subCollectionData = {
+  const commentData = {
     comment: comment.value,
-    icon: null,
-    name: "棒球專家",
+    icon: store.state.user.pic ? store.state.user.pic : null,
+    name: store.state.user.firstname + store.state.user.lastname,
     user_id: store.state.user.id,
     date: timestamp,
+    read: true,
   };
 
-  await setDataSubCollection(productTarget, subCollectionData);
+  await setDataSubCollection(productTarget, commentData);
 
-  // const saleTarget = {
-  //   collectionName: "MEMBERS",
-  //   documentId: id,
-  //   subCollectionName: "SALES",
-  // };
+  const productManageTarget = {
+    collectionName: "MEMBERS",
+    documentId: store.state.user.id,
+    subCollectionName: "PRODUCTMANAGE",
+  };
 
-  // await setDataSubCollection(saleTarget, subCollectionData);
+  const productManageData = {
+    title: data.title,
+    price: data.price,
+    date: data.date,
+    product_id: id,
+  };
 
+  await setDataSubCollection(productManageTarget, productManageData);
   return id;
 };
 
@@ -465,7 +477,7 @@ const handleSubmit = async () => {
     date: timestamp,
     status: true,
     home_status: -1,
-    seller_icon: store.state.user.pic,
+    seller_icon: store.state.user.pic ? store.state.user.pic : null,
     seller_name: store.state.user.firstname + store.state.user.lastname,
     seller_id: store.state.user.id,
   };

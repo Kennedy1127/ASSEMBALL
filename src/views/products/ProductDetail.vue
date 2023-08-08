@@ -75,8 +75,11 @@ onMounted(async () => {
       (product) => product.id === route.params.productId
     )
   ) {
-    await store.dispatch("getProductsCount");
+    const err = await store.dispatch("getProductsCount");
     await store.dispatch("getProducts");
+    if (err) {
+      router.push({ name: "Home" });
+    }
   }
 
   store.state.isPending = false;

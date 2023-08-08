@@ -66,8 +66,8 @@ const getData = () => {
 
   const getSubCollectionDocuments = async (
     target,
-    conditions = null,
-    orders = null
+    conditions = [],
+    orders = []
   ) => {
     try {
       const docRef = collection(
@@ -86,7 +86,6 @@ const getData = () => {
       );
 
       const res = await getDocs(q);
-
       return res.docs.map((doc) => doc.data());
     } catch (err) {
       console.error("Something went wrong!");
