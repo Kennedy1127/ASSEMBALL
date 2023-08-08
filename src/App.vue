@@ -2,7 +2,7 @@
 <template>
   <transition name="fade">
     <MainHeader
-      v-if="MainHeader  && $route.name != 'Backstage' "
+      v-if="MainHeader && shouldShowMainHeader"
       @toggle_notify="toggleNotify"
       @toggle_member="toggleMember"
       mode="out-in"
@@ -10,7 +10,7 @@
   </transition>
   <transition name="fade">
     <MainHeaderLight
-      v-if="MainHeaderLight"
+      v-if="MainHeaderLight && shouldShowMainHeaderLight"
       @toggle_notify="toggleNotify"
       @toggle_member="toggleMember"
     />
@@ -31,7 +31,7 @@
     @enter_personal="enterPersonal"
   />
   <router-view />
-  <MainFooter v-if="$route.name !== 'Home'" />
+  <MainFooter v-if="shouldShowMainFooter" />
 
   <!-- Loading 畫面 -->
   <LoadingComponent v-if="$store.state.isPending" />
@@ -77,6 +77,24 @@ import { auth } from "@/firebase/config";
 import getData from "@/composables/data/getData";
 
 export default {
+  computed: {
+    shouldShowMainFooter() {
+      // 在這裡列出你不想顯示 MainFooter 的頁面名稱
+      const pagesWithoutFooter = ["Home", "HomeLoading", "Backstage", "test"];
+
+      return !pagesWithoutFooter.includes(this.$route.name);
+    },
+    shouldShowMainHeader() {
+      const pagesWithoutHeader = ["HomeLoading", "Backstage", "test"];
+
+      return !pagesWithoutHeader.includes(this.$route.name);
+    },
+    shouldShowMainHeaderLight() {
+      const pagesWithoutHeaderLight = ["HomeLoading", "Backstage", "test"];
+
+      return !pagesWithoutHeaderLight.includes(this.$route.name);
+    },
+  },
   async beforeMount() {
     const {
       getUser,
@@ -185,7 +203,7 @@ export default {
     handleScroll() {
       const scrollPosition =
         document.documentElement.scrollTop || document.body.scrollTop;
-      if (scrollPosition > 40  && this.$route.name != 'Backstage' ) {
+      if (scrollPosition > 40) {
         this.MainHeaderLight = true;
         this.MainHeader = false;
       } else {
