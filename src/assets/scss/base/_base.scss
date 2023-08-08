@@ -26,6 +26,10 @@ input {
   background-color: none;
 }
 
+ textarea{
+  resize: none !important;
+ }
+
 *::placeholder {
   color: var(--secondary-gray-3);
   font-family: "Noto Sans TC";

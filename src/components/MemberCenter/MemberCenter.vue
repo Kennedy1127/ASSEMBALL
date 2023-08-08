@@ -6,7 +6,7 @@
         :src="MemberCenterMember.imgSrc"
         :alt="MemberCenter_member_pic"
       />
-      <div class="MemberCenter_member_name">{{ MemberCenterMember.title }}</div>
+      <div class="MemberCenter_member_name">{{ dynamicTitle }}</div>
     </div>
     <div class="MemberCenter_list">
       <ul>
@@ -66,17 +66,32 @@
 
 <script>
 export default {
+  //抓會員資料
+  async mounted() {
+    // const res = await this.$store.dispatch("getMemberCenter");
+    // console.log(res);
+    console.log(this.$store.state.user);
+  },
+
   data() {
     return {
       MemberCenterMember: {
-        imgSrc: require("@/assets/images/MemberCenter/MemberCenter_pic01.png"),
-        title: "棒球專家小楊",
+        imgSrc: this.$store.state.user.pic,
+        // title: this.$store.state.user.firstname,
       },
     };
   },
   methods: {
     enterPersonal() {
       this.$emit("enter_personal");
+    },
+  },
+  computed: {
+    //姓氏 + 名字
+    dynamicTitle() {
+      const firstname = this.$store.state.user.firstname;
+      const lastname = this.$store.state.user.lastname;
+      return `${lastname} ${firstname}`;
     },
   },
 };
