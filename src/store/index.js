@@ -2,8 +2,7 @@ import { createStore } from "vuex";
 import axios from "axios";
 import getData from "@/composables/data/getData";
 
-const { getDocuments, getCollectionCount, getSubCollectionDocuments } =
-  getData();
+const { getDocuments, getSubCollectionDocuments } = getData();
 
 export default createStore({
   state: {
@@ -42,7 +41,6 @@ export default createStore({
     //////////////////////////////////////////////////////
     // 商品區塊
     products: [],
-    productsCount: 0,
     selectedProductsText: "",
     selectedProductsTag: 0,
     selectedProductsDate: -1,
@@ -452,20 +450,6 @@ export default createStore({
     },
 
     ///////////////////////////////////////
-
-    // 撈商品數量
-    async getProductsCount(context) {
-      try {
-        const res = await getCollectionCount("PRODUCTS");
-        if (!res) throw new Error("Cannot fetch response");
-        context.commit("setProductsCount", res);
-      } catch (err) {
-        console.error(err);
-        context.state.products = [];
-        context.state.productsCount = 0;
-      }
-    },
-
     // 撈商品資料
     async getProducts(context) {
       try {
@@ -533,6 +517,17 @@ export default createStore({
       // console.log(allTeamData);
 
       context.commit("setMemberCenter", allMemberDate);
+    },
+
+    // 撈訂單管理
+    async getProductManage(context, payload) {
+      try {
+        const res = await getSubCollectionDocuments(payload);
+        if (!res) throw new Error("Cannot fetch response");
+        return res;
+      } catch (err) {
+        console.error(err);
+      }
     },
 
     // // 撈會員中心訂單資料
