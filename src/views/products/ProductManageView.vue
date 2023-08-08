@@ -92,6 +92,7 @@
 <script>
 import PaginationComponent from "@/components/utilities/PaginationComponent";
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
+import { auth } from "@/firebase/config";
 
 export default {
   components: {
@@ -102,7 +103,7 @@ export default {
   async mounted() {
     const res = await this.$store.dispatch("getProductManage", {
       collectionName: "MEMBERS",
-      documentId: this.$store.state.user.id,
+      documentId: auth.currentUser.uid,
       subCollectionName: "PRODUCTMANAGE",
     });
 

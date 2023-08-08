@@ -236,6 +236,8 @@
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
 import { timestamp } from "@/firebase/config";
 import useData from "@/composables/data/useData";
+import getData from "@/composables/data/getData";
+import useStorage from "@/composables/data/useStorage";
 import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
@@ -244,18 +246,37 @@ const store = useStore();
 const route = useRoute();
 const router = useRouter();
 const { setDataError, setData, setDataSubCollection } = useData();
+const { getDocument } = getData();
+const { getPics } = useStorage();
 
-onMounted(() => {
-  // console.log(store.state.)
+onMounted(async () => {
+  if (!route.query.id) return;
+
+  store.state.isPending = true;
+
+  const productData = await getDocument("PRODUCTS", route.query.id);
+  productName.value = productData.title;
+  price.value = productData.price;
+  email.value = productData.email;
+  phone.value = productData.phone;
+  tag.value = productData.tag;
+  area.value = productData.area;
+
+  const picsData = await getPics(4, `images/PRODUCTS/${route.query.id}`);
+  console.log(new File([picsData], "test.png", { type: "image/png" }));
+  // pics.value = [new File([picsData], "test", { type: "image/png" })];
+
+  comment.value = "";
+  store.state.isPending = false;
 });
 
-const productName = ref("testtest");
-const price = ref("111");
-const email = ref("test@mail.com");
-const phone = ref("0955-111222");
-const comment = ref("testtesttest");
+const productName = ref("");
+const price = ref("");
+const email = ref("");
+const phone = ref("");
+const comment = ref("");
 const pics = ref([]);
-const tag = ref(2);
+const tag = ref(-1);
 const area = ref(-1);
 const productTags = ref([
   {
@@ -394,7 +415,11 @@ const onfile = (e) => {
   picError.value = null;
 };
 
-const picToUrl = (pic) => URL.createObjectURL(pic);
+const picToUrl = (pic) => {
+  console.log(pic);
+  return URL.createObjectURL(pic);
+  return typeof pic === "object" ? URL.createObjectURL(pic) : pic;
+};
 
 const deletePic = (index) => {
   pics.value.splice(index, 1);

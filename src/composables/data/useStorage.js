@@ -1,4 +1,11 @@
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  getMetadata,
+  getBlob,
+} from "firebase/storage";
 
 const useStorage = () => {
   const storage = getStorage();
@@ -37,7 +44,20 @@ const useStorage = () => {
     }
   };
 
-  return { setPics };
+  const getPics = async (count, path) => {
+    try {
+      const storageRef = ref(storage, path + "/product-1");
+      const res = await getBlob(storageRef);
+      console.log(res);
+
+      return res;
+    } catch (err) {
+      console.error("Somethings went wrong!");
+      console.error(err);
+    }
+  };
+
+  return { setPics, getPics };
 };
 
 export default useStorage;
