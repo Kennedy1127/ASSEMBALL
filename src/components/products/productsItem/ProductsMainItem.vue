@@ -37,7 +37,7 @@
       <div class="detail_footer">
         <div class="detail_price">NT$ {{ renderProductPrice }}</div>
         <router-link
-          v-if="productData.seller_id !== auth.currentUser.uid"
+          v-if="productData.seller_id !== auth.currentUser?.uid"
           :to="{ name: 'ProductPayment' }"
         >
           <button>我要購買</button>

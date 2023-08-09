@@ -457,6 +457,7 @@ export default createStore({
       try {
         const res = await getDocuments("PRODUCTS");
         const products = [];
+
         for (let i = 0; i < res.length; i++) {
           const comments = await getSubCollectionDocuments(
             {
@@ -469,7 +470,6 @@ export default createStore({
           );
           products.push({ ...res[i], comments });
         }
-
         context.commit("setProducts", products);
       } catch (err) {
         console.error(err);
