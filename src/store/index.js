@@ -2,8 +2,7 @@ import { createStore } from "vuex";
 import axios from "axios";
 import getData from "@/composables/data/getData";
 
-const { getDocuments, getCollectionCount, getSubCollectionDocuments } =
-  getData();
+const { getDocuments, getSubCollectionDocuments } = getData();
 
 export default createStore({
   state: {
@@ -42,14 +41,14 @@ export default createStore({
     //////////////////////////////////////////////////////
     // 商品區塊
     products: [],
-    productsCount: 0,
     selectedProductsText: "",
     selectedProductsTag: 0,
     selectedProductsDate: -1,
 
     //////////////////////////////////////////////////////
     //會員中心區塊
-    MemberCenterOrderManage: [],
+    memberCenter: [],
+    Createteam: [],
 
     //////////////////////////////////////////////////////
     // 招募文案區塊
@@ -67,6 +66,7 @@ export default createStore({
     ///////////////////////////////////////////
     // 我的球隊區塊
     myplayerPopupsOpen: false,
+
     myplayerEditOpen: false,
     myplayerOverlay: true,
     myplayerTeam: {},
@@ -215,6 +215,7 @@ export default createStore({
 
   mutations: {
     //////////////////////////////////////////////////////
+
     // 通知頁面切換
     NotifyToggle(state) {
       state.isNotifyVisible = !state.isNotifyVisible;
@@ -236,6 +237,22 @@ export default createStore({
       state.isPersonalVisible = false;
       state.isMemberVisible = true;
     },
+
+    //////////////////////////////////////////////////////
+
+    //會員中心區塊
+
+    //取得會員資料
+    setMemberCenter(state, payload) {
+      console.log(payload);
+      state.memberCenter = { ...payload }; //payload:要運送出來的東西
+    },
+
+    // //取得創立球隊資料
+    // setCreateteam(state, payload) {
+    //   console.log([...payload]);
+    //   state.Createteam = [...payload]; //payload:要運送出來的東西
+    // },
 
     //////////////////////////////////////////////////////
     // 首頁區塊
@@ -287,12 +304,6 @@ export default createStore({
       state.selectedProductsText = "";
       state.selectedProductsDate = -1;
       state.selectedProductsTag = 0;
-    },
-
-    //////////////////////////////////////////////////////
-    //會員中心區塊
-    setMemberCenterOrderManage(state, payload) {
-      state.MemberCenterOrderManage = [...payload]; //payload:要運送出來的東西
     },
 
     //////////////////////////////////////////////////////
@@ -359,6 +370,7 @@ export default createStore({
     myplayerOverlayToggle(state) {
       state.myplayerPopupsOpen = !state.myplayerPopupsOpen;
     },
+
     //我的球隊撈資料
     setMyplayerTeam(state, payload) {
       console.log(payload);
@@ -440,20 +452,6 @@ export default createStore({
     },
 
     ///////////////////////////////////////
-
-    // 撈商品數量
-    async getProductsCount(context) {
-      try {
-        const res = await getCollectionCount("PRODUCTS");
-        if (!res) throw new Error("Cannot fetch response");
-        context.commit("setProductsCount", res);
-      } catch (err) {
-        console.error(err);
-        context.state.products = [];
-        context.state.productsCount = 0;
-      }
-    },
-
     // 撈商品資料
     async getProducts(context) {
       try {
@@ -480,17 +478,71 @@ export default createStore({
 
     ///////////////////////////////////////
 
-    // 撈會員中心訂單資料
-    async getMemberCenterOrderManage(context) {
+    // 撈會員中心 會員資料
+    // async getMemberCenter(context) {
+    //   try {
+    //     const res = await getDocuments("MEMBERS");
+    //     context.commit("setMemberCenter", res);
+    //     // console.log(res);
+    //     // const allMembers = await getDocuments("MEMBERS");
+    //     // const user = await getUser();
+    //     // const userMemberData = allMembers.find(
+    //     //   (member) => member.id === user.id
+    //     // );
+    //     // if (userMemberData) {
+    //     //   context.commit("setMemberCenter", userMemberData);
+    //     // } else {
+    //     //   console.error("User data not found in MEMBERS collection.");
+    //     // }
+    //   } catch (err) {
+    //     console.error(err);
+    //   }
+    // },
+
+    // 撈會員中心 資料
+    async getMemberCenter(context, payload) {
+      const memberDate = await getDocuments("MEMBERS");
+      console.log(memberDate);
+
+      const memberTeamDate = await getSubCollectionDocuments({
+        collectionName: "MEMBERS",
+        documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
+        subCollectionName: "CREATETEAM",
+        subDocumentId: "tZ6DGqZezEds1tc7uapu",
+      });
+      console.log(memberTeamDate);
+
+      const allMemberDate = {
+        ...memberDate[0],
+        memberTeamDate,
+      };
+      // console.log(allTeamData);
+
+      context.commit("setMemberCenter", allMemberDate);
+    },
+
+    // 撈訂單管理
+    async getProductManage(context, payload) {
       try {
-        const res = await axios.get("http://localhost:3000/member_order");
+        const res = await getSubCollectionDocuments(payload);
         if (!res) throw new Error("Cannot fetch response");
-        context.commit("setMemberCenterOrderManage", res.data); //setManageCopywritings: 寫在mutation裡面
-        // context.commit("setCopywritingsCount", res.data.length);
+        return res;
       } catch (err) {
         console.error(err);
       }
     },
+
+    // // 撈會員中心訂單資料
+    // async getMemberCenterOrderManage(context) {
+    //   try {
+    //     const res = await axios.get("http://localhost:3000/member_order");
+    //     if (!res) throw new Error("Cannot fetch response");
+    //     context.commit("setMemberCenterOrderManage", res.data); //setManageCopywritings: 寫在mutation裡面
+    //     // context.commit("setCopywritingsCount", res.data.length);
+    //   } catch (err) {
+    //     console.error(err);
+    //   }
+    // },
 
     ///////////////////////////////////////
 
@@ -515,6 +567,7 @@ export default createStore({
         console.error(err);
       }
     },
+
     //撈我的球隊的資料
 
     async getMyplayerTeam(context, payload) {
@@ -553,6 +606,7 @@ export default createStore({
       // console.log(allTeamData);
 
       context.commit("setMyplayerTeam", allTeamData);
+      return allTeamData;
     },
 
     // 撈後台-招募文案資料

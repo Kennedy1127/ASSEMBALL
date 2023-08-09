@@ -234,23 +234,69 @@
 
 <script setup>
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
-import { timestamp } from "@/firebase/config";
+import { timestamp, auth } from "@/firebase/config";
 import useData from "@/composables/data/useData";
-import { computed, ref } from "vue";
+import getData from "@/composables/data/getData";
+import useStorage from "@/composables/data/useStorage";
+import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const store = useStore();
+const route = useRoute();
 const router = useRouter();
-const { setDataError, setData, setDataSubCollection } = useData();
+const {
+  setDataError,
+  setData,
+  setDataSubCollection,
+  updateData,
+  updateDataSubCollection,
+} = useData();
+const { getDocument, getSubCollectionDocuments } = getData();
+const { getPics } = useStorage();
 
-const productName = ref("testtest");
-const price = ref("111");
-const email = ref("test@mail.com");
-const phone = ref("0955-111222");
-const comment = ref("testtesttest");
+onMounted(async () => {
+  if (!route.query.id) return;
+
+  store.state.isPending = true;
+
+  const productData = await getDocument("PRODUCTS", route.query.id);
+  productName.value = productData.title;
+  price.value = productData.price;
+  email.value = productData.email;
+  phone.value = productData.phone;
+  tag.value = productData.tag;
+  area.value = productData.area;
+
+  const picsData = await getPics(
+    4,
+    `images/PRODUCTS/${route.query.id}`,
+    "product"
+  );
+  pics.value = [...picsData];
+
+  const commentData = await getSubCollectionDocuments(
+    {
+      collectionName: "PRODUCTS",
+      documentId: route.query.id,
+      subCollectionName: "COMMENTS",
+    },
+    [["user_id", "==", auth.currentUser.uid]]
+  );
+
+  comment.value = commentData[0].comment;
+  commentId.value = commentData[0].id;
+  store.state.isPending = false;
+});
+
+const productName = ref("");
+const price = ref("");
+const email = ref("");
+const phone = ref("");
+const comment = ref("");
+const commentId = ref("");
 const pics = ref([]);
-const tag = ref(2);
+const tag = ref(-1);
 const area = ref(-1);
 const productTags = ref([
   {
@@ -417,37 +463,64 @@ const checkSubmitData = () => {
 };
 
 const postProduct = async (data) => {
-  const id = await setData("PRODUCTS", data, pics.value);
+  const id = await setData("PRODUCTS", data, pics.value, "product");
   const productTarget = {
     collectionName: "PRODUCTS",
     documentId: id,
     subCollectionName: "COMMENTS",
   };
 
-  const subCollectionData = {
+  const commentData = {
     comment: comment.value,
-    icon: null,
-    name: "棒球專家",
-    user_id: "id",
+    user_id: auth.currentUser.uid,
     date: timestamp,
+    read: true,
   };
 
-  await setDataSubCollection(productTarget, subCollectionData);
+  await setDataSubCollection(productTarget, commentData);
 
-  // const saleTarget = {
-  //   collectionName: "MEMBERS",
-  //   documentId: id,
-  //   subCollectionName: "SALES",
-  // };
+  const productManageTarget = {
+    collectionName: "MEMBERS",
+    documentId: store.state.user.id,
+    subCollectionName: "PRODUCTMANAGE",
+  };
 
-  // await setDataSubCollection(saleTarget, subCollectionData);
+  const productManageData = {
+    title: data.title,
+    price: data.price,
+    date: data.date,
+    product_id: id,
+  };
 
+  await setDataSubCollection(productManageTarget, productManageData);
   return id;
 };
 
-const updateProduct = async (id, data) => {
-  await setData("PRODUCTS", data, pics.value);
-  return id;
+const updateProduct = async (data) => {
+  await updateData(
+    {
+      collectionName: "PRODUCTS",
+      documentId: route.query.id,
+    },
+    data,
+    pics.value,
+    "product"
+  );
+
+  const commentData = {
+    comment: comment.value,
+  };
+  await updateDataSubCollection(
+    {
+      collectionName: "PRODUCTS",
+      documentId: route.query.id,
+      subCollectionName: "COMMENTS",
+      subDocumentId: commentId.value,
+    },
+    commentData
+  );
+
+  return route.query.id;
 };
 
 const handleSubmit = async () => {
@@ -465,12 +538,13 @@ const handleSubmit = async () => {
     date: timestamp,
     status: true,
     home_status: -1,
-    seller_icon: "url",
-    seller_name: "棒球專家",
-    seller_id: "id",
+    seller_id: auth.currentUser.uid,
   };
 
-  const id = await postProduct(data);
+  const id = route.query.id
+    ? await updateProduct(data)
+    : await postProduct(data);
+
   if (setDataError.value) {
     error.value = "商品刊登失敗，請重新整理或洽平台管理員";
     return (store.state.isPending = false);

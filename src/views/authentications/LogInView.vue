@@ -65,9 +65,15 @@
           登入
           <font-awesome-icon icon="fa-solid fa-chevron-right" />
         </button>
-        <div v-if="error" class="authentication_psw_error">
-          {{ error }}
-        </div>
+        <button>
+          <router-link :to="{ name: info.link }">
+            <!-- {{ info.linkName }} -->前往註冊
+            <font-awesome-icon icon="fa-solid fa-chevron-right" />
+          </router-link>
+        </button>
+      </div>
+      <div v-if="error" class="authentication_psw_error">
+        {{ error }}
       </div>
     </form>
 
@@ -292,6 +298,7 @@ const handleSignin = async () => {
     }
 
     &_rememberPsw {
+      margin-bottom: 10rem;
       display: flex;
       justify-content: space-between;
       margin-top: 1rem;
@@ -320,7 +327,7 @@ const handleSignin = async () => {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 0.5rem;
+      // gap: 0.5rem;
 
       position: absolute;
       top: 80%;
@@ -333,9 +340,9 @@ const handleSignin = async () => {
         width: 10rem;
         border-radius: 2rem;
         padding: 0.5rem 0.25rem;
-        color: var(--pale-white);
+        // color: var(--pale-white);
         font-size: 1.25rem;
-        background-color: var(--primary-blue);
+        // background-color: var(--primary-blue);
         font-family: "Noto Sans TC";
         font-weight: 500;
         letter-spacing: 5px;
@@ -344,15 +351,59 @@ const handleSignin = async () => {
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
+        &:nth-child(1) {
+          background-color: var(--primary-blue);
+          color: var(--pale-white);
+        }
+        &:nth-child(2) {
+          display: none;
+        }
       }
     }
+  }
 
-    .authentication_psw_error {
-      width: 50%;
-      font-size: 1rem;
-      color: var(--accent-red);
-      text-align: center;
-      // display: none;
+  .authentication_psw_error {
+    // width: 50%;
+    font-size: 1rem;
+    color: var(--accent-red);
+    text-align: center;
+    // display: none;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .authentication {
+    &_text {
+      width: 100%;
+      &_quickLogin {
+        width: 50%;
+        display: block;
+        margin: auto;
+        button {
+          width: 100%;
+          margin-bottom: 1rem;
+        }
+      }
+      &_rememberPsw {
+      }
+      &_btn {
+        position: initial;
+        margin: auto;
+        transform: none;
+        gap: 1rem;
+        button {
+          &:nth-child(1) {
+            background-color: var(--primary-blue);
+            color: var(--pale-white);
+          }
+          &:nth-child(2) {
+            display: block;
+            border: solid 1px var(--primary-blue);
+            background-color: var(--pale-white);
+            color: var(--primary-blue);
+          }
+        }
+      }
     }
   }
 }

@@ -2,16 +2,22 @@
   <section class="product_main_detail">
     <div class="product_main_detail_pic">
       <div class="product_main_detail_pic_big">
-        <img :src="renderPic" alt="productdetail_pic main" />
+        <img
+          :src="pics[picIndex] || require('@/assets/loading/loading.gif')"
+          alt="productdetail_pic main"
+        />
       </div>
       <div class="product_main_detail_pic_all">
         <div
-          v-for="pic in productData.pics"
-          :key="pic"
+          v-for="index in 4"
+          :key="index"
           class="product_main_detail_pic_all_small"
-          @click="swapPic(pic)"
+          @click="swapPic(index - 1)"
         >
-          <img :src="pic" alt="productdetail_pic" />
+          <img
+            :src="pics[index - 1] || require('@/assets/loading/loading.gif')"
+            alt="productdetail_pic"
+          />
         </div>
       </div>
     </div>
@@ -30,7 +36,10 @@
 
       <div class="detail_footer">
         <div class="detail_price">NT$ {{ renderProductPrice }}</div>
-        <router-link :to="{ name: 'ProductPayment' }">
+        <router-link
+          v-if="productData.seller_id !== auth.currentUser.uid"
+          :to="{ name: 'ProductPayment' }"
+        >
           <button>我要購買</button>
         </router-link>
       </div>
@@ -40,7 +49,10 @@
 
 <script setup>
 import productTags from "@/composables/tables/productTags";
-import { computed, ref } from "vue";
+import { auth } from "@/firebase/config";
+import getData from "@/composables/data/getData";
+import useStorage from "@/composables/data/useStorage";
+import { computed, onMounted, ref } from "vue";
 
 const props = defineProps({
   productData: {
@@ -48,8 +60,24 @@ const props = defineProps({
     required: true,
   },
 });
+const { getDocument } = getData();
+const { getPicsLink } = useStorage();
 
-const renderPic = ref(props.productData.pics[0]);
+onMounted(async () => {
+  pics.value = [
+    ...(await getPicsLink(
+      4,
+      `images/PRODUCTS/${props.productData.id}`,
+      "product"
+    )),
+  ];
+
+  const seller = await getDocument("MEMBERS", props.productData.seller_id);
+  props.productData.seller_name = seller.lastname + seller.firstname;
+});
+
+const pics = ref([]);
+const picIndex = ref(0);
 
 const renderProductItems = computed(() => [
   {
@@ -80,8 +108,8 @@ const convertPrice = (price) => {
   return Number(price).toLocaleString();
 };
 
-const swapPic = (pic) => {
-  renderPic.value = pic;
+const swapPic = (index) => {
+  picIndex.value = index;
 };
 </script>
 

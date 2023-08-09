@@ -13,17 +13,14 @@
       >
         <div class="product_message_area_all_pic">
           <img
+            v-if="productMsgData.seller_id === item.user_id"
             class="product_message_area_all_pic_mark"
             src="~@/assets/images/products/mark.png"
             alt="mark"
           />
           <img
             class="product_message_area_all_pic_user"
-            :src="
-              item.icon
-                ? item.icon
-                : require('@/assets/images/icons/main-icon.png')
-            "
+            :src="require('@/assets/images/icons/main-icon.png')"
             alt="message_pic01"
           />
         </div>
@@ -34,28 +31,41 @@
           </div>
           <div class="product_message_area_all_text_all">
             <textarea
-              :disabled="!editMode || item.user_id !== '1'"
+              :disabled="
+                !editMode ||
+                item.user_id !== auth.currentUser.uid ||
+                editCommentId !== item.id
+              "
               v-model="item.comment"
               ref="comment"
+              :class="{
+                active:
+                  editMode &&
+                  item.user_id === auth.currentUser.uid &&
+                  editCommentId === item.id,
+              }"
             >
             </textarea>
           </div>
           <div class="product_message_area_all_text_date">
             <div class="product_message_area_all_text_date_icons">
               <font-awesome-icon
-                v-if="!editMode || item.user_id !== '1'"
+                v-if="
+                  item.user_id === auth.currentUser?.uid &&
+                  editCommentId !== item.id
+                "
                 class="icon icon--pen"
                 :icon="['fas', 'pen']"
-                @click="editMode = true"
+                @click="openEditComment(item.id)"
               />
               <font-awesome-icon
-                v-if="editMode && item.user_id === '1'"
+                v-if="editCommentId === item.id"
                 class="icon icon--xmark"
                 :icon="['fas', 'xmark']"
                 @click="closeEditComment"
               />
               <font-awesome-icon
-                v-if="editMode && item.user_id === '1'"
+                v-if="editCommentId === item.id"
                 class="icon icon--check"
                 :icon="['fas', 'check']"
                 @click="submitUpdateComment(item.id)"
@@ -70,7 +80,7 @@
     <div class="product_message_importing">
       <div class="product_message_importing_user_pic">
         <img
-          src="~@/assets/images/products/importing_pic.png"
+          :src="require('@/assets/images/icons/main-icon.png')"
           alt="importing_pic"
         />
       </div>
@@ -119,21 +129,31 @@
 </template>
 
 <script setup>
-import { timestamp } from "@/firebase/config";
+import { timestamp, auth } from "@/firebase/config";
+import getData from "@/composables/data/getData";
 import useData from "@/composables/data/useData";
-import { computed, ref } from "vue";
-import { useRoute } from "vue-router";
+import { computed, onMounted, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 
 const store = useStore();
 const route = useRoute();
+const router = useRouter();
 const props = defineProps({
   productMsgData: {
     type: Object,
     required: true,
   },
 });
+const { getDocument } = getData();
 const { setDataSubCollection, updateDataSubCollection } = useData();
+
+onMounted(() => {
+  props.productMsgData.comments.forEach(async (comment) => {
+    const user = await getDocument("MEMBERS", comment.user_id);
+    comment.name = user.lastname + user.firstname;
+  });
+});
 
 const inputComment = ref("");
 const error = ref(null);
@@ -154,6 +174,11 @@ const convertDate = (msgDate) => {
 const submitComment = async () => {
   store.state.isPending = true;
 
+  if (!auth.currentUser) {
+    store.state.isPending = false;
+    return router.push({ name: "Login" });
+  }
+
   if (!inputComment.value) {
     error.value = "請輸入你的留言內容哦";
     return (store.state.isPending = false);
@@ -167,32 +192,49 @@ const submitComment = async () => {
 
   const subCollectionData = {
     comment: inputComment.value,
-    icon: null,
-    name: "棒球專家",
-    user_id: "id",
+    name: store.state.user.firstname + store.state.user.lastname,
+    user_id: auth.currentUser.uid,
     date: timestamp,
+    read: false,
   };
 
   await setDataSubCollection(productTarget, subCollectionData);
   comments.value.push(subCollectionData);
+
   const selectedComments = store.state.products.find(
     (product) => product.id === route.params.productId
   ).comments;
   selectedComments.push(subCollectionData);
+
   store.state.isPending = false;
   inputComment.value = "";
 };
 
 const editMode = ref(false);
-const editComment = comments.value.find((comment) => comment.user_id === "1");
-let lastComment = editComment.comment;
+const editCommentId = ref(null);
+let editComment = ref(null);
+let lastComment = null;
+
+const openEditComment = (id) => {
+  editMode.value = true;
+  editComment = comments.value.find((comment) => comment.id === id);
+  editCommentId.value = id;
+  lastComment = editComment.comment;
+};
 
 const closeEditComment = () => {
   editMode.value = false;
   editComment.comment = lastComment;
+  editCommentId.value = null;
+  lastComment = null;
 };
 
 const submitUpdateComment = async (id) => {
+  if (!editComment.comment) {
+    editComment.comment = lastComment;
+    return;
+  }
+
   const updateTarget = {
     collectionName: "PRODUCTS",
     documentId: route.params.productId,
@@ -206,6 +248,7 @@ const submitUpdateComment = async (id) => {
   await updateDataSubCollection(updateTarget, updateData);
   lastComment = editComment.comment;
   editMode.value = false;
+  editCommentId.value = null;
 };
 </script>
 
@@ -300,18 +343,19 @@ const submitUpdateComment = async (id) => {
 
         &_all {
           margin-top: 1rem;
-          width: 50%;
+          width: 65%;
           color: var(--secondary-gray-1);
 
           textarea {
             resize: none;
             color: inherit;
             width: 100%;
+            min-height: 150px;
             padding: 0rem 0.5rem;
             border: none;
             background-color: transparent;
 
-            &:focus {
+            &.active {
               background-color: var(--pale-white);
               outline: 2px solid var(--secondary-blue-1);
             }
@@ -323,7 +367,7 @@ const submitUpdateComment = async (id) => {
         }
 
         &_date {
-          margin-top: 4rem;
+          margin-top: 1rem;
           text-align: right;
           color: var(--secondary-gray-1);
           font-size: 0.875rem;

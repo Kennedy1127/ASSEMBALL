@@ -101,9 +101,23 @@
 <script>
 import roles from "@/composables/tables/roles";
 import area from "@/composables/tables/area";
+import useData from "@/composables/data/useData";
+import getData from "@/composables/data/getData";
+import { auth } from "@/firebase/config";
+
+const { getDocuments, getCollectionCount, getSubCollectionDocuments } =
+  getData();
+
+const { setData, updateData, setDataSubCollection } = useData();
 
 export default {
   props: ["placeholder", "type", "modelValue"],
+
+  //撈球隊欄位
+  async mounted() {
+    const res = await this.$store.dispatch("getMyplayerTeam");
+    console.log(res);
+  },
 
   data() {
     return {
@@ -152,10 +166,8 @@ export default {
       });
     },
 
-    // 驗證
-
     //提交表單
-    submitForm() {
+    async submitForm() {
       if (this.CreateteamIntroduction.length < 10) {
         this.IntroductionError = "親愛的球友，球隊簡介至少需要10個字喔！";
         return;
@@ -163,7 +175,20 @@ export default {
       this.IntroductionError = "";
 
       alert("球隊資料提交成功！");
-      // 表單資料確認
+
+      // 上傳資料庫更新
+      const data = {
+        teamName: this.teamName,
+        location: this.region,
+        icon: this.avatar,
+        intro: this.CreateteamIntroduction,
+        user_id: auth.currentUser.uid,
+      };
+      console.log(data);
+
+      await setData("TEAMS", data);
+
+      // 檢查表單資料
       console.log("球隊名稱：", this.teamName);
       console.log("地區：", this.region);
       console.log("球隊隊徽：", this.avatar);
