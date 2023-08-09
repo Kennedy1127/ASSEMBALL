@@ -48,10 +48,16 @@
       </div>
     </div>
     <div class="myplayer_message_editPen">
-      <font-awesome-icon
-        :icon="['fas', 'pen']"
-        class="myplayer_message_editPen_item"
-      />
+      <div class="myplayer_message_editPen_wrap">
+        <font-awesome-icon
+          :icon="['fas', 'plus']"
+          class="myplayer_message_editPen_item"
+        />
+        <font-awesome-icon
+          :icon="['fas', 'trash-can']"
+          class="myplayer_message_editPen_trash"
+        />
+      </div>
     </div>
   </section>
 </template>
@@ -321,6 +327,13 @@ export default {
             color: var(--pale-white);
             font-family: "Montserrat", sans-serif;
             cursor: pointer;
+            transition: 0.3s;
+            &:hover {
+              color: var(--primary-blue);
+              background-color: var(--pale-white);
+              border: 1px solid var(--primary-blue);
+              transition: 0.3s;
+            }
           }
         }
       }
@@ -329,17 +342,30 @@ export default {
   &_message_editPen {
     // background-color: purple;
     margin-right: 2rem;
-    &_item {
+    &_wrap {
+      position: sticky;
+      top: 150px;
+    }
+    &_item,
+    &_trash {
       width: 2rem;
       height: 2rem;
       background-color: var(--pale-white);
       color: var(--primary-blue);
       padding: 1rem;
       border-radius: 50%;
-      position: sticky;
-      top: 150px;
       display: block;
       cursor: pointer;
+      transition: 0.3s;
+    }
+    &_item:hover,
+    &_trash:hover {
+      background-color: var(--primary-blue);
+      color: var(--pale-white);
+      transition: 0.3s;
+    }
+    &_trash {
+      margin-top: 0.5rem;
     }
   }
 }
