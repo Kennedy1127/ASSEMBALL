@@ -34,10 +34,16 @@ const getData = () => {
     }
   };
 
-  const getDocuments = async (target) => {
+  const getDocuments = async (target, conditions = []) => {
     try {
       const docRef = collection(db, target);
-      const res = await getDocs(docRef);
+      const q = query(
+        docRef,
+        ...conditions.map((condition) =>
+          where(condition[0], condition[1], condition[2])
+        )
+      );
+      const res = await getDocs(q);
       return res.docs.map((doc) => doc.data());
     } catch (err) {
       console.error("Something went wrong!");
@@ -76,7 +82,6 @@ const getData = () => {
         target.subCollectionName
       );
 
-      // conditions = [["status", "==", true]];
       const q = query(
         docRef,
         ...conditions.map((condition) => {

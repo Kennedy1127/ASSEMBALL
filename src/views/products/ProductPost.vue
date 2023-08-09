@@ -559,6 +559,23 @@ const handleSubmit = async () => {
   store.state.isPending = false;
   router.push({ name: "ProductDetail", params: { productId: id } });
 };
+
+const deleteProduct = async () => {
+  store.state.isPending = true;
+
+  await updateData(
+    {
+      collectionName: "PRODUCTS",
+      documentId: route.query.id,
+    },
+    {
+      status: false,
+    }
+  );
+
+  router.push({ name: "ProductsManage" });
+  store.state.isPending = false;
+};
 </script>
 
 <style lang="scss">

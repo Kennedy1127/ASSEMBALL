@@ -455,7 +455,7 @@ export default createStore({
     // 撈商品資料
     async getProducts(context) {
       try {
-        const res = await getDocuments("PRODUCTS");
+        const res = await getDocuments("PRODUCTS", [["status", "==", true]]);
         const products = [];
 
         for (let i = 0; i < res.length; i++) {

@@ -74,7 +74,7 @@ onMounted(async () => {
   store.state.isPending = true;
 
   const productData = await getDocument("PRODUCTS", route.params.productId);
-  if (!productData) {
+  if (!productData || !productData.status) {
     router.push({ name: "Home" });
   }
 
