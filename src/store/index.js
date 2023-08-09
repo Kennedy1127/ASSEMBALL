@@ -606,6 +606,7 @@ export default createStore({
       // console.log(allTeamData);
 
       context.commit("setMyplayerTeam", allTeamData);
+      return allTeamData;
     },
 
     // 撈後台-招募文案資料
