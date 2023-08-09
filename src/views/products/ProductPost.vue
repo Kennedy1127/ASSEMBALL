@@ -215,9 +215,15 @@
           </div>
 
           <div class="product_post_info_btns">
-            <button @click.prevent="console.log('cancel')">取消</button>
-            <button @click.prevent="console.log('delete')">刪除商品</button>
-            <button>刊登商品</button>
+            <button @click.prevent="router.go(-1)">取消</button>
+            <button
+              class="yellow"
+              v-if="route.query.id"
+              @click.prevent="deleteProduct"
+            >
+              刪除商品
+            </button>
+            <button class="blue">刊登商品</button>
           </div>
 
           <p
@@ -552,6 +558,23 @@ const handleSubmit = async () => {
 
   store.state.isPending = false;
   router.push({ name: "ProductDetail", params: { productId: id } });
+};
+
+const deleteProduct = async () => {
+  store.state.isPending = true;
+
+  await updateData(
+    {
+      collectionName: "PRODUCTS",
+      documentId: route.query.id,
+    },
+    {
+      status: false,
+    }
+  );
+
+  router.push({ name: "ProductsManage" });
+  store.state.isPending = false;
 };
 </script>
 
@@ -931,42 +954,6 @@ const handleSubmit = async () => {
           flex-wrap: wrap;
           gap: 1rem;
         }
-
-        // label {
-        //   display: flex;
-        //   flex-direction: column;
-        //   text-align: center;
-        //   color: var(--secondary-blue-1);
-        //   border: 2px dashed var(--secondary-blue-1);
-        //   padding: 1.5rem;
-        //   max-width: 12rem;
-        //   cursor: pointer;
-
-        //   @media screen and (max-width: 420px) {
-        //     max-width: 100%;
-        //     min-height: 342px;
-        //     align-items: center;
-        //     justify-content: center;
-        //   }
-
-        //   img {
-        //     padding: 1rem;
-        //     padding-left: 1.5rem;
-        //     width: 8rem;
-
-        //     @media screen and (max-width: 420px) {
-        //       width: 10rem;
-        //     }
-        //   }
-
-        //   &:hover {
-        //     background-color: var(--secondary-blue-4);
-        //   }
-
-        //   input {
-        //     display: none;
-        //   }
-        // }
       }
 
       &_btns {
@@ -1004,12 +991,12 @@ const handleSubmit = async () => {
             border: 2px solid var(--secondary-gray-3);
           }
 
-          &:nth-child(2) {
+          &.yellow {
             color: var(--secondary-gray-1);
             background-color: var(--error-yellow);
           }
 
-          &:nth-child(3) {
+          &.blue {
             color: var(--pale-white);
             background-color: var(--primary-blue);
           }
