@@ -33,6 +33,7 @@
         <!-- 後台首頁最新消息管理 -->
       </div>
 
+     
       <div
         v-if="ChangePage === 'BackstageHomepageProducts'"
         class="Backstage_page"
@@ -95,6 +96,7 @@ import BackstageManager from "@/components/Backstage/BackstageManager.vue";
 export default {
   data() {
     return {
+  
       ChangePage: "BackstageHomepageNews",
       ChangeHeader:"BackstageHeaderHomePage"
     };
@@ -120,9 +122,9 @@ export default {
       this.ChangePage = pageName; //ChangePage改成pageName
     
     },
+    
     doChangeHeader(HeaderName) {
       //把改頁面事件註冊給子組件
-  
       this.ChangeHeader = HeaderName;
     },
    
