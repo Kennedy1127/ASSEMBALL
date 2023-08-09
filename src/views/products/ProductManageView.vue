@@ -22,7 +22,7 @@
             />
           </div>
 
-          <button class="del_btn">
+          <button class="del_btn" @click="deleteProducts">
             <div class="del_btn_text">刪除商品</div>
             <div class="del_btn_img">
               <font-awesome-icon icon="fa-solid fa-trash-can" />
@@ -98,6 +98,7 @@
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
 import { auth } from "@/firebase/config";
 import getData from "@/composables/data/getData";
+import useData from "@/composables/data/useData";
 
 export default {
   components: {
@@ -137,7 +138,6 @@ export default {
       this.manage.push(productData);
     }
 
-    // this.manage = [...manageData];
     this.$store.state.isPending = false;
   },
 
@@ -195,6 +195,31 @@ export default {
 
     goProduct(id) {
       this.$router.push({ name: "ProductDetail", params: { productId: id } });
+    },
+
+    async deleteProducts() {
+      this.$store.state.isPending = true;
+
+      if (!this.selectedDeleteProduct.length) {
+        return;
+      }
+
+      const { updateData } = useData();
+
+      for (let i = 0; i < this.selectedDeleteProduct.length; i++) {
+        await updateData(
+          {
+            collectionName: "PRODUCTS",
+            documentId: this.selectedDeleteProduct[i],
+          },
+          {
+            status: false,
+          }
+        );
+      }
+
+      this.$router.go(0);
+      this.$store.state.isPending = false;
     },
   },
 };

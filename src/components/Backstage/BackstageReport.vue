@@ -79,7 +79,11 @@
                 </li>
               </ul>
               直接封鎖
-              <button @click="BlockadeMenu" class="table_row_menu" ref="Blockade">
+              <button
+                @click="BlockadeMenu"
+                class="table_row_menu"
+                ref="Blockade"
+              >
                 <font-awesome-icon icon="fa-solid fa-angle-down" />
               </button>
             </td>
@@ -107,7 +111,7 @@
                 name="Blockade"
                 :value="index"
               />
-              {{ convertFont(item.Blockade) }}
+          
             </td>
           </tr>
         </table>
@@ -123,220 +127,219 @@
   </div>
 </template>
 <script>
+import { db } from "@/firebase/config"; //引入data base
+import { addDoc, doc, getDoc, addDocs } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 export default {
   data() {
     return {
       page: 1,
       perPage: 17,
-      Report: [
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-          Blockade: false,
-        },
-        {
-          Number: "001",
-          Name: "阿狗",
-          Type: "商品",
-          Reason: "商品不實",
-          Link: "####################",
-          Points: 2,
-          Blockade: false,
-
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "徵人文章",
-          Reason: "垃圾文章",
-          Link: "####################",
-          Points: 3,
-          Blockade: false,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "垃圾內容",
-          Link: "####################",
-          Points: 1,
-          Blockade: false,
-
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "垃圾廣告",
-          Link: "####################",
-          Points: 1,
-          Blockade: false,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-          Blockade: false,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-            Blockade: false,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-            Blockade: false,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-            Blockade: false,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-            Blockade: false,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-            Blockade: false,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-            Blockade: false,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-            Blockade: false,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-            Blockade: false,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-            Blockade: false,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-            Blockade: false,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-            Blockade: false,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-            Blockade: false,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-            Blockade: false,
-        },
-        {
-          Number: "001",
-          Name: "楊佩蓉",
-          Type: "留言",
-          Reason: "辱罵他人",
-          Link: "####################",
-          Points: 1,
-            Blockade: false,
-        },
-      ],
+      // Report: [
+      //   {
+      //     Number: "1",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "辱罵他人",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "2",
+      //     Name: "阿狗",
+      //     Type: "商品",
+      //     Reason: "商品不實",
+      //     Link: "####################",
+      //     Points: 2,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "3",
+      //     Name: "楊佩蓉",
+      //     Type: "徵人文章",
+      //     Reason: "垃圾文章",
+      //     Link: "####################",
+      //     Points: 3,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "4",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "垃圾內容",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "5",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "垃圾廣告",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "5",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "辱罵他人",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "6",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "辱罵他人",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "7",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "辱罵他人",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "8",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "辱罵他人",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "9",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "辱罵他人",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "10",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "辱罵他人",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "11",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "辱罵他人",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "12",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "辱罵他人",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "13",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "辱罵他人",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "14",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "辱罵他人",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "15",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "辱罵他人",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "16",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "辱罵他人",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "17",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "辱罵他人",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "18",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "辱罵他人",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      //   {
+      //     Number: "19",
+      //     Name: "楊佩蓉",
+      //     Type: "留言",
+      //     Reason: "辱罵他人",
+      //     Link: "####################",
+      //     Points: 1,
+      //     Blockade: false,
+      //   },
+      // ],
+      Report: [],
 
       TypeArray: [], //臨時陣列
       ReasonArray: [],
       PointsArray: [],
-      BlockadeArray:[],
+      BlockadeArray: [],
 
       TypeMenuShow: false, //控制下拉式選單
       ReasonMenuShow: false,
       PointsMenuShow: false,
-      BlockadeMenuShow:false,
+      BlockadeMenuShow: false,
 
       currentType: 0, //當前篩選檢舉類型
       currentReason: 0,
       currentPoints: 0,
-      currentBlockade:0,
-      currentSearch:"",
+      currentBlockade: 0,
+      currentSearch: "",
     };
   },
   computed: {
     ReportFilterType() {
-      
       if (this.currentType == 0) return this.Report;
-      return this.Report.filter(
-        (v) => v.Type == this.currentType
-      );
+      return this.Report.filter((v) => v.Type == this.currentType);
     },
 
     ReportFilterReason() {
@@ -359,8 +362,8 @@ export default {
     },
     ReportFilterSearch() {
       if (this.currentSearch == "") return this.ReportFilterBlockade;
-      return this.ReportFilterBlockade.filter(
-        (v) => v.Name.includes(this.currentSearch)
+      return this.ReportFilterBlockade.filter((v) =>
+        v.Name.includes(this.currentSearch)
       );
     },
 
@@ -380,20 +383,29 @@ export default {
     },
     ReasonMenu() {
       const ReasonSet = new Set(this.Report.map((item) => item.Reason)); //Set
-      this.ReasonArray = Array.from(ReasonSet).map((item) => ({ Reason: item }));
+      this.ReasonArray = Array.from(ReasonSet).map((item) => ({
+        Reason: item,
+      }));
       this.ReasonMenuShow = !this.ReasonMenuShow;
     },
     PointsMenu() {
       const PointsSet = new Set(this.Report.map((item) => item.Points)); //Set
-      this.PointsArray = Array.from(PointsSet).map((item) => ({ Points: item }));
+      this.PointsArray = Array.from(PointsSet).map((item) => ({
+        Points: item,
+      }));
       this.PointsMenuShow = !this.PointsMenuShow;
     },
     BlockadeMenu() {
       const BlockadeSet = new Set(this.Report.map((item) => item.Blockade)); //Set
-      this.BlockadeArray = Array.from(BlockadeSet).map((item) => ({ Blockade: item }));
+      this.BlockadeArray = Array.from(BlockadeSet).map((item) => ({
+        Blockade: item,
+      }));
       this.BlockadeMenuShow = !this.BlockadeMenuShow;
     },
     convertFont(str) {
+      if (!str) {
+        return;
+      }
       //限制資料字數
       if (str.length > 10) {
         return str.slice(0, 10) + "...";
@@ -408,20 +420,16 @@ export default {
         this.ReasonMenuShow = true;
       } else if (e.target.closest(".table_row_menu") === this.$refs.Points) {
         this.PointsMenuShow = true;
-      } else if (e.target.closest(".table_row_menu") === this.$refs. Blockade) {
-        this. BlockadeMenuShow = true;
-      } 
-      
-      
-      else {
+      } else if (e.target.closest(".table_row_menu") === this.$refs.Blockade) {
+        this.BlockadeMenuShow = true;
+      } else {
         this.TypeMenuShow = false;
         this.ReasonMenuShow = false;
         this.PointsMenuShow = false;
-        this. BlockadeMenuShow = false;
-
+        this.BlockadeMenuShow = false;
       }
     },
- 
+
     pageup() {
       if (this.page != 1) {
         //往上換頁
@@ -447,22 +455,45 @@ export default {
     updateBlockade(e) {
       this.currentBlockade = e;
     },
-    updateSearch(){
-      this.currentSearch=this.SearchText;
-      this.SearchText="";
+    updateSearch() {
+      this.currentSearch = this.SearchText;
+      this.SearchText = "";
     },
-    Reset(){
+    Reset() {
       this.currentType = 0;
       this.currentReason = 0;
       this.currentPoints = 0;
       this.currentBlockade = 0;
-      this.currentSearch="";
-    }
+      this.currentSearch = "";
+    },
+     //從firebase引入資料
+     async GetData() {
+      try {
+        const ReportCollection = collection(db, "BACKSTAGEREPORT"); // 取得集合
+        const ReportDocuments = await getDocs(ReportCollection); // 取得集合內的所有物件
+        ReportDocuments.forEach((x) => {
+          // console.log(x.data());
+          this.Report.push(x.data()); // 物件轉陣列
+        });
+      } catch (err) {
+        alert(err);
+      }
+    },
+    //      AddData(){
+    //  //將資料上傳到firebase
+    //         const ReportCollection = collection(db, "BACKSTAGEREPORT"); 
+    //         this.Report.forEach(x =>
+    //         {
+    //           const docRef = addDoc(ReportCollection, x)//
+    //           // console.log("資料", docRef);
+    //         })
+    // }
   },
-  mounted(){
+  mounted() {
     window.addEventListener("click", this.CloseMenu); //監聽如果任意位置有被點擊觸發CloseMenu
-
-  }
+    // this.AddData();
+    this.GetData();
+  },
 };
 </script>
 <style scoped lang="scss">
@@ -529,7 +560,7 @@ export default {
           top: 40%;
           right: 1.25rem;
           transform: translateY(-50%);
-background-color: var(--pale-white);
+          background-color: var(--pale-white);
         }
       }
     }

@@ -234,12 +234,14 @@ export default {
       .myplayer_message_area_card {
         width: 45%;
         background-color: var(--pale-white);
-        padding: 2rem;
+        padding: 1rem;
         margin-bottom: 12rem;
         position: relative;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        border-radius: var(--round);
+        box-shadow: var(--shadow-wide);
 
         &:nth-child(even) {
           // margin-top: 2.5rem;
@@ -286,20 +288,16 @@ export default {
           }
           .myplayer_message_area_text {
             font-size: 1rem;
-            color: var(--primary-blue);
+            color: var(--input-label-gray);
             padding: 1.5rem 0rem;
+            margin-bottom: 1.5rem;
+            text-indent: 2em;
+            display: -webkit-box;
+            -webkit-line-clamp: 10;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+            white-space: normal;
             overflow: hidden;
-            // display: -webkit-box;
-            // margin-top: 0.5rem;
-            // font-size: 1rem;
-            // color: var(--primary-blue);
-            // -webkit-line-clamp: 3;
-            // -webkit-box-orient: vertical;
-            // overflow: hidden;
-            // text-overflow: ellipsis;
-            // line-clamp: 3;
-            // box-orient: vertical;
-            // white-space: normal;
           }
         }
         .myplayer_message_area_more_wrap {

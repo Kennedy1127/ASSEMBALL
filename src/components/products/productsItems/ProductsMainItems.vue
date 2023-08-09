@@ -55,7 +55,6 @@ const onScroll = (e) => {
 
 onMounted(() => {
   window.addEventListener("scroll", onScroll);
-  console.log(store.state.products);
 });
 
 onUnmounted(() => {
