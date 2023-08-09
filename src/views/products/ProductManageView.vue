@@ -15,7 +15,11 @@
 
         <div class="products_manage_btn_area">
           <div class="products_manage_btn_area_select">
-            <SelectorComponent :options="productDate" placeholder="選擇日期" />
+            <SelectorComponent
+              v-model="order"
+              :options="productDate"
+              placeholder="選擇日期"
+            />
           </div>
 
           <button class="del_btn">
@@ -30,7 +34,7 @@
       <section class="manage_from">
         <div class="manage_item manage_item_header">
           <div class="manage_item_list manage_checkbox">
-            <input type="checkbox" id="checkbox" />
+            <!-- <input type="checkbox" id="checkbox" /> -->
           </div>
           <div class="manage_item_list manage_item_title">標題</div>
           <div class="manage_item_list manage_item_price">價格</div>
@@ -39,9 +43,14 @@
           <div class="manage_item_list manage_item_icon">商品修改</div>
         </div>
 
-        <div v-for="item in manage" class="manage_item">
+        <div v-for="item in computedManage" class="manage_item">
           <div class="manage_item_list manage_checkbox">
-            <input type="checkbox" id="checkbox" />
+            <input
+              type="checkbox"
+              :id="item.id"
+              :value="item.id"
+              v-model="selectedDeleteProduct"
+            />
           </div>
 
           <div class="manage_item_list manage_item_title">
@@ -61,8 +70,8 @@
           <div
             class="manage_item_list manage_item_icon manage_item_icon--comment"
           >
-            <button>
-              <div class="notify">1</div>
+            <button @click="goProduct(item.id)">
+              <div v-if="item.counts" class="notify">{{ item.counts }}</div>
               <span>
                 <font-awesome-icon
                   icon="fa-solid fa-comment-dots"
@@ -72,7 +81,7 @@
             </button>
           </div>
           <div class="manage_item_list manage_item_icon manage_item_icon--pen">
-            <button @click="goEdit(item.product_id)">
+            <button @click="goEdit(item.id)">
               <font-awesome-icon
                 icon="fa-solid fa-pen"
                 style="color: #1e60cd"
@@ -81,66 +90,60 @@
           </div>
         </div>
       </section>
-      <!-- <PaginationComponent
-        :totalPages="computedTotalPages"
-        type="BacksideRecruit"
-      /> -->
     </div>
   </main>
 </template>
 
 <script>
-import PaginationComponent from "@/components/utilities/PaginationComponent";
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
 import { auth } from "@/firebase/config";
+import getData from "@/composables/data/getData";
 
 export default {
   components: {
-    PaginationComponent,
     SelectorComponent,
   },
 
   async mounted() {
-    const res = await this.$store.dispatch("getProductManage", {
+    this.$store.state.isPending = true;
+    const { getDocument, getSubCollectionDocuments } = getData();
+
+    const manageData = await this.$store.dispatch("getProductManage", {
       collectionName: "MEMBERS",
       documentId: auth.currentUser.uid,
       subCollectionName: "PRODUCTMANAGE",
     });
 
-    this.manage = [...res];
+    for (let i = 0; i < manageData.length; i++) {
+      const productData = await getDocument(
+        "PRODUCTS",
+        manageData[i].product_id
+      );
+
+      if (!productData.status) {
+        continue;
+      }
+
+      const count = await getSubCollectionDocuments(
+        {
+          collectionName: "PRODUCTS",
+          documentId: productData.id,
+          subCollectionName: "COMMENTS",
+        },
+        [["read", "==", false]]
+      );
+
+      productData.counts = count.length;
+      this.manage.push(productData);
+    }
+
+    // this.manage = [...manageData];
+    this.$store.state.isPending = false;
   },
 
   data() {
     return {
       manage: [],
-      // manage: [
-      //   {
-      //     title: "棒球界lv精品球棒帶回家！",
-      //     price: 4500,
-      //     date: "2023/07/21 18:30:11",
-      //   },
-      //   {
-      //     title: "帥氣二手球衣等待中",
-      //     price: 4500,
-      //     date: "2023/07/21 18:30:11",
-      //   },
-      //   {
-      //     title: "捕手手套大特價販賣",
-      //     price: 4500,
-      //     date: "2023/07/21 18:30:11",
-      //   },
-      //   {
-      //     title: "棒球SSR球鞋獨家專賣！",
-      //     price: 4500,
-      //     date: "2023/07/21 18:30:11",
-      //   },
-      //   {
-      //     title: "可愛粉色球帽大拍賣",
-      //     price: 4500,
-      //     date: "2023/07/21 18:30:11",
-      //   },
-      // ],
-      // 下拉選單的日期分類
       productDate: [
         {
           id: 1,
@@ -151,7 +154,19 @@ export default {
           label: "從舊到新",
         },
       ],
+      order: -1,
+      selectedDeleteProduct: [],
     };
+  },
+
+  computed: {
+    computedManage() {
+      if (this.order === -1 || this.order === 1) {
+        return this.manage.sort((a, b) => b.date.toDate() - a.date.toDate());
+      }
+
+      return this.manage.sort((a, b) => a.date.toDate() - b.date.toDate());
+    },
   },
 
   methods: {
@@ -169,11 +184,17 @@ export default {
 
     convertTime(inputDate) {
       const date = new Date(inputDate);
-      return `${date.getHours()} : ${date.getMinutes()} : ${date.getSeconds()}`;
+      return `${String(date.getHours()).padStart(2, 0)} : ${String(
+        date.getMinutes()
+      ).padStart(2, 0)} : ${String(date.getSeconds()).padStart(2, 0)}`;
     },
 
     goEdit(id) {
       this.$router.push({ name: "ProductPost", query: { id } });
+    },
+
+    goProduct(id) {
+      this.$router.push({ name: "ProductDetail", params: { productId: id } });
     },
   },
 };
