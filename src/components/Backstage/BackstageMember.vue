@@ -127,8 +127,13 @@
       </div>
     </div>
   </div>
+
+ 
 </template>
 <script>
+import { db } from "@/firebase/config"; //引入data base
+import { addDoc, doc, getDoc, addDocs } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 
 export default {
@@ -138,7 +143,8 @@ export default {
       perPage: 17,
       Member: [
         {
-          Number: "001",
+          
+          Number: "1",
           Name: "狗今生",
           TeamName: "天使隊",
           Manager: "是",
@@ -146,7 +152,7 @@ export default {
           State: true,
         },
         {
-          Number: "001",
+          Number: "2",
           Name: "阿豪",
           TeamName: "教士隊",
           Manager: "否",
@@ -154,7 +160,7 @@ export default {
           State: true,
         },
         {
-          Number: "001",
+          Number: "3",
           Name: "狗今生",
           TeamName: "兄弟隊",
           Manager: "是",
@@ -162,7 +168,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "4",
           Name: "狗今生",
           TeamName: "洋基隊",
           Manager: "是",
@@ -170,7 +176,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "5",
           Name: "狗今生",
           TeamName: "洋基隊",
           Manager: "是",
@@ -178,7 +184,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "6",
           Name: "狗今生",
           TeamName: "洋基隊",
           Manager: "是",
@@ -186,7 +192,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "7",
           Name: "狗今生",
           TeamName: "天使隊",
           Manager: "是",
@@ -194,7 +200,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "8",
           Name: "狗今生",
           TeamName: "天使隊",
           Manager: "是",
@@ -202,7 +208,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "9",
           Name: "狗今生",
           TeamName: "天使隊",
           Manager: "是",
@@ -210,7 +216,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "10",
           Name: "狗今生",
           TeamName: "熱火隊",
           Manager: "是",
@@ -218,7 +224,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "11",
           Name: "狗今生",
           TeamName: "勇士隊",
           Manager: "是",
@@ -226,7 +232,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "12",
           Name: "狗今生",
           TeamName: "天使隊",
           Manager: "是",
@@ -234,7 +240,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "13",
           Name: "狗今生",
           TeamName: "天使隊",
           Manager: "是",
@@ -242,7 +248,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "14",
           Name: "狗今生",
           TeamName: "天使隊",
           Manager: "是",
@@ -250,7 +256,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "15",
           Name: "狗今生",
           TeamName: "天使隊",
           Manager: "是",
@@ -258,7 +264,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "16",
           Name: "狗今生",
           TeamName: "天使隊",
           Manager: "是",
@@ -266,7 +272,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "17",
           Name: "狗今生",
           TeamName: "天使隊",
           Manager: "是",
@@ -274,7 +280,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "18",
           Name: "狗今生",
           TeamName: "天使隊",
           Manager: "否",
@@ -282,7 +288,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "19",
           Name: "狗今生",
           TeamName: "天使隊",
           Manager: "否",
@@ -290,7 +296,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "20",
           Name: "狗今生",
           TeamName: "天使隊",
           Manager: "否",
@@ -298,7 +304,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "21",
           Name: "狗今生",
           TeamName: "天使隊",
           Manager: "否",
@@ -306,7 +312,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "22",
           Name: "狗今生",
           TeamName: "天使隊",
           Manager: "否",
@@ -314,7 +320,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "23",
           Name: "狗今生",
           TeamName: "天使隊",
           Manager: "否",
@@ -322,7 +328,7 @@ export default {
          State: true,
         },
         {
-          Number: "001",
+          Number: "24",
           Name: "狗今生",
           TeamName: "天使隊",
           Manager: "是",
@@ -334,6 +340,7 @@ export default {
       ManagerArray: [],
       ViolationArray: [],
       StateArray: [],
+      // Member:[],
 
       TeamNameMenuShow: false, //切換是否顯示下拉式選單
       ManagerMenuShow: false,
@@ -419,6 +426,7 @@ export default {
     },
 
     convertFont(str) {
+      if(!str){return};
       //限制資料字數
       if (str.length > 10) {
         return str.slice(0, 10) + "...";
@@ -484,9 +492,35 @@ export default {
         this.StateMenuShow = false;
       }
     },
+     //從firebase引入資料
+     async GetData() {
+      try {
+        const MemberCollection = collection(db, "BACKSTAGEMEMBER"); // 取得集合
+        const MemberDocuments = await getDocs(MemberCollection); // 取得集合內的所有物件
+        MemberDocuments.forEach((x) => {
+          // console.log(x.data());
+          this.Member.push(x.data()); // 物件轉陣列
+        });
+      } catch (err) {
+        alert(err);
+      }
+    },
+    //   AddData(){
+    //  //將資料上傳到firebase
+    //         const MemberCollection = collection(db, "BACKSTAGEMEMBER"); 
+    //         this.Member.forEach(x =>
+    //         {
+            
+    //           const docRef = addDoc(MemberCollection, x)//
+    //           // console.log("資料", docRef);
+    //         })
+    // }
+
   },
   mounted() {
     window.addEventListener("click", this.CloseMenu); //監聽如果任意位置有被點擊觸發CloseMenu
+    // this.AddData();
+    this.GetData();
   },
 };
 </script>

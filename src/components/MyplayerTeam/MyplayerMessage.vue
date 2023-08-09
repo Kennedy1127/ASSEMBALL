@@ -48,10 +48,16 @@
       </div>
     </div>
     <div class="myplayer_message_editPen">
-      <font-awesome-icon
-        :icon="['fas', 'pen']"
-        class="myplayer_message_editPen_item"
-      />
+      <div class="myplayer_message_editPen_wrap">
+        <font-awesome-icon
+          :icon="['fas', 'plus']"
+          class="myplayer_message_editPen_item"
+        />
+        <font-awesome-icon
+          :icon="['fas', 'trash-can']"
+          class="myplayer_message_editPen_trash"
+        />
+      </div>
     </div>
   </section>
 </template>
@@ -147,8 +153,8 @@ export default {
         //   more: "more",
         // },
       ],
-      visiblePosts: 5,
-      additionalPosts: 5,
+      visiblePosts: 6,
+      additionalPosts: 6,
     };
   },
   methods: {
@@ -199,7 +205,7 @@ export default {
       flex-wrap: wrap;
       // overflow: scroll;
       .myplayer_message_more_wrap {
-        width: 45%;
+        width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -228,12 +234,14 @@ export default {
       .myplayer_message_area_card {
         width: 45%;
         background-color: var(--pale-white);
-        padding: 2rem;
+        padding: 1rem;
         margin-bottom: 12rem;
         position: relative;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        border-radius: var(--round);
+        box-shadow: var(--shadow-wide);
 
         &:nth-child(even) {
           // margin-top: 2.5rem;
@@ -280,20 +288,16 @@ export default {
           }
           .myplayer_message_area_text {
             font-size: 1rem;
-            color: var(--primary-blue);
+            color: var(--input-label-gray);
             padding: 1.5rem 0rem;
+            margin-bottom: 1.5rem;
+            text-indent: 2em;
+            display: -webkit-box;
+            -webkit-line-clamp: 10;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+            white-space: normal;
             overflow: hidden;
-            // display: -webkit-box;
-            // margin-top: 0.5rem;
-            // font-size: 1rem;
-            // color: var(--primary-blue);
-            // -webkit-line-clamp: 3;
-            // -webkit-box-orient: vertical;
-            // overflow: hidden;
-            // text-overflow: ellipsis;
-            // line-clamp: 3;
-            // box-orient: vertical;
-            // white-space: normal;
           }
         }
         .myplayer_message_area_more_wrap {
@@ -321,6 +325,13 @@ export default {
             color: var(--pale-white);
             font-family: "Montserrat", sans-serif;
             cursor: pointer;
+            transition: 0.3s;
+            &:hover {
+              color: var(--primary-blue);
+              background-color: var(--pale-white);
+              border: 1px solid var(--primary-blue);
+              transition: 0.3s;
+            }
           }
         }
       }
@@ -329,17 +340,30 @@ export default {
   &_message_editPen {
     // background-color: purple;
     margin-right: 2rem;
-    &_item {
+    &_wrap {
+      position: sticky;
+      top: 150px;
+    }
+    &_item,
+    &_trash {
       width: 2rem;
       height: 2rem;
       background-color: var(--pale-white);
       color: var(--primary-blue);
       padding: 1rem;
       border-radius: 50%;
-      position: sticky;
-      top: 150px;
       display: block;
       cursor: pointer;
+      transition: 0.3s;
+    }
+    &_item:hover,
+    &_trash:hover {
+      background-color: var(--primary-blue);
+      color: var(--pale-white);
+      transition: 0.3s;
+    }
+    &_trash {
+      margin-top: 0.5rem;
     }
   }
 }

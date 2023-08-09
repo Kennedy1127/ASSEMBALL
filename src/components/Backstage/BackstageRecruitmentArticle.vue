@@ -98,7 +98,7 @@
             <td class="table_row_position">{{ convertFont(item.Position) }}</td>
             <td class="table_row_date">{{ convertFont(item.Date) }}</td>
             <td class="table_row_focus">
-              {{ convertFont(item.Focus) }}
+       
 
               <input
                 v-if="item.Focus"
@@ -163,7 +163,11 @@
                 </li>
               </ul>
               上架日期
-              <button @click="TeamMessageDateMenu" class="table_row_menu" ref="TeamMessageDate">
+              <button
+                @click="TeamMessageDateMenu"
+                class="table_row_menu"
+                ref="TeamMessageDate"
+              >
                 <font-awesome-icon icon="fa-solid fa-angle-down" />
               </button>
             </td>
@@ -179,7 +183,11 @@
                 </li>
               </ul>
               焦點文章 {{ TeamMessageFocusNum }} /5
-              <button @click="TeamMessageFocusMenu" class="table_row_menu" ref="TeamMessageFocus">
+              <button
+                @click="TeamMessageFocusMenu"
+                class="table_row_menu"
+                ref="TeamMessageFocus"
+              >
                 <font-awesome-icon icon="fa-solid fa-angle-down" />
               </button>
             </td>
@@ -197,7 +205,7 @@
             <td class="table_row_position">{{ convertFont(item.Date) }}</td>
             <td class="table_row_date">{{ convertFont(item.Content) }}</td>
             <td class="table_row_focus">
-              {{ convertFont(item.Focus) }}
+      
 
               <input
                 v-if="item.Focus"
@@ -227,6 +235,9 @@
   </div>
 </template>
 <script>
+import { db } from "@/firebase/config"; //引入data base
+import { addDoc, doc, getDoc, addDocs } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 export default {
   data() {
     return {
@@ -234,565 +245,567 @@ export default {
       perPage: 17,
       TeamMessagePage: 1,
       TeamMessagePerPage: 17,
-      Article: [
-        {
-          Id: "1",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "2",
-          Name: "烈水鷹",
-          Area: "台中",
-          Position: "補手",
-          Date: "2023/07/05",
-          Focus: false,
-        },
+      Article: [],
+      TeamMessage: [],
+      // Article: [
+      //   {
+      //     Id: "1",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "2",
+      //     Name: "烈水鷹",
+      //     Area: "台中",
+      //     Position: "補手",
+      //     Date: "2023/07/05",
+      //     Focus: false,
+      //   },
 
-        {
-          Id: "3",
-          Name: "烈火鷹",
-          Area: "台南",
-          Position: "左外野手",
-          Date: "2023/07/05",
-          Focus: false,
-        },
+      //   {
+      //     Id: "3",
+      //     Name: "烈火鷹",
+      //     Area: "台南",
+      //     Position: "左外野手",
+      //     Date: "2023/07/05",
+      //     Focus: false,
+      //   },
 
-        {
-          Id: "4",
-          Name: "烈火鷹",
-          Area: "台東",
-          Position: "一壘手",
-          Date: "2023/07/05",
-          Focus: false,
-        },
+      //   {
+      //     Id: "4",
+      //     Name: "烈火鷹",
+      //     Area: "台東",
+      //     Position: "一壘手",
+      //     Date: "2023/07/05",
+      //     Focus: false,
+      //   },
 
-        {
-          Id: "5",
-          Name: "烈火鷹",
-          Area: "金門",
-          Position: "二壘手",
-          Date: "2023/07/07",
-          Focus: false,
-        },
+      //   {
+      //     Id: "5",
+      //     Name: "烈火鷹",
+      //     Area: "金門",
+      //     Position: "二壘手",
+      //     Date: "2023/07/07",
+      //     Focus: false,
+      //   },
 
-        {
-          Id: "6",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "三壘手",
-          Date: "2023/08/04",
-          Focus: false,
-        },
+      //   {
+      //     Id: "6",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "三壘手",
+      //     Date: "2023/08/04",
+      //     Focus: false,
+      //   },
 
-        {
-          Id: "7",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "中外野手",
-          Date: "2023/07/24",
-          Focus: false,
-        },
-        {
-          Id: "8",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "右外野手",
-          Date: "2023/07/08",
-          Focus: false,
-        },
-        {
-          Id: "9",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "10",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "11",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "12",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
+      //   {
+      //     Id: "7",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "中外野手",
+      //     Date: "2023/07/24",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "8",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "右外野手",
+      //     Date: "2023/07/08",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "9",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "10",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "11",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "12",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
 
-        {
-          Id: "13",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "14",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "15",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "16",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "17",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "18",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "19",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "20",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "21",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "22",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "23",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "24",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "25",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "26",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "27",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "28",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "投手",
-          Date: "2023/07/04",
-          Focus: false,
-        },
-        {
-          Id: "29",
-          Name: "烈火鷹",
-          Area: "台北",
-          Position: "游擊手",
-          Date: "2023/12/04",
-          Focus: false,
-        },
-      ],
-      TeamMessage: [
-        {
-          Id: "1",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/04",
-          Content:
-            "留言內容留言內容留言內容留言內容留言內容留言內容留言內容留言內容",
-          Focus: false,
-        },
-        {
-          Id: "2",
-          Name: "烈水鷹",
-          Member: "來福",
-          Date: "2023/07/05",
-          Content:
-            "留言內容留言內容留言內容留言內容留言內容留言內容留言內容留言內容",
+      //   {
+      //     Id: "13",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "14",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "15",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "16",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "17",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "18",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "19",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "20",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "21",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "22",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "23",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "24",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "25",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "26",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "27",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "28",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "投手",
+      //     Date: "2023/07/04",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "29",
+      //     Name: "烈火鷹",
+      //     Area: "台北",
+      //     Position: "游擊手",
+      //     Date: "2023/12/04",
+      //     Focus: false,
+      //   },
+      // ],
+      // TeamMessage: [
+      //   {
+      //     Id: "1",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/04",
+      //     Content:
+      //       "留言內容留言內容留言內容留言內容留言內容留言內容留言內容留言內容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "2",
+      //     Name: "烈水鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/05",
+      //     Content:
+      //       "留言內容留言內容留言內容留言內容留言內容留言內容留言內容留言內容",
 
-            Focus: false,
-        },
-        {
-          Id: "3",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/05",
-          Content:
-            "留言內容留言內容留言內容留言內容留言內容留言內容留言內容留言內容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "3",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/05",
+      //     Content:
+      //       "留言內容留言內容留言內容留言內容留言內容留言內容留言內容留言內容",
 
-            Focus: false,
-        },
-        {
-          Id: "4",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/05",
-          Content: "222222222222222222222222222222222",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "4",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/05",
+      //     Content: "222222222222222222222222222222222",
 
-            Focus: false,
-        },
-        {
-          Id: "5",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/05",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "5",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/05",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-        {
-          Id: "6",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/14",
-          Content: "222222222222222222222222222222222",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "6",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/14",
+      //     Content: "222222222222222222222222222222222",
 
-            Focus: false,
-        },
-        {
-          Id: "7",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/14",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "7",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/14",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-        {
-          Id: "8",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/14",
-          Content: "222222222222222222222222222222222",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "8",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/14",
+      //     Content: "222222222222222222222222222222222",
 
-            Focus: false,
-        },
-        {
-          Id: "9",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/24",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "9",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/24",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-        {
-          Id: "10",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/24",
-          Content: "222222222222222222222222222222222",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "10",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/24",
+      //     Content: "222222222222222222222222222222222",
 
-            Focus: false,
-        },
-        {
-          Id: "11",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/24",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "11",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/24",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-        {
-          Id: "12",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/24",
-          Content: "222222222222222222222222222222222",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "12",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/24",
+      //     Content: "222222222222222222222222222222222",
 
-            Focus: false,
-        },
-        {
-          Id: "13",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/04",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "13",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/04",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-        {
-          Id: "14",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/04",
-          Content: "222222222222222222222222222222222",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "14",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/04",
+      //     Content: "222222222222222222222222222222222",
 
-            Focus: false,
-        },
-        {
-          Id: "15",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/08",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "15",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/08",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-        {
-          Id: "16",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/08",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "16",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/08",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-        {
-          Id: "17",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/08",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "17",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/08",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-        {
-          Id: "18",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/08",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "18",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/08",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-        {
-          Id: "19",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/08",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "19",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/08",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-        {
-          Id: "20",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/08",
-          Content: "222222222222222222222222222222222",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "20",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/08",
+      //     Content: "222222222222222222222222222222222",
 
-            Focus: false,
-        },
-        {
-          Id: "21",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/08",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "21",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/08",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-        {
-          Id: "22",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/08",
-          Content: "222222222222222222222222222222222",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "22",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/08",
+      //     Content: "222222222222222222222222222222222",
 
-            Focus: false,
-        },
-        {
-          Id: "23",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/08/04",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "23",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/08/04",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-        {
-          Id: "24",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/08/04",
-          Content: "222222222222222222222222222222222",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "24",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/08/04",
+      //     Content: "222222222222222222222222222222222",
 
-            Focus: false,
-        },
-        {
-          Id: "25",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/04",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "25",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/04",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-        {
-          Id: "26",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/04",
-          Content: "222222222222222222222222222222222",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "26",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/04",
+      //     Content: "222222222222222222222222222222222",
 
-            Focus: false,
-        },
-        {
-          Id: "27",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/04",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "27",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/04",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-        {
-          Id: "28",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/04",
-          Content: "222222222222222222222222222222222",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "28",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/04",
+      //     Content: "222222222222222222222222222222222",
 
-            Focus: false,
-        },
-        {
-          Id: "29",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/04",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "29",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/04",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-        {
-          Id: "30",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/04",
-          Content: "222222222222222222222222222222222",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "30",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/04",
+      //     Content: "222222222222222222222222222222222",
 
-            Focus: false,
-        },
-        {
-          Id: "31",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/04",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "31",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/04",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-        {
-          Id: "32",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/04",
-          Content: "222222222222222222222222222222222",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "32",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/04",
+      //     Content: "222222222222222222222222222222222",
 
-            Focus: false,
-        },
-        {
-          Id: "33",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/04",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "33",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/04",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-        {
-          Id: "34",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/04",
-          Content: "222222222222222222222222222222222",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "34",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/04",
+      //     Content: "222222222222222222222222222222222",
 
-            Focus: false,
-        },
-        {
-          Id: "35",
-          Name: "烈火鷹",
-          Member: "來福",
-          Date: "2023/07/04",
-          Content: "3333333333333333333333333333容",
+      //     Focus: false,
+      //   },
+      //   {
+      //     Id: "35",
+      //     Name: "烈火鷹",
+      //     Member: "來福",
+      //     Date: "2023/07/04",
+      //     Content: "3333333333333333333333333333容",
 
-            Focus: false,
-        },
-      ],
+      //     Focus: false,
+      //   },
+      // ],
       AreaArray: [], //地區種類陣列(存放每一種地區並排除重複的)
       PositionArray: [],
       DateArray: [],
@@ -825,7 +838,7 @@ export default {
       //focus被勾了幾個
       return this.Article.filter((v) => v.Focus).length; //返回Article中Focus的項目組成的陣列的長度
     },
-    TeamMessageFocusNum(){
+    TeamMessageFocusNum() {
       return this.TeamMessage.filter((v) => v.Focus).length;
     },
     ArticleFilterArea() {
@@ -967,13 +980,14 @@ export default {
       if (e.target.closest(".table_row_menu") === this.$refs.TeamMessageDate) {
         //點擊到的物件=ref時開啟選單
         this.TeamMessageDateMenuShow = true;
-      } else if (e.target.closest(".table_row_menu") === this.$refs.TeamMessageFocus) {
+      } else if (
+        e.target.closest(".table_row_menu") === this.$refs.TeamMessageFocus
+      ) {
         this.TeamMessageFocusMenuShow = true;
-      }  else {
+      } else {
         //點擊到的物件不=ref時關閉選單
         this.TeamMessageDateMenuShow = false;
         this.TeamMessageFocusMenuShow = false;
-   
       }
     },
     FocusMenu() {
@@ -1002,7 +1016,7 @@ export default {
     },
     updateSearch() {
       this.currentSearch = this.SearchText;
-      this.SearchText="";
+      this.SearchText = "";
     },
     updateTeamMessageSearch() {
       this.currentTeamMessageSearch = this.TeamMessageSearchText;
@@ -1022,6 +1036,9 @@ export default {
     },
 
     convertFont(str) {
+      if(!str){
+        return
+      };
       //限制資料字數
       if (str.length > 10) {
         return str.slice(0, 10) + "...";
@@ -1066,10 +1083,61 @@ export default {
         this.TeamMessagePage++;
       }
     },
+
+    //從firebase引入資料
+    async GetData() {
+      try {
+        const ArticleCollection = collection(db, "BACKSTAGEARTICLE"); // 取得集合
+        const ArticleDocuments = await getDocs(ArticleCollection); // 取得集合內的所有物件
+        ArticleDocuments.forEach((x) => {
+          // console.log(x.data());
+          this.Article.push(x.data()); // 物件轉陣列
+        });
+
+        const TeamMessageCollection = collection(db, "BACKSTAGETEAMMESSAGE"); // 取得集合
+        const TeamMessageDocuments = await getDocs(TeamMessageCollection); // 取得集合內的所有物件
+        TeamMessageDocuments.forEach((x) => {
+          // console.log(x.data());
+          this.TeamMessage.push(x.data()); // 物件轉陣列
+        });
+      } catch (err) {
+        alert(err);
+      }
+    },
+
+    // AddArticleData() {
+    //   //Article的資料上傳到firebase
+    //   const ArticleCollection = collection(db, "BACKSTAGEARTICLE"); // 將ArticleCollection設定為BACKSTAGEARTICLE集合
+    //   this.Article.forEach(
+    //     (
+    //       x //將Article資料逐筆新增至firebase
+    //     ) => {
+    //       //const docRef =
+    //       addDoc(ArticleCollection, x); //
+    //       // console.log("資料", docRef);
+    //     }
+    //   );
+    // },
+    // AddTeamMessageData() {
+    //   //TeamMessage的資料上傳到firebase
+    //   const TeamMessageCollection = collection(db, "BACKSTAGETEAMMESSAGE");
+    //   this.TeamMessage.forEach(
+    //     (
+    //       x //將TeamMessage資料逐筆新增至firebase
+    //     ) => {
+    //       //const docRef =
+    //       addDoc(TeamMessageCollection, x); //
+    //       // console.log("資料", docRef);
+    //     }
+    //   );
+    // },
   },
   mounted() {
     window.addEventListener("click", this.CloseMenu); //監聽如果任意位置有被點擊觸發CloseMenu
     window.addEventListener("click", this.TeamMessageCloseMenu);
+    this.GetData();
+    // this.AddArticleData();
+    //  this.AddTeamMessageData();
   },
 };
 </script>

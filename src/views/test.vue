@@ -3,7 +3,8 @@
     <div class="wrapper">
       <div>
         <router-link :to="{ name: 'Home' }">我是前台</router-link>
-        <router-link :to="{ name: 'Backstage' }">我是後台</router-link>
+        <router-link :to="{ name: 'BackstageLogin' }">我是後台</router-link>
+     
       </div>
     </div>
   </section>
