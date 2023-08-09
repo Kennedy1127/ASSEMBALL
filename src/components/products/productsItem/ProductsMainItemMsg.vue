@@ -20,11 +20,7 @@
           />
           <img
             class="product_message_area_all_pic_user"
-            :src="
-              item.icon
-                ? item.icon
-                : require('@/assets/images/icons/main-icon.png')
-            "
+            :src="require('@/assets/images/icons/main-icon.png')"
             alt="message_pic01"
           />
         </div>
@@ -37,7 +33,7 @@
             <textarea
               :disabled="
                 !editMode ||
-                item.user_id !== store.state.user.id ||
+                item.user_id !== auth.currentUser.uid ||
                 editCommentId !== item.id
               "
               v-model="item.comment"
@@ -45,7 +41,7 @@
               :class="{
                 active:
                   editMode &&
-                  item.user_id === store.state.user.id &&
+                  item.user_id === auth.currentUser.uid &&
                   editCommentId === item.id,
               }"
             >
@@ -55,7 +51,7 @@
             <div class="product_message_area_all_text_date_icons">
               <font-awesome-icon
                 v-if="
-                  item.user_id === store.state.user.id &&
+                  item.user_id === auth.currentUser?.uid &&
                   editCommentId !== item.id
                 "
                 class="icon icon--pen"
@@ -84,11 +80,7 @@
     <div class="product_message_importing">
       <div class="product_message_importing_user_pic">
         <img
-          :src="
-            store.state.user.pic
-              ? store.state.user.pic
-              : require('@/assets/images/icons/main-icon.png')
-          "
+          :src="require('@/assets/images/icons/main-icon.png')"
           alt="importing_pic"
         />
       </div>
@@ -137,21 +129,31 @@
 </template>
 
 <script setup>
-import { timestamp } from "@/firebase/config";
+import { timestamp, auth } from "@/firebase/config";
+import getData from "@/composables/data/getData";
 import useData from "@/composables/data/useData";
-import { computed, ref } from "vue";
-import { useRoute } from "vue-router";
+import { computed, onMounted, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 
 const store = useStore();
 const route = useRoute();
+const router = useRouter();
 const props = defineProps({
   productMsgData: {
     type: Object,
     required: true,
   },
 });
+const { getDocument } = getData();
 const { setDataSubCollection, updateDataSubCollection } = useData();
+
+onMounted(() => {
+  props.productMsgData.comments.forEach(async (comment) => {
+    const user = await getDocument("MEMBERS", comment.user_id);
+    comment.name = user.lastname + user.firstname;
+  });
+});
 
 const inputComment = ref("");
 const error = ref(null);
@@ -172,6 +174,11 @@ const convertDate = (msgDate) => {
 const submitComment = async () => {
   store.state.isPending = true;
 
+  if (!auth.currentUser) {
+    store.state.isPending = false;
+    return router.push({ name: "Login" });
+  }
+
   if (!inputComment.value) {
     error.value = "請輸入你的留言內容哦";
     return (store.state.isPending = false);
@@ -185,9 +192,8 @@ const submitComment = async () => {
 
   const subCollectionData = {
     comment: inputComment.value,
-    icon: store.state.user.pic ? store.state.user.pic : null,
     name: store.state.user.firstname + store.state.user.lastname,
-    user_id: store.state.user.id,
+    user_id: auth.currentUser.uid,
     date: timestamp,
     read: false,
   };
