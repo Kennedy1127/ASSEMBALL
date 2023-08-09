@@ -69,15 +69,33 @@
           </div>
         </div>
       </div>
+      <div
+        class="myplayer_function_race_editPen"
+        @click="myplayerRaceEditToggle"
+      >
+        <font-awesome-icon
+          :icon="['fas', 'plus']"
+          class="myplayer_function_race_editPen_item"
+        />
+      </div>
     </div>
   </section>
+  <OverlayComponent
+    type="RaceType"
+    v-if="isVisible"
+    @closeOverlay="isVisible = false"
+  />
 </template>
 
 <script>
+import MyplayerRaceEdit from "@/components/MyplayerTeam/MyplayerRaceEdit.vue";
+import OverlayComponent from "../utilities/OverlayComponent.vue";
 import MyplayerCalendar from "@/components/MyplayerTeam/MyplayerCalendar";
 export default {
   components: {
     MyplayerCalendar,
+    MyplayerRaceEdit,
+    OverlayComponent,
   },
   data() {
     return {
@@ -123,7 +141,13 @@ export default {
           score2: 2,
         },
       ],
+      isVisible: false,
     };
+  },
+  methods: {
+    myplayerRaceEditToggle() {
+      this.isVisible = true;
+    },
   },
 };
 </script>
@@ -164,6 +188,7 @@ export default {
 
 .myplayer_function_group_race_wrap {
   width: 47.5%;
+  position: relative;
   // flex: 1;
 }
 .myplayer_function_title_wrap {
@@ -332,6 +357,29 @@ h3 {
   color: var(--accent-red);
   font-weight: 700;
 }
+.myplayer_function_race_editPen {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  &_item {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 1.5rem;
+    padding: 1rem;
+    color: var(--primary-blue);
+    background-color: var(--pale-white);
+    border-radius: 50%;
+    border: 1px solid var(--primary-blue);
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  &_item:hover {
+    transition: 0.3s;
+    color: var(--pale-white);
+    background-color: var(--primary-blue);
+  }
+}
+
 @media screen and (min-width: 1024px) and (max-width: 1200px) {
   .myplayer_function_race_item_logo1 {
     width: 4rem;

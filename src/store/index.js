@@ -66,6 +66,7 @@ export default createStore({
     ///////////////////////////////////////////
     // 我的球隊區塊
     myplayerPopupsOpen: false,
+
     myplayerEditOpen: false,
     myplayerOverlay: true,
     myplayerTeam: {},
@@ -369,6 +370,7 @@ export default createStore({
     myplayerOverlayToggle(state) {
       state.myplayerPopupsOpen = !state.myplayerPopupsOpen;
     },
+
     //我的球隊撈資料
     setMyplayerTeam(state, payload) {
       console.log(payload);

@@ -1,0 +1,196 @@
+<template>
+  <section class="myplayerRaceEdit">
+    <div class="myplayerRaceEdit_time">
+      <!-- <div class="myplayerRaceEdit_time_race"> -->
+      <!-- <div class="myplayerRaceEdit_time_race_word">1. :</div> -->
+      <!-- </div> -->
+      <!-- <div class="myplayerRaceEdit_underline">
+        <input
+          type="text"
+          class="myplayerRaceEdit_time_type"
+          placeholder="請輸入時間"
+        />
+      </div> -->
+    </div>
+    <div class="myplayerRaceEdit_num">1.</div>
+    <div class="myplayerRaceEdit_name">
+      <div class="myplayerRaceEdit_name_team1">
+        <div class="myplayerRaceEdit_name_team1_num">(1)比賽時間</div>
+      </div>
+      <div class="myplayerRaceEdit_underline">
+        <input
+          type="text"
+          class="myplayerRaceEdit_name_team_type"
+          placeholder="請輸入時間"
+        />
+      </div>
+    </div>
+    <div class="myplayerRaceEdit_num">2.</div>
+    <div class="myplayerRaceEdit_name">
+      <div class="myplayerRaceEdit_name_team1">
+        <div class="myplayerRaceEdit_name_team1_num">(1) 隊伍名稱:</div>
+      </div>
+      <div class="myplayerRaceEdit_underline">
+        <input
+          type="text"
+          class="myplayerRaceEdit_name_team_type"
+          placeholder="請輸入名稱"
+        />
+      </div>
+    </div>
+    <div class="myplayerRaceEdit_name">
+      <div class="myplayerRaceEdit_name_team1">
+        <div class="myplayerRaceEdit_name_team1_num">(2) 隊伍分數:</div>
+      </div>
+      <div class="myplayerRaceEdit_underline">
+        <input
+          type="text"
+          class="myplayerRaceEdit_name_team_type"
+          placeholder="請輸入分數"
+        />
+      </div>
+    </div>
+    <div class="myplayerRaceEdit_num">3.</div>
+    <div class="myplayerRaceEdit_name">
+      <div class="myplayerRaceEdit_name_team1">
+        <div class="myplayerRaceEdit_name_team1_num">(1) 隊伍名稱:</div>
+      </div>
+      <div class="myplayerRaceEdit_underline">
+        <input
+          type="text"
+          class="myplayerRaceEdit_name_team_type"
+          placeholder="請輸入名稱"
+        />
+      </div>
+    </div>
+    <div class="myplayerRaceEdit_name">
+      <div class="myplayerRaceEdit_name_team1">
+        <div class="myplayerRaceEdit_name_team1_num">(2) 隊伍分數:</div>
+      </div>
+      <div class="myplayerRaceEdit_underline">
+        <input
+          type="text"
+          class="myplayerRaceEdit_name_team_type"
+          placeholder="請輸入分數"
+        />
+      </div>
+    </div>
+    <div class="myplayerRaceEdit_num">4.</div>
+    <div class="myplayerRaceEdit_name">
+      <div class="myplayerRaceEdit_name_team1">
+        <div class="myplayerRaceEdit_name_team1_num">(1) 主隊伍隊徽:</div>
+      </div>
+      <div class="myplayerRaceEdit_underline">
+        <input
+          type="file"
+          accept="image/*"
+          class="myplayerRaceEdit_name_team_type"
+          placeholder="請輸入名稱"
+        />
+      </div>
+    </div>
+    <div class="myplayerRaceEdit_name">
+      <div class="myplayerRaceEdit_name_team1">
+        <div class="myplayerRaceEdit_name_team1_num">(2) 客隊伍隊徽:</div>
+      </div>
+      <div class="myplayerRaceEdit_underline">
+        <input
+          type="file"
+          accept="image/*"
+          class="myplayerRaceEdit_name_team_type"
+          placeholder="請輸入分數"
+        />
+      </div>
+    </div>
+    <div class="myplayerRaceEdit_btn">
+      <button class="myplayerRaceEdit_submit">送出</button>
+    </div>
+
+    <!-- <div class="myplayerRaceEdit_score1"></div>
+    <div class="myplayerRaceEdit_name2"></div>
+    <div class="myplayerRaceEdit_score2"></div> -->
+  </section>
+</template>
+<script></script>
+<style lang="scss">
+.myplayerRaceEdit {
+  width: 30%;
+  background-color: var(--pale-white);
+  margin: 12rem auto;
+
+  border: 1px solid var(--primary-blue);
+  border-radius: 1rem;
+  padding: 2rem 0rem 1rem 0rem;
+  &_time {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    // background-color: green;
+    margin: auto;
+    padding-bottom: 2rem;
+    &_race {
+      display: flex;
+
+      width: 50%;
+      color: var(--primary-blue);
+      font-size: 1.5rem;
+    }
+  }
+  .myplayerRaceEdit_underline {
+    border-bottom: 1px solid var(--primary-blue);
+    width: 50%;
+  }
+  .myplayerRaceEdit_time_type {
+    width: 100%;
+    background-color: transparent;
+    border: 0px solid;
+    font-size: 1rem;
+    padding: 0.5rem;
+  }
+  .myplayerRaceEdit_num {
+    width: 80%;
+    margin: auto;
+    color: var(--primary-blue);
+    font-size: 1.5rem;
+  }
+  .myplayerRaceEdit_name {
+    width: 100%;
+    margin: auto;
+    color: var(--primary-blue);
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .myplayerRaceEdit_name_team_type {
+    width: 100%;
+    background-color: transparent;
+    border: 0px solid;
+    font-size: 1rem;
+    padding: 0.5rem;
+  }
+  .myplayerRaceEdit_btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 3rem 0rem 2rem 0rem;
+  }
+  .myplayerRaceEdit_submit {
+    width: 20%;
+    margin: auto;
+    font-size: 1rem;
+    padding: 0.5rem;
+    color: var(--primary-blue);
+    background-color: var(--pale-white);
+    border: 1px solid var(--primary-blue);
+    border-radius: 1.5rem;
+    transition: 0.3s;
+  }
+  .myplayerRaceEdit_submit:hover {
+    transition: 0.3s;
+    color: var(--pale-white);
+    background-color: var(--primary-blue);
+  }
+}
+</style>

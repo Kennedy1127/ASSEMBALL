@@ -108,10 +108,10 @@ export default {
     // console.log(testA);
     // console.log(testB);
 
-    // const testA = await getDocument("TEAMS", "5KhosRZOJ7TmLfECUb5D");
-    // const testB = await getDocuments("TEAMS");
-    // console.log(testA);
-    // console.log(testB);
+    const testA = await getDocument("TEAMS", "5KhosRZOJ7TmLfECUb5D");
+    const testB = await getDocuments("TEAMS");
+    console.log(testA);
+    console.log(testB);
 
     //----
     // const testSherry = await getDocuments("APPLYS");
@@ -127,7 +127,7 @@ export default {
     //   collectionName: "TEAMS",
     //   documentId: "5KhosRZOJ7TmLfECUb5D",
     //   subCollectionName: "PIC",
-    //----
+    // ----
     // const testSherry = await getDocuments("APPLYS");
     // console.log(testSherry);
 
