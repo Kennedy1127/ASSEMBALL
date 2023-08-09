@@ -234,7 +234,7 @@
 
 <script setup>
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
-import { timestamp } from "@/firebase/config";
+import { timestamp, auth } from "@/firebase/config";
 import useData from "@/composables/data/useData";
 import getData from "@/composables/data/getData";
 import useStorage from "@/composables/data/useStorage";
@@ -245,7 +245,6 @@ import { useRoute, useRouter } from "vue-router";
 const store = useStore();
 const route = useRoute();
 const router = useRouter();
-import { auth } from "@/firebase/config";
 const {
   setDataError,
   setData,
@@ -464,7 +463,7 @@ const checkSubmitData = () => {
 };
 
 const postProduct = async (data) => {
-  const id = await setData("PRODUCTS", data, pics.value);
+  const id = await setData("PRODUCTS", data, pics.value, "product");
   const productTarget = {
     collectionName: "PRODUCTS",
     documentId: id,
@@ -473,9 +472,7 @@ const postProduct = async (data) => {
 
   const commentData = {
     comment: comment.value,
-    icon: store.state.user.pic ? store.state.user.pic : null,
-    name: store.state.user.firstname + store.state.user.lastname,
-    user_id: store.state.user.id,
+    user_id: auth.currentUser.uid,
     date: timestamp,
     read: true,
   };
@@ -541,9 +538,7 @@ const handleSubmit = async () => {
     date: timestamp,
     status: true,
     home_status: -1,
-    seller_icon: store.state.user.pic ? store.state.user.pic : null,
-    seller_name: store.state.user.firstname + store.state.user.lastname,
-    seller_id: store.state.user.id,
+    seller_id: auth.currentUser.uid,
   };
 
   const id = route.query.id
