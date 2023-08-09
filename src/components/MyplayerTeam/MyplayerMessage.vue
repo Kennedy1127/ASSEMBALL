@@ -47,6 +47,12 @@
         </div>
       </div>
     </div>
+    <div class="myplayer_message_editPen">
+      <font-awesome-icon
+        :icon="['fas', 'pen']"
+        class="myplayer_message_editPen_item"
+      />
+    </div>
   </section>
 </template>
 <script>
@@ -166,6 +172,7 @@ export default {
   }
   &_message_area_content {
     width: 100%;
+    display: flex;
     background-color: var(--secondary-blue-3);
     padding: 12rem 0;
     .myplayer_message_area_card_wrap {
@@ -174,6 +181,7 @@ export default {
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
+      // overflow: scroll;
       .myplayer_message_more_wrap {
         width: 45%;
         display: flex;
@@ -300,6 +308,22 @@ export default {
           }
         }
       }
+    }
+  }
+  &_message_editPen {
+    // background-color: purple;
+    margin-right: 2rem;
+    &_item {
+      width: 2rem;
+      height: 2rem;
+      background-color: var(--pale-white);
+      color: var(--primary-blue);
+      padding: 1rem;
+      border-radius: 50%;
+      position: sticky;
+      top: 150px;
+      display: block;
+      cursor: pointer;
     }
   }
 }
