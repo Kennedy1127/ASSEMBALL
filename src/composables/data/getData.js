@@ -76,11 +76,12 @@ const getData = () => {
         target.subCollectionName
       );
 
+      // conditions = [["status", "==", true]];
       const q = query(
         docRef,
-        ...conditions.map((condition) =>
-          where(condition[0], condition[1], condition[2])
-        ),
+        ...conditions.map((condition) => {
+          return where(condition[0], condition[1], condition[2]);
+        }),
         ...orders.map((order) => orderBy(order))
       );
 
