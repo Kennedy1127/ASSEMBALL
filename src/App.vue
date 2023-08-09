@@ -2,7 +2,7 @@
 <template>
   <transition name="fade">
     <MainHeader
-      v-if="MainHeader"
+      v-if="MainHeader && shouldShowMainHeader"
       @toggle_notify="toggleNotify"
       @toggle_member="toggleMember"
       mode="out-in"
@@ -10,7 +10,7 @@
   </transition>
   <transition name="fade">
     <MainHeaderLight
-      v-if="MainHeaderLight"
+      v-if="MainHeaderLight && shouldShowMainHeaderLight"
       @toggle_notify="toggleNotify"
       @toggle_member="toggleMember"
     />
@@ -31,7 +31,7 @@
     @enter_personal="enterPersonal"
   />
   <router-view />
-  <MainFooter v-if="$route.name !== 'Home'" />
+  <MainFooter v-if="shouldShowMainFooter" />
 
   <!-- Loading 畫面 -->
   <LoadingComponent v-if="$store.state.isPending" />
@@ -77,6 +77,24 @@ import { auth } from "@/firebase/config";
 import getData from "@/composables/data/getData";
 
 export default {
+  computed: {
+    shouldShowMainFooter() {
+      // 在這裡列出你不想顯示 MainFooter 的頁面名稱
+      const pagesWithoutFooter = ["Home", "HomeLoading", "Backstage", "test"];
+
+      return !pagesWithoutFooter.includes(this.$route.name);
+    },
+    shouldShowMainHeader() {
+      const pagesWithoutHeader = ["HomeLoading", "Backstage", "test"];
+
+      return !pagesWithoutHeader.includes(this.$route.name);
+    },
+    shouldShowMainHeaderLight() {
+      const pagesWithoutHeaderLight = ["HomeLoading", "Backstage", "test"];
+
+      return !pagesWithoutHeaderLight.includes(this.$route.name);
+    },
+  },
   async beforeMount() {
     const {
       getUser,
@@ -206,7 +224,7 @@ export default {
 
     //切換通知頁面
     toggleNotify() {
-      if (this.$store.state.isLoggedIn) {
+      if (!this.$store.state.isLoggedIn) {
         alert("還沒登入，跳轉到登入頁面喔~");
         this.$router.push("/login");
         this.scrollToTopOnMobile(); // 在跳轉後滾動到頂部
@@ -217,7 +235,7 @@ export default {
 
     //切換會員頁面
     toggleMember() {
-      if (this.$store.state.isLoggedIn) {
+      if (!this.$store.state.isLoggedIn) {
         alert("還沒登入，跳轉到登入頁面喔~");
         this.$router.push("/login");
         this.scrollToTopOnMobile(); // 在跳轉後滾動到頂部

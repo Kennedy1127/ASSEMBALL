@@ -5,46 +5,46 @@
       v-for="item in homeMarqueeProduct.text"
       :key="item"
     >
-      <router-link :to="{ name: 'Products' }">{{ item.text }}</router-link>
+      <router-link :to="{ name: 'Recruitments' }">{{ item.text }}</router-link>
     </div>
     <div
       class="home_marquee_hashtag_text"
       v-for="item in homeMarqueeProduct.text"
       :key="item"
     >
+      <router-link :to="{ name: 'Recruitments' }">{{ item.text }}</router-link>
+    </div>
+  </div>
+  <div class="home_marquee_hashtag">
+    <div
+      class="home_marquee_hashtag_text"
+      v-for="item in homeMarqueeCopywriting.text"
+      :key="item"
+    >
+      <router-link :to="{ name: 'rookie' }">{{ item.text }}</router-link>
+    </div>
+    <div
+      class="home_marquee_hashtag_text"
+      v-for="item in homeMarqueeCopywriting.text"
+      :key="item"
+    >
+      <router-link :to="{ name: 'rookie' }">{{ item.text }}</router-link>
+    </div>
+  </div>
+  <div class="home_marquee_hashtag">
+    <div
+      class="home_marquee_hashtag_text"
+      v-for="item in homeMarqueeTeach.text"
+      :key="item"
+    >
       <router-link :to="{ name: 'Products' }">{{ item.text }}</router-link>
     </div>
-  </div>
-  <div class="home_marquee_hashtag">
     <div
       class="home_marquee_hashtag_text"
-      v-for="item in homeMarqueeCopywriting"
+      v-for="item in homeMarqueeTeach.text"
       :key="item"
     >
-      <router-link :to="{ name: 'Recruitments' }">{{ item }}</router-link>
-    </div>
-    <div
-      class="home_marquee_hashtag_text"
-      v-for="item in homeMarqueeCopywriting"
-      :key="item"
-    >
-      <router-link :to="{ name: 'Recruitments' }">{{ item }}</router-link>
-    </div>
-  </div>
-  <div class="home_marquee_hashtag">
-    <div
-      class="home_marquee_hashtag_text"
-      v-for="item in homeMarqueeTeach"
-      :key="item"
-    >
-      <router-link :to="{ name: 'rookie' }">{{ item }}</router-link>
-    </div>
-    <div
-      class="home_marquee_hashtag_text"
-      v-for="item in homeMarqueeTeach"
-      :key="item"
-    >
-      <router-link :to="{ name: 'rookie' }">{{ item }}</router-link>
+      <router-link :to="{ name: 'Products' }">{{ item.text }}</router-link>
     </div>
   </div>
 </template>
@@ -52,87 +52,21 @@
 <script>
 export default {
   async mounted() {
-    const res = await this.$store.dispatch("getHomeNews");
+    const res = await this.$store.dispatch("getHomeMarquee");
     console.log(res);
     this.homeMarqueeProduct = res[0];
-    console.log(this.homeMarqueeProduct);
+    this.homeMarqueeCopywriting = res[1];
+    this.homeMarqueeTeach = res[2];
+    // console.log(this.homeMarqueeProduct);
+    // console.log(this.homeMarqueeCopywriting);
+    // console.log(this.homeMarqueeTeach);
   },
 
   data() {
     return {
       homeMarqueeProduct: [],
-      // homeMarqueeProduct: [
-      //   "＃品牌裝備",
-      //   "＃球場必備",
-      //   "#球衣收藏",
-      //   "#優質裝備",
-      //   "#球具清倉",
-      //   "#耐用品",
-      //   "#全新球套",
-      //   "#團隊配備",
-      //   "#捕手手具",
-      //   "#投手球鞋",
-      //   "#高比重",
-      //   "＃品牌裝備",
-      //   "＃球場必備",
-      //   "#球衣收藏",
-      //   "#優質裝備",
-      //   "#球具清倉",
-      //   "#耐用品",
-      //   "#全新球套",
-      //   "#團隊配備",
-      //   "#捕手手具",
-      //   "#投手球鞋",
-      //   "#高比重",
-      // ],
-      homeMarqueeCopywriting: [
-        "＃強弱組合",
-        "＃人才招募",
-        "#領袖球員",
-        "#場上領導",
-        "#守備能力",
-        "#團隊精神",
-        "#季節準備",
-        "#球隊聲望",
-        "#球員篩選",
-        "#休閒球隊",
-        "#實力對戰",
-        "＃強弱組合",
-        "＃人才招募",
-        "#領袖球員",
-        "#場上領導",
-        "#守備能力",
-        "#團隊精神",
-        "#季節準備",
-        "#球隊聲望",
-        "#球員篩選",
-        "#休閒球隊",
-        "#實力對戰",
-      ],
-      homeMarqueeTeach: [
-        "#打擊率",
-        "#衝刺出壘",
-        "＃滾地球",
-        "#投手輪換",
-        "#本壘打",
-        "#三振",
-        "#快速球",
-        "#變化球",
-        "#逆轉比賽",
-        "#滑壘",
-        "#指叉球",
-        "#打擊率",
-        "#衝刺出壘",
-        "＃滾地球",
-        "#投手輪換",
-        "#本壘打",
-        "#三振",
-        "#快速球",
-        "#變化球",
-        "#逆轉比賽",
-        "#滑壘",
-        "#指叉球",
-      ],
+      homeMarqueeCopywriting: [],
+      homeMarqueeTeach: [],
     };
   },
 };

@@ -67,7 +67,7 @@ const checkFormat = () => {
   error.value = null;
   // 1.確認email沒輸入東西.....錯誤提醒
   if (!email.value) {
-    return (error.value = "沒輸入東西.....錯誤提醒");
+    return (error.value = "請輸入電子郵件!");
   }
 
   const validRegex =
@@ -179,18 +179,19 @@ const checkStepOne = async () => {
       align-items: center;
       gap: 0.5rem;
 
-      position: absolute;
+      // position: absolute;
       top: 80%;
       left: 50%;
-      transform: translateX(-50%);
+      // transform: translateX(-50%);
 
       & + div {
         margin-top: 1rem;
-
+        margin: 1rem auto 0 auto;
         font-size: 1rem;
       }
 
       button {
+        margin-top: 10rem;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -216,5 +217,25 @@ const checkStepOne = async () => {
       color: var(--success-green);
     }
   }
+}
+@media screen and (max-width: 1024px) {
+  .authentication {
+    // height: 70vw;
+    &_steps {
+      left: 0;
+      height: 50%;
+    }
+
+    &_text {
+      flex-grow: 3;
+      width: 100%;
+      // height: 60vw;
+    }
+  }
+
+  // .authentication_step {
+  //   left: -40vw;
+  //   position: relative;
+  // }
 }
 </style>

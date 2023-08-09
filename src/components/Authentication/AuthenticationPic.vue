@@ -93,4 +93,12 @@ const props = defineProps({
     }
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .authentication {
+    &_pic {
+      display: none;
+    }
+  }
+}
 </style>

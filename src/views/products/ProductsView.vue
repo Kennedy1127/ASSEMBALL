@@ -84,16 +84,7 @@ onMounted(async () => {
     type.value = Number(route.query.tag);
   }
 
-  // 掛載後撈商品數量
-  await store.dispatch("getProductsCount");
-
-  // 如果商品陣列長度為0或是商品陣列長度與商品數量不等於，則撈商品資料
-  if (
-    store.state.products.length === 0 ||
-    store.state.products.length !== store.state.productsCount
-  ) {
-    await store.dispatch("getProducts");
-  }
+  await store.dispatch("getProducts");
 
   store.state.isPending = false;
 });

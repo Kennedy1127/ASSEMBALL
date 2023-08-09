@@ -67,6 +67,7 @@ const props = defineProps({
     &_line {
       width: 2px;
       height: 260px;
+
       background-color: var(--secondary-gray-3);
 
       &--active {
@@ -79,6 +80,14 @@ const props = defineProps({
         display: none;
       }
     }
+  }
+}
+@media screen and (max-width: 1024px) {
+  .authentication_steps {
+    top: 30%;
+  }
+  .authentication_step_line {
+    height: 130px;
   }
 }
 </style>
