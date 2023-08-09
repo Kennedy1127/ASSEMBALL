@@ -165,6 +165,11 @@ const routes = [
   },
   /////////////////////////////////////////
   {
+    path: "/BackstageLogin",
+    name: "BackstageLogin",
+    component: () => import("@/views/BackstageLogin.vue"),
+  },
+  {
     path: "/Backstage",
     name: "Backstage",
     component: () => import("@/views/Backstage.vue"),
