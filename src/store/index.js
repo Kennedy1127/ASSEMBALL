@@ -2,7 +2,7 @@ import { createStore } from "vuex";
 import axios from "axios";
 import getData from "@/composables/data/getData";
 
-const { getDocuments, getSubCollectionDocuments } = getData();
+const { getDocument, getDocuments, getSubCollectionDocuments } = getData();
 
 export default createStore({
   state: {
@@ -539,8 +539,18 @@ export default createStore({
     // 撈招募文案資料
     async getCopywritings(context) {
       try {
-        const copywritings = await getDocuments("COPYWRITINGS");
-        if (!copywritings) throw new Error("Cannot fetch response");
+        const res = await getDocuments("COPYWRITINGS");
+        if (!res) throw new Error("Cannot fetch response");
+
+        const copywritings = [];
+        for (let i = 0; i < res.length; i++) {
+          const team = await getDocument("TEAMS", res[i].team_id);
+          copywritings.push({
+            ...res[i],
+            team_name: team.teamName,
+            team_intro: team.intro,
+          });
+        }
 
         context.commit("setCopywritings", copywritings);
       } catch (err) {

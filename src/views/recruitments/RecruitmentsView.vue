@@ -51,9 +51,7 @@ const store = useStore();
 
 onMounted(async () => {
   store.state.isPending = true;
-
   await store.dispatch("getCopywritings");
-
   store.state.isPending = false;
 });
 

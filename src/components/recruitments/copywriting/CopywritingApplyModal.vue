@@ -40,9 +40,9 @@
 
 <script setup>
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
+import { auth, timestamp } from "@/firebase/config";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
-import { auth } from "@/firebase/config";
 
 const route = useRoute();
 
@@ -84,6 +84,7 @@ const submitApply = () => {
     copywriting_id: route.params.id,
     user_id: auth.currentUser.uid,
     text: computedSelectedTemplate.value.text,
+    date: timestamp,
   };
 
   console.log(submitData);

@@ -45,14 +45,14 @@
               />
             </div>
             <div class="recruit_copywritings_card_team_name">
-              <!-- {{ item.team_name }} -->
+              {{ item.team_name }}
             </div>
           </div>
 
           <div class="recruit_copywritings_card_intro">
             <div class="recruit_copywritings_card_intro_title">球隊簡介：</div>
             <p class="recruit_copywritings_card_intro_text">
-              <!-- {{ item.team_intro }} -->
+              {{ item.team_intro }}
             </p>
           </div>
         </div>

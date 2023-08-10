@@ -50,7 +50,7 @@
           />
         </div>
         <div class="copywriting_header_team_name">
-          <!-- {{ computedCopywriting.copywriting_team_name }} -->
+          {{ copywriting.team_name }}
         </div>
         <div class="copywriting_header_team_btn">
           <router-link :to="{ name: 'Recruitments' }">更多球隊</router-link>
@@ -62,11 +62,11 @@
       <div class="copywriting_content_intro">
         <h2 class="copywriting_title">
           <div class="block"></div>
-          <!-- {{ computedCopywriting_team_name }} -->
+          {{ copywriting.team_name }}
         </h2>
 
         <h3 class="copywriting_content_intro_title">
-          <!-- {{ computedCopywriting.team_title }} -->
+          {{ copywriting.team_intro }}
         </h3>
 
         <p class="copywriting_content_intro_text">
@@ -141,7 +141,14 @@ watchEffect(async () => {
     if (!res) {
       router.push({ name: "Home" });
     }
-    copywriting.value = { ...res };
+
+    const team = await getDocument("TEAMS", res.team_id);
+
+    copywriting.value = {
+      ...res,
+      team_name: team.teamName,
+      team_intro: team.intro,
+    };
   }
 
   store.state.isPending = false;
