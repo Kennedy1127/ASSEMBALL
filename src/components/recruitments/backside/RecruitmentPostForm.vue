@@ -224,10 +224,6 @@ const location = ref([
 
 const player = ref([
   {
-    id: -2,
-    label: "全部位置",
-  },
-  {
     id: 0,
     label: "投手",
   },
