@@ -107,8 +107,14 @@ export default {
     };
   },
   methods: {
+    // goToMyPlayerTeam(id) {
+    //   this.$router.push({ name: "myplayerTeam", params: { id } });
+    // },
     goToMyPlayerTeam(id) {
-      this.$router.push({ name: "myplayerTeam", params: { id } });
+      this.$router.push({
+        name: "/myplayerTeam",
+        query: { scrollToComments: true },
+      });
     },
     toggleMessageText() {
       if (this.displayLimit === 5) {
@@ -289,6 +295,7 @@ export default {
         border: 1px solid var(--primary-blue);
         background-color: #fff;
         color: var(--primary-blue);
+        transition: 0.3s;
         & i {
           font-size: 1rem;
           margin-right: 0.25rem;
@@ -299,6 +306,7 @@ export default {
         background-color: var(--primary-blue);
         color: #fff;
         vertical-align: middle;
+        transition: 0.3s;
       }
     }
   }
@@ -314,6 +322,7 @@ export default {
       background-color: var(--primary-blue);
       color: #fff;
       border: 1px solid var(--primary-blue);
+      transition: 0.3s;
       & i {
         font-size: 1.75rem;
         font-weight: 500;
@@ -325,6 +334,7 @@ export default {
       border: 1px solid var(--primary-blue);
       background-color: #fff;
       color: var(--primary-blue);
+      transition: 0.3s;
     }
   }
 }
@@ -356,6 +366,12 @@ export default {
         }
       }
     }
+    &_text {
+      margin-right: 4rem;
+    }
+    &_btn {
+      margin: 3rem 4rem 1rem 2rem;
+    }
   }
 }
 @media screen and (max-width: 1600px) {
@@ -369,6 +385,12 @@ export default {
           left: 2rem;
         }
       }
+    }
+    &_text {
+      margin-right: 3rem;
+    }
+    &_btn {
+      margin: 3rem 3rem 1rem 2rem;
     }
   }
 }
@@ -384,6 +406,12 @@ export default {
         }
       }
     }
+    &_text {
+      margin-right: 2rem;
+    }
+    &_btn {
+      margin: 3rem 2rem 1rem 2rem;
+    }
   }
 }
 @media screen and (max-width: 1280px) {
@@ -398,6 +426,12 @@ export default {
           left: -1.5rem;
         }
       }
+    }
+    &_text {
+      margin-right: 1rem;
+    }
+    &_btn {
+      margin: 3rem 1rem 1rem 2rem;
     }
   }
 }

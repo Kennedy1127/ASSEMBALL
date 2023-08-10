@@ -147,12 +147,12 @@ const { setData, updateData, setDataSubCollection } = useData();
 export default {
   props: ["placeholder", "type", "modelValue"],
 
-  //抓會員資料
-  async mounted() {
-    // const res = await this.$store.dispatch("getMemberCenter");
-    // console.log(res);
-    console.log(this.$store.state.user);
-  },
+  // //抓會員資料
+  // async mounted() {
+  //   // const res = await this.$store.dispatch("getMemberCenter");
+  //   // console.log(res);
+  //   console.log(this.$store.state.user);
+  // },
 
   data() {
     return {
@@ -253,7 +253,7 @@ export default {
       } else {
         // 表單提交
         alert("會員資料提交成功！");
-        
+
         // 表單資料確認
         const data = {
           firstname: this.name,

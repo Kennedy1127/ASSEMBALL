@@ -97,12 +97,25 @@ import useData from "@/composables/data/useData";
 import getData from "@/composables/data/getData";
 import { auth } from "@/firebase/config";
 
-const { getDocuments, getCollectionCount, getSubCollectionDocuments } =
-  getData();
+const { getDocuments, getSubCollectionDocuments } = getData();
 
 const { setData, updateData, setDataSubCollection } = useData();
 
 export default {
+  //抓會員模板資料
+  async mounted() {
+    const res = await this.$store.dispatch("getMemberCenter");
+    console.log(res);
+    console.log(res.memberApplyDate);
+  },
+
+  // async mounted() {
+  //   const memberApplyDate = await getDocument("memberApplyDate");
+  //   this.id = memberApplyDate.id;
+  //   this.inputValue = memberApplyDate.inputValue;
+  //   this.textareaValue = memberApplyDate.textareaValue;
+  // },
+
   data() {
     return {
       isTextareaDisabled: true,
@@ -153,6 +166,27 @@ export default {
   },
 
   methods: {
+    // async loadData() {
+    //   const memberApplyDate = await getSubCollectionDocuments({
+    //     collectionName: "MEMBERS",
+    //     documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
+    //     subCollectionName: "APPLY",
+    //   });
+    //   console.log(loadData);
+
+    //   this.id = memberApplyDate.id;
+    //   this.inputValue = memberApplyDate.inputValue;
+    //   this.textareaValue = memberApplyDate.textareaValue;
+    // },
+    // async loadData() {
+    //   const memberApplyDate = await getSubCollectionDocuments({
+    //     collectionName: "MEMBERS",
+    //     documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
+    //     subCollectionName: "APPLY",
+    //   });
+    //   return memberApplyDate(data);
+    // },
+
     //禁用切換
     toggleDisable(index) {
       this.template[index].disabled = !this.template[index].disabled;

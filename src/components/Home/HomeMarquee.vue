@@ -97,7 +97,7 @@ export default {
   }
   @keyframes scroll2 {
     from {
-      transform: translateX(-100%);
+      transform: translateX(-50%);
     }
     to {
       transform: translateX(0%);
