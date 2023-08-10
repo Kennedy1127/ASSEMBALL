@@ -39,7 +39,18 @@
             <div class="myplayer_function_race_item_day">
               {{ item.formattedDate }}
               <div class="myplayer_function_race_edit">
-                <font-awesome-icon :icon="['fas', 'pen']" />
+                <font-awesome-icon
+                  :icon="['fas', 'trash-can']"
+                  class="icon icon--pen"
+                />
+                <font-awesome-icon
+                  class="icon icon--check"
+                  :icon="['fas', 'check']"
+                />
+                <font-awesome-icon
+                  class="icon icon--xmark"
+                  :icon="['fas', 'xmark']"
+                />
               </div>
             </div>
             <div class="myplayer_function_race_item_name">

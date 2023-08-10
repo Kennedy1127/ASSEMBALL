@@ -100,8 +100,13 @@
 <script setup>
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
 import useData from "@/composables/data/useData";
+import { timestamp } from "@/firebase/config";
 import { computed, ref } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
+const store = useStore();
+const router = useRouter();
 const { setData } = useData();
 
 const copywritingName = ref("");
@@ -216,12 +221,7 @@ const location = ref([
     label: "澎湖縣",
   },
 ]);
-
 const player = ref([
-  {
-    id: -2,
-    label: "全部位置",
-  },
   {
     id: 0,
     label: "投手",
@@ -291,17 +291,24 @@ const checkSubmitData = () => {
   }
 };
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   checkSubmitData();
   if (error.value) return;
 
   const submitData = {
-    copywritingName: copywritingName.value,
-    level: level.value,
-    location: location.value,
-    player: player.value,
-    copywritingInfo: copywritingInfo.value,
+    title: copywritingName.value,
+    exp: exp.value,
+    area: area.value,
+    role: role.value,
+    intro: copywritingInfo.value,
+    date: timestamp,
+    team_id: store.state.user.team_id,
+    status: true,
   };
+  await setData("COPYWRITINGS", submitData);
+  alert("新增成功!");
+  router.push({ name: "Recruitments" });
+  //  params: { team_id: team_id }
 };
 </script>
 

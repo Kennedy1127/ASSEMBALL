@@ -1,8 +1,5 @@
 <template>
-  <GobackAndTitle :title="title" /><router-link
-    :to="{ name: 'recruitmentVerifyDetail' }"
-    >審核詳細頁</router-link
-  >
+  <GobackAndTitle :title="title" />
   <div class="recruitment_post">
     <section class="recruitment_post_aside">
       <!-- <aside class="recruitment_post_aside"> -->
@@ -26,9 +23,6 @@
       <div class="recruitment_post_main_title">
         <div class="block"></div>
         <div style="font-weight: 600">審核應徵</div>
-        <router-link :to="{ name: 'recruitmentVerifyDetail' }"
-          >審核詳細頁</router-link
-        >
       </div>
       <div class="recruitment_post_main_filter">
         <!--RecruitmentSearchbar.vue  -->
@@ -36,7 +30,7 @@
       </div>
       <div class="recruitment_post_main_table">
         <RecruitmentTable
-          :tableData="computedRenderManageCopywritings"
+          :tableData="computedRendergetApplyRecords"
           :tablekey="tablekey"
           :title="title"
         />
@@ -66,11 +60,11 @@ const title = ref("審核應徵");
 //把抓到的內容放進表格內
 const store = useStore();
 onMounted(() => {
-  store.dispatch("getManageCopywritings"); //用index.js的 action 要用dispatch
+  store.dispatch("getApplyRecords"); //用index.js的 action 要用dispatch
 });
 
 // 一頁放幾個項目
-const computedRenderManageCopywritings = computed(() => {
+const computedRendergetApplyRecords = computed(() => {
   const start = store.state.isMobile
     ? (store.state.curPage - 1) * 4
     : (store.state.curPage - 1) * 5;
@@ -79,12 +73,12 @@ const computedRenderManageCopywritings = computed(() => {
     ? store.state.curPage * 4
     : store.state.curPage * 5;
 
-  return store.state.ManageCopywritings.slice(start, end);
+  return store.state.ApplyRecords.slice(start, end);
 });
 const computedTotalPages = computed(() => {
   // 計算總頁數
-  if (store.state.ManageCopywritings.length === 0) return 1;
-  const len = store.state.ManageCopywritings.length; //state :return的東西
+  if (store.state.ApplyRecords.length === 0) return 1;
+  const len = store.state.ApplyRecords.length; //state :return的東西
   return store.state.isMobile
     ? len % 4 === 0 // 手機
       ? len > 4

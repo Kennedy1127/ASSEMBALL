@@ -153,8 +153,8 @@ export default {
         //   more: "more",
         // },
       ],
-      visiblePosts: 5,
-      additionalPosts: 5,
+      visiblePosts: 6,
+      additionalPosts: 6,
     };
   },
   methods: {
@@ -205,7 +205,7 @@ export default {
       flex-wrap: wrap;
       // overflow: scroll;
       .myplayer_message_more_wrap {
-        width: 45%;
+        width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
