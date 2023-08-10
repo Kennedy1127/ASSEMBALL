@@ -25,10 +25,11 @@
     @return_page="returnPage"
   />
 
-  <!-- 會員中心頁面 -->
+  <!-- 會員中心頁面 & 登出按鈕事件-->
   <MemberCenter
     v-if="$store.state.isMemberVisible"
     @enter_personal="enterPersonal"
+    @clear_userdata="clearUserData"
   />
   <router-view />
   <MainFooter v-if="shouldShowMainFooter" />
@@ -209,9 +210,10 @@ export default {
       } else {
         this.MainHeaderLight = false;
         this.MainHeader = true;
-        this.$store.state.isNotifyVisible = false;
-        this.$store.state.isPersonalVisible = false;
-        this.$store.state.isMemberVisible = false;
+        //不顯示通知、會員頁面
+        // this.$store.state.isNotifyVisible = false;
+        // this.$store.state.isPersonalVisible = false;
+        // this.$store.state.isMemberVisible = false;
       }
     },
 
@@ -252,6 +254,33 @@ export default {
     //個人資料頁面返回 > 會員中心
     returnPage() {
       this.$store.commit("ReturnPage");
+    },
+
+    //登出時清除使用者資料 (待修)
+    async clearUserData() {
+      // 如果你使用了 Vuex，你可以在这里调用一个 action 来清除用户状态
+      // this.$store.dispatch('clearUserData');
+
+      // 清除其他用户相关数据，如会员信息等
+      try {
+        // 清除 Vuex 中的會員狀態
+        this.$store.commit("clearUserData"); // 假设你有一个 mutation 叫 clearUserData
+
+        await firebase.auth().signOut();
+
+        //獲取使用者id
+        const userId = firebase.auth().currentUser.uid;
+
+        //清除用戶在forebase中的會員資料
+        const db = firebase.firestore();
+        const userDocRef = db.collection("users").doc(userId);
+        await userDocRef.delete();
+
+        // 跳轉到登陸頁面
+        this.$router.push("/login");
+      } catch (error) {
+        console.error("登出時發生錯誤：", error);
+      }
     },
   },
 };

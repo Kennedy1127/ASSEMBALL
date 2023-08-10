@@ -93,6 +93,15 @@
 </template>
 
 <script>
+import useData from "@/composables/data/useData";
+import getData from "@/composables/data/getData";
+import { auth } from "@/firebase/config";
+
+const { getDocuments, getCollectionCount, getSubCollectionDocuments } =
+  getData();
+
+const { setData, updateData, setDataSubCollection } = useData();
+
 export default {
   data() {
     return {
@@ -173,24 +182,38 @@ export default {
     },
 
     //提交表單
-    submitForm() {
+    async submitForm() {
       if (confirm("請問要選擇此模板當作預設嗎？") == true) {
         alert("模板資料儲存成功！");
 
-        // 表單資料確認
+        // 上傳資料庫更新
+        const data = {
+          templateId: this.id,
+          inputValue: this.inputValue,
+          comtent: this.textareaValue,
+        };
+        console.log(data);
+
+        // await setData("MEMBERS", data);
+
+        // 更改會員預設模板
+        await updateData(
+          {
+            collectionName: "MEMBERS",
+            documentId: this.$store.state.user.id,
+          },
+          data
+        );
+
+        // 全部表單資料確認
         this.template.forEach((item) => {
-          if (item.inputValue) {
-            console.log("選中的模板ID：", item.id);
-            console.log("選中的預設模板：", item.inputValue);
-            console.log("選中的模板內容：", item.textareaValue);
-          }
+          console.log("模板ID：", item.id);
+          console.log("預設模板：", item.inputValue);
+          console.log("模板內容：", item.textareaValue);
         });
       } else {
         alert("請再次選擇一種模板。");
       }
-
-      //提交後重置表單資料
-      // this.template = [];
     },
   },
 };
