@@ -265,6 +265,7 @@ export default defineComponent({
       border: 1px solid var(--primary-blue);
       background-color: var(--primary-blue);
       color: #fff;
+      transition: 0.3s;
       & i {
         font-size: 1rem;
         margin-right: 0.25rem;
@@ -275,6 +276,7 @@ export default defineComponent({
       background-color: #fff;
       color: var(--primary-blue);
       vertical-align: middle;
+      transition: 0.3s;
     }
   }
   .carousel__prev,
