@@ -39,7 +39,7 @@
         </RecruitmentTable>
       </div>
       <div class="recruitment_post_main_page">
-        <PaginationComponent />頁碼待補
+        <PaginationComponent />
       </div>
     </main>
   </div>
