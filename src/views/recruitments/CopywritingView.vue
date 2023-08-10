@@ -9,28 +9,25 @@
         </div>
         球隊資料
       </div>
+
       <div class="copywriting_header_info">
         <h2 class="copywriting_title">
           <div class="block"></div>
-          召募{{
-            $store.state.copywritingsCount === 0
-              ? defaultCopywriting.copywriting_role
-              : convertRole(computedCopywriting.copywriting_role)
-          }}
+          召募{{ convertRole(copywriting.role) }}
         </h2>
 
         <div class="copywriting_header_info_date">
-          -{{ convertDate(computedCopywriting.copywriting_date) }}
+          -{{ convertDate(copywriting.date) }}
         </div>
 
         <div class="copywriting_header_info_exp">
           <div class="copywriting_header_info_exp_block"></div>
-          {{ convertExp(computedCopywriting.copywriting_exp) }}
+          {{ convertExp(copywriting.exp) }}
         </div>
 
         <div class="copywriting_header_info_area">
           <div class="copywriting_header_info_area_block"></div>
-          {{ computedCopywriting.copywriting_area }}
+          {{ copywriting.area }}
         </div>
       </div>
 
@@ -41,7 +38,7 @@
         </h2>
 
         <p class="copywriting_header_intro_text">
-          {{ convertRoleDesc(computedCopywriting.copywriting_role) }}
+          {{ convertRoleDesc(copywriting.role) }}
         </p>
       </div>
 
@@ -53,7 +50,7 @@
           />
         </div>
         <div class="copywriting_header_team_name">
-          {{ computedCopywriting.copywriting_team_name }}
+          <!-- {{ computedCopywriting.copywriting_team_name }} -->
         </div>
         <div class="copywriting_header_team_btn">
           <router-link :to="{ name: 'Recruitments' }">更多球隊</router-link>
@@ -65,15 +62,15 @@
       <div class="copywriting_content_intro">
         <h2 class="copywriting_title">
           <div class="block"></div>
-          {{ computedCopywriting.copywriting_team_name }}
+          <!-- {{ computedCopywriting_team_name }} -->
         </h2>
 
         <h3 class="copywriting_content_intro_title">
-          {{ computedCopywriting.copywriting_team_title }}
+          <!-- {{ computedCopywriting.team_title }} -->
         </h3>
 
         <p class="copywriting_content_intro_text">
-          {{ computedCopywriting.copywriting_team_intro }}
+          {{ copywriting.intro }}
         </p>
       </div>
 
@@ -109,7 +106,7 @@
       </h2>
 
       <div class="copywriting_footer_carousel">
-        <CopywritingSwiper :role="computedCopywriting.copywriting_role" />
+        <CopywritingSwiper :role="copywriting.role" />
       </div>
     </div>
   </main>
@@ -124,75 +121,35 @@
 import roles from "@/composables/tables/roles";
 import exps from "@/composables/tables/exps";
 import roleDesc from "@/composables/tables/roleDesc";
+import getData from "@/composables/data/getData";
 import CopywritingSubmitApply from "@/components/recruitments/copywriting/CopywritingSubmitApply.vue";
 import CopywritingSwiper from "@/components/recruitments/copywriting/CopywritingSwiper.vue";
-import { computed, onMounted, ref } from "vue";
+import { watchEffect, ref } from "vue";
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const store = useStore();
 const route = useRoute();
+const router = useRouter();
+const { getDocument } = getData();
 
-onMounted(() => {
-  if (
-    // 如果文案數量為0或是找不到該文案的話，重新撈資料
-    store.state.copywritingsCount === 0 ||
-    store.state.copywritings.find(
-      (copywriting) => copywriting.copywriting_id === Number(route.params.id)
-    )
-  ) {
-    store.dispatch("getCopywritingsCount");
-    store.dispatch("getCopywritings");
+watchEffect(async () => {
+  store.state.isPending = true;
+
+  if (route.params.id) {
+    const res = await getDocument("COPYWRITINGS", route.params.id);
+    if (!res) {
+      router.push({ name: "Home" });
+    }
+    copywriting.value = { ...res };
   }
+
+  store.state.isPending = false;
 });
 
-const defaultCopywriting = ref({
-  copywriting_role: 5,
-  copywriting_title: "尋找新星！現正招募有潛力的球員",
-  copywriting_exp: 1,
-  copywriting_area: "花蓮縣",
-  copywriting_date: "2023-04-21T04:10:58.291Z",
-  copywriting_team_name: "勇士隊",
-  copywriting_team_icon: "https://picsum.photos/200/300",
-  copywriting_team_title: "熱愛棒球：生活在球場上的我們",
-  copywriting_team_intro:
-    "喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵，喵喵喵，喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵，喵喵喵喵喵喵喵喵喵",
-});
+const copywriting = ref({});
 
 const overlayIsOpen = ref(false);
-
-const computedCopywriting = computed(() => {
-  const data = store.state.copywritings.find(
-    (copywriting) => copywriting.copywriting_id === route.params.id
-  );
-
-  if (data) {
-    const {
-      copywriting_role,
-      copywriting_title,
-      copywriting_exp,
-      copywriting_area,
-      copywriting_date,
-      copywriting_team_name,
-      copywriting_team_icon,
-      copywriting_team_title,
-      copywriting_team_intro,
-    } = data;
-
-    return {
-      copywriting_role,
-      copywriting_title,
-      copywriting_exp,
-      copywriting_area,
-      copywriting_date,
-      copywriting_team_name,
-      copywriting_team_icon,
-      copywriting_team_title,
-      copywriting_team_intro,
-    };
-  }
-  return defaultCopywriting.value;
-});
 
 const convertRole = (role) => {
   if (role || role === 0) return roles[role + 1].label;
@@ -208,7 +165,8 @@ const convertRoleDesc = (role) => {
 
 const convertDate = (copywritingDate) => {
   if (!copywritingDate) return;
-  const date = new Date(copywritingDate);
+  // 日期
+  const date = new Date(copywritingDate.toDate());
   return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(
     2,
     "0"
@@ -217,7 +175,6 @@ const convertDate = (copywritingDate) => {
 </script>
 
 <style scoped lang="scss">
-
 //手機版麵包屑
 .bread_crumbs {
   display: none;

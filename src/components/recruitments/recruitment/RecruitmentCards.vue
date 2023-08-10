@@ -9,7 +9,7 @@
         :to="{
           name: 'Copywriting',
           params: {
-            id: item.copywriting_id,
+            id: item.id,
           },
           query: {
             h: windowTop,
@@ -17,20 +17,20 @@
         }"
       >
         <h2 class="recruit_copywritings_card_header">
-          召募{{ convertRole(item.copywriting_role) }}
+          召募{{ convertRole(item.role) }}
         </h2>
 
         <div class="recruit_copywritings_card_content">
           <div class="recruit_copywritings_card_title">
-            {{ item.copywriting_title }}
+            {{ item.title }}
           </div>
           <div class="recruit_copywritings_card_exp">
             <div class="recruit_copywritings_card_exp_block"></div>
-            {{ convertExp(item.copywriting_exp) }}
+            {{ convertExp(item.exp) }}
           </div>
           <div class="recruit_copywritings_card_area">
             <div class="recruit_copywritings_card_area_block"></div>
-            {{ item.copywriting_area }}
+            {{ item.area }}
           </div>
         </div>
 
@@ -45,20 +45,20 @@
               />
             </div>
             <div class="recruit_copywritings_card_team_name">
-              {{ item.copywriting_team_name }}
+              <!-- {{ item.team_name }} -->
             </div>
           </div>
 
           <div class="recruit_copywritings_card_intro">
             <div class="recruit_copywritings_card_intro_title">球隊簡介：</div>
             <p class="recruit_copywritings_card_intro_text">
-              {{ item.copywriting_team_intro }}
+              <!-- {{ item.team_intro }} -->
             </p>
           </div>
         </div>
 
         <div class="recruit_copywritings_card_date">
-          刊登日期：{{ convertDate(item.copywriting_date) }}
+          刊登日期：{{ convertDate(item.date.toDate()) }}
         </div>
       </router-link>
     </div>
@@ -94,14 +94,6 @@ onUnmounted(() => {
 const windowTop = ref(window.top.scrollY);
 
 const computedRenderCopywritings = computed(() => {
-  // const start = store.state.isMobile
-  //   ? (store.state.copywritingsCurPage - 1) * 4
-  //   : (store.state.copywritingsCurPage - 1) * 6;
-
-  // const end = store.state.isMobile
-  //   ? store.state.copywritingsCurPage * 4
-  //   : store.state.copywritingsCurPage * 6;
-
   const start = store.state.isMobile
     ? (store.state.curPage - 1) * 4
     : (store.state.curPage - 1) * 6;
@@ -115,8 +107,6 @@ const computedRenderCopywritings = computed(() => {
 
 // 招募文案的總頁數
 const computedTotalPages = computed(() => {
-  if (store.state.copywritingsCount === 0) return 1;
-
   const len = store.getters.filteredCopywritings.length;
   return store.state.isMobile
     ? len % 4 === 0
@@ -132,7 +122,7 @@ const computedTotalPages = computed(() => {
 });
 
 const convertRole = (role) => {
-  return roles[Number(role) + 1].label;
+  return roles[Number(role < 0 ? 0 : role) + 1].label;
 };
 
 const convertExp = (exp) => {
@@ -176,6 +166,8 @@ const convertDate = (copywritingDate) => {
     }
 
     a {
+      width: 100%;
+      min-height: 400px;
       border: 3px solid var(--primary-blue);
     }
 

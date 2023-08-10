@@ -118,44 +118,42 @@ export default createStore({
     // 招募初心者數量
     inexperencedCount(state) {
       return state.copywritings.filter(
-        (copywriting) => copywriting.copywriting_exp === 0
+        (copywriting) => Number(copywriting.exp) === 0
       ).length;
     },
 
     // 招募新手數量
     entryCount(state) {
       return state.copywritings.filter(
-        (copywriting) => copywriting.copywriting_exp === 1
+        (copywriting) => Number(copywriting.exp) === 1
       ).length;
     },
 
     // 招募老手數量
     intermediateCount(state) {
       return state.copywritings.filter(
-        (copywriting) => copywriting.copywriting_exp === 2
+        (copywriting) => Number(copywriting.exp) === 2
       ).length;
     },
 
     // 經歷不拘數量
     freeCount(state) {
       return state.copywritings.filter(
-        (copywriting) => copywriting.copywriting_exp === 3
+        (copywriting) => Number(copywriting.exp) === 3
       ).length;
     },
 
     // 如果文字搜尋條件符合或長度為0時，return true
     includedCopywritingsByText: (state) => (copywriting) => {
       if (!state.selectedCopywritingsText) return true;
-      return copywriting.copywriting_title.includes(
-        state.selectedCopywritingsText
-      );
+      return copywriting.title.includes(state.selectedCopywritingsText);
     },
 
     // 如果守備位置條件符合的話或為-1時，return true
     includedCopywritingsByRole: (state) => (copywriting) => {
       if (state.selectedCopywritingsRole < 0) return true;
 
-      return state.selectedCopywritingsRole === copywriting.copywriting_role;
+      return state.selectedCopywritingsRole === copywriting.role;
     },
 
     // 如果地區條件符合的話或為空字串、-1時，return true
@@ -166,18 +164,13 @@ export default createStore({
       )
         return true;
 
-      return state.selectedCopywritingsArea.includes(
-        copywriting.copywriting_area
-      );
+      return state.selectedCopywritingsArea.includes(copywriting.area);
     },
 
     // 如果經歷條件符合的話或長度為0時，return true
     includedCopywritingsByExp: (state) => (copywriting) => {
       if (state.selectedCopywritingsExp.length === 0) return true;
-
-      return state.selectedCopywritingsExp.includes(
-        copywriting.copywriting_exp
-      );
+      return state.selectedCopywritingsExp.includes(Number(copywriting.exp));
     },
 
     // 過濾後的招募文案
@@ -201,12 +194,10 @@ export default createStore({
 
       state.selectedCopywritingsDate
         ? copywritings.sort(
-            (a, b) =>
-              new Date(a.copywriting_date) - new Date(b.copywriting_date)
+            (a, b) => new Date(a.date.toDate()) - new Date(b.date.toDate())
           )
         : copywritings.sort(
-            (a, b) =>
-              new Date(b.copywriting_date) - new Date(a.copywriting_date)
+            (a, b) => new Date(b.date.toDate()) - new Date(a.date.toDate())
           );
 
       return copywritings;
@@ -545,24 +536,13 @@ export default createStore({
     // },
 
     ///////////////////////////////////////
-
-    // 撈招募文案數量
-    async getCopywritingsCount(context) {
-      try {
-        const res = await axios.get("http://localhost:3000/copywritings");
-        if (!res) throw new Error("Cannot fetch response");
-        context.commit("setCopywritingsCount", res.data.length);
-      } catch (err) {
-        console.error(err);
-      }
-    },
-
     // 撈招募文案資料
     async getCopywritings(context) {
       try {
-        const res = await axios.get("http://localhost:3000/copywritings");
-        if (!res) throw new Error("Cannot fetch response");
-        context.commit("setCopywritings", res.data);
+        const copywritings = await getDocuments("COPYWRITINGS");
+        if (!copywritings) throw new Error("Cannot fetch response");
+
+        context.commit("setCopywritings", copywritings);
       } catch (err) {
         console.error(err);
       }

@@ -1,17 +1,15 @@
 <template>
   <div class="copywriting_card">
-    <router-link
-      :to="{ name: 'Copywriting', params: { id: copywriting.copywriting_id } }"
-    >
+    <router-link :to="{ name: 'Copywriting', params: { id: copywriting.id } }">
       <div class="copywriting_card_header">
         <div class="copywriting_card_role">
-          招募{{ convertRole(copywriting.copywriting_role) }}
+          招募{{ convertRole(copywriting.role) }}
         </div>
       </div>
 
       <div class="copywriting_card_content">
         <div class="copywriting_card_exp">
-          {{ convertExp(copywriting.copywriting_exp) }}
+          {{ convertExp(copywriting.exp) }}
         </div>
         <div class="copywriting_card_info">
           <div class="copywriting_card_icon">
@@ -21,10 +19,10 @@
             />
           </div>
           <div class="copywriting_card_team">
-            {{ copywriting.copywriting_team_name }}
+            <!-- {{ copywriting.team_name }} -->
           </div>
           <div class="copywriting_card_area">
-            {{ copywriting.copywriting_area }}
+            {{ copywriting.area }}
           </div>
         </div>
       </div>
