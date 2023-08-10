@@ -41,7 +41,7 @@
           <th v-if="title === '管理職缺'"><div>更新日期</div></th>
           <th v-if="title === '管理職缺'">編輯</th>
 
-          <th v-else :colspan="'2'">更新日期</th>
+          <th v-else :colspan="'2'" class="verify">更新日期</th>
         </tr>
         <tr v-else>
           <th :colspan="'2'"><div>守備位置</div></th>
@@ -60,10 +60,11 @@
             {{ item.title }}
           </td>
 
-          <td v-else>{{ item.role }}</td>
+          <td v-else>{{ getRoleLabel(item.role) }}</td>
 
           <td v-if="title === '管理職缺' || title === '審核應徵'">
-            {{ item.role }}
+            <!-- <span v-if=""></span>  -->
+            {{ getRoleLabel(item.role) }}
           </td>
 
           <td v-else>{{ item.area }}</td>
@@ -72,10 +73,10 @@
             {{ item.area }}
           </td>
 
-          <td v-else>{{ item.apply_date }}</td>
+          <td v-else>{{ convertDate(item.date.toDate()) }}</td>
 
           <td v-if="title === '管理職缺' || title === '審核應徵'">
-            {{ item.date }}
+            <div>{{ convertDate(item.date.toDate()) }}</div>
           </td>
 
           <td v-else>{{ item.candidate_name }}</td>
@@ -85,7 +86,11 @@
               <font-awesome-icon icon="fa-solid fa-pen" />
             </div>
           </td>
-          <td v-else-if="title === '審核應徵'" class="Icon">
+          <td
+            v-else-if="title === '審核應徵'"
+            class="Icon"
+            @click="goApplyDetail(item.id)"
+          >
             <button>
               更多<font-awesome-icon icon="fa-solid fa-chevron-right" />
             </button>
@@ -108,7 +113,7 @@
               </div>
               <div class="td_item">
                 <div class="td_title">守備位置</div>
-                <div>{{ item.role }}</div>
+                <div>{{ getRoleLabel(item.role) }}</div>
               </div>
               <div class="td_item">
                 <div class="td_title">地區</div>
@@ -118,11 +123,11 @@
             <td>
               <div v-if="tablekey === 1" class="td_item update">
                 <div class="td_title">更新日期</div>
-                <div>{{ item.date }}</div>
+                <div>{{ convertDate(item.date.toDate()) }}</div>
               </div>
               <div v-else>
                 <div class="td_title">應徵日期</div>
-                <div>{{ item.apply_date }}</div>
+                <div>{{ convertDate(item.date.toDate()) }}</div>
               </div>
               <div v-if="title === '記錄管理'" class="td_item">
                 <div class="td_title">姓名</div>
@@ -131,7 +136,11 @@
               <div v-if="title === '管理職缺'" class="icon-pen">
                 <font-awesome-icon icon="fa-solid fa-pen" />
               </div>
-              <div v-else-if="title === '審核應徵'" class="Icon">
+              <div
+                v-else-if="title === '審核應徵'"
+                class="Icon"
+                @click="goApplyDetail(item.id)"
+              >
                 <button>
                   更多<font-awesome-icon icon="fa-solid fa-chevron-right" />
                 </button>
@@ -150,13 +159,6 @@ export default {
   data() {
     return {
       statusColor: ["yellow", "red", "green"],
-      records: [
-        { A: "捕手", B: "桃園市", C: "2023.08.05", D: "Hank Liu" },
-        { A: "捕手", B: "桃園市", C: "2023.07.05", D: "Hank Liu" },
-        { A: "捕手", B: "桃園市", C: "2023.06.05", D: "Hank Liu" },
-        { A: "捕手", B: "桃園市", C: "2023.05.05", D: "Hank Liu" },
-        { A: "捕手", B: "桃園市", C: "2023.04.05", D: "Hank Liu" },
-      ],
 
       recruitPosts: [
         {
@@ -200,6 +202,7 @@ export default {
           iconTrashCan: "fa-solid fa-trash-can",
         },
       ],
+      // role: [],
     };
   },
   props: {
@@ -263,6 +266,36 @@ export default {
     convertStatusColor() {
       return { [this.statusColor[this.$props.status]]: true };
     },
+    convertDate(inputDate) {
+      const date = new Date(inputDate);
+      return `${date.getFullYear()} / ${String(date.getMonth() + 1).padStart(
+        2,
+        0
+      )} / ${String(date.getDate()).padStart(2, 0)}`;
+    },
+
+    goApplyDetail(id) {
+      this.$router.push({ name: "recruitmentVerifyDetail", query: { id } });
+    },
+  },
+  computed: {
+    getRoleLabel() {
+      const roles = [
+        { value: 0, label: "投手" },
+        { value: 1, label: "捕手" },
+        { value: 2, label: "一壘手" },
+        { value: 3, label: "二壘手" },
+        { value: 4, label: "游擊手" },
+        { value: 5, label: "三壘手" },
+        { value: 6, label: "左外野手" },
+        { value: 7, label: "中外野手" },
+        { value: 8, label: "右外野手" },
+      ];
+      return (roleValue) => {
+        const roleObject = roles.find((role) => role.value === roleValue);
+        return roleObject ? roleObject.label : "";
+      };
+    },
   },
 };
 </script>
@@ -283,6 +316,9 @@ export default {
       th {
         width: 12rem;
         padding: 0.5rem 0;
+        &.verify {
+          width: 22rem;
+        }
         div {
           border-right: 2px solid var(--primary-blue);
         }
@@ -314,9 +350,6 @@ export default {
       background-color: var(--secondary-blue-3);
     }
     .Icon {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
       color: var(--primary-blue);
       button {
         font-size: 1rem;
@@ -357,9 +390,7 @@ export default {
           flex-direction: column;
           gap: 1rem;
           justify-content: space-between;
-          .td_item {
-            // margin-bottom: 1rem;
-          }
+
           .td_title {
             color: var(--primary-blue);
             margin-bottom: 0.5rem;
@@ -399,13 +430,6 @@ export default {
       tbody tr:nth-child(2n + 2) {
         background-color: var(--secondary-blue-3);
       }
-
-      // .Icon {
-      //   display: flex;
-      //   justify-content: center;
-      //   gap: 2rem;
-      //   color: var(--primary-blue);
-      // }
     }
   }
 }
