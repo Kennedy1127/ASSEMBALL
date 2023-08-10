@@ -40,7 +40,11 @@
 
 <script setup>
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
+import { auth, timestamp } from "@/firebase/config";
 import { computed, ref } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
 
 const emit = defineEmits(["closeModal"]);
 
@@ -76,7 +80,14 @@ const closeModal = () => {
 };
 
 const submitApply = () => {
-  console.log(computedSelectedTemplate.value);
+  const submitData = {
+    copywriting_id: route.params.id,
+    user_id: auth.currentUser.uid,
+    text: computedSelectedTemplate.value.text,
+    date: timestamp,
+  };
+
+  console.log(submitData);
 };
 </script>
 

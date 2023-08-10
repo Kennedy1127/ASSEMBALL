@@ -4,20 +4,31 @@ import {
   uploadBytes,
   getDownloadURL,
   getBlob,
+  listAll,
 } from "firebase/storage";
+
+// const getAll = async () => {
+//   const storage = getStorage();
+//   const storageRef = ref(storage, "images/PRODUCTS/4akPJqmt2vrCo5kyVEDJ/");
+//   const res = await listAll(storageRef);
+//   console.log(res.items);
+
+//   res.items.forEach(async (el) => {
+//     const test = await getDownloadURL(el);
+//     console.log(test);
+//   });
+// };
+// getAll();
 
 const useStorage = () => {
   const storage = getStorage();
 
   const setPics = async (path, files, filename) => {
     try {
-      const urls = [];
-
       for (let i = 0; i < files.length; i++) {
         let route = `${path}/${filename}-${i + 1}`;
         await uploadPic(route, files[i]);
       }
-      return urls;
     } catch (err) {
       console.error("Somethings went wrong!");
       console.error(err);

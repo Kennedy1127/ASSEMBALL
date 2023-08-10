@@ -25,10 +25,11 @@
     @return_page="returnPage"
   />
 
-  <!-- 會員中心頁面 -->
+  <!-- 會員中心頁面 & 登出按鈕事件-->
   <MemberCenter
     v-if="$store.state.isMemberVisible"
     @enter_personal="enterPersonal"
+    @clear_userdata="clearUserData"
   />
   <router-view />
   <MainFooter v-if="shouldShowMainFooter" />
@@ -209,9 +210,10 @@ export default {
       } else {
         this.MainHeaderLight = false;
         this.MainHeader = true;
-        this.$store.state.isNotifyVisible = false;
-        this.$store.state.isPersonalVisible = false;
-        this.$store.state.isMemberVisible = false;
+        //不顯示通知、會員頁面
+        // this.$store.state.isNotifyVisible = false;
+        // this.$store.state.isPersonalVisible = false;
+        // this.$store.state.isMemberVisible = false;
       }
     },
 
@@ -252,6 +254,21 @@ export default {
     //個人資料頁面返回 > 會員中心
     returnPage() {
       this.$store.commit("ReturnPage");
+    },
+
+    //清除會員資料
+    clearUserData() {
+      if (window.confirm("請問要登出帳號嗎？") == true) {
+        try {
+          // 清除 Vuex 中的會員狀態
+          this.$store.commit("clearUserData");
+
+          // 跳轉到登入頁面
+          this.$router.push("/login");
+        } catch (error) {
+          console.error("登出時發生錯誤：", error);
+        }
+      }
     },
   },
 };

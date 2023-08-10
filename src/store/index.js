@@ -2,7 +2,7 @@ import { createStore } from "vuex";
 import axios from "axios";
 import getData from "@/composables/data/getData";
 
-const { getDocuments, getSubCollectionDocuments } = getData();
+const { getDocument, getDocuments, getSubCollectionDocuments } = getData();
 
 export default createStore({
   state: {
@@ -48,7 +48,7 @@ export default createStore({
     //////////////////////////////////////////////////////
     //會員中心區塊
     memberCenter: [],
-    Createteam: [],
+    application: [],
 
     //////////////////////////////////////////////////////
     // 招募文案區塊
@@ -118,44 +118,42 @@ export default createStore({
     // 招募初心者數量
     inexperencedCount(state) {
       return state.copywritings.filter(
-        (copywriting) => copywriting.copywriting_exp === 0
+        (copywriting) => Number(copywriting.exp) === 0
       ).length;
     },
 
     // 招募新手數量
     entryCount(state) {
       return state.copywritings.filter(
-        (copywriting) => copywriting.copywriting_exp === 1
+        (copywriting) => Number(copywriting.exp) === 1
       ).length;
     },
 
     // 招募老手數量
     intermediateCount(state) {
       return state.copywritings.filter(
-        (copywriting) => copywriting.copywriting_exp === 2
+        (copywriting) => Number(copywriting.exp) === 2
       ).length;
     },
 
     // 經歷不拘數量
     freeCount(state) {
       return state.copywritings.filter(
-        (copywriting) => copywriting.copywriting_exp === 3
+        (copywriting) => Number(copywriting.exp) === 3
       ).length;
     },
 
     // 如果文字搜尋條件符合或長度為0時，return true
     includedCopywritingsByText: (state) => (copywriting) => {
       if (!state.selectedCopywritingsText) return true;
-      return copywriting.copywriting_title.includes(
-        state.selectedCopywritingsText
-      );
+      return copywriting.title.includes(state.selectedCopywritingsText);
     },
 
     // 如果守備位置條件符合的話或為-1時，return true
     includedCopywritingsByRole: (state) => (copywriting) => {
       if (state.selectedCopywritingsRole < 0) return true;
 
-      return state.selectedCopywritingsRole === copywriting.copywriting_role;
+      return state.selectedCopywritingsRole === copywriting.role;
     },
 
     // 如果地區條件符合的話或為空字串、-1時，return true
@@ -166,18 +164,13 @@ export default createStore({
       )
         return true;
 
-      return state.selectedCopywritingsArea.includes(
-        copywriting.copywriting_area
-      );
+      return state.selectedCopywritingsArea.includes(copywriting.area);
     },
 
     // 如果經歷條件符合的話或長度為0時，return true
     includedCopywritingsByExp: (state) => (copywriting) => {
       if (state.selectedCopywritingsExp.length === 0) return true;
-
-      return state.selectedCopywritingsExp.includes(
-        copywriting.copywriting_exp
-      );
+      return state.selectedCopywritingsExp.includes(Number(copywriting.exp));
     },
 
     // 過濾後的招募文案
@@ -201,12 +194,10 @@ export default createStore({
 
       state.selectedCopywritingsDate
         ? copywritings.sort(
-            (a, b) =>
-              new Date(a.copywriting_date) - new Date(b.copywriting_date)
+            (a, b) => new Date(a.date.toDate()) - new Date(b.date.toDate())
           )
         : copywritings.sort(
-            (a, b) =>
-              new Date(b.copywriting_date) - new Date(a.copywriting_date)
+            (a, b) => new Date(b.date.toDate()) - new Date(a.date.toDate())
           );
 
       return copywritings;
@@ -248,11 +239,21 @@ export default createStore({
       state.memberCenter = { ...payload }; //payload:要運送出來的東西
     },
 
-    // //取得創立球隊資料
-    // setCreateteam(state, payload) {
-    //   console.log([...payload]);
-    //   state.Createteam = [...payload]; //payload:要運送出來的東西
-    // },
+    //取得應徵模板資料
+    setApplication(state, payload) {
+      console.log(payload);
+      state.application = [...payload];
+    },
+
+    //登出時清除會員資料
+    clearUserData(state) {
+      state.isLoggedIn = false;
+      state.userNotifies = [];
+      state.userOrders = [];
+      state.memberCenter = [];
+      state.application = [];
+      // 其他需要重置的資料也在這裡添加
+    },
 
     //////////////////////////////////////////////////////
     // 首頁區塊
@@ -478,47 +479,26 @@ export default createStore({
 
     ///////////////////////////////////////
 
-    // 撈會員中心 會員資料
-    // async getMemberCenter(context) {
-    //   try {
-    //     const res = await getDocuments("MEMBERS");
-    //     context.commit("setMemberCenter", res);
-    //     // console.log(res);
-    //     // const allMembers = await getDocuments("MEMBERS");
-    //     // const user = await getUser();
-    //     // const userMemberData = allMembers.find(
-    //     //   (member) => member.id === user.id
-    //     // );
-    //     // if (userMemberData) {
-    //     //   context.commit("setMemberCenter", userMemberData);
-    //     // } else {
-    //     //   console.error("User data not found in MEMBERS collection.");
-    //     // }
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
-    // },
-
     // 撈會員中心 資料
     async getMemberCenter(context, payload) {
       const memberDate = await getDocuments("MEMBERS");
-      console.log(memberDate);
+      // console.log(memberDate);
 
-      const memberTeamDate = await getSubCollectionDocuments({
+      const memberApplyDate = await getSubCollectionDocuments({
         collectionName: "MEMBERS",
         documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
-        subCollectionName: "CREATETEAM",
-        subDocumentId: "tZ6DGqZezEds1tc7uapu",
+        subCollectionName: "APPLY",
       });
-      console.log(memberTeamDate);
+      // console.log(memberApplyDate);
 
       const allMemberDate = {
-        ...memberDate[0],
-        memberTeamDate,
+        ...memberDate[1],
+        memberApplyDate,
       };
       // console.log(allTeamData);
 
       context.commit("setMemberCenter", allMemberDate);
+      return allMemberDate;
     },
 
     // 撈訂單管理
@@ -532,37 +512,24 @@ export default createStore({
       }
     },
 
-    // // 撈會員中心訂單資料
-    // async getMemberCenterOrderManage(context) {
-    //   try {
-    //     const res = await axios.get("http://localhost:3000/member_order");
-    //     if (!res) throw new Error("Cannot fetch response");
-    //     context.commit("setMemberCenterOrderManage", res.data); //setManageCopywritings: 寫在mutation裡面
-    //     // context.commit("setCopywritingsCount", res.data.length);
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
-    // },
-
     ///////////////////////////////////////
-
-    // 撈招募文案數量
-    async getCopywritingsCount(context) {
-      try {
-        const res = await axios.get("http://localhost:3000/copywritings");
-        if (!res) throw new Error("Cannot fetch response");
-        context.commit("setCopywritingsCount", res.data.length);
-      } catch (err) {
-        console.error(err);
-      }
-    },
-
     // 撈招募文案資料
     async getCopywritings(context) {
       try {
-        const res = await axios.get("http://localhost:3000/copywritings");
+        const res = await getDocuments("COPYWRITINGS");
         if (!res) throw new Error("Cannot fetch response");
-        context.commit("setCopywritings", res.data);
+
+        const copywritings = [];
+        for (let i = 0; i < res.length; i++) {
+          const team = await getDocument("TEAMS", res[i].team_id);
+          copywritings.push({
+            ...res[i],
+            team_name: team.teamName,
+            team_intro: team.intro,
+          });
+        }
+
+        context.commit("setCopywritings", copywritings);
       } catch (err) {
         console.error(err);
       }

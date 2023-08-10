@@ -38,7 +38,7 @@
         <div class="detail_price">NT$ {{ renderProductPrice }}</div>
         <router-link
           v-if="productData.seller_id !== auth.currentUser?.uid"
-          :to="{ name: 'ProductPayment' }"
+          :to="{ name: 'ProductPayment', query: { id: productData.id } }"
         >
           <button>我要購買</button>
         </router-link>
