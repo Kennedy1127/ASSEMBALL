@@ -19,7 +19,7 @@
             />
           </div>
           <div class="copywriting_card_team">
-            <!-- {{ copywriting.team_name }} -->
+            {{ copywriting.team_name }}
           </div>
           <div class="copywriting_card_area">
             {{ copywriting.area }}

@@ -52,12 +52,10 @@ import { Navigation, Pagination } from "swiper/modules";
 import CopywritingSwiperCard from "@/components/recruitments/copywriting/CopywritingSwiperCard.vue";
 import getData from "@/composables/data/getData";
 import { watchEffect, ref } from "vue";
-import { useStore } from "vuex";
 
-const store = useStore();
 const props = defineProps(["role"]);
 const modules = ref([Navigation, Pagination]);
-const { getDocuments } = getData();
+const { getDocument, getDocuments } = getData();
 
 const slides = ref([]);
 
@@ -67,7 +65,14 @@ watchEffect(async () => {
       ["role", "==", props.role],
     ]);
 
-    slides.value = [...res];
+    for (let i = 0; i < res.length; i++) {
+      const team = await getDocument("TEAMS", res[i].team_id);
+      slides.value.push({
+        ...res[i],
+        team_name: team.teamName,
+        team_intro: team.intro,
+      });
+    }
   }
 });
 </script>

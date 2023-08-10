@@ -221,12 +221,7 @@ const location = ref([
     label: "澎湖縣",
   },
 ]);
-
 const player = ref([
-  {
-    id: -2,
-    label: "全部位置",
-  },
   {
     id: 0,
     label: "投手",
@@ -307,7 +302,8 @@ const handleSubmit = async () => {
     role: role.value,
     intro: copywritingInfo.value,
     date: timestamp,
-    teamid: store.state.user.team_id,
+    team_id: store.state.user.team_id,
+    status: true,
   };
   await setData("COPYWRITINGS", submitData);
   alert("新增成功!");

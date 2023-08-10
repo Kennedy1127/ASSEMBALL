@@ -2,7 +2,7 @@ import { createStore } from "vuex";
 import axios from "axios";
 import getData from "@/composables/data/getData";
 
-const { getDocuments, getSubCollectionDocuments } = getData();
+const { getDocument, getDocuments, getSubCollectionDocuments } = getData();
 
 export default createStore({
   state: {
@@ -48,7 +48,7 @@ export default createStore({
     //////////////////////////////////////////////////////
     //會員中心區塊
     memberCenter: [],
-    Createteam: [],
+    application: [],
 
     //////////////////////////////////////////////////////
     // 招募文案區塊
@@ -239,11 +239,21 @@ export default createStore({
       state.memberCenter = { ...payload }; //payload:要運送出來的東西
     },
 
-    // //取得創立球隊資料
-    // setCreateteam(state, payload) {
-    //   console.log([...payload]);
-    //   state.Createteam = [...payload]; //payload:要運送出來的東西
-    // },
+    //取得應徵模板資料
+    setApplication(state, payload) {
+      console.log(payload);
+      state.application = [...payload];
+    },
+
+    //登出時清除會員資料
+    clearUserData(state) {
+      state.isLoggedIn = false;
+      state.userNotifies = [];
+      state.userOrders = [];
+      state.memberCenter = [];
+      state.application = [];
+      // 其他需要重置的資料也在這裡添加
+    },
 
     //////////////////////////////////////////////////////
     // 首頁區塊
@@ -469,47 +479,26 @@ export default createStore({
 
     ///////////////////////////////////////
 
-    // 撈會員中心 會員資料
-    // async getMemberCenter(context) {
-    //   try {
-    //     const res = await getDocuments("MEMBERS");
-    //     context.commit("setMemberCenter", res);
-    //     // console.log(res);
-    //     // const allMembers = await getDocuments("MEMBERS");
-    //     // const user = await getUser();
-    //     // const userMemberData = allMembers.find(
-    //     //   (member) => member.id === user.id
-    //     // );
-    //     // if (userMemberData) {
-    //     //   context.commit("setMemberCenter", userMemberData);
-    //     // } else {
-    //     //   console.error("User data not found in MEMBERS collection.");
-    //     // }
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
-    // },
-
     // 撈會員中心 資料
     async getMemberCenter(context, payload) {
       const memberDate = await getDocuments("MEMBERS");
-      console.log(memberDate);
+      // console.log(memberDate);
 
-      const memberTeamDate = await getSubCollectionDocuments({
+      const memberApplyDate = await getSubCollectionDocuments({
         collectionName: "MEMBERS",
         documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
-        subCollectionName: "CREATETEAM",
-        subDocumentId: "tZ6DGqZezEds1tc7uapu",
+        subCollectionName: "APPLY",
       });
-      console.log(memberTeamDate);
+      // console.log(memberApplyDate);
 
       const allMemberDate = {
-        ...memberDate[0],
-        memberTeamDate,
+        ...memberDate[1],
+        memberApplyDate,
       };
       // console.log(allTeamData);
 
       context.commit("setMemberCenter", allMemberDate);
+      return allMemberDate;
     },
 
     // 撈訂單管理
@@ -523,24 +512,22 @@ export default createStore({
       }
     },
 
-    // // 撈會員中心訂單資料
-    // async getMemberCenterOrderManage(context) {
-    //   try {
-    //     const res = await axios.get("http://localhost:3000/member_order");
-    //     if (!res) throw new Error("Cannot fetch response");
-    //     context.commit("setMemberCenterOrderManage", res.data); //setManageCopywritings: 寫在mutation裡面
-    //     // context.commit("setCopywritingsCount", res.data.length);
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
-    // },
-
     ///////////////////////////////////////
     // 撈招募文案資料
     async getCopywritings(context) {
       try {
-        const copywritings = await getDocuments("COPYWRITINGS");
-        if (!copywritings) throw new Error("Cannot fetch response");
+        const res = await getDocuments("COPYWRITINGS");
+        if (!res) throw new Error("Cannot fetch response");
+
+        const copywritings = [];
+        for (let i = 0; i < res.length; i++) {
+          const team = await getDocument("TEAMS", res[i].team_id);
+          copywritings.push({
+            ...res[i],
+            team_name: team.teamName,
+            team_intro: team.intro,
+          });
+        }
 
         context.commit("setCopywritings", copywritings);
       } catch (err) {

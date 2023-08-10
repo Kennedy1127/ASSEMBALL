@@ -260,30 +260,18 @@ export default {
       this.$store.commit("ReturnPage");
     },
 
-    //登出時清除使用者資料 (待修)
-    async clearUserData() {
-      // 如果你使用了 Vuex，你可以在这里调用一个 action 来清除用户状态
-      // this.$store.dispatch('clearUserData');
+    //清除會員資料
+    clearUserData() {
+      if (window.confirm("請問要登出帳號嗎？") == true) {
+        try {
+          // 清除 Vuex 中的會員狀態
+          this.$store.commit("clearUserData");
 
-      // 清除其他用户相关数据，如会员信息等
-      try {
-        // 清除 Vuex 中的會員狀態
-        this.$store.commit("clearUserData"); // 假设你有一个 mutation 叫 clearUserData
-
-        await firebase.auth().signOut();
-
-        //獲取使用者id
-        const userId = firebase.auth().currentUser.uid;
-
-        //清除用戶在forebase中的會員資料
-        const db = firebase.firestore();
-        const userDocRef = db.collection("users").doc(userId);
-        await userDocRef.delete();
-
-        // 跳轉到登陸頁面
-        this.$router.push("/login");
-      } catch (error) {
-        console.error("登出時發生錯誤：", error);
+          // 跳轉到登入頁面
+          this.$router.push("/login");
+        } catch (error) {
+          console.error("登出時發生錯誤：", error);
+        }
       }
     },
   },

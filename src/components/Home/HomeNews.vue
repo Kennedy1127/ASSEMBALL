@@ -382,7 +382,7 @@ export default {
             background-color: #fff;
             color: var(--primary-blue);
             font-family: "Montserrat";
-            & i {
+            transition: 0.3s & i {
               font-size: 1.5rem;
               margin-right: 0.25rem;
             }
@@ -392,6 +392,7 @@ export default {
             background-color: var(--primary-blue);
             color: #fff;
             vertical-align: middle;
+            transition: 0.3s;
           }
         }
       }
@@ -506,6 +507,27 @@ export default {
     }
   }
 }
+@media screen and (max-width: 1920px) {
+  .home_news_background {
+    width: 35%;
+    left: 12%;
+    top: 0%;
+  }
+}
+@media screen and (max-width: 1600px) {
+  .home_news_background {
+    width: 35%;
+    left: 12%;
+    top: 5%;
+  }
+}
+@media screen and (max-width: 1400px) {
+  .home_news_background {
+    width: 35%;
+    left: 12%;
+    top: 10%;
+  }
+}
 @media screen and (max-width: 1280px) {
   .home_news_subscription {
     width: 25%;
@@ -553,8 +575,8 @@ export default {
   .home_news_background {
     width: 42%;
     position: absolute;
-    left: 0%;
-    top: 15%;
+    left: 5%;
+    top: 10%;
     z-index: -1;
     animation: rotate-taichi 5s infinite linear;
     user-select: none;
