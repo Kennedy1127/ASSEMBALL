@@ -236,7 +236,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .error {
   padding-top: 0.5rem;
   padding-left: 0.25rem;
