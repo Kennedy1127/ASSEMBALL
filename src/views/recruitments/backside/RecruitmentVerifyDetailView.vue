@@ -2,11 +2,6 @@
   <GobackAndTitle :title="title" />
 
   <div class="recruitment_post">
-    <section class="recruitment_post_aside">
-      <!-- <aside class="recruitment_post_aside"> -->
-      <RecruitmentPostAside />
-      <!-- </aside> -->
-    </section>
     <main class="recruitment_post_main">
       <section class="recruitment_post_breadcrumb">
         <router-link :to="{ name: 'recruitmentVerify' }">
@@ -34,7 +29,7 @@
 
             <div class="recruitment_post_main_content_personalInfo_text">
               <div class="recruitment_post_main_content_personalInfo_name">
-                David Wang
+                {{ applyData.candidate_name }}
               </div>
               <div class="recruitment_post_main_content_personalInfo_item">
                 <div
@@ -45,7 +40,7 @@
                 <div
                   class="recruitment_post_main_content_personalInfo_item_text"
                 >
-                  台中市
+                  {{ applyData.area }}
                 </div>
               </div>
               <div class="recruitment_post_main_content_personalInfo_item">
@@ -57,7 +52,7 @@
                 <div
                   class="recruitment_post_main_content_personalInfo_item_text"
                 >
-                  davidwang2023@gmail.com
+                  {{ applyData.email }}
                 </div>
               </div>
               <div class="recruitment_post_main_content_personalInfo_item">
@@ -70,7 +65,7 @@
                   class="recruitment_post_main_content_personalInfo_item_text"
                 >
                   <div class="levelbox"></div>
-                  <div>初心者</div>
+                  <div>{{ getlevelLabel(applyData.status) }}</div>
                 </div>
               </div>
             </div>
@@ -80,8 +75,7 @@
               自我介紹
             </div>
             <p class="recruitment_post_main_content_SelfIntroduction_content">
-              您好！我叫David，希望能加入這支棒球隊！<br /><br />
-              我對棒球充滿熱情，剛接觸棒球1年多的時間。我擅長打擊打擊，也樂意學習其他位置。我是一個積極態度的球員，喜歡團隊合作，並願意盡力幫助隊友。在球場上，我努力執行指示，並全力以赴。希望能和大家一起成長、取得出色的成績，謝謝！
+              {{ applyData.text }}
             </p>
           </div>
         </div>
@@ -94,33 +88,68 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
-import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
-import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";
-import ProductsMainPagination from "@/components/products/productsItems/ProductsMainPagination";
-export default {
-  data() {
-    return {
-      title: "審核應徵",
-    };
-  },
+import { useStore } from "vuex";
+import { computed, onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
+const title = ref("審核應徵");
+const store = useStore();
+const route = useRoute();
+// const computedRenderApply = ref([]);
+onMounted(() => {
+  // store.dispatch("getApply"); //用index.js的 action 要用dispatch
 
-  components: {
-    GobackAndTitle,
-    RecruitmentPostAside,
-    RecruitmentSearchbar,
-    RecruitmentTable,
-    ProductsMainPagination,
-  },
-};
+  console.log(route.query.id);
+  console.log(store.state.ApplyRecords);
+  const data = store.state.ApplyRecords.find(
+    (apply) => apply.id === route.query.id
+  );
+  if (!data) {
+    return;
+  }
+
+  applyData.value = { ...data };
+  console.log(data);
+});
+
+const applyData = ref({});
+
+const getlevelLabel = computed(() => {
+  const levels = [
+    {
+      value: 0,
+      label: "初心者",
+    },
+    {
+      value: 1,
+      label: "新手",
+    },
+    {
+      value: 2,
+      label: "老手",
+    },
+    {
+      value: 3,
+      label: "經歷不拘",
+    },
+  ];
+  return (levelValue) => {
+    const levelObject = levels.find((status) => status.value === levelValue);
+    return levelObject ? levelObject.label : "";
+  };
+});
 </script>
 
 <style lang="scss">
 .recruitment_post {
   margin-top: 6rem;
   display: flex;
+  &_aside {
+    // TODO:在思考要不要把側邊欄拿掉(設計圖原本有)
+    display: none;
+  }
   &_breadcrumb {
     margin-bottom: 4rem;
     display: flex;
@@ -168,15 +197,7 @@ export default {
         padding-right: 2.5rem;
         border-right: 2px solid var(--secondary-gray-2);
       }
-      // &_entire::after {
-      //   content: "";
-      //   position: absolute;
-      //   height: 100%;
-      //   top: 0;
-      //   right: 0;
-      //   width: 2px;
-      //   background-color: var(--secondary-gray-2);
-      // }
+
       &_personalInfo {
         display: flex;
         gap: 1.5rem;
@@ -238,7 +259,8 @@ export default {
       }
       &_SelfIntroduction_content {
         padding: 2rem;
-        max-width: 32vw;
+        width: 100%;
+        // max-width: 32vw;
         font-size: 1.25rem;
         background-color: var(--secondary-blue-4);
         border-radius: var(--round);
