@@ -7,7 +7,10 @@
       @click="goToProductDetail(item.id)"
     >
       <div class="products_item_header">
-        <img :src="item.pics[0]" alt="product image" />
+        <img
+          :src="item.pic || require('@/assets/loading/loading.gif')"
+          alt="product image"
+        />
       </div>
       <div class="products_item_content">
         <div class="products_item_tag">#{{ productTags[item.tag] }}</div>

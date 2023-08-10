@@ -23,11 +23,8 @@
       }"
       class="mySwiper"
     >
-      <swiper-slide
-        v-for="copywriting in computedCopywritings"
-        :key="copywriting.copywriting_id"
-      >
-        <CopywritingSwiperCard :copywriting="copywriting" />
+      <swiper-slide v-for="slide in slides" :key="slide.id">
+        <CopywritingSwiperCard :copywriting="slide" />
       </swiper-slide>
     </swiper>
 
@@ -53,100 +50,26 @@ import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 
 import CopywritingSwiperCard from "@/components/recruitments/copywriting/CopywritingSwiperCard.vue";
-import { computed, ref } from "vue";
+import getData from "@/composables/data/getData";
+import { watchEffect, ref } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
 const props = defineProps(["role"]);
-
 const modules = ref([Navigation, Pagination]);
-const defaultCopywritings = ref([
-  {
-    copywriting_id: 98,
-    copywriting_role: 5,
-    copywriting_exp: 1,
-    copywriting_team_name: "勇士隊",
-    copywriting_area: "花蓮縣",
-  },
-  {
-    copywriting_id: 98,
-    copywriting_role: 5,
-    copywriting_exp: 1,
-    copywriting_team_name: "勇士隊",
-    copywriting_area: "花蓮縣",
-  },
-  {
-    copywriting_id: 98,
-    copywriting_role: 5,
-    copywriting_exp: 1,
-    copywriting_team_name: "勇士隊",
-    copywriting_area: "花蓮縣",
-  },
-  {
-    copywriting_id: 98,
-    copywriting_role: 5,
-    copywriting_exp: 1,
-    copywriting_team_name: "勇士隊",
-    copywriting_area: "花蓮縣",
-  },
-  {
-    copywriting_id: 98,
-    copywriting_role: 5,
-    copywriting_exp: 1,
-    copywriting_team_name: "勇士隊",
-    copywriting_area: "花蓮縣",
-  },
-  {
-    copywriting_id: 98,
-    copywriting_role: 5,
-    copywriting_exp: 1,
-    copywriting_team_name: "勇士隊",
-    copywriting_area: "花蓮縣",
-  },
-  {
-    copywriting_id: 98,
-    copywriting_role: 5,
-    copywriting_exp: 1,
-    copywriting_team_name: "勇士隊",
-    copywriting_area: "花蓮縣",
-  },
-  {
-    copywriting_id: 98,
-    copywriting_role: 5,
-    copywriting_exp: 1,
-    copywriting_team_name: "勇士隊",
-    copywriting_area: "花蓮縣",
-  },
-  {
-    copywriting_id: 98,
-    copywriting_role: 5,
-    copywriting_exp: 1,
-    copywriting_team_name: "勇士隊",
-    copywriting_area: "花蓮縣",
-  },
-  {
-    copywriting_id: 98,
-    copywriting_role: 5,
-    copywriting_exp: 1,
-    copywriting_team_name: "勇士隊",
-    copywriting_area: "花蓮縣",
-  },
-  {
-    copywriting_id: 98,
-    copywriting_role: 5,
-    copywriting_exp: 1,
-    copywriting_team_name: "勇士隊",
-    copywriting_area: "花蓮縣",
-  },
-]);
+const { getDocuments } = getData();
 
-const computedCopywritings = computed(() =>
-  store.state.copywritingsCount === 0
-    ? [...defaultCopywritings.value]
-    : store.state.copywritings
-        .filter((copywriting) => copywriting.copywriting_role === props.role)
-        .slice(0, 8)
-);
+const slides = ref([]);
+
+watchEffect(async () => {
+  if (props.role !== undefined) {
+    const res = await getDocuments("COPYWRITINGS", [
+      ["role", "==", props.role],
+    ]);
+
+    slides.value = [...res];
+  }
+});
 </script>
 
 <style scoped lang="scss">

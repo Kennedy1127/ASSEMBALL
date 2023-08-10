@@ -111,7 +111,6 @@
             <td class="table_row_date">{{ convertFont(item.ProductsDate) }}</td>
             <!-- 焦點商品 -->
             <td class="table_row_focus">
-              {{ convertFont(item.ProductsFocus) }}
               <input
                 v-if="item.ProductsFocus"
                 type="checkbox"
@@ -128,7 +127,6 @@
             </td>
             <!-- 熱門商品 -->
             <td class="table_row_top">
-              {{ item.ProductsTop }}
               <input
                 v-if="item.ProductsTop"
                 type="checkbox"
@@ -157,278 +155,284 @@
   </div>
 </template>
 <script>
+import { db } from "@/firebase/config"; //引入data base
+import { addDoc, doc, getDoc, addDocs } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
+// import axios from "axios"; //引入axios來抓json檔
 export default {
   data() {
     return {
       page: 1,
       perPage: 17,
-      Products: [
-        {
-          id: "1",
-          ProductsName: "二手白樺木球棒",
-          ProductsPrice: "2400",
-          ProductsType: "球棒",
-          ProductsDate: "2023/07/04",
-          // ProductsFocus:  "是",
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "2",
-          ProductsName: "二手手套",
-          ProductsPrice: "2000",
-          ProductsType: "手套",
-          ProductsDate: "2023/08/04",
-          // ProductsFocus: "是",
-          ProductsFocus: true,
-          ProductsTop: false,
-        },
-        {
-          id: "3",
-          ProductsName: "二手球褲",
-          ProductsPrice: "1400",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/14",
-          // ProductsFocus: "是",
-          ProductsFocus: true,
-          ProductsTop: false,
-        },
-        {
-          id: "4",
-          ProductsName: "二手球褲",
-          ProductsPrice: "2500",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/24",
-          // ProductsFocus: "是",
-          ProductsFocus: true,
-          ProductsTop: false,
-        },
-        {
-          id: "5",
-          ProductsName: "二手打擊頭盔",
-          ProductsPrice: "2700",
-          ProductsType: "頭盔",
-          ProductsDate: "2023/07/11",
-          // ProductsFocus: "是",
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "6",
-          ProductsName: "二手捕手護具",
-          ProductsPrice: "2900",
-          ProductsType: "護具",
-          ProductsDate: "2023/07/05",
+      // Products: [
+      //   {
+      //     id: "1",
+      //     ProductsName: "二手白樺木球棒",
+      //     ProductsPrice: "2400",
+      //     ProductsType: "球棒",
+      //     ProductsDate: "2023/07/04",
+      //     // ProductsFocus:  "是",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "2",
+      //     ProductsName: "二手手套",
+      //     ProductsPrice: "2000",
+      //     ProductsType: "手套",
+      //     ProductsDate: "2023/08/04",
+      //     // ProductsFocus: "是",
+      //     ProductsFocus: true,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "3",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "1400",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/14",
+      //     // ProductsFocus: "是",
+      //     ProductsFocus: true,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "4",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "2500",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/24",
+      //     // ProductsFocus: "是",
+      //     ProductsFocus: true,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "5",
+      //     ProductsName: "二手打擊頭盔",
+      //     ProductsPrice: "2700",
+      //     ProductsType: "頭盔",
+      //     ProductsDate: "2023/07/11",
+      //     // ProductsFocus: "是",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "6",
+      //     ProductsName: "二手捕手護具",
+      //     ProductsPrice: "2900",
+      //     ProductsType: "護具",
+      //     ProductsDate: "2023/07/05",
 
-          ProductsFocus: true,
-          ProductsTop: false,
-        },
-        {
-          id: "7",
-          ProductsName: "二手球褲",
-          ProductsPrice: "2422",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/04",
+      //     ProductsFocus: true,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "7",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "2422",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/04",
 
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "8",
-          ProductsName: "二手球褲",
-          ProductsPrice: "24400",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/09",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "8",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "24400",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/09",
 
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "9",
-          ProductsName: "二手球褲",
-          ProductsPrice: "2420",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/24",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "9",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "2420",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/24",
 
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "10",
-          ProductsName: "二手球褲",
-          ProductsPrice: "2850",
-          ProductsType: "球褲",
-          ProductsDate: "2023/08/14",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "10",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "2850",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/08/14",
 
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "11",
-          ProductsName: "二手球褲",
-          ProductsPrice: "2100",
-          ProductsType: "球褲",
-          ProductsDate: "2023/08/08",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "11",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "2100",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/08/08",
 
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "12",
-          ProductsName: "二手球褲",
-          ProductsPrice: "1400",
-          ProductsType: "球褲",
-          ProductsDate: "2023/08/04",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "12",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "1400",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/08/04",
 
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "13",
-          ProductsName: "二手球褲",
-          ProductsPrice: "4400",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/04",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "13",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "4400",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/04",
 
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "14",
-          ProductsName: "二手球褲",
-          ProductsPrice: "24400",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/04",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "14",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "24400",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/04",
 
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "15",
-          ProductsName: "二手球褲",
-          ProductsPrice: "2400",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/04",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "15",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "2400",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/04",
 
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "16",
-          ProductsName: "二手球褲",
-          ProductsPrice: "2400",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/04",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "16",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "2400",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/04",
 
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "17",
-          ProductsName: "二手球褲",
-          ProductsPrice: "2400",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/04",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "17",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "2400",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/04",
 
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "18",
-          ProductsName: "二手球褲",
-          ProductsPrice: "2400",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/04",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "18",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "2400",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/04",
 
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "19",
-          ProductsName: "二手球褲",
-          ProductsPrice: "2400",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/04",
-          // ProductsFocus: "否",
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "20",
-          ProductsName: "二手球褲",
-          ProductsPrice: "2400",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/04",
-          // ProductsFocus: "否",
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "21",
-          ProductsName: "二手球褲",
-          ProductsPrice: "2400",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/04",
-          // ProductsFocus: "否",
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "22",
-          ProductsName: "二手球褲",
-          ProductsPrice: "2400",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/04",
-          // ProductsFocus: "否",
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "23",
-          ProductsName: "二手球褲",
-          ProductsPrice: "2400",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/04",
-          // ProductsFocus: "否",
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "24",
-          ProductsName: "二手球褲",
-          ProductsPrice: "2400",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/04",
-          // ProductsFocus: "否",
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "25",
-          ProductsName: "二手球褲",
-          ProductsPrice: "2400",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/04",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "19",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "2400",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/04",
+      //     // ProductsFocus: "否",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "20",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "2400",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/04",
+      //     // ProductsFocus: "否",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "21",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "2400",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/04",
+      //     // ProductsFocus: "否",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "22",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "2400",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/04",
+      //     // ProductsFocus: "否",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "23",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "2400",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/04",
+      //     // ProductsFocus: "否",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "24",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "2400",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/04",
+      //     // ProductsFocus: "否",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "25",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "2400",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/04",
 
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-        {
-          id: "26",
-          ProductsName: "二手球褲",
-          ProductsPrice: "2400",
-          ProductsType: "球褲",
-          ProductsDate: "2023/07/04",
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      //   {
+      //     id: "26",
+      //     ProductsName: "二手球褲",
+      //     ProductsPrice: "2400",
+      //     ProductsType: "球褲",
+      //     ProductsDate: "2023/07/04",
 
-          ProductsFocus: false,
-          ProductsTop: false,
-        },
-      ],
+      //     ProductsFocus: false,
+      //     ProductsTop: false,
+      //   },
+      // ],
+      //Products: [],
       PriceArray: [], //價格種類陣列(存放每一種價格並排除重複的)
       TypeArray: [], //商品類型陣列
       DateArray: [],
       FocusArray: [],
       TopArray: [],
+      Products: [],
 
       PriceMenuShow: false, //切換是否顯示下拉式選單
       TypeMenuShow: false,
@@ -452,7 +456,6 @@ export default {
     topNum() {
       return this.Products.filter((v) => v.ProductsTop).length;
     },
-
     productFilterPrice() {
       //篩選價格
       if (this.currentPrice == 0) return this.Products; //還沒篩選時回傳所有資料
@@ -490,7 +493,6 @@ export default {
         v.ProductsName.includes(this.currentSearch)
       );
     },
-
     ProductsList() {
       //回傳頁碼對應的十筆索引值的資料組成的陣列
       return this.productFilterSearch.slice(
@@ -529,6 +531,7 @@ export default {
     },
 
     convertFont(str) {
+      if (!str) return; //沒資料直接return
       //限制資料字數
       if (str.length > 10) {
         return str.slice(0, 10) + "...";
@@ -577,7 +580,7 @@ export default {
     },
     updateSearch() {
       this.currentSearch = this.SearchText;
-      this.SearchText="";
+      this.SearchText = "";
     },
     Reset() {
       this.currentPrice = 0;
@@ -626,13 +629,37 @@ export default {
       // console.log("當前物件索引值",index)
       if (this.Products[index].ProductsTop || this.topNum < 3)
         //用index的索引值來查找Products中的ProductsTop是否為true
-        this.Products[index].ProductsTop =
-          !this.Products[index].ProductsTop;
+        this.Products[index].ProductsTop = !this.Products[index].ProductsTop;
     },
-  },
 
+    //從firebase引入資料
+    async GetData() {
+      try {
+        const ProductsCollection = collection(db, "BACKSTAGEPRODUCTS"); // 取得集合
+        const BackStageDocuments = await getDocs(ProductsCollection); // 取得集合內的所有物件
+        BackStageDocuments.forEach((x) => {
+          // console.log(x.data());
+          this.Products.push(x.data()); // 物件轉陣列
+        });
+      } catch (err) {
+        alert(err);
+      }
+    },
+    //     AddData(){
+    //  //Products的資料上傳到firebase
+    //         const ProductsCollection = collection(db, "BACKSTAGEPRODUCTS"); // 將ProductsCollection設定為BACKSTAGEPRODUCTS集合
+    //         this.Products.forEach(x =>//將Products資料逐筆新增至firebase
+    //         {
+    //           //const docRef =
+    //           addDoc(ProductsCollection, x)//
+    //           // console.log("資料", docRef);
+    //         })
+    // }
+  },
   mounted() {
     window.addEventListener("click", this.CloseMenu); //監聽如果任意位置有被點擊觸發CloseMenu
+    this.GetData();
+    // this.AddData();
   },
 };
 </script>

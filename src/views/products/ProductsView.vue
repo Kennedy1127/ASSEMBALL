@@ -67,12 +67,14 @@ import ProductsAsideMobile from "@/components/products/productsAside/ProductsAsi
 import ProductsMainHeader from "@/components/products/productsItems/ProductsMainHeader";
 import ProductsMainItems from "@/components/products/productsItems/ProductsMainItems";
 import ProductsNoResults from "@/components/products/productsItems/ProductsNoResults.vue";
+import useStorage from "@/composables/data/useStorage";
 import { computed, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 
 const store = useStore();
 const route = useRoute();
+const { getPicsLink } = useStorage();
 
 onMounted(async () => {
   store.state.isPending = true;
@@ -85,6 +87,16 @@ onMounted(async () => {
   }
 
   await store.dispatch("getProducts");
+
+  store.state.products.forEach(async (product) => {
+    // 取得商品照片
+    const pics = await getPicsLink(
+      1,
+      `images/PRODUCTS/${product.id}`,
+      "product"
+    );
+    product.pic = pics[0];
+  });
 
   store.state.isPending = false;
 });

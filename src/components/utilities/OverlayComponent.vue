@@ -9,6 +9,9 @@
         :curIndex="curIndex"
       />
     </slot>
+    <slot v-if="type === 'RaceType'">
+      <MyplayerRaceEdit @closeModal="closeOverlay" />
+    </slot>
 
     <slot v-if="type === 'apply'" name="apply">
       <CopywritingApplyModal @closeModal="closeOverlay" />
@@ -19,6 +22,7 @@
 <script setup>
 import CopywritingApplyModal from "@/components/recruitments/copywriting/CopywritingApplyModal.vue";
 import MyplayerPhotoPopus from "@/components/MyplayerTeam/MyplayerPhotoPopus.vue";
+import MyplayerRaceEdit from "@/components/MyplayerTeam/MyplayerRaceEdit.vue";
 
 const props = defineProps({
   type: {

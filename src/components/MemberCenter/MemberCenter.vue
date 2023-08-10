@@ -48,7 +48,7 @@
         </li>
       </ul>
     </div>
-    <div class="MemberCenter_signout">
+    <div class="MemberCenter_signout" @click="clearUserData">
       <button>
         <font-awesome-icon icon="fa-solid fa-arrow-up-right-from-square" /> 登出
       </button>
@@ -84,6 +84,9 @@ export default {
   methods: {
     enterPersonal() {
       this.$emit("enter_personal");
+    },
+    clearUserData() {
+      this.$emit("clear_userdata");
     },
   },
   computed: {

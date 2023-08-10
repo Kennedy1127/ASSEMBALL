@@ -79,7 +79,7 @@
                 name="Result"
                 :value="index"
               />
-              {{ convertFont(item.Result) }}
+        
             </td>
           </tr>
         </table>
@@ -95,213 +95,217 @@
   </div>
 </template>
 <script>
+import { db } from "@/firebase/config"; //引入data base
+import { addDoc, doc, getDoc, addDocs } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 export default {
   data() {
     return {
       page: 1,
       perPage: 17,
-      Create: [
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "台北",
-          Type: "老手",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-          Result: false,
-        },
-        {
-          Number: "001",
-          Name: "阿福",
-          TeamName: "天使隊",
-          Area: "台南",
-          Type: "初心者",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "台東",
-          Type: "初心者",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "台中",
-          Type: "初心者",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "新北",
-          Type: "新手",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "宜蘭",
-          Type: "新手",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "桃園",
-          Type: "新手",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "台北",
-          Type: "新手",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "台北",
-          Type: "新手",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "台北",
-          Type: "新手",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "台北",
-          Type: "新手",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "台北",
-          Type: "新手",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "台北",
-          Type: "新手",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "台北",
-          Type: "新手",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "台北",
-          Type: "新手",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "台北",
-          Type: "新手",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "台北",
-          Type: "新手",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "台北",
-          Type: "新手",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "台北",
-          Type: "新手",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-        {
-          Number: "001",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Area: "台北",
-          Type: "新手",
-          Illustrate:
-            "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-           Result: false,
-        },
-      ],
+      // Create: [
+      //   {
+      //     Number: "1",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "台北",
+      //     Type: "老手",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //     Result: false,
+      //   },
+      //   {
+      //     Number: "2",
+      //     Name: "阿福",
+      //     TeamName: "天使隊",
+      //     Area: "台南",
+      //     Type: "初心者",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "3",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "台東",
+      //     Type: "初心者",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "4",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "台中",
+      //     Type: "初心者",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "5",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "新北",
+      //     Type: "新手",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "6",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "宜蘭",
+      //     Type: "新手",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "7",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "桃園",
+      //     Type: "新手",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "8",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "台北",
+      //     Type: "新手",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "9",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "台北",
+      //     Type: "新手",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "10",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "台北",
+      //     Type: "新手",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "11",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "台北",
+      //     Type: "新手",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "12",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "台北",
+      //     Type: "新手",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "13",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "台北",
+      //     Type: "新手",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "14",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "台北",
+      //     Type: "新手",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "15",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "台北",
+      //     Type: "新手",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "16",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "台北",
+      //     Type: "新手",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "17",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "台北",
+      //     Type: "新手",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "18",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "台北",
+      //     Type: "新手",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "19",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "台北",
+      //     Type: "新手",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      //   {
+      //     Number: "20",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Area: "台北",
+      //     Type: "新手",
+      //     Illustrate:
+      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
+      //      Result: false,
+      //   },
+      // ],
+      Create:[],
       AreaArray: [], //篩選地區陣列
       TypeArray: [],
 
@@ -363,6 +367,7 @@ export default {
     },
 
     convertFont(str) {
+      if(!str){return};
       //限制資料字數
       if (str.length > 10) {
         return str.slice(0, 10) + "...";
@@ -394,9 +399,33 @@ export default {
       this.currentSearch = this.SearchText;
       this.SearchText="";
     },
+     //從firebase引入資料
+     async GetData() {
+      try {
+        const CreateCollection = collection(db, "BACKSTAGECREATE"); // 取得集合
+        const CreateDocuments = await getDocs(CreateCollection); // 取得集合內的所有物件
+        CreateDocuments.forEach((x) => {
+          // console.log(x.data());
+          this.Create.push(x.data()); // 物件轉陣列
+        });
+      } catch (err) {
+        alert(err);
+      }
+    },
+    //      AddData(){
+    //  //將資料上傳到firebase
+    //         const CreateCollection = collection(db, "BACKSTAGECREATE"); 
+    //         this.Create.forEach(x =>
+    //         {
+    //           const docRef = addDoc(CreateCollection, x)//
+    //           // console.log("資料", docRef);
+    //         })
+    // }
   },
   mounted() {
     window.addEventListener("click", this.CloseMenu); //監聽如果任意位置有被點擊觸發CloseMenu
+    // this.AddData();
+    this.GetData();
   },
 };
 </script>

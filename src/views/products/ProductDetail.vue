@@ -58,6 +58,8 @@ import ProductsAsideTags from "@/components/products/productsAside/ProductsAside
 import ProductsMainItem from "@/components/products/productsItem/ProductsMainItem";
 import ProductsMainItemMsg from "@/components/products/productsItem/ProductsMainItemMsg";
 import getData from "@/composables/data/getData";
+import useData from "@/composables/data/useData";
+import { auth } from "@/firebase/config";
 import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -66,40 +68,51 @@ const store = useStore();
 const route = useRoute();
 const router = useRouter();
 const { getDocument, getSubCollectionDocuments } = getData();
+const { updateDataSubCollection } = useData();
 
 onMounted(async () => {
   store.state.isPending = true;
-  // 如果商品陣列長度為0或是商品陣列長度與商品數量不等於，則撈商品資料
 
-  if (
-    !store.state.products.find(
-      (product) => product.id === route.params.productId
-    )
-  ) {
-    const productData = await getDocument("PRODUCTS", route.params.productId);
-    if (!productData) {
-      router.push({ name: "Home" });
-    }
+  const productData = await getDocument("PRODUCTS", route.params.productId);
+  if (!productData || !productData.status) {
+    router.push({ name: "Home" });
+  }
 
-    const comments = await getSubCollectionDocuments({
+  const comments = await getSubCollectionDocuments(
+    {
       collectionName: "PRODUCTS",
       documentId: route.params.productId,
       subCollectionName: "COMMENTS",
-    });
+    },
+    [],
+    ["date"]
+  );
 
-    data.value = { ...productData, comments };
-  }
+  comments.forEach(async (comment) => {
+    if (
+      comment.read === false &&
+      auth.currentUser.uid === productData.seller_id
+    ) {
+      await updateDataSubCollection(
+        {
+          collectionName: "PRODUCTS",
+          documentId: route.params.productId,
+          subCollectionName: "COMMENTS",
+          subDocumentId: comment.id,
+        },
+        {
+          read: true,
+        }
+      );
+    }
+  });
 
+  data.value = { ...productData, comments };
   store.state.isPending = false;
 });
 
 const data = ref(null);
-const productData = computed(
-  () =>
-    store.state.products.find(
-      (product) => product.id === route.params.productId
-    ) || data.value
-);
+const productData = computed(() => data.value);
 
 const productMsgData = computed(() => ({
   comments: [...productData.value.comments],

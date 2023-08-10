@@ -28,28 +28,39 @@
             <div class="myplayer_function_race_title_time">日期</div>
             <div class="myplayer_function_race_title_name">
               <div class="myplayer_function_race_title_team1">
-                {{ item.team1 }}
+                {{ item.homename }}
               </div>
               <div class="myplayer_function_race_title_team2">
-                {{ item.team2 }}
+                {{ item.hostname }}
               </div>
             </div>
           </div>
           <div class="myplayer_function_race_item">
             <div class="myplayer_function_race_item_day">
-              {{ item.day }}
+              {{ item.formattedDate }}
               <div class="myplayer_function_race_edit">
-                <font-awesome-icon :icon="['fas', 'pen']" />
+                <font-awesome-icon
+                  :icon="['fas', 'trash-can']"
+                  class="icon icon--pen"
+                />
+                <font-awesome-icon
+                  class="icon icon--check"
+                  :icon="['fas', 'check']"
+                />
+                <font-awesome-icon
+                  class="icon icon--xmark"
+                  :icon="['fas', 'xmark']"
+                />
               </div>
             </div>
             <div class="myplayer_function_race_item_name">
               <div class="myplayer_function_race_item_team1">
                 <div
                   class="myplayer_function_race_item_logo1"
-                  v-bind:style="{ backgroundImage: `url('${item.logo1}')` }"
+                  v-bind:style="{ backgroundImage: `url('${item.homeicon}')` }"
                 ></div>
                 <div class="myplayer_function_race_item_score1">
-                  {{ item.score1 }}
+                  {{ item.homescore }}
                 </div>
               </div>
               <div class="myplayer_function_race_item_contest">
@@ -59,71 +70,110 @@
               <div class="myplayer_function_race_item_team2">
                 <div
                   class="myplayer_function_race_item_logo2"
-                  v-bind:style="{ backgroundImage: `url('${item.logo2}')` }"
+                  v-bind:style="{ backgroundImage: `url('${item.hosticon}')` }"
                 ></div>
                 <div class="myplayer_function_race_item_score2">
-                  {{ item.score2 }}
+                  {{ item.hostscore }}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <div
+        class="myplayer_function_race_editPen"
+        @click="myplayerRaceEditToggle"
+      >
+        <font-awesome-icon
+          :icon="['fas', 'plus']"
+          class="myplayer_function_race_editPen_item"
+        />
+      </div>
     </div>
   </section>
+  <OverlayComponent
+    type="RaceType"
+    v-if="isVisible"
+    @closeOverlay="isVisible = false"
+  />
 </template>
 
 <script>
+import MyplayerRaceEdit from "@/components/MyplayerTeam/MyplayerRaceEdit.vue";
+import OverlayComponent from "../utilities/OverlayComponent.vue";
 import MyplayerCalendar from "@/components/MyplayerTeam/MyplayerCalendar";
 export default {
+  async mounted() {
+    const allData = await this.$store.dispatch("getMyplayerTeam");
+    console.log(allData);
+    this.myplayer_race_list = allData.teamGameData;
+
+    const options = { month: "numeric", day: "numeric" };
+    for (const item of this.myplayer_race_list) {
+      const timestamp = {
+        seconds: item.gamedate.seconds,
+        nanoseconds: item.gamedate.nanoseconds,
+      };
+      const gamedate = new Date(timestamp.seconds * 1000);
+      item.formattedDate = gamedate.toLocaleDateString(undefined, options);
+    }
+  },
   components: {
     MyplayerCalendar,
+    MyplayerRaceEdit,
+    OverlayComponent,
   },
   data() {
     return {
       myplayer_race_list: [
-        {
-          id: "1",
-          team1: "猛虎隊",
-          team2: "銀箭隊",
-          day: "07/05",
-          logo1: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_1.png"),
-          logo2: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_2.png"),
-          score1: 1,
-          score2: 3,
-        },
-        {
-          id: "2",
-          team1: "猛虎隊",
-          team2: "銀箭隊",
-          day: "07/02",
-          logo1: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_1.png"),
-          logo2: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_3.png"),
-          score1: 2,
-          score2: 4,
-        },
-        {
-          id: "3",
-          team1: "猛虎隊",
-          team2: "銀箭隊",
-          day: "07/01",
-          logo1: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_1.png"),
-          logo2: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_3.png"),
-          score1: 1,
-          score2: 4,
-        },
-        {
-          id: "4",
-          team1: "猛虎隊",
-          team2: "銀箭隊",
-          day: "06/25",
-          logo1: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_1.png"),
-          logo2: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_2.png"),
-          score1: 1,
-          score2: 2,
-        },
+        // {
+        //   id: "1",
+        //   team1: "猛虎隊",
+        //   team2: "銀箭隊",
+        //   day: "07/05",
+        //   logo1: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_1.png"),
+        //   logo2: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_2.png"),
+        //   score1: 1,
+        //   score2: 3,
+        // },
+        // {
+        //   id: "2",
+        //   team1: "猛虎隊",
+        //   team2: "銀箭隊",
+        //   day: "07/02",
+        //   logo1: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_1.png"),
+        //   logo2: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_3.png"),
+        //   score1: 2,
+        //   score2: 4,
+        // },
+        // {
+        //   id: "3",
+        //   team1: "猛虎隊",
+        //   team2: "銀箭隊",
+        //   day: "07/01",
+        //   logo1: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_1.png"),
+        //   logo2: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_3.png"),
+        //   score1: 1,
+        //   score2: 4,
+        // },
+        // {
+        //   id: "4",
+        //   team1: "猛虎隊",
+        //   team2: "銀箭隊",
+        //   day: "06/25",
+        //   logo1: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_1.png"),
+        //   logo2: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_2.png"),
+        //   score1: 1,
+        //   score2: 2,
+        // },
       ],
+      isVisible: false,
     };
+  },
+  methods: {
+    myplayerRaceEditToggle() {
+      this.isVisible = true;
+    },
   },
 };
 </script>
@@ -164,6 +214,7 @@ export default {
 
 .myplayer_function_group_race_wrap {
   width: 47.5%;
+  position: relative;
   // flex: 1;
 }
 .myplayer_function_title_wrap {
@@ -332,6 +383,29 @@ h3 {
   color: var(--accent-red);
   font-weight: 700;
 }
+.myplayer_function_race_editPen {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  &_item {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 1.5rem;
+    padding: 1rem;
+    color: var(--primary-blue);
+    background-color: var(--pale-white);
+    border-radius: 50%;
+    border: 1px solid var(--primary-blue);
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  &_item:hover {
+    transition: 0.3s;
+    color: var(--pale-white);
+    background-color: var(--primary-blue);
+  }
+}
+
 @media screen and (min-width: 1024px) and (max-width: 1200px) {
   .myplayer_function_race_item_logo1 {
     width: 4rem;
