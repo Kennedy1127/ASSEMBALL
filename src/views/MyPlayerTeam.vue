@@ -8,8 +8,8 @@
 
     <MyplayerGallery />
 
-    <MyplayerMessage />
-    <MyplayerPopups />
+    <MyplayerMessage @openPopup="openPopup" />
+    <MyplayerPopups :postData="postData" />
   </main>
 </template>
 <script>
@@ -19,6 +19,8 @@ import MyplayerRaceList from "@/components/MyplayerTeam/MyplayerRaceList";
 import MyplayerGallery from "@/components/MyplayerTeam/MyplayerGallery";
 import MyplayerMessage from "@/components/MyplayerTeam/MyplayerMessage";
 import MyplayerPopups from "@/components/MyplayerTeam/MyplayerPopups";
+import { auth } from "@/firebase/config";
+
 export default {
   components: {
     MyplayerBanner,
@@ -31,6 +33,18 @@ export default {
   mounted() {
     this.$store.dispatch("getMyplayerTeam");
     // console.log(this.$route);
+    // isAdmin = auth.currentUser.uid === teamData.user_id
+  },
+  data() {
+    return {
+      postData: {},
+    };
+  },
+  methods: {
+    openPopup(data) {
+      console.log(data);
+      this.postData = { ...data };
+    },
   },
 };
 </script>
