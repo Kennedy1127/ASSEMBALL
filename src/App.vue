@@ -101,67 +101,7 @@ export default {
     },
   },
   async beforeMount() {
-    const {
-      getUser,
-      getDocument,
-      getDocuments,
-      getSubCollectionDocument,
-      getSubCollectionDocuments,
-    } = getData();
-    // const testA = await getDocument("COPYWRITINGS", "UFX8L9SRpSRjXzgCwxHk");
-    // const testB = await getDocuments("COPYWRITINGS");
-    // console.log(testA);
-    // console.log(testB);
-
-    const testA = await getDocument("TEAMS", "5KhosRZOJ7TmLfECUb5D");
-    const testB = await getDocuments("TEAMS");
-    console.log(testA);
-    console.log(testB);
-
-    //----
-    // const testSherry = await getDocuments("APPLYS");
-    // console.log(testSherry);
-
-    // const testC = await getSubCollectionDocument({
-    //   collectionName: "TEAMS",
-    //   documentId: "5KhosRZOJ7TmLfECUb5D",
-    //   subCollectionName: "POST",
-    //   subDocumentId: "Uud9BbmACZksHOBQeFC0",
-    // });
-    // const testD = await getSubCollectionDocuments({
-    //   collectionName: "TEAMS",
-    //   documentId: "5KhosRZOJ7TmLfECUb5D",
-    //   subCollectionName: "PIC",
-    // ----
-    // const testSherry = await getDocuments("APPLYS");
-    // console.log(testSherry);
-
-    // const testC = await getSubCollectionDocument({
-    //   collectionName: "PRODUCTS",
-    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
-    //   subCollectionName: "COMMENTS",
-    //   subDocumentId: "n8w5wpDDeGWujr8Aq8Kp",
-    // });
-    // const testD = await getSubCollectionDocuments({
-    //   collectionName: "PRODUCTS",
-    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
-    //   subCollectionName: "COMMENTS",
-    // });
-    // console.log(testC);
-    // console.log(testD);
-    // const testC = await getSubCollectionDocument({
-    //   collectionName: "PRODUCTS",
-    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
-    //   subCollectionName: "COMMENTS",
-    //   subDocumentId: "n8w5wpDDeGWujr8Aq8Kp",
-    // });
-    // const testD = await getSubCollectionDocuments({
-    //   collectionName: "PRODUCTS",
-    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
-    //   subCollectionName: "COMMENTS",
-    // });
-    // console.log(testC);
-    // console.log(testD);
+    const { getUser } = getData();
 
     // 確認是不是手機使用
     if (window.innerWidth <= 420) {
