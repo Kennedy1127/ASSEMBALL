@@ -100,7 +100,8 @@ import { auth } from "@/firebase/config";
 
 const { getDocuments, getSubCollectionDocuments } = getData();
 
-const { setData, updateData, setDataSubCollection } = useData();
+const { setData, updateData, setDataSubCollection, updateDataSubCollection } =
+  useData();
 
 export default {
   //抓會員模板資料
@@ -172,7 +173,14 @@ export default {
       };
       console.log(data);
 
-      await setData("APPLY", data); //上傳新模板
+      await setDataSubCollection(
+        {
+          collectionName: "MEMBERS",
+          documentId: this.$store.state.user.id,
+          subCollectionName: "APPLY",
+        },
+        data
+      ); //上傳新模板
     },
 
     updateCharacterCount(item) {
@@ -181,111 +189,62 @@ export default {
 
     //儲存模板資料
     async submitForm() {
-      // // 模板資料儲存更新
-      // const inputDataArray = []; // 儲存按鈕資料
+      if (confirm("請問要選擇此模板當作預設嗎？") == true) {
+        alert("模板資料儲存成功！");
 
-      // this.$refs.inputModel.forEach((input) => {
-      //   const data = {
-      //     textareaValue: input.value,
-      //   };
-      //   inputDataArray.push(data);
-      // });
+        const inputDataArray = []; // 儲存按鈕資料
 
-      // console.log(this.$refs.radioModel);
+        this.$refs.inputModel.forEach((input) => {
+          const data = {
+            textareaValue: input.value,
+          };
+          inputDataArray.push(data);
+        });
 
-      // const mergedDataArray = []; // 儲存合併的資料
+        console.log(this.$refs.radioModel);
 
-      // this.$refs.radioModel.forEach((radioModel, index) => {
-      //   const isClicked = radioModel.checked; // 檢查按鈕是否點擊
-      //   const radioData = {
-      //     inputValue: isClicked ? radioModel.value : "",
-      //     templateID: index,
-      //   };
+        const mergedDataObject = {}; // 儲存合併的資料
 
-      //   const inputData = inputDataArray[index] || { textareaValue: "" };
-      //   // 如果資料不存在，使用默認
-      //   const mergedData = Object.assign({}, inputData, radioData);
-      //   mergedDataArray.push(mergedData);
-      // });
+        this.$refs.radioModel.forEach((radioModel, index) => {
+          const dataID = this.template.find(
+            (template) => template.templateID == radioModel.id
+          ).id;
+          const isClicked = radioModel.checked; // 檢查按鈕是否點擊
+          const radioData = {
+            inputValue: isClicked ? radioModel.value : "",
+            templateID: index,
+          };
 
-      // console.log(mergedDataArray); // 合併後資料
+          // console.log(dataID)
 
-      // // 更改模板資料
-      // await updateData(
-      //   {
-      //     collectionName: "MEMBERS",
-      //     documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
-      //     subCollectionName: "APPLY",
-      //   },
-      //   mergedDataArray
-      // );
+          const inputData = inputDataArray[index] || { textareaValue: "" };
+          // 如果資料不存在，使用默認
+          const mergedData = {
+            ...inputData,
+            ...radioData,
+            id: dataID,
+          };
+          mergedDataObject[index] = mergedData;
+        });
 
-      const inputDataArray = []; // 儲存按鈕資料
+        console.log(mergedDataObject); // 合併後資料
 
-      this.$refs.inputModel.forEach((input) => {
-        const data = {
-          textareaValue: input.value,
-        };
-        inputDataArray.push(data);
-      });
-
-      console.log(this.$refs.radioModel);
-
-      const mergedDataObject = {}; // 儲存合併的資料
-
-      this.$refs.radioModel.forEach((radioModel, index) => {
-        const isClicked = radioModel.checked; // 檢查按鈕是否點擊
-        const radioData = {
-          inputValue: isClicked ? radioModel.value : "",
-          templateID: index,
-        };
-
-        const inputData = inputDataArray[index] || { textareaValue: "" };
-        // 如果資料不存在，使用默認
-        const mergedData = {
-          ...inputData,
-          ...radioData,
-        };
-        mergedDataObject[index] = mergedData;
-      });
-
-      console.log(mergedDataObject); // 合併後資料
-
-      // 更改模板資料
-      await updateData(
-        {
-          collectionName: "MEMBERS",
-          documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
-          subCollectionName: "APPLY",
-        },
-        mergedDataObject
-      );
-
-      // if (confirm("請問要選擇此模板當作預設嗎？") == true) {
-      //   alert("模板資料儲存成功！");
-
-      // 更改會員預設模板
-      // await updateData(
-      //   {
-      //     collectionName: "MEMBERS",
-      //     documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
-      //     subCollectionName: "APPLY",
-      //   },
-      //   data
-      // );
-
-      // 上傳新模板到資料庫
-      // await setData("APPLY", data);
-
-      // 全部表單資料確認
-      //   this.template.forEach((item) => {
-      //     console.log("模板ID：", item.id);
-      //     console.log("預設模板：", item.inputValue);
-      //     console.log("模板內容：", item.textareaValue);
-      //   });
-      // } else {
-      //   alert("請再次選擇一種模板。");
-      // }
+        for (let key in mergedDataObject) {
+          console.log(mergedDataObject[key]);
+          // 更改模板資料;
+          await updateDataSubCollection(
+            {
+              collectionName: "MEMBERS",
+              documentId: this.$store.state.user.id,
+              subCollectionName: "APPLY",
+              subDocumentId: mergedDataObject[key].id,
+            },
+            mergedDataObject[key]
+          );
+        }
+      } else {
+        alert("請再次選擇一種模板。");
+      }
     },
   },
 };
