@@ -18,7 +18,10 @@
       <!-- 會員頭像 -->
       <div class="MemberPersonal_form_pic">
         <div class="MemberPersonal_form_pic_btn">
-          <img :src="avatar" alt="MemberPersonal_form_pic" />
+          <img
+            :src="avatar || require('@/assets/images/icons/main-icon.png')"
+            alt="MemberPersonal_form_pic"
+          />
           <label for="member_pic"
             ><span><font-awesome-icon icon="fa-solid fa-plus" /></span>上傳頭像
             <input type="file" id="member_pic" @change="onfile"
@@ -157,7 +160,8 @@ export default {
   data() {
     return {
       // 表單資料
-      avatar: this.$store.state.user.pic,
+      pic: null,
+      avatar: this.$store.state.user.picUrls[0],
       lastname: this.$store.state.user.lastname,
       name: this.$store.state.user.firstname,
       email: this.$store.state.user.email,
@@ -191,6 +195,7 @@ export default {
 
     //圖片設定
     onfile(event) {
+      this.pic = event.target.files[0];
       this.file = event.target.files[0];
       let filereader = new FileReader();
       filereader.readAsDataURL(this.file);
@@ -262,14 +267,17 @@ export default {
           area: this.region,
           exp: this.experience,
         };
-        console.log(data);
+        // console.log(data);
+        // console.log(this.pic);
 
         await updateData(
           {
             collectionName: "MEMBERS",
             documentId: this.$store.state.user.id,
           },
-          data
+          data,
+          [this.pic],
+          "member"
         );
       }
     },

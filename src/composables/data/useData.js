@@ -56,11 +56,13 @@ const useData = () => {
       const docRef = doc(db, target.collectionName, target.documentId);
 
       if (pics && filename) {
-        await setPics(
+        const urls = await setPics(
           `images/${target.collectionName}/${target.documentId}`,
           pics,
           filename
         );
+
+        data.picUrls = [...urls];
       }
 
       await updateDoc(docRef, data);
