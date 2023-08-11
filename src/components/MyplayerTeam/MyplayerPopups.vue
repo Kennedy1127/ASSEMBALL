@@ -10,8 +10,12 @@
           <div class="myplayer_popups_title_avatar">
             <div class="myplayer_popups_title_avatar_pic"></div>
             <div class="myplayer_popups_title_avatar_info">
-              <span class="myplayer_popups_title_avatar_account">麥噹噹</span>
-              <span class="myplayer_popups_title_avatar_day">-2023.07.02</span>
+              <span class="myplayer_popups_title_avatar_account">{{
+                postData.user_id
+              }}</span>
+              <span class="myplayer_popups_title_avatar_day">{{
+                postData.postdate
+              }}</span>
             </div>
           </div>
           <div class="myplayer_popups_title_dot" @click="myplayer_dot_btn">
@@ -40,10 +44,10 @@
         <div class="myplayer_popups_content">
           <div class="myplayer_popups_content_wrap">
             <h3 class="myplayer_popups_content_wrap_title">
-              Title：猛虎隊弟兄讚啦
+              {{ postData.title }}
             </h3>
             <div class="myplayer_popups_content_wrap_text">
-              作為這支球隊的球員，我感到無比榮幸和感恩。加入這個球隊是我的夢想成真，我將以全心全意的奉獻和努力來回報這份機會！！每一次踏上球場，我都感受到一種無法言喻的熱血沸騰，我投入每一個瞬間，追求每一個細節的完美，這是我對自己和球隊的責任，我深信只有通過不斷的努力和訓練，我才能夠成為更好的球員。與隊友們的團結合作是我們的力量所在，我們互相鼓勵、互相支持，在困難時刻攜手並肩，我們相信每個人的貢獻都是不可或缺的，只有通過團隊的共同努力，我們才能夠實現更大的成就，球迷的支持是我們的動力源泉，看到他們為我們的表現歡呼和激動，我感到無比感激和自豪。他們的存在讓我們知道，我們不僅為自己而戰，也代表著他們的期望和熱愛，他們的支持讓我們感受到無窮的勇氣和動力，我們將竭盡所能為他們帶來勝利，作為球隊的一員，我以身為一名球員的身份感到自豪，我將以積極的態度和專注的心態，不斷提升自己的能力和技巧，為球隊做出更大的貢獻。我相信我們將共同創造出令人難以忘懷的瞬間，並一起追逐更高的成就。這支球隊已成為我生命中不可或缺的一部分，它不僅是我的夢想，更是我熱愛的運動和家庭。我將永遠保持謙卑和熱情，努力成為球隊的驕傲，並與我的隊友們一起創造屬於我們的傳奇。
+              {{ postData.text }}
             </div>
             <div class="myplayer_popups_content_wrap_message"></div>
           </div>
@@ -60,6 +64,8 @@
 </template>
 <script>
 export default {
+  props: { postData: { type: Object, default: {} } },
+
   data() {
     return {
       myplayer_content: false,
@@ -280,6 +286,7 @@ export default {
           display: flex;
           flex-direction: column;
           justify-content: center;
+          align-items: start;
           // border: 1px solid blue;
           padding: 0.5rem;
         }
@@ -302,6 +309,7 @@ export default {
         text-align: center;
         color: var(--primary-blue);
         font-size: 4rem;
+        user-select: none;
         cursor: pointer;
         position: relative;
         display: block;

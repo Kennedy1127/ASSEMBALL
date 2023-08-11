@@ -29,11 +29,12 @@
           <div class="myplayer_message_area_day">{{ item.postdate }}</div>
           <div
             class="myplayer_message_area_more"
-            @click="myplayer_message_more_btn"
+            @click="myplayer_message_more_btn(item)"
           >
             more
           </div>
         </div>
+        <input type="checkbox" class="myplayer_message_area_checkbox" />
       </div>
       <div
         class="myplayer_message_more_wrap"
@@ -65,7 +66,7 @@
 export default {
   async mounted() {
     const allData = await this.$store.dispatch("getMyplayerTeam");
-    console.log(allData);
+    // console.log(allData);
     this.myplayer_message_card = allData.teamPostData;
 
     const options = { year: "numeric", month: "numeric", day: "numeric" };
@@ -78,6 +79,8 @@ export default {
       item.postdate = postdate.toLocaleDateString(undefined, options);
     }
   },
+
+  emits: ["openPopup"],
 
   data() {
     return {
@@ -158,8 +161,10 @@ export default {
     };
   },
   methods: {
-    myplayer_message_more_btn() {
+    myplayer_message_more_btn(data) {
+      console.log(data);
       this.$store.commit("myplayerPopupsToggle");
+      this.$emit("openPopup", data);
     },
     showMorePosts() {
       if (this.visiblePosts < this.myplayer_message_card.length) {
@@ -289,8 +294,7 @@ export default {
           .myplayer_message_area_text {
             font-size: 1rem;
             color: var(--input-label-gray);
-            padding: 1.5rem 0rem;
-            margin-bottom: 1.5rem;
+            margin: 1rem;
             text-indent: 2em;
             display: -webkit-box;
             -webkit-line-clamp: 10;
@@ -343,6 +347,7 @@ export default {
     &_wrap {
       position: sticky;
       top: 150px;
+      right: 10px;
     }
     &_item,
     &_trash {
@@ -366,6 +371,40 @@ export default {
       margin-top: 0.5rem;
     }
   }
+  &_message_area_checkbox {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    appearance: none;
+    border: 1px solid var(--primary-blue);
+    position: absolute;
+    right: 10px;
+    display: none;
+
+    &:checked::after {
+      content: "✓";
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--primary-blue);
+      position: absolute;
+      right: 2.5px;
+      top: -12.5px;
+    }
+  }
+}
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 1s;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+.v-enter-to,
+.v-leave-from {
+  opacity: 1;
 }
 @media screen and (min-width: 1024px) and (max-width: 1200px) {
   .myplayer_message_area_content
@@ -608,6 +647,14 @@ export default {
     .myplayer_message_area_card
     .myplayer_message_area_more_wrap {
     padding: 2rem 0rem 3rem 0rem;
+  }
+  .myplayer_message_editPen {
+    margin: 0;
+    &_item,
+    &_trash {
+      width: 1rem;
+      height: 1rem;
+    }
   }
 }
 </style>

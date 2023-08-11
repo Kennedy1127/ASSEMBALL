@@ -533,5 +533,9 @@ h3 {
   .myplayer_function_race_item_score2 {
     font-size: 2rem;
   }
+  .myplayerRaceEdit {
+    width: 80%;
+    margin: 1rem auto;
+  }
 }
 </style>
