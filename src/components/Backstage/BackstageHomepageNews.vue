@@ -458,8 +458,8 @@ export default {
 
       PicFile: "",
       SubFile: "",
-      NewsPic: "",
-      NewsSubPic: "",
+      HaveNewsPic: "",
+      HaveNewsSubPic: "",
 
       NewsCardPos: [],
       CurrentPos: 0,
@@ -622,18 +622,18 @@ export default {
 
     ChangePic(e) {
       this.PicFile = e.target.files[0];
-    this.NewsPic="1";
+    this.HaveNewsPic="1";
       // console.log("圖片", this.PicFile);
     },
     ChangeSubPic(e) {
       this.SubPicFile = e.target.files[0];
-      this.NewsSubPic="1";
+      this.HaveNewsSubPic="1";
       // console.log("圖片2", this.SubPicFile);
     },
     async AddNewsCard() {
       if (
-        this.NewsPic ==""||
-        this.NewsSubPic ==""||
+        this.HaveNewsPic ==""||
+        this.HaveNewsSubPic ==""||
         this.ArticleText == "" ||
         this.TitleText == "" ||
         this.SubTitleText == ""
@@ -642,19 +642,20 @@ export default {
         return;
       }
       const { setPics } = useStorage(); //拉useStorage的setPics來用
-       this.NewsPic = await setPics("images/NEWS", [this.PicFile], "NewsPic"); //傳入(路徑,檔案,檔案名稱)並傳至資料庫,返回該檔案的urls[]
-      this.NewsSubPic = await setPics(
+       const NewsPic = await setPics("images/NEWS", [this.PicFile], "NewsPic"); //傳入(路徑,檔案,檔案名稱)並傳至資料庫,返回該檔案的urls[]
+      const NewsSubPic = await setPics(
         "/images/NEWS",
         [this.SubPicFile],
         "NewsSubPic"
       ); //傳入(路徑,檔案,檔案名稱)並傳至資料庫,返回該檔案的urls[]
+      console.log("sss",NewsPic)
 
       //編輯最新消息卡片
       const NewsCardCollection = doc(db, "NEWS", this.CurrentId);
       await updateDoc(NewsCardCollection, {
         date: serverTimestamp(),
-        pic: this.NewsPic[0],
-        popup_pic: this.NewsSubPic[0],
+        pic: NewsPic[0],
+        popup_pic:NewsSubPic[0],
         pos: this.CurrentPos,
         id: this.CurrentId,
         // text: "在這支球隊中，一位年輕的新秀球員嶄露頭角，成為了球隊的新希望。雖然他在球隊中賽龍躍馬，但他卻展現出了驚人的天賦和實力。他的出現為整個球隊注入了新的生機和能量。這位新秀球員不僅在守備上做得出色，而且在攻擊方面也表現出色。他總能在關鍵時刻挺身而出，帶領球隊向勝利進軍。在他的帶領下，球隊的整體實力也得到了提升，成績有了明顯的進步。儘管他還很年輕，但這位新秀球員已經成為球迷心中的寵兒。他們期待著他未來更加耀眼的表現，相信他將成為球隊的核心球員，帶領球隊走向更多的勝利。",
@@ -665,12 +666,10 @@ export default {
         title_breakpoint: this.SubTitleText,
       });
     },
-    PicToFireBase() {},
+  
   },
   mounted() {
-    // window.addEventListener("click", ()=>{
-    //   this.CloseMenu()
-    // });
+  
     window.addEventListener("click", this.CloseMenu);
     // this.AddData();
     this.GetData();

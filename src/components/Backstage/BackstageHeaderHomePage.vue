@@ -42,14 +42,15 @@ export default {
   .Backstage_header_title {
     display: flex;
     align-items: center;
-    color: var(--primary-black);
+    color: var(--pale-white);
     font-size: 2rem;
   }
   .Backstage_header_list {
-    width: 115px;
-    height: 44px;
+    width: 150px;
+    height: 60px;
+    font-size: 1.25rem;
     border-radius: 8px;
-    font-size: 1rem;
+   
     background-color: var(--secondary-blue-2);
   }
 
