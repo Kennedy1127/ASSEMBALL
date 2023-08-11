@@ -177,6 +177,7 @@ export default {
     this.GetData();
   }
 };
+
 </script>
 <style scoped lang="scss">
 .Manager {
