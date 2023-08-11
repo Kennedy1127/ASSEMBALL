@@ -645,6 +645,8 @@ export default {
         alert(err);
       }
     },
+
+ 
     //     AddData(){
     //  //Products的資料上傳到firebase
     //         const ProductsCollection = collection(db, "BACKSTAGEPRODUCTS"); // 將ProductsCollection設定為BACKSTAGEPRODUCTS集合

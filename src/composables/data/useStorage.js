@@ -10,11 +10,12 @@ import {
 const useStorage = () => {
   const storage = getStorage();
 
-  const setPics = async (path, files, filename) => {
+  const setPics = async (path, files, filename) => {//(路徑,傳入檔案,檔案名稱)
     try {
       for (let i = 0; i < files.length; i++) {
-        let route = `${path}/${filename}-${i + 1}`;
-        await uploadPic(route, files[i]);
+        let route = `${path}/${filename}-${i + 1}`;//route=路徑/檔案名稱-數字
+      const url =  await uploadPic(route, files[i]);
+      urls.push(url)
       }
     } catch (err) {
       console.error("Somethings went wrong!");
@@ -24,8 +25,11 @@ const useStorage = () => {
 
   const uploadPic = async (path, file) => {
     try {
-      const storageRef = ref(storage, path);
-      await uploadBytes(storageRef, file);
+      const storageRef = ref(storage, path);//storageRef=路徑
+      const res= await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(res.ref)
+
+      return url;
     } catch (err) {
       console.error("Somethings went wrong!");
       console.error(err);
@@ -75,7 +79,7 @@ const useStorage = () => {
     });
   };
 
-  return { setPics, getPics, getPicsLink, getAllPics };
+  return { setPics, getPics, getPicsLink, getAllPics, uploadPic };
 };
 
 export default useStorage;
