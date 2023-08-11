@@ -67,7 +67,10 @@
       </div>
     </div>
 
-    <div class="recruit_copywritings_aside_btn" v-if="!store.state.isMobile">
+    <div
+      class="recruit_copywritings_aside_btn"
+      v-if="!store.state.isMobile && store.state.user?.team_id && idTeamAdmin"
+    >
       <router-link :to="{ name: 'recruitmentPost' }">招募球員</router-link>
     </div>
 
@@ -95,16 +98,29 @@
 </template>
 
 <script setup>
+import getData from "@/composables/data/getData";
+import { auth } from "@/firebase/config";
 import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
 const emit = defineEmits(["closeModal"]);
+const { getDocuments } = getData();
 
-onMounted(() => {
+onMounted(async () => {
   selectedExp.value = [...store.state.selectedCopywritingsExp];
   selectedDate.value = store.state.selectedCopywritingsDate;
+
+  const res = await getDocuments("TEAMS", [
+    ["user_id", "==", auth.currentUser?.uid],
+  ]);
+
+  if (res[0]) {
+    idTeamAdmin.value = true;
+  }
 });
+
+const idTeamAdmin = ref(false);
 
 const selectedExp = ref([]);
 const selectedDate = ref(0);

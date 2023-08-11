@@ -37,6 +37,8 @@
 
   <!-- Loading 畫面 -->
   <LoadingComponent v-if="$store.state.isPending" />
+  <!-- Go to Top 按鈕 -->
+  <GoToTop />
 </template>
 
 <style>
@@ -75,6 +77,7 @@ import MemberCenter from "@/components/MemberCenter/MemberCenter";
 import MemberPersonal from "@/components/MemberCenter/MemberPersonal";
 import MainFooter from "@/components/MainFooter.vue";
 import LoadingComponent from "@/components/utilities/LoadingComponent.vue";
+import GoToTop from "@/components/GoToTop.vue";
 import { auth } from "@/firebase/config";
 import getData from "@/composables/data/getData";
 
@@ -193,6 +196,7 @@ export default {
     MemberCenter,
     MemberPersonal,
     LoadingComponent,
+    GoToTop,
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);

@@ -162,6 +162,7 @@ export default {
       color: #fff;
       border: 1px solid var(--primary-blue);
       display: none;
+      transition: 0.3s;
       & i {
         font-size: 1.75rem;
         font-weight: 500;
@@ -173,6 +174,7 @@ export default {
       border: 1px solid var(--primary-blue);
       background-color: #fff;
       color: var(--primary-blue);
+      transition: 0.3s;
     }
     &:before {
       content: "";
