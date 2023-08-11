@@ -25,11 +25,12 @@
     @return_page="returnPage"
   />
 
-  <!-- 會員中心頁面 & 登出按鈕事件-->
+  <!-- 會員中心頁面 & 登出按鈕事件 & 創立球隊頁面設權限-->
   <MemberCenter
     v-if="$store.state.isMemberVisible"
     @enter_personal="enterPersonal"
     @clear_userdata="clearUserData"
+    @stopEnter_Team="stopEnterTeam"
   />
   <router-view />
   <MainFooter v-if="shouldShowMainFooter" />
@@ -268,6 +269,16 @@ export default {
         } catch (error) {
           console.error("登出時發生錯誤：", error);
         }
+      }
+    },
+
+    //創立球隊設權限
+    stopEnterTeam() {
+      if (this.$store.state.user.team_id) {
+        alert("親愛的球友，你已經創立了一個球隊，不能再創立別的球隊了喔！");
+        this.$router.push("/myplayerTeam"); // 重新導向別的頁面
+      } else {
+        this.$router.push("/MemberCenter-Createteam");
       }
     },
   },

@@ -2,7 +2,9 @@
   <section class="MemberCenter_Createteam">
     <div class="wrapper">
       <div class="MemberCenter_Createteam_title">
-        <div class="block"><span>創立球隊</span></div>
+        <div class="block">
+          <span>創立球隊 <span>( 注意：一位會員只能創立一個球隊 )</span> </span>
+        </div>
       </div>
       <!-- //表單 -->
       <form
@@ -258,6 +260,10 @@ export default {
       border-left: 1rem solid var(--primary-blue);
       & span {
         padding-left: 1.5rem;
+        span {
+          color: var(--accent-red);
+          font-size: 1.25rem;
+        }
       }
     }
   }
