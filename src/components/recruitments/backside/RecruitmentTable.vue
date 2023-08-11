@@ -82,7 +82,7 @@
           <td v-else>{{ item.candidate_name }}</td>
 
           <td v-if="title === '管理職缺'" class="Icon">
-            <div class="icon-pen">
+            <div class="icon-pen" @click="goEditCopywriting(item.id)">
               <font-awesome-icon icon="fa-solid fa-pen" />
             </div>
           </td>
@@ -133,7 +133,11 @@
                 <div class="td_title">姓名</div>
                 <div>{{ item.candidate_name }}</div>
               </div>
-              <div v-if="title === '管理職缺'" class="icon-pen">
+              <div
+                v-if="title === '管理職缺'"
+                class="icon-pen"
+                @click="goEditCopywriting(item.id)"
+              >
                 <font-awesome-icon icon="fa-solid fa-pen" />
               </div>
               <div
@@ -276,6 +280,9 @@ export default {
 
     goApplyDetail(id) {
       this.$router.push({ name: "recruitmentVerifyDetail", query: { id } });
+    },
+    goEditCopywriting(id) {
+      this.$router.push({ name: "recruitmentPost", query: { id } });
     },
   },
   computed: {
