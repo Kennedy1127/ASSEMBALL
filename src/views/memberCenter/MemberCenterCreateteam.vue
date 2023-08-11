@@ -131,6 +131,7 @@ export default {
       ////////////////////
       roles,
       area,
+      pic: null,
     };
   },
 
@@ -157,6 +158,7 @@ export default {
 
     //圖片設定
     onfile(event) {
+      this.pic = event.target.files[0];
       this.file = event.target.files[0];
       let filereader = new FileReader();
       filereader.readAsDataURL(this.file);
@@ -184,9 +186,8 @@ export default {
         intro: this.CreateteamIntroduction,
         user_id: auth.currentUser.uid,
       };
-      console.log(data);
 
-      await setData("TEAMS", data);
+      await setData("TEAMS", data, [this.pic], "team-pic");
 
       // 檢查表單資料
       console.log("球隊名稱：", this.teamName);
