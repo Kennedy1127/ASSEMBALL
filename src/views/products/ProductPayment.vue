@@ -133,16 +133,18 @@
 
 <script>
 import getData from "@/composables/data/getData";
+import useStorage from "@/composables/data/useStorage";
+import { useRoute, useRouter } from "vue-router";
+
+// const route = useRoute();
 const { getDocument, getDocuments, getSubCollectionDocuments } = getData();
 /////////////////////////
 
 export default {
   //抓產品資料
   async mounted() {
-    const productsDate = await getDocuments("PRODUCTS", [
-      ["status", "==", true],
-    ]);
-    console.log(productsDate);
+    const productData = await getDocument("PRODUCTS", this.$route.query.id);
+    console.log(productData);
   },
 
   data() {
