@@ -50,11 +50,11 @@
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
 
-//把抓到的內容放進表格內
-const store = useStore();
-onMounted(() => {
-  store.dispatch("getMemberCenterOrderManage"); //用index.js的 action 要用dispatch
-});
+// //把抓到的內容放進表格內
+// const store = useStore();
+// onMounted(() => {
+//   store.dispatch("getMemberCenterOrderManage"); //用index.js的 action 要用dispatch
+// });
 // 一頁放幾個項目
 const computedRenderMemberCenterOrderManage = computed(() => {
   const start = store.state.isMobile
