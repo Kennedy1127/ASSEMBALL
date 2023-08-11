@@ -2,7 +2,7 @@
   <div class="recruitment_aside">
     <div class="recruitment_aside_userpic">
       <img
-        src="~@/assets/images/recruitment/team-icons/team-icon-1-lg.png"
+        :src="picSrc"
         alt="userphoto"
         class="recruitment_aside_userpic_userphoto"
       />
@@ -57,15 +57,21 @@
 import useStorage from "@/composables/data/useStorage";
 
 export default {
+  data() {
+    return {
+      picSrc: "",
+    };
+  },
   async mounted() {
     const { getPicsLink } = useStorage();
     const res = await getPicsLink(
       1,
-      "images/TEAMS/WDijArOSzukkfqrtkgX2",
+      // "images/TEAMS/WDijArOSzukkfqrtkgX2",
+
+      `images/TEAMS/${this.$store.state.user?.team_id}`,
       "team-pic"
     );
-
-    console.log(res[0]);
+    this.picSrc = res[0];
   },
 
   methods: {
@@ -92,15 +98,18 @@ export default {
 
   &_userpic {
     margin: auto;
-    max-width: 80%;
-    width: 10rem;
-
-    border-radius: 10rem;
+    // max-width: 80%;
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50rem;
     background-color: #fff;
     overflow: hidden;
 
     &_userphoto {
       width: 100%;
+      height: 100%;
+      display: block;
+      margin: auto;
     }
   }
   &_list {
