@@ -458,6 +458,7 @@ export default createStore({
       try {
         const res = await getDocuments("PRODUCTS", [["status", "==", true]]);
         const products = [];
+        
 
         for (let i = 0; i < res.length; i++) {
           const comments = await getSubCollectionDocuments(
@@ -483,22 +484,23 @@ export default createStore({
     async getMemberCenter(context, payload) {
       const memberDate = await getDocuments("MEMBERS");
       // console.log(memberDate);
+      context.commit("setMemberCenter", memberDate);
 
       const memberApplyDate = await getSubCollectionDocuments({
         collectionName: "MEMBERS",
         documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
         subCollectionName: "APPLY",
       });
-      // console.log(memberApplyDate);
+      console.log(memberApplyDate);
 
-      const allMemberDate = {
-        ...memberDate[1],
-        memberApplyDate,
-      };
+      // const allMemberDate = {
+      //   ...memberDate[1],
+      //   memberApplyDate,
+      // };
       // console.log(allTeamData);
 
-      context.commit("setMemberCenter", allMemberDate);
-      return allMemberDate;
+      context.commit("setApplication", memberApplyDate);
+      return memberApplyDate;
     },
 
     // 撈訂單管理

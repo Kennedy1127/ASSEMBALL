@@ -38,7 +38,10 @@
           >
         </li>
         <li>
-          <router-link :to="{ name: 'MemberCenterCreateteam' }">
+          <router-link
+            :to="{ name: 'MemberCenterCreateteam' }"
+            @click="stopEnterTeam"
+          >
             <span
               ><font-awesome-icon
                 icon="fa-solid fa-flag"
@@ -87,6 +90,9 @@ export default {
     },
     clearUserData() {
       this.$emit("clear_userdata");
+    },
+    stopEnterTeam() {
+      this.$emit("stopEnter_Team");
     },
   },
   computed: {

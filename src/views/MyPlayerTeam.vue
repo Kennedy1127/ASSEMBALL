@@ -9,10 +9,10 @@
     <MyplayerGallery />
 
     <div ref="myplayerComments">
-      <MyplayerMessage />
+      <MyplayerMessage @openPopup="openPopup" />
     </div>
 
-    <MyplayerPopups />
+    <MyplayerPopups :postData="postData" />
   </main>
 </template>
 <script>
@@ -22,6 +22,8 @@ import MyplayerRaceList from "@/components/MyplayerTeam/MyplayerRaceList";
 import MyplayerGallery from "@/components/MyplayerTeam/MyplayerGallery";
 import MyplayerMessage from "@/components/MyplayerTeam/MyplayerMessage";
 import MyplayerPopups from "@/components/MyplayerTeam/MyplayerPopups";
+import { auth } from "@/firebase/config";
+
 export default {
   components: {
     MyplayerBanner,
@@ -32,6 +34,7 @@ export default {
     MyplayerPopups,
   },
   mounted() {
+    this.$store.dispatch("getMyplayerTeam");
     const scrollToComments = this.$route.query.scrollToComments;
 
     if (scrollToComments) {
@@ -54,8 +57,17 @@ export default {
       }, 100);
     }
   },
+  data() {
+    return {
+      postData: {},
+    };
+  },
 
   methods: {
+    openPopup(data) {
+      console.log(data);
+      this.postData = { ...data };
+    },
     test() {
       console.log("test");
       console.log(this.$refs.myplayerComments);

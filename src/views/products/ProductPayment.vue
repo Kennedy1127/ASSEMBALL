@@ -132,9 +132,19 @@
 </template>
 
 <script>
+import getData from "@/composables/data/getData";
+const { getDocument, getDocuments, getSubCollectionDocuments } = getData();
 /////////////////////////
 
 export default {
+  //抓產品資料
+  async mounted() {
+    const productsDate = await getDocuments("PRODUCTS", [
+      ["status", "==", true],
+    ]);
+    console.log(productsDate);
+  },
+
   data() {
     return {
       // 表單資料

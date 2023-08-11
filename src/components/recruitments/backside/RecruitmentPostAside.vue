@@ -54,7 +54,20 @@
 </template>
 
 <script>
+import useStorage from "@/composables/data/useStorage";
+
 export default {
+  async mounted() {
+    const { getPicsLink } = useStorage();
+    const res = await getPicsLink(
+      1,
+      "images/TEAMS/WDijArOSzukkfqrtkgX2",
+      "team-pic"
+    );
+
+    console.log(res[0]);
+  },
+
   methods: {
     isActiveLink(routeName) {
       return this.$route.name === routeName;

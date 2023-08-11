@@ -7,19 +7,6 @@ import {
   listAll,
 } from "firebase/storage";
 
-// const getAll = async () => {
-//   const storage = getStorage();
-//   const storageRef = ref(storage, "images/PRODUCTS/4akPJqmt2vrCo5kyVEDJ/");
-//   const res = await listAll(storageRef);
-//   console.log(res.items);
-
-//   res.items.forEach(async (el) => {
-//     const test = await getDownloadURL(el);
-//     console.log(test);
-//   });
-// };
-// getAll();
-
 const useStorage = () => {
   const storage = getStorage();
 
@@ -77,7 +64,18 @@ const useStorage = () => {
     }
   };
 
-  return { setPics, getPics, getPicsLink };
+  const getAllPics = async (path) => {
+    const storage = getStorage();
+    const storageRef = ref(storage, path);
+    const res = await listAll(storageRef);
+
+    res.items.forEach(async (el) => {
+      const test = await getDownloadURL(el);
+      console.log(test);
+    });
+  };
+
+  return { setPics, getPics, getPicsLink, getAllPics };
 };
 
 export default useStorage;

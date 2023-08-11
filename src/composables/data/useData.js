@@ -3,7 +3,7 @@ import { doc, setDoc, updateDoc, collection } from "firebase/firestore";
 import { ref } from "vue";
 import useStorage from "@/composables/data/useStorage";
 
-const { setPics, updatePics } = useStorage();
+const { setPics } = useStorage();
 
 const useData = () => {
   const setDataError = ref(null);

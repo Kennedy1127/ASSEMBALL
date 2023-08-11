@@ -20,21 +20,23 @@
             <input
               type="radio"
               name="template"
-              id="template[0]"
+              :id="item.templateID"
               v-model="item.inputValue"
               required
+              ref="radioModel"
             />
           </div>
           <div class="MemberCenter_Application_template_content">
             <textarea
-              id="Createteam_Introduction"
+              :id="item.id"
               cols="50"
               rows="10"
               maxlength="200"
               placeholder="請輸入自我介紹模板內容..."
               @input="updateCharacterCount(item)"
               v-model="item.textareaValue"
-              :disabled="item.disabled"
+              :disabled="!item.disabled"
+              ref="inputModel"
             ></textarea>
             <div
               class="MemberCenter_Application_template_content_count"
@@ -50,8 +52,6 @@
                 :icon="['fa-solid', 'fa-pen']"
                 @click="toggleDisable(index)"
             /></span>
-            <!-- //刪除
-            <span> <font-awesome-icon :icon="['fas', 'trash-can']" /></span> -->
           </div>
         </div>
 
@@ -72,6 +72,7 @@
               value
               placeholder="請輸入自我介紹模板內容..."
               v-model="Introductionadd"
+              ref="addModel"
             ></textarea>
             <div
               class="MemberCenter_Application_template_content_count"
@@ -106,44 +107,15 @@ export default {
   async mounted() {
     const res = await this.$store.dispatch("getMemberCenter");
     console.log(res);
-    console.log(res.memberApplyDate);
+    // console.log(memberApplyDate);
+    this.template = [...res];
   },
-
-  // async mounted() {
-  //   const memberApplyDate = await getDocument("memberApplyDate");
-  //   this.id = memberApplyDate.id;
-  //   this.inputValue = memberApplyDate.inputValue;
-  //   this.textareaValue = memberApplyDate.textareaValue;
-  // },
 
   data() {
     return {
       isTextareaDisabled: true,
       Introductionadd: "",
-      /////////
-      template: [
-        {
-          id: 1,
-          inputValue: "",
-          textareaValue:
-            "你好，我叫楊小棒，我以投球精準和多變的球路為傲，並且在比賽中能夠在關鍵時刻保持冷靜。我的優勢是讓對手無法預測我下一球會是什麼，這讓我能夠更有效地控制比賽節奏，並幫助球隊贏得勝利，我希望能加入此球隊，擔任投手一職，透過我的專業技術和熱情，致力於為球隊拿下勝利的獎盃！",
-          disabled: true,
-        },
-        {
-          id: 2,
-          inputValue: "",
-          textareaValue:
-            "你好，我叫秦大捕，我擁有優秀的觀察力和洞察力，作為一名優秀的捕手，我在合作中是一名積極的團隊成員，願意分享我的知識和經驗，我相信我的技能和熱情使我成為這個職位的優秀候選人，如果有機會進來球隊，我將非常樂意展示我的技能和經驗。",
-          disabled: true,
-        },
-        {
-          id: 3,
-          inputValue: "",
-          textareaValue:
-            "你好，我叫葉子明，我具備優秀的打擊技巧，多年的訓練和比賽經驗讓我磨練出卓越的打擊技巧，包括優秀的揮棒姿勢、準確的擊球時機和靈活的打擊策略。在球場上，我根據場上形勢做出適時的反應，這使我在關鍵時刻能夠發揮出色的表現，我對打擊手這個職位充滿激情，並相信我的技能和潛力會為球隊帶來價值。",
-          disabled: true,
-        },
-      ],
+      template: [],
     };
   },
 
@@ -166,88 +138,154 @@ export default {
   },
 
   methods: {
-    // async loadData() {
-    //   const memberApplyDate = await getSubCollectionDocuments({
-    //     collectionName: "MEMBERS",
-    //     documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
-    //     subCollectionName: "APPLY",
-    //   });
-    //   console.log(loadData);
-
-    //   this.id = memberApplyDate.id;
-    //   this.inputValue = memberApplyDate.inputValue;
-    //   this.textareaValue = memberApplyDate.textareaValue;
-    // },
-    // async loadData() {
-    //   const memberApplyDate = await getSubCollectionDocuments({
-    //     collectionName: "MEMBERS",
-    //     documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
-    //     subCollectionName: "APPLY",
-    //   });
-    //   return memberApplyDate(data);
-    // },
-
     //禁用切換
     toggleDisable(index) {
       this.template[index].disabled = !this.template[index].disabled;
     },
 
-    addTemplate() {
-      if (this.template.length >= 5) {
-        alert("你只能製作五種模板喔！");
+    //添加模板資料上傳
+    async addTemplate() {
+      if (this.template.length >= 4) {
+        alert("你只能製作四種模板喔！");
         return;
       }
 
       const newTemplateId =
         this.template.length > 0
-          ? this.template[this.template.length - 1].id + 1
-          : 1;
+          ? this.template[this.template.length - 1].templateID + 1
+          : 0;
 
       this.template.push({
         id: newTemplateId,
         inputValue: "",
         textareaValue: this.Introductionadd,
-        disabled: true,
+        disabled: false,
       });
+      console.log(newTemplateId);
+
+      //把新模板上傳到資料庫
+      //模板資料確認
+      const data = {
+        inputValue: "",
+        templateID: newTemplateId,
+        textareaValue: this.Introductionadd,
+      };
+      console.log(data);
+
+      await setData("APPLY", data); //上傳新模板
     },
 
     updateCharacterCount(item) {
       item.characterCount = item.textareaValue.length;
     },
 
-    //提交表單
+    //儲存模板資料
     async submitForm() {
-      if (confirm("請問要選擇此模板當作預設嗎？") == true) {
-        alert("模板資料儲存成功！");
+      // // 模板資料儲存更新
+      // const inputDataArray = []; // 儲存按鈕資料
 
-        // 上傳資料庫更新
+      // this.$refs.inputModel.forEach((input) => {
+      //   const data = {
+      //     textareaValue: input.value,
+      //   };
+      //   inputDataArray.push(data);
+      // });
+
+      // console.log(this.$refs.radioModel);
+
+      // const mergedDataArray = []; // 儲存合併的資料
+
+      // this.$refs.radioModel.forEach((radioModel, index) => {
+      //   const isClicked = radioModel.checked; // 檢查按鈕是否點擊
+      //   const radioData = {
+      //     inputValue: isClicked ? radioModel.value : "",
+      //     templateID: index,
+      //   };
+
+      //   const inputData = inputDataArray[index] || { textareaValue: "" };
+      //   // 如果資料不存在，使用默認
+      //   const mergedData = Object.assign({}, inputData, radioData);
+      //   mergedDataArray.push(mergedData);
+      // });
+
+      // console.log(mergedDataArray); // 合併後資料
+
+      // // 更改模板資料
+      // await updateData(
+      //   {
+      //     collectionName: "MEMBERS",
+      //     documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
+      //     subCollectionName: "APPLY",
+      //   },
+      //   mergedDataArray
+      // );
+
+      const inputDataArray = []; // 儲存按鈕資料
+
+      this.$refs.inputModel.forEach((input) => {
         const data = {
-          templateId: this.id,
-          inputValue: this.inputValue,
-          comtent: this.textareaValue,
+          textareaValue: input.value,
         };
-        console.log(data);
+        inputDataArray.push(data);
+      });
 
-        // await setData("MEMBERS", data);
+      console.log(this.$refs.radioModel);
 
-        // 更改會員預設模板
-        await updateData(
-          {
-            collectionName: "MEMBERS",
-            documentId: this.$store.state.user.id,
-          },
-          data
-        );
+      const mergedDataObject = {}; // 儲存合併的資料
 
-        // 全部表單資料確認
-        this.template.forEach((item) => {
-          console.log("模板ID：", item.id);
-          console.log("預設模板：", item.inputValue);
-          console.log("模板內容：", item.textareaValue);
-        });
-      } else {
-        alert("請再次選擇一種模板。");
-      }
+      this.$refs.radioModel.forEach((radioModel, index) => {
+        const isClicked = radioModel.checked; // 檢查按鈕是否點擊
+        const radioData = {
+          inputValue: isClicked ? radioModel.value : "",
+          templateID: index,
+        };
+
+        const inputData = inputDataArray[index] || { textareaValue: "" };
+        // 如果資料不存在，使用默認
+        const mergedData = {
+          ...inputData,
+          ...radioData,
+        };
+        mergedDataObject[index] = mergedData;
+      });
+
+      console.log(mergedDataObject); // 合併後資料
+
+      // 更改模板資料
+      await updateData(
+        {
+          collectionName: "MEMBERS",
+          documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
+          subCollectionName: "APPLY",
+        },
+        mergedDataObject
+      );
+
+      // if (confirm("請問要選擇此模板當作預設嗎？") == true) {
+      //   alert("模板資料儲存成功！");
+
+      // 更改會員預設模板
+      // await updateData(
+      //   {
+      //     collectionName: "MEMBERS",
+      //     documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
+      //     subCollectionName: "APPLY",
+      //   },
+      //   data
+      // );
+
+      // 上傳新模板到資料庫
+      // await setData("APPLY", data);
+
+      // 全部表單資料確認
+      //   this.template.forEach((item) => {
+      //     console.log("模板ID：", item.id);
+      //     console.log("預設模板：", item.inputValue);
+      //     console.log("模板內容：", item.textareaValue);
+      //   });
+      // } else {
+      //   alert("請再次選擇一種模板。");
+      // }
     },
   },
 };
