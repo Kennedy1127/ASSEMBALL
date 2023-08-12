@@ -25,7 +25,7 @@
     @return_page="returnPage"
   />
 
-  <!-- 會員中心頁面 & 登出按鈕事件 & 創立球隊頁面設權限-->
+  <!-- 會員中心頁面 & 登出按鈕事件 & 創立球隊設權限-->
   <MemberCenter
     v-if="$store.state.isMemberVisible"
     @enter_personal="enterPersonal"
@@ -38,7 +38,7 @@
   <!-- Loading 畫面 -->
   <LoadingComponent v-if="$store.state.isPending" />
   <!-- Go to Top 按鈕 -->
-  <GoToTop />
+  <GoToTop v-if="shouldShowGoToTop" />
 </template>
 
 <style>
@@ -98,6 +98,11 @@ export default {
       const pagesWithoutHeaderLight = ["HomeLoading", "Backstage", "test"];
 
       return !pagesWithoutHeaderLight.includes(this.$route.name);
+    },
+    shouldShowGoToTop() {
+      const pagesWithoutGoToTop = ["HomeLoading", "Backstage", "test"];
+
+      return !pagesWithoutGoToTop.includes(this.$route.name);
     },
   },
   async beforeMount() {

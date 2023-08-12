@@ -28,6 +28,10 @@ export default {
       autoplay: true,
       animationData: loading, // the path to the animation json
     });
+
+    setTimeout(() => {
+      this.$router.push({ name: "Home" });
+    }, 2800);
   },
 };
 </script>
@@ -37,12 +41,16 @@ export default {
   background-color: var(--primary-blue);
   width: 100%;
   height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   .back {
-    width: 75vw;
-    height: 75vh;
-    margin: auto;
+    width: 80%;
+    height: 80vh;
     position: relative;
-    top: calc(100vh - 900px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     @media all and (max-width: 420px) {
       width: 100%;
       height: 100vh;
@@ -51,14 +59,16 @@ export default {
     .text {
       position: absolute;
       color: #ffffff;
-      font-size: 2rem;
+      font-size: 1.75rem;
       font-weight: 700;
       letter-spacing: 10px;
-      bottom: 16.5%;
-      left: 44%;
+      bottom: 4.5%;
       display: flex;
       align-items: flex-end;
+      font-family: "Montserrat";
       @media all and (max-width: 420px) {
+        bottom: 24.5%;
+        font-size: 1rem;
       }
       .preloader {
         padding-left: 0.5rem;
@@ -72,6 +82,10 @@ export default {
           border-radius: 50%;
           display: inline-block;
           animation: stretchdelay 1s infinite ease-in-out;
+          @media all and (max-width: 420px) {
+            height: 0.25rem;
+            width: 0.25rem;
+          }
         }
         > div:nth-child(1) {
           animation-delay: 0;
