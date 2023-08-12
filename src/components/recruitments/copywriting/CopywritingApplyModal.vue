@@ -41,12 +41,15 @@
 <script setup>
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
 import { auth, timestamp } from "@/firebase/config";
+import useData from "@/composables/data/useData";
 import { computed, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import store from "@/store";
 
 const route = useRoute();
-
+const router = useRouter();
 const emit = defineEmits(["closeModal"]);
+const { setData } = useData();
 
 const templates = ref([
   {
@@ -79,7 +82,9 @@ const closeModal = () => {
   emit("closeModal");
 };
 
-const submitApply = () => {
+const submitApply = async () => {
+  store.state.isPending = true;
+
   const submitData = {
     copywriting_id: route.params.id,
     user_id: auth.currentUser.uid,
@@ -87,7 +92,10 @@ const submitApply = () => {
     date: timestamp,
   };
 
-  console.log(submitData);
+  await setData("APPLYS", submitData);
+
+  router.push({ name: "Recruitments" });
+  store.state.isPending = false;
 };
 </script>
 
