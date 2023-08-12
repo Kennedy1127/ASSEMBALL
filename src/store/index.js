@@ -21,7 +21,8 @@ export default createStore({
     user: null,
 
     // 通知資料
-    userNotifies: [],
+    userNotifys: [],
+    closeNotifys: null,
 
     // 歷史訂單
     userOrders: [],
@@ -458,7 +459,6 @@ export default createStore({
       try {
         const res = await getDocuments("PRODUCTS", [["status", "==", true]]);
         const products = [];
-        
 
         for (let i = 0; i < res.length; i++) {
           const comments = await getSubCollectionDocuments(

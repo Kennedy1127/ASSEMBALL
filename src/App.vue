@@ -78,12 +78,13 @@ import MemberPersonal from "@/components/MemberCenter/MemberPersonal";
 import MainFooter from "@/components/MainFooter.vue";
 import LoadingComponent from "@/components/utilities/LoadingComponent.vue";
 import GoToTop from "@/components/GoToTop.vue";
-import { auth } from "@/firebase/config";
 import getData from "@/composables/data/getData";
 import useSignout from "@/composables/authentication/useSignout";
+import { auth } from "@/firebase/config";
+import { db } from "@/firebase/config";
+import { onSnapshot, collection, query, where } from "firebase/firestore";
 
 const { signout } = useSignout();
-const { getDocuments } = getData();
 
 export default {
   computed: {
@@ -116,10 +117,7 @@ export default {
     if (auth.currentUser && !this.$store.state.isLoggedIn) {
       this.$store.state.isLoggedIn = true;
       this.$store.state.user = await getUser();
-
-      if (!this.$store.state.user) {
-        // getDocuments
-      }
+      this.getNotifys();
     }
   },
 
@@ -151,6 +149,21 @@ export default {
     window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
+    getNotifys() {
+      const docRef = collection(db, "MEMBERS", auth.currentUser.uid, "NOTIFY");
+      const q = query(docRef, where("read", "==", false));
+      const closeNotifys = onSnapshot(q, (res) => {
+        const notifys = [];
+        res.docs.forEach((doc) => {
+          notifys.push(doc.data());
+        });
+
+        this.$store.state.userNotifys = [...notifys];
+      });
+
+      this.$store.state.closeNotifys = closeNotifys;
+    },
+
     // 導覽列切換
     handleScroll() {
       const scrollPosition =
@@ -213,6 +226,8 @@ export default {
         try {
           // 登出
           signout();
+          this.$store.state.closeNotifys();
+          this.$store.state.userNotifys = null;
 
           // 清除 Vuex 中的會員狀態
           this.$store.commit("clearUserData");

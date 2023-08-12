@@ -45,6 +45,10 @@
 
 <script>
 export default {
+  mounted() {
+    console.log(this.$store.state.userNotifys);
+  },
+
   data() {
     return {
       MemberNotifyJoin: [

@@ -94,6 +94,8 @@ import LoginMobile from "@/components/Authentication/mobile/LoginMobile.vue";
 import useSignin from "@/composables/authentication/useSignin";
 import useSetPersistence from "@/composables/authentication/useSetPersistence";
 import getData from "@/composables/data/getData";
+import { db, auth } from "@/firebase/config";
+import { onSnapshot, collection, query, where } from "firebase/firestore";
 import { ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -102,7 +104,7 @@ const store = useStore();
 const router = useRouter();
 const { signinError, signin } = useSignin();
 const { changePersistence } = useSetPersistence();
-const { getUser, getDocuments } = getData();
+const { getUser } = getData();
 
 const info = {
   title: "Hello , Friend !",
@@ -144,6 +146,21 @@ const handleMobile = (signinData) => {
   handleSignin();
 };
 
+const getNotifys = () => {
+  const docRef = collection(db, "MEMBERS", auth.currentUser.uid, "NOTIFY");
+  const q = query(docRef, where("read", "==", false));
+  const closeNotifys = onSnapshot(q, (res) => {
+    const notifys = [];
+    res.docs.forEach((doc) => {
+      notifys.push(doc.data());
+    });
+
+    store.state.userNotifys = [...notifys];
+  });
+
+  store.state.closeNotifys = closeNotifys;
+};
+
 const handleSignin = async () => {
   store.state.isPending = true;
 
@@ -165,6 +182,7 @@ const handleSignin = async () => {
 
   store.state.user = await getUser();
   store.state.isLoggedIn = true;
+  getNotifys();
   router.push({ name: "Home" });
   store.state.isPending = false;
 };
