@@ -1,8 +1,10 @@
 import { createStore } from "vuex";
 import axios from "axios";
 import getData from "@/composables/data/getData";
+import useStorage from "@/composables/data/useStorage";
 
 const { getDocument, getDocuments, getSubCollectionDocuments } = getData();
+const { getPicsLink } = useStorage();
 
 export default createStore({
   state: {
@@ -21,7 +23,8 @@ export default createStore({
     user: null,
 
     // 通知資料
-    userNotifies: [],
+    userNotifys: [],
+    closeNotifys: null,
 
     // 歷史訂單
     userOrders: [],
@@ -79,6 +82,34 @@ export default createStore({
   },
 
   getters: {
+    //////////////////////////////////////////////////////
+    // 使用者加入請求通知
+    userNotifysJoin(state) {
+      return state.userNotifys.filter((notify) => notify.type === 0);
+    },
+
+    // 使用者訂單通知
+    userNotifysOrder(state) {
+      return state.userNotifys.filter((notify) => notify.type === 1);
+    },
+
+    // 使用者邀請加入通知
+    userNotifysTeam(state) {
+      const userNotifys = state.userNotifys.filter(
+        (notify) => notify.type === 2
+      );
+
+      for (let i = 0; i < userNotifys.length; i++) {
+        getPicsLink(
+          1,
+          `images/TEAMS/${userNotifys[i].team_id}`,
+          "team-pic"
+        ).then((res) => (userNotifys[i].pic = res[0]));
+      }
+
+      return userNotifys;
+    },
+
     //////////////////////////////////////////////////////
     // 商品區塊
     // 如果文字搜尋條件符合或長度為0時，return true
@@ -458,7 +489,6 @@ export default createStore({
       try {
         const res = await getDocuments("PRODUCTS", [["status", "==", true]]);
         const products = [];
-        
 
         for (let i = 0; i < res.length; i++) {
           const comments = await getSubCollectionDocuments(
