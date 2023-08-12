@@ -12,6 +12,12 @@
       <div class="Member_notify_join_content">
         {{ item.text }}
       </div>
+      <div class="apply_xmark" @click="deleteNotify(item)">
+        <font-awesome-icon
+          :icon="['fas', 'circle-xmark']"
+          class="apply_xmark_icon"
+        />
+      </div>
     </div>
 
     <div
@@ -25,6 +31,12 @@
       </div>
       <div class="Member_notify_order_content">
         {{ item.text }}
+      </div>
+      <div class="apply_xmark" @click="deleteNotify(item)">
+        <font-awesome-icon
+          :icon="['fas', 'circle-xmark']"
+          class="apply_xmark_icon"
+        />
       </div>
     </div>
 
@@ -79,6 +91,10 @@ export default {
   },
 
   methods: {
+    deleteNotify(data) {
+      console.log(data);
+    },
+
     submitJoin(data) {
       console.log(data);
 
@@ -148,6 +164,19 @@ export default {
     padding-top: 1rem;
     padding-bottom: 4rem;
   }
+
+  .apply_xmark {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+
+    &_icon {
+      font-size: 1.25rem;
+      color: var(--primary-blue);
+      cursor: pointer;
+    }
+  }
+
   &_join {
     position: relative;
     width: 100%;
@@ -165,6 +194,7 @@ export default {
       }
     }
     &_content {
+      width: 80%;
       padding-left: 0.5rem;
       font-size: 0.875rem;
       color: var(--secondary-gray-1);
@@ -191,6 +221,7 @@ export default {
       }
     }
     &_content {
+      width: 80%;
       padding-left: 0.5rem;
       font-size: 0.875rem;
       color: var(--secondary-gray-1);
