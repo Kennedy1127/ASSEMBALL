@@ -2,7 +2,7 @@
   <div class="Member_notify">
     <div
       class="Member_notify_join"
-      v-for="item in MemberNotifyJoin"
+      v-for="item in $store.getters.userNotifysJoin"
       :key="item.join"
     >
       <div class="Member_notify_join_title">
@@ -10,12 +10,13 @@
         {{ item.title }}
       </div>
       <div class="Member_notify_join_content">
-        {{ item.content }}
+        {{ item.text }}
       </div>
     </div>
+
     <div
       class="Member_notify_order"
-      v-for="item in MemberNotifyOrder"
+      v-for="item in $store.getters.userNotifysOrder"
       :key="item.order"
     >
       <div class="Member_notify_order_title">
@@ -23,20 +24,24 @@
         >{{ item.title }}
       </div>
       <div class="Member_notify_order_content">
-        {{ item.content }}
+        {{ item.text }}
       </div>
     </div>
+
     <div
       class="Member_notify_team"
-      v-for="item in MemberNotifyTeam"
+      v-for="item in $store.getters.userNotifysTeam"
       :key="item.team"
     >
-      <img :src="item.imgSrc" :alt="Member_notify_team_pic" />
+      <img
+        :src="item.pic || require('@/assets/images/icons/main-icon.png')"
+        alt="Member_notify_team_pic"
+      />
       <div class="Member_notify_team_aside">
         <div class="Member_notify_team_aside_title">{{ item.title }}</div>
         <div class="Member_notify_team_aside_btn">
-          <button>確定</button>
-          <button>拒絕</button>
+          <button @click="submitJoin(item)">確定</button>
+          <button @click="submitReject(item)">拒絕</button>
         </div>
       </div>
     </div>
@@ -44,54 +49,74 @@
 </template>
 
 <script>
+import useData from "@/composables/data/useData";
+import { auth } from "@/firebase/config";
+const { updateDataSubCollection } = useData();
+
 export default {
   mounted() {
-    console.log(this.$store.state.userNotifys);
+    this.$store.state.userNotifys.forEach((notify) => {
+      updateDataSubCollection(
+        {
+          collectionName: "MEMBERS",
+          documentId: auth.currentUser.uid,
+          subCollectionName: "NOTIFY",
+          subDocumentId: notify.id,
+        },
+        {
+          read: true,
+        }
+      );
+    });
   },
 
   data() {
     return {
-      MemberNotifyJoin: [
-        {
-          title: "Bruce Lee 要求加入球隊",
-          content: "你好，我是Bruce Lee，想加入你們球隊！",
-        },
-        {
-          title: "Bruce Lee 要求加入球隊",
-          content: "你好，我是Bruce Lee，想加入你們球隊！",
-        },
-      ],
-      MemberNotifyOrder: [
-        {
-          title: " 訂單已成立",
-          content:
-            "訂單編號 2023087570050 已成立，等待物流派送中，請耐心等候。",
-        },
-        {
-          title: " 訂單已成立",
-          content:
-            "訂單編號 2023087570050 已成立，等待物流派送中，請耐心等候。",
-        },
-      ],
-      MemberNotifyTeam: [
-        {
-          imgSrc: require("@/assets/images/MemberCenter/Member_notify_team_pic1.png"),
-          title: "信義天使隊 邀請您加入",
-        },
-        {
-          imgSrc: require("@/assets/images/MemberCenter/Member_notify_team_pic1.png"),
-          title: "信義天使隊 邀請您加入",
-        },
-        {
-          imgSrc: require("@/assets/images/MemberCenter/Member_notify_team_pic1.png"),
-          title: "信義天使隊 邀請您加入",
-        },
-        {
-          imgSrc: require("@/assets/images/MemberCenter/Member_notify_team_pic1.png"),
-          title: "信義天使隊 邀請您加入",
-        },
-      ],
+      MemberNotifyJoin: [],
+      MemberNotifyOrder: [],
+      MemberNotifyTeam: [],
     };
+  },
+
+  methods: {
+    submitJoin(data) {
+      console.log(data);
+
+      this.$store.state.userNotifys
+        .filter((notify) => notify.type === 2)
+        .forEach((notify) => {
+          updateDataSubCollection(
+            {
+              collectionName: "MEMBERS",
+              documentId: auth.currentUser.uid,
+              subCollectionName: "NOTIFY",
+              subDocumentId: notify.id,
+            },
+            {
+              status: false,
+            }
+          );
+        });
+    },
+
+    submitReject(data) {
+      updateDataSubCollection(
+        {
+          collectionName: "MEMBERS",
+          documentId: auth.currentUser.uid,
+          subCollectionName: "NOTIFY",
+          subDocumentId: data.id,
+        },
+        {
+          status: false,
+        }
+      );
+
+      const index = this.MemberNotifyTeam.findIndex(
+        (notify) => notify.id === data.id
+      );
+      this.MemberNotifyTeam.splice(index, 1);
+    },
   },
 };
 </script>

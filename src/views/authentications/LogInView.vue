@@ -148,7 +148,7 @@ const handleMobile = (signinData) => {
 
 const getNotifys = () => {
   const docRef = collection(db, "MEMBERS", auth.currentUser.uid, "NOTIFY");
-  const q = query(docRef, where("read", "==", false));
+  const q = query(docRef, where("status", "==", true));
   const closeNotifys = onSnapshot(q, (res) => {
     const notifys = [];
     res.docs.forEach((doc) => {
