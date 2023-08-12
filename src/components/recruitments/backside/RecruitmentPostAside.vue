@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import getData from "@/composables/data/getData";
 import useStorage from "@/composables/data/useStorage";
 
 export default {
@@ -64,13 +65,21 @@ export default {
   },
   async mounted() {
     const { getPicsLink } = useStorage();
+    const { getUser } = getData();
+    let user = null;
+
+    if (!this.$store.state.user?.team_id) {
+      user = await getUser();
+    }
+
     const res = await getPicsLink(
       1,
       // "images/TEAMS/WDijArOSzukkfqrtkgX2",
 
-      `images/TEAMS/${this.$store.state.user?.team_id}`,
+      `images/TEAMS/${this.$store.state.user?.team_id || user.team_id}`,
       "team-pic"
     );
+
     this.picSrc = res[0];
   },
 
