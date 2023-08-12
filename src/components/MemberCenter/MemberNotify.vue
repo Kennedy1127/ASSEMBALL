@@ -4,6 +4,7 @@
       class="Member_notify_join"
       v-for="item in $store.getters.userNotifysJoin"
       :key="item.join"
+      @click="goToApply(item)"
     >
       <div class="Member_notify_join_title">
         <span><font-awesome-icon icon="fa-solid fa-user" /></span>
@@ -12,7 +13,7 @@
       <div class="Member_notify_join_content">
         {{ item.text }}
       </div>
-      <div class="apply_xmark" @click="deleteNotify(item)">
+      <div class="apply_xmark" @click.stop="deleteNotify(item)">
         <font-awesome-icon
           :icon="['fas', 'circle-xmark']"
           class="apply_xmark_icon"
@@ -91,7 +92,21 @@ export default {
   },
 
   methods: {
-    deleteNotify(data) {
+    deleteNotify(notify) {
+      updateDataSubCollection(
+        {
+          collectionName: "MEMBERS",
+          documentId: auth.currentUser.uid,
+          subCollectionName: "NOTIFY",
+          subDocumentId: notify.id,
+        },
+        {
+          status: false,
+        }
+      );
+    },
+
+    goToApply(data) {
       console.log(data);
     },
 
@@ -169,6 +184,13 @@ export default {
     position: absolute;
     top: 1rem;
     right: 1rem;
+
+    width: 25px;
+    height: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &_icon {
       font-size: 1.25rem;
