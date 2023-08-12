@@ -102,7 +102,7 @@ const store = useStore();
 const router = useRouter();
 const { signinError, signin } = useSignin();
 const { changePersistence } = useSetPersistence();
-const { getUser } = getData();
+const { getUser, getDocuments } = getData();
 
 const info = {
   title: "Hello , Friend !",

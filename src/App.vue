@@ -83,6 +83,7 @@ import getData from "@/composables/data/getData";
 import useSignout from "@/composables/authentication/useSignout";
 
 const { signout } = useSignout();
+const { getDocuments } = getData();
 
 export default {
   computed: {
@@ -114,8 +115,10 @@ export default {
     // 確認使用者登入狀態
     if (auth.currentUser && !this.$store.state.isLoggedIn) {
       this.$store.state.isLoggedIn = true;
+      this.$store.state.user = await getUser();
+
       if (!this.$store.state.user) {
-        this.$store.state.user = await getUser();
+        // getDocuments
       }
     }
   },
