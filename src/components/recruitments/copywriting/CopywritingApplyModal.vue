@@ -91,7 +91,7 @@ const submitApply = () => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .apply {
   width: 60%;
   height: 80%;
@@ -162,6 +162,7 @@ const submitApply = () => {
     margin-top: 3rem;
 
     display: flex;
+    align-items: center;
     gap: 2rem;
 
     @media all and (max-width: 420px) {
@@ -179,7 +180,9 @@ const submitApply = () => {
     }
 
     .selector-component {
-      width: 100%;
+      .ivu-select-single .ivu-select-selection {
+        border: 3px solid var(--secondary-blue-2);
+      }
     }
   }
 
