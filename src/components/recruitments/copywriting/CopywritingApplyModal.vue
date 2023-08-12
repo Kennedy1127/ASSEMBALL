@@ -162,7 +162,6 @@ const submitApply = () => {
     margin-top: 3rem;
 
     display: flex;
-    align-items: center;
     gap: 2rem;
 
     @media all and (max-width: 420px) {
@@ -181,7 +180,21 @@ const submitApply = () => {
 
     .selector-component {
       .ivu-select-single .ivu-select-selection {
-        border: 3px solid var(--secondary-blue-2);
+        border: 3px solid var(--secondary-blue-1);
+
+        div:first-of-type {
+          justify-content: space-between;
+
+          span {
+            color: var(--secondary-gray-3);
+          }
+
+          i {
+            &::before {
+              color: var(--secondary-blue-1);
+            }
+          }
+        }
       }
     }
   }
