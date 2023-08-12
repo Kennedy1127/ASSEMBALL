@@ -80,6 +80,9 @@ import LoadingComponent from "@/components/utilities/LoadingComponent.vue";
 import GoToTop from "@/components/GoToTop.vue";
 import { auth } from "@/firebase/config";
 import getData from "@/composables/data/getData";
+import useSignout from "@/composables/authentication/useSignout";
+
+const { signout } = useSignout();
 
 export default {
   computed: {
@@ -205,6 +208,9 @@ export default {
     clearUserData() {
       if (window.confirm("請問要登出帳號嗎？") == true) {
         try {
+          // 登出
+          signout();
+
           // 清除 Vuex 中的會員狀態
           this.$store.commit("clearUserData");
 
