@@ -1,6 +1,20 @@
 <template>
   <div class="Member_notify">
     <div
+      v-if="
+        !$store.getters.userNotifysJoin.length &&
+        !$store.getters.userNotifysOrder.length &&
+        !$store.getters.userNotifysTeam.length
+      "
+      class="Member_notify_noResults"
+    >
+      <div class="Member_notify_noResults_img">
+        <img src="~@/assets/images/recruitment/no-results.svg" alt="" />
+      </div>
+      <p class="Member_notify_noResults_text">目前沒有任何的新通知哦！</p>
+    </div>
+
+    <div
       class="Member_notify_join"
       v-for="item in $store.getters.userNotifysJoin"
       :key="item.join"
@@ -81,14 +95,6 @@ export default {
         }
       );
     });
-  },
-
-  data() {
-    return {
-      MemberNotifyJoin: [],
-      MemberNotifyOrder: [],
-      MemberNotifyTeam: [],
-    };
   },
 
   methods: {
@@ -178,6 +184,28 @@ export default {
     overflow: auto;
     padding-top: 1rem;
     padding-bottom: 4rem;
+  }
+
+  &_noResults {
+    min-height: 40vh;
+
+    &_img {
+      width: 70%;
+      height: 70%;
+      margin: 0 auto;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    p {
+      color: var(--secondary-gray-3);
+      font-weight: 400;
+      font-size: 1.5rem;
+      text-align: center;
+    }
   }
 
   .apply_xmark {
