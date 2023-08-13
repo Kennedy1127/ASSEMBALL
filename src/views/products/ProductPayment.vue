@@ -155,6 +155,7 @@ export default {
         name: productData.title,
         price: productData.price,
         date: productData.date,
+        seller: productData.seller_name,
       },
     ];
 
@@ -258,6 +259,7 @@ export default {
           date: this.ProductPaymentItems[0].date,
           name: this.ProductPaymentItems[0].name,
           price: this.ProductPaymentItems[0].price,
+          seller: this.ProductPaymentItems[0].seller,
           buyerPhone: this.phone,
           buyerAddress: this.address,
           buyerCreditCardNumber: this.creditCardNumber,
@@ -275,7 +277,7 @@ export default {
             subCollectionName: "PRODUCTMANAGE",
           },
           data
-        ); //上傳新模板
+        );
 
         // // 表單資料確認
         // console.log("手機號碼：", this.phone);
