@@ -111,8 +111,9 @@ export default {
     //   this.$router.push({ name: "myplayerTeam", params: { id } });
     // },
     goToMyPlayerTeam(id) {
+      // 使用 Vue Router 的 push 方法進行導航，並在回調函式中執行滾動操作
       this.$router.push({
-        name: "/myplayerTeam",
+        name: "myplayerTeam",
         query: { scrollToComments: true },
       });
     },

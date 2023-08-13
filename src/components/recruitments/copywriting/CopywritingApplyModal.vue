@@ -41,12 +41,15 @@
 <script setup>
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
 import { auth, timestamp } from "@/firebase/config";
+import useData from "@/composables/data/useData";
 import { computed, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import store from "@/store";
 
 const route = useRoute();
-
+const router = useRouter();
 const emit = defineEmits(["closeModal"]);
+const { setData } = useData();
 
 const templates = ref([
   {
@@ -79,7 +82,9 @@ const closeModal = () => {
   emit("closeModal");
 };
 
-const submitApply = () => {
+const submitApply = async () => {
+  store.state.isPending = true;
+
   const submitData = {
     copywriting_id: route.params.id,
     user_id: auth.currentUser.uid,
@@ -87,11 +92,14 @@ const submitApply = () => {
     date: timestamp,
   };
 
-  console.log(submitData);
+  await setData("APPLYS", submitData);
+
+  router.push({ name: "Recruitments" });
+  store.state.isPending = false;
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .apply {
   width: 60%;
   height: 80%;
@@ -179,7 +187,23 @@ const submitApply = () => {
     }
 
     .selector-component {
-      width: 100%;
+      .ivu-select-single .ivu-select-selection {
+        border: 3px solid var(--secondary-blue-1);
+
+        div:first-of-type {
+          justify-content: space-between;
+
+          span {
+            color: var(--secondary-gray-3);
+          }
+
+          i {
+            &::before {
+              color: var(--secondary-blue-1);
+            }
+          }
+        }
+      }
     }
   }
 

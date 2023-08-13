@@ -1,8 +1,10 @@
 import { createStore } from "vuex";
 import axios from "axios";
 import getData from "@/composables/data/getData";
+import useStorage from "@/composables/data/useStorage";
 
 const { getDocument, getDocuments, getSubCollectionDocuments } = getData();
+const { getPicsLink } = useStorage();
 
 export default createStore({
   state: {
@@ -21,7 +23,8 @@ export default createStore({
     user: null,
 
     // 通知資料
-    userNotifies: [],
+    userNotifys: [],
+    closeNotifys: null,
 
     // 歷史訂單
     userOrders: [],
@@ -80,6 +83,34 @@ export default createStore({
   },
 
   getters: {
+    //////////////////////////////////////////////////////
+    // 使用者加入請求通知
+    userNotifysJoin(state) {
+      return state.userNotifys.filter((notify) => notify.type === 0);
+    },
+
+    // 使用者訂單通知
+    userNotifysOrder(state) {
+      return state.userNotifys.filter((notify) => notify.type === 1);
+    },
+
+    // 使用者邀請加入通知
+    userNotifysTeam(state) {
+      const userNotifys = state.userNotifys.filter(
+        (notify) => notify.type === 2
+      );
+
+      for (let i = 0; i < userNotifys.length; i++) {
+        getPicsLink(
+          1,
+          `images/TEAMS/${userNotifys[i].team_id}`,
+          "team-pic"
+        ).then((res) => (userNotifys[i].pic = res[0]));
+      }
+
+      return userNotifys;
+    },
+
     //////////////////////////////////////////////////////
     // 商品區塊
     // 如果文字搜尋條件符合或長度為0時，return true
@@ -484,22 +515,23 @@ export default createStore({
     async getMemberCenter(context, payload) {
       const memberDate = await getDocuments("MEMBERS");
       // console.log(memberDate);
+      context.commit("setMemberCenter", memberDate);
 
       const memberApplyDate = await getSubCollectionDocuments({
         collectionName: "MEMBERS",
         documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
         subCollectionName: "APPLY",
       });
-      // console.log(memberApplyDate);
+      console.log(memberApplyDate);
 
-      const allMemberDate = {
-        ...memberDate[1],
-        memberApplyDate,
-      };
+      // const allMemberDate = {
+      //   ...memberDate[1],
+      //   memberApplyDate,
+      // };
       // console.log(allTeamData);
 
-      context.commit("setMemberCenter", allMemberDate);
-      return allMemberDate;
+      context.commit("setApplication", memberApplyDate);
+      return memberApplyDate;
     },
 
     // 撈訂單管理

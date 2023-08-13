@@ -25,17 +25,20 @@
     @return_page="returnPage"
   />
 
-  <!-- 會員中心頁面 & 登出按鈕事件-->
+  <!-- 會員中心頁面 & 登出按鈕事件 & 創立球隊設權限-->
   <MemberCenter
     v-if="$store.state.isMemberVisible"
     @enter_personal="enterPersonal"
     @clear_userdata="clearUserData"
+    @stopEnter_Team="stopEnterTeam"
   />
   <router-view />
   <MainFooter v-if="shouldShowMainFooter" />
 
   <!-- Loading 畫面 -->
   <LoadingComponent v-if="$store.state.isPending" />
+  <!-- Go to Top 按鈕 -->
+  <GoToTop v-if="ShowGoToTop" />
 </template>
 
 <style>
@@ -74,8 +77,14 @@ import MemberCenter from "@/components/MemberCenter/MemberCenter";
 import MemberPersonal from "@/components/MemberCenter/MemberPersonal";
 import MainFooter from "@/components/MainFooter.vue";
 import LoadingComponent from "@/components/utilities/LoadingComponent.vue";
-import { auth } from "@/firebase/config";
+import GoToTop from "@/components/GoToTop.vue";
 import getData from "@/composables/data/getData";
+import useSignout from "@/composables/authentication/useSignout";
+import { auth } from "@/firebase/config";
+import { db } from "@/firebase/config";
+import { onSnapshot, collection, query, where } from "firebase/firestore";
+
+const { signout } = useSignout();
 
 export default {
   computed: {
@@ -95,69 +104,19 @@ export default {
 
       return !pagesWithoutHeaderLight.includes(this.$route.name);
     },
+    ShowGoToTop() {
+      const pagesWithoutGoToTop = [
+        "HomeLoading",
+        "test",
+        "Backstage",
+        "BackstageLogin",
+      ];
+
+      return !pagesWithoutGoToTop.includes(this.$route.name);
+    },
   },
   async beforeMount() {
-    const {
-      getUser,
-      getDocument,
-      getDocuments,
-      getSubCollectionDocument,
-      getSubCollectionDocuments,
-    } = getData();
-    // const testA = await getDocument("COPYWRITINGS", "UFX8L9SRpSRjXzgCwxHk");
-    // const testB = await getDocuments("COPYWRITINGS");
-    // console.log(testA);
-    // console.log(testB);
-
-    const testA = await getDocument("TEAMS", "5KhosRZOJ7TmLfECUb5D");
-    const testB = await getDocuments("TEAMS");
-    console.log(testA);
-    console.log(testB);
-
-    //----
-    // const testSherry = await getDocuments("APPLYS");
-    // console.log(testSherry);
-
-    // const testC = await getSubCollectionDocument({
-    //   collectionName: "TEAMS",
-    //   documentId: "5KhosRZOJ7TmLfECUb5D",
-    //   subCollectionName: "POST",
-    //   subDocumentId: "Uud9BbmACZksHOBQeFC0",
-    // });
-    // const testD = await getSubCollectionDocuments({
-    //   collectionName: "TEAMS",
-    //   documentId: "5KhosRZOJ7TmLfECUb5D",
-    //   subCollectionName: "PIC",
-    // ----
-    // const testSherry = await getDocuments("APPLYS");
-    // console.log(testSherry);
-
-    // const testC = await getSubCollectionDocument({
-    //   collectionName: "PRODUCTS",
-    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
-    //   subCollectionName: "COMMENTS",
-    //   subDocumentId: "n8w5wpDDeGWujr8Aq8Kp",
-    // });
-    // const testD = await getSubCollectionDocuments({
-    //   collectionName: "PRODUCTS",
-    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
-    //   subCollectionName: "COMMENTS",
-    // });
-    // console.log(testC);
-    // console.log(testD);
-    // const testC = await getSubCollectionDocument({
-    //   collectionName: "PRODUCTS",
-    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
-    //   subCollectionName: "COMMENTS",
-    //   subDocumentId: "n8w5wpDDeGWujr8Aq8Kp",
-    // });
-    // const testD = await getSubCollectionDocuments({
-    //   collectionName: "PRODUCTS",
-    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
-    //   subCollectionName: "COMMENTS",
-    // });
-    // console.log(testC);
-    // console.log(testD);
+    const { getUser } = getData();
 
     // 確認是不是手機使用
     if (window.innerWidth <= 420) {
@@ -167,9 +126,8 @@ export default {
     // 確認使用者登入狀態
     if (auth.currentUser && !this.$store.state.isLoggedIn) {
       this.$store.state.isLoggedIn = true;
-      if (!this.$store.state.user) {
-        this.$store.state.user = await getUser();
-      }
+      this.$store.state.user = await getUser();
+      this.getNotifys();
     }
   },
 
@@ -192,6 +150,7 @@ export default {
     MemberCenter,
     MemberPersonal,
     LoadingComponent,
+    GoToTop,
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
@@ -200,6 +159,21 @@ export default {
     window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
+    getNotifys() {
+      const docRef = collection(db, "MEMBERS", auth.currentUser.uid, "NOTIFY");
+      const q = query(docRef, where("status", "==", true));
+      const closeNotifys = onSnapshot(q, (res) => {
+        const notifys = [];
+        res.docs.forEach((doc) => {
+          notifys.push(doc.data());
+        });
+
+        this.$store.state.userNotifys = [...notifys];
+      });
+
+      this.$store.state.closeNotifys = closeNotifys;
+    },
+
     // 導覽列切換
     handleScroll() {
       const scrollPosition =
@@ -260,6 +234,11 @@ export default {
     clearUserData() {
       if (window.confirm("請問要登出帳號嗎？") == true) {
         try {
+          // 登出
+          signout();
+          this.$store.state.closeNotifys();
+          this.$store.state.userNotifys = null;
+
           // 清除 Vuex 中的會員狀態
           this.$store.commit("clearUserData");
 
@@ -268,6 +247,16 @@ export default {
         } catch (error) {
           console.error("登出時發生錯誤：", error);
         }
+      }
+    },
+
+    //創立球隊設權限
+    stopEnterTeam() {
+      if (this.$store.state.user.team_id) {
+        alert("親愛的球友，你已經創立了一個球隊，不能再創立別的球隊了喔！");
+        this.$router.push("/myplayerTeam"); // 重新導向別的頁面
+      } else {
+        this.$router.push("/MemberCenter-Createteam");
       }
     },
   },

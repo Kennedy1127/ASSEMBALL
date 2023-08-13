@@ -2,7 +2,9 @@
   <section class="MemberCenter_Createteam">
     <div class="wrapper">
       <div class="MemberCenter_Createteam_title">
-        <div class="block"><span>創立球隊</span></div>
+        <div class="block">
+          <span>創立球隊 <span>( 注意：一位會員只能創立一個球隊 )</span> </span>
+        </div>
       </div>
       <!-- //表單 -->
       <form
@@ -131,6 +133,7 @@ export default {
       ////////////////////
       roles,
       area,
+      pic: null,
     };
   },
 
@@ -157,6 +160,7 @@ export default {
 
     //圖片設定
     onfile(event) {
+      this.pic = event.target.files[0];
       this.file = event.target.files[0];
       let filereader = new FileReader();
       filereader.readAsDataURL(this.file);
@@ -184,9 +188,8 @@ export default {
         intro: this.CreateteamIntroduction,
         user_id: auth.currentUser.uid,
       };
-      console.log(data);
 
-      await setData("TEAMS", data);
+      await setData("TEAMS", data, [this.pic], "team-pic");
 
       // 檢查表單資料
       console.log("球隊名稱：", this.teamName);
@@ -258,6 +261,10 @@ export default {
       border-left: 1rem solid var(--primary-blue);
       & span {
         padding-left: 1.5rem;
+        span {
+          color: var(--accent-red);
+          font-size: 1.25rem;
+        }
       }
     }
   }
