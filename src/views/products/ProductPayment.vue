@@ -34,7 +34,7 @@
           </div>
           <div class="ProductPayment_form_item_price">NT${{ item.price }}</div>
           <div class="ProductPayment_form_item_date">
-            <span>購買日期：</span>{{ formatDate(item.date) }}
+            <span>購買日期：</span>{{ todayDate }}
           </div>
         </div>
         <div class="ProductPayment_form_title">
@@ -154,7 +154,7 @@ export default {
         // imgSrc: require("@/assets/images/products/ProductPayment_pic1.png"),
         name: productData.title,
         price: productData.price,
-        date: productData.date,
+        // date: new Date().toLocaleDateString(),
         seller: productData.seller_name,
       },
     ];
@@ -170,6 +170,7 @@ export default {
 
   data() {
     return {
+      todayDate: "",
       picSrc: "", //商品圖
       productData: [],
       ProductPaymentItems: [],
@@ -187,6 +188,10 @@ export default {
       ////////////////////
     };
   },
+
+  created() {
+    this.getTodayDate();
+  },
   //數字限制
   computed: {
     computedCommentLen() {
@@ -194,14 +199,23 @@ export default {
     },
   },
   methods: {
-    //轉日期
-    formatDate(timestamp) {
-      const date = new Date(timestamp.seconds * 1000); // 將秒數轉變為毫秒數
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1; // 月份從0開始，要加1
-      const day = date.getDate();
-      return `${year} / ${month} / ${day}`;
+    //生成今日日期
+    getTodayDate() {
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+      const day = ("0" + currentDate.getDate()).slice(-2);
+
+      this.todayDate = `${year} / ${month} / ${day}`;
     },
+    // //轉日期
+    // formatDate(timestamp) {
+    //   const date = new Date(timestamp.seconds * 1000); // 將秒數轉變為毫秒數
+    //   const year = date.getFullYear();
+    //   const month = date.getMonth() + 1; // 月份從0開始，要加1
+    //   const day = date.getDate();
+    //   return `${year} / ${month} / ${day}`;
+    // },
     //驗證
     validatePhone() {
       const phoneRegex = /^09\d{8}$/;
@@ -256,7 +270,7 @@ export default {
 
         // 購買的商品資料
         const data = {
-          date: this.ProductPaymentItems[0].date,
+          date: this.todayDate,
           name: this.ProductPaymentItems[0].name,
           price: this.ProductPaymentItems[0].price,
           seller: this.ProductPaymentItems[0].seller,
