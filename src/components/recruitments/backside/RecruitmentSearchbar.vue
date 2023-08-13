@@ -19,6 +19,7 @@ export default {
   props: {
     color: false,
   },
+
   components: {
     // RecruitmentSelect,
     RecruitmentSelector,
@@ -38,6 +39,7 @@ export default {
         role: this.role,
         area: this.area,
       };
+      console.log(role);
       this.$store.commit("selectCopywritingsSearch", searchObj);
     },
   },

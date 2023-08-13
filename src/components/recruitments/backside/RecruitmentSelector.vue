@@ -43,6 +43,11 @@ const areaData = ref(area);
 const items = computed(() => {
   return type === "role" ? [...rolesData.value] : [...areaData.value];
 });
+
+const emit = defineEmits(["update:modelValue"]);
+const onChange = (e) => {
+  emit("update:modelValue", e);
+};
 </script>
 
 <style lang="scss">
