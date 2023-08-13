@@ -83,6 +83,10 @@ export default createStore({
 
   getters: {
     //////////////////////////////////////////////////////
+    notifysUnRead(state) {
+      return state.userNotifys.filter((notify) => notify.read === false).length;
+    },
+
     // 使用者加入請求通知
     userNotifysJoin(state) {
       return state.userNotifys.filter((notify) => notify.type === 0);
