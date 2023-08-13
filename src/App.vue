@@ -38,7 +38,7 @@
   <!-- Loading 畫面 -->
   <LoadingComponent v-if="$store.state.isPending" />
   <!-- Go to Top 按鈕 -->
-  <GoToTop v-if="shouldShowGoToTop" />
+  <GoToTop v-if="ShowGoToTop" />
 </template>
 
 <style>
@@ -104,8 +104,13 @@ export default {
 
       return !pagesWithoutHeaderLight.includes(this.$route.name);
     },
-    shouldShowGoToTop() {
-      const pagesWithoutGoToTop = ["HomeLoading", "Backstage", "test"];
+    ShowGoToTop() {
+      const pagesWithoutGoToTop = [
+        "HomeLoading",
+        "test",
+        "Backstage",
+        "BackstageLogin",
+      ];
 
       return !pagesWithoutGoToTop.includes(this.$route.name);
     },

@@ -1,7 +1,9 @@
 <template>
   <div
     class="myplayer_photo"
-    :style="{ backgroundImage: 'url(' + currentPhoto.img + ')' }"
+    :style="{
+      backgroundImage: 'url(' + computedPic + ')',
+    }"
   >
     <div class="myplayer_photo_rightArrow" @click="nextPhoto">
       <font-awesome-icon :icon="['fas', 'arrow-right']" />
@@ -15,38 +17,17 @@
 export default {
   props: ["sendPic", "curIndex"],
   emits: ["goToRight", "goToLeft"],
-  data() {
-    return {
-      photos: [
-        {
-          img: require("/src/assets/images/myplayer_team/myplayerGallery/myAlbum_1.jpg"),
-        },
-        {
-          img: require("/src/assets/images/myplayer_team/myplayerGallery/myAlbum_2.jpg"),
-        },
-        {
-          img: require("/src/assets/images/myplayer_team/myplayerGallery/myAlbum_3.jpg"),
-        },
-      ],
-      currentPhotoIndex: 0,
-    };
-  },
+
   computed: {
-    currentPhoto() {
-      return this.photos[this.currentPhotoIndex];
+    computedPic() {
+      return this.$props.sendPic;
     },
   },
   methods: {
     nextPhoto() {
-      if (this.currentPhotoIndex < this.photos.length - 1) {
-        this.currentPhotoIndex++;
-      }
       this.$emit("goToRight");
     },
     prevPhoto() {
-      if (this.currentPhotoIndex > 0) {
-        this.currentPhotoIndex--;
-      }
       this.$emit("goToLeft");
     },
   },
@@ -57,6 +38,7 @@ export default {
   width: 800px;
   height: 600px;
   margin: auto;
+  background-color: var(--pale-white);
   position: relative;
   top: calc(50% - 300px);
   background-repeat: no-repeat;

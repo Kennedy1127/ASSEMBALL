@@ -26,7 +26,9 @@
           </div>
         </div>
         <div class="myplayer_message_area_more_wrap">
-          <div class="myplayer_message_area_day">{{ item.postdate }}</div>
+          <div class="myplayer_message_area_day">
+            {{ item.postdate }}
+          </div>
           <div
             class="myplayer_message_area_more"
             @click="myplayer_message_more_btn(item)"
@@ -63,11 +65,31 @@
   </section>
 </template>
 <script>
+import useStorage from "@/composables/data/useStorage";
+import getData from "@/composables/data/getData";
+const { getSubCollectionDocuments } = getData();
+const { getPicsLink } = useStorage();
 export default {
   async mounted() {
-    const allData = await this.$store.dispatch("getMyplayerTeam");
-    // console.log(allData);
-    this.myplayer_message_card = allData.teamPostData;
+    const res = await getSubCollectionDocuments({
+      collectionName: "TEAMS",
+      documentId: "5KhosRZOJ7TmLfECUb5D",
+      subCollectionName: "POST",
+    });
+
+    console.log(res);
+
+    this.myplayer_message_card = [...res];
+
+    // for (let i = 0; i < res.length; i++) {
+    //   const pics = await getPicsLink(
+    //     2,
+    //     `images/TEAMS/${"5KhosRZOJ7TmLfECUb5D"}/POST/${res[i].id}`,
+    //     "avatarPic"
+    //   );
+
+    //   res[i].pics = pics;
+    // }
 
     const options = { year: "numeric", month: "numeric", day: "numeric" };
     for (const item of this.myplayer_message_card) {
@@ -221,7 +243,14 @@ export default {
           background-color: var(--primary-blue);
           border-radius: 2rem;
           padding: 1rem 1.5rem;
+          border: 1px solid transparent;
           cursor: pointer;
+          transition: 0.3s;
+          &:hover {
+            transition: 0.3s;
+            opacity: 0.8;
+            border: 1px solid var(--primary-blue);
+          }
         }
         .myplayer_message_more {
           font-weight: 600;

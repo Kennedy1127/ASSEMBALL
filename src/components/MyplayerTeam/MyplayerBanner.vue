@@ -6,9 +6,6 @@
         <h2>
           {{ $store.state.myplayerTeam.intro }}
         </h2>
-        <div class="myplayer_banner_text_edit" ref="myPlayer_Banner_Edit">
-          <font-awesome-icon :icon="['fas', 'pen']" />
-        </div>
       </section>
     </header>
   </main>
@@ -49,18 +46,7 @@
       background-repeat: no-repeat;
       background-size: cover;
       background-image: url(~@/assets/images/myplayer_team/myplayer_text_bgc.jpg);
-      &_edit {
-        font-size: 2rem;
-        padding: 0.5rem 1rem;
-        border-radius: 50%;
-        color: var(--primary-blue);
-        background-color: var(--pale-white);
-        position: absolute;
-        z-index: 999;
-        bottom: 0.5rem;
-        right: 0.5rem;
-        cursor: pointer;
-      }
+
       h2 {
         color: var(--pale-white);
         font-size: 1.5rem;

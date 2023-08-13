@@ -32,9 +32,9 @@
           <div class="ProductPayment_form_item_name">
             {{ item.name }}
           </div>
-          <div class="ProductPayment_form_item_price">{{ item.price }}</div>
+          <div class="ProductPayment_form_item_price">NT${{ item.price }}</div>
           <div class="ProductPayment_form_item_date">
-            <span>購買日期：</span>{{ formatDate(item.date) }}
+            <span>購買日期：</span>{{ todayDate }}
           </div>
         </div>
         <div class="ProductPayment_form_title">
@@ -136,10 +136,12 @@
 <script>
 import getData from "@/composables/data/getData";
 import useStorage from "@/composables/data/useStorage";
-import { useRoute, useRouter } from "vue-router";
+import useData from "@/composables/data/useData";
 
-// const route = useRoute();
 const { getDocument, getDocuments, getSubCollectionDocuments } = getData();
+
+const { setData, updateData, setDataSubCollection, updateDataSubCollection } =
+  useData();
 /////////////////////////
 
 export default {
@@ -152,7 +154,8 @@ export default {
         // imgSrc: require("@/assets/images/products/ProductPayment_pic1.png"),
         name: productData.title,
         price: productData.price,
-        date: productData.date,
+        // date: new Date().toLocaleDateString(),
+        seller: productData.seller_name,
       },
     ];
 
@@ -167,6 +170,7 @@ export default {
 
   data() {
     return {
+      todayDate: "",
       picSrc: "", //商品圖
       productData: [],
       ProductPaymentItems: [],
@@ -184,6 +188,10 @@ export default {
       ////////////////////
     };
   },
+
+  created() {
+    this.getTodayDate();
+  },
   //數字限制
   computed: {
     computedCommentLen() {
@@ -191,14 +199,23 @@ export default {
     },
   },
   methods: {
-    //轉日期
-    formatDate(timestamp) {
-      const date = new Date(timestamp.seconds * 1000); // 將秒數轉變為毫秒數
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1; // 月份從0開始，要加1
-      const day = date.getDate();
-      return `${year} / ${month} / ${day}`;
+    //生成今日日期
+    getTodayDate() {
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+      const day = ("0" + currentDate.getDate()).slice(-2);
+
+      this.todayDate = `${year} / ${month} / ${day}`;
     },
+    // //轉日期
+    // formatDate(timestamp) {
+    //   const date = new Date(timestamp.seconds * 1000); // 將秒數轉變為毫秒數
+    //   const year = date.getFullYear();
+    //   const month = date.getMonth() + 1; // 月份從0開始，要加1
+    //   const day = date.getDate();
+    //   return `${year} / ${month} / ${day}`;
+    // },
     //驗證
     validatePhone() {
       const phoneRegex = /^09\d{8}$/;
@@ -216,8 +233,9 @@ export default {
       const cvvRegex = /^\d{3}$/;
       this.isCVVValid = cvvRegex.test(this.creditCardCVV);
     },
+
     //提交表單
-    submitForm() {
+    async submitForm() {
       this.PhoneError = "";
       this.CardError = "";
       this.DateError = "";
@@ -249,12 +267,38 @@ export default {
         }
       } else {
         alert("付款資料提交成功！");
-        // 表單資料確認
-        console.log("手機號碼：", this.phone);
-        console.log("收件地址：", this.address);
-        console.log("信用卡號：", this.creditCardNumber);
-        console.log("到期日：", this.creditCardDate);
-        console.log("CVV：", this.creditCardCVV);
+
+        // 購買的商品資料
+        const data = {
+          date: this.todayDate,
+          name: this.ProductPaymentItems[0].name,
+          price: this.ProductPaymentItems[0].price,
+          seller: this.ProductPaymentItems[0].seller,
+          buyerPhone: this.phone,
+          buyerAddress: this.address,
+          buyerCreditCardNumber: this.creditCardNumber,
+          buyerCreditCardDate: this.creditCardDate,
+          buyerCreditCardCVV: this.creditCardCVV,
+        };
+
+        console.log(data);
+
+        //上傳購買的商品資料
+        await setDataSubCollection(
+          {
+            collectionName: "MEMBERS",
+            documentId: this.$store.state.user.id,
+            subCollectionName: "PRODUCTMANAGE",
+          },
+          data
+        );
+
+        // // 表單資料確認
+        // console.log("手機號碼：", this.phone);
+        // console.log("收件地址：", this.address);
+        // console.log("信用卡號：", this.creditCardNumber);
+        // console.log("到期日：", this.creditCardDate);
+        // console.log("CVV：", this.creditCardCVV);
 
         //提交後重置表單資料
         this.phone = "";
@@ -389,7 +433,7 @@ export default {
         color: var(--accent-red);
       }
       &_date {
-        padding-right: 4rem;
+        padding-right: 5rem;
         @media all and (max-width: 420px) {
           padding-right: 0rem;
         }
