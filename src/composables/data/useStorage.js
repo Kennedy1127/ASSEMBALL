@@ -77,7 +77,29 @@ const useStorage = () => {
     }
   };
 
-  return { setPics, getPics, getPicsLink };
+  const getAllPics = async (path) => {
+    const storage = getStorage();
+    const storageRef = ref(storage, path);
+    const res = await listAll(storageRef);
+
+    const urls = [];
+
+    for (let i = 0; i < res.items.length; i++) {
+      const pic = await getDownloadURL(res.items[i]);
+      urls.push(pic);
+    }
+
+    // res.items.forEach(async (el) => {
+    //   const pic = await getDownloadURL(el);
+    //   console.log(pic);
+
+    //   urls.push(pic);
+    // });
+
+    return urls;
+  };
+
+  return { setPics, getPics, getPicsLink, getAllPics, uploadPic };
 };
 
 export default useStorage;

@@ -70,6 +70,7 @@ export default createStore({
     myplayerEditOpen: false,
     myplayerOverlay: true,
     myplayerTeam: {},
+    myplayerRaceList: [],
 
     //////////////////////////////////////////////////////
     // 頁碼區塊
