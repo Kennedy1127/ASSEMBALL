@@ -3,8 +3,11 @@
     <div class="MemberCenter_member">
       <img
         class="MemberCenter_member_pic"
-        :src="MemberCenterMember.imgSrc"
-        :alt="MemberCenter_member_pic"
+        :src="
+          MemberCenterMember.imgSrc ||
+          require('@/assets/images/icons/main-icon.png')
+        "
+        alt="MemberCenter_member_pic"
       />
       <div class="MemberCenter_member_name">{{ dynamicTitle }}</div>
     </div>
@@ -79,7 +82,7 @@ export default {
   data() {
     return {
       MemberCenterMember: {
-        imgSrc: this.$store.state.user.pic,
+        imgSrc: this.$store.state.user.picUrls[0],
         // title: this.$store.state.user.firstname,
       },
     };

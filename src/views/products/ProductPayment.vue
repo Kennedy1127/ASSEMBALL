@@ -25,14 +25,16 @@
         </div>
         <div
           class="ProductPayment_form_item"
-          v-for="item in ProductPaymentItem"
-          :key="item.Payment"
+          v-for="item in ProductPaymentItems"
+          :key="item.id"
         >
-          <img :src="item.imgSrc" :alt="ProductPayment_form_item_pic" />
-          <div class="ProductPayment_form_item_name">{{ item.name }}</div>
+          <img :src="picSrc" :alt="ProductPayment_form_item_pic" />
+          <div class="ProductPayment_form_item_name">
+            {{ item.name }}
+          </div>
           <div class="ProductPayment_form_item_price">{{ item.price }}</div>
           <div class="ProductPayment_form_item_date">
-            <span>購買日期：</span>{{ item.date }}
+            <span>購買日期：</span>{{ formatDate(item.date) }}
           </div>
         </div>
         <div class="ProductPayment_form_title">
@@ -133,20 +135,41 @@
 
 <script>
 import getData from "@/composables/data/getData";
+import useStorage from "@/composables/data/useStorage";
+import { useRoute, useRouter } from "vue-router";
+
+// const route = useRoute();
 const { getDocument, getDocuments, getSubCollectionDocuments } = getData();
 /////////////////////////
 
 export default {
   //抓產品資料
   async mounted() {
-    const productsDate = await getDocuments("PRODUCTS", [
-      ["status", "==", true],
-    ]);
-    console.log(productsDate);
+    const productData = await getDocument("PRODUCTS", this.$route.query.id);
+    console.log(productData);
+    this.ProductPaymentItems = [
+      {
+        // imgSrc: require("@/assets/images/products/ProductPayment_pic1.png"),
+        name: productData.title,
+        price: productData.price,
+        date: productData.date,
+      },
+    ];
+
+    const { getPicsLink } = useStorage();
+    const res = await getPicsLink(
+      1,
+      `images/PRODUCTS/${this.$route.query.id}`,
+      "product"
+    );
+    this.picSrc = res[0];
   },
 
   data() {
     return {
+      picSrc: "", //商品圖
+      productData: [],
+      ProductPaymentItems: [],
       // 表單資料
       phone: "",
       address: "",
@@ -159,14 +182,6 @@ export default {
       DateError: "",
       CVVError: "",
       ////////////////////
-      ProductPaymentItem: [
-        {
-          imgSrc: require("@/assets/images/products/ProductPayment_pic1.png"),
-          name: "酷炫手套",
-          price: "$4,500",
-          date: "2023 / 05 / 17",
-        },
-      ],
     };
   },
   //數字限制
@@ -176,6 +191,14 @@ export default {
     },
   },
   methods: {
+    //轉日期
+    formatDate(timestamp) {
+      const date = new Date(timestamp.seconds * 1000); // 將秒數轉變為毫秒數
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1; // 月份從0開始，要加1
+      const day = date.getDate();
+      return `${year} / ${month} / ${day}`;
+    },
     //驗證
     validatePhone() {
       const phoneRegex = /^09\d{8}$/;

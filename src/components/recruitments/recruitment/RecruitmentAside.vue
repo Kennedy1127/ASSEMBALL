@@ -111,6 +111,10 @@ onMounted(async () => {
   selectedExp.value = [...store.state.selectedCopywritingsExp];
   selectedDate.value = store.state.selectedCopywritingsDate;
 
+  if (!auth.currentUser) {
+    return;
+  }
+
   const res = await getDocuments("TEAMS", [
     ["user_id", "==", auth.currentUser?.uid],
   ]);

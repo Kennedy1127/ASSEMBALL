@@ -25,7 +25,7 @@
     @return_page="returnPage"
   />
 
-  <!-- 會員中心頁面 & 登出按鈕事件 & 創立球隊頁面設權限-->
+  <!-- 會員中心頁面 & 登出按鈕事件 & 創立球隊設權限-->
   <MemberCenter
     v-if="$store.state.isMemberVisible"
     @enter_personal="enterPersonal"
@@ -78,8 +78,13 @@ import MemberPersonal from "@/components/MemberCenter/MemberPersonal";
 import MainFooter from "@/components/MainFooter.vue";
 import LoadingComponent from "@/components/utilities/LoadingComponent.vue";
 import GoToTop from "@/components/GoToTop.vue";
-import { auth } from "@/firebase/config";
 import getData from "@/composables/data/getData";
+import useSignout from "@/composables/authentication/useSignout";
+import { auth } from "@/firebase/config";
+import { db } from "@/firebase/config";
+import { onSnapshot, collection, query, where } from "firebase/firestore";
+
+const { signout } = useSignout();
 
 export default {
   computed: {
@@ -111,67 +116,7 @@ export default {
     },
   },
   async beforeMount() {
-    const {
-      getUser,
-      getDocument,
-      getDocuments,
-      getSubCollectionDocument,
-      getSubCollectionDocuments,
-    } = getData();
-    // const testA = await getDocument("COPYWRITINGS", "UFX8L9SRpSRjXzgCwxHk");
-    // const testB = await getDocuments("COPYWRITINGS");
-    // console.log(testA);
-    // console.log(testB);
-
-    const testA = await getDocument("TEAMS", "5KhosRZOJ7TmLfECUb5D");
-    const testB = await getDocuments("TEAMS");
-    console.log(testA);
-    console.log(testB);
-
-    //----
-    // const testSherry = await getDocuments("APPLYS");
-    // console.log(testSherry);
-
-    // const testC = await getSubCollectionDocument({
-    //   collectionName: "TEAMS",
-    //   documentId: "5KhosRZOJ7TmLfECUb5D",
-    //   subCollectionName: "POST",
-    //   subDocumentId: "Uud9BbmACZksHOBQeFC0",
-    // });
-    // const testD = await getSubCollectionDocuments({
-    //   collectionName: "TEAMS",
-    //   documentId: "5KhosRZOJ7TmLfECUb5D",
-    //   subCollectionName: "PIC",
-    // ----
-    // const testSherry = await getDocuments("APPLYS");
-    // console.log(testSherry);
-
-    // const testC = await getSubCollectionDocument({
-    //   collectionName: "PRODUCTS",
-    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
-    //   subCollectionName: "COMMENTS",
-    //   subDocumentId: "n8w5wpDDeGWujr8Aq8Kp",
-    // });
-    // const testD = await getSubCollectionDocuments({
-    //   collectionName: "PRODUCTS",
-    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
-    //   subCollectionName: "COMMENTS",
-    // });
-    // console.log(testC);
-    // console.log(testD);
-    // const testC = await getSubCollectionDocument({
-    //   collectionName: "PRODUCTS",
-    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
-    //   subCollectionName: "COMMENTS",
-    //   subDocumentId: "n8w5wpDDeGWujr8Aq8Kp",
-    // });
-    // const testD = await getSubCollectionDocuments({
-    //   collectionName: "PRODUCTS",
-    //   documentId: "VHKTJGsrIOYXBTBxFR7e",
-    //   subCollectionName: "COMMENTS",
-    // });
-    // console.log(testC);
-    // console.log(testD);
+    const { getUser } = getData();
 
     // 確認是不是手機使用
     if (window.innerWidth <= 420) {
@@ -181,9 +126,8 @@ export default {
     // 確認使用者登入狀態
     if (auth.currentUser && !this.$store.state.isLoggedIn) {
       this.$store.state.isLoggedIn = true;
-      if (!this.$store.state.user) {
-        this.$store.state.user = await getUser();
-      }
+      this.$store.state.user = await getUser();
+      this.getNotifys();
     }
   },
 
@@ -215,6 +159,21 @@ export default {
     window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
+    getNotifys() {
+      const docRef = collection(db, "MEMBERS", auth.currentUser.uid, "NOTIFY");
+      const q = query(docRef, where("status", "==", true));
+      const closeNotifys = onSnapshot(q, (res) => {
+        const notifys = [];
+        res.docs.forEach((doc) => {
+          notifys.push(doc.data());
+        });
+
+        this.$store.state.userNotifys = [...notifys];
+      });
+
+      this.$store.state.closeNotifys = closeNotifys;
+    },
+
     // 導覽列切換
     handleScroll() {
       const scrollPosition =
@@ -275,6 +234,11 @@ export default {
     clearUserData() {
       if (window.confirm("請問要登出帳號嗎？") == true) {
         try {
+          // 登出
+          signout();
+          this.$store.state.closeNotifys();
+          this.$store.state.userNotifys = null;
+
           // 清除 Vuex 中的會員狀態
           this.$store.commit("clearUserData");
 

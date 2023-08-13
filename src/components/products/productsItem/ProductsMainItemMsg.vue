@@ -20,7 +20,7 @@
           />
           <img
             class="product_message_area_all_pic_user"
-            :src="require('@/assets/images/icons/main-icon.png')"
+            :src="item.pic || require('@/assets/images/icons/main-icon.png')"
             alt="message_pic01"
           />
         </div>
@@ -77,10 +77,13 @@
       </div>
     </div>
 
-    <div class="product_message_importing">
+    <div class="product_message_importing" ref="submitCommentEl">
       <div class="product_message_importing_user_pic">
         <img
-          :src="require('@/assets/images/icons/main-icon.png')"
+          :src="
+            store.state.user?.picUrls[0] ||
+            require('@/assets/images/icons/main-icon.png')
+          "
           alt="importing_pic"
         />
       </div>
@@ -132,6 +135,7 @@
 import { timestamp, auth } from "@/firebase/config";
 import getData from "@/composables/data/getData";
 import useData from "@/composables/data/useData";
+import useStorage from "@/composables/data/useStorage";
 import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -145,16 +149,27 @@ const props = defineProps({
     required: true,
   },
 });
-const { getDocument } = getData();
+const { getDocument, getSubCollectionDocuments } = getData();
 const { setDataSubCollection, updateDataSubCollection } = useData();
+const { getPicsLink } = useStorage();
 
 onMounted(() => {
   props.productMsgData.comments.forEach(async (comment) => {
     const user = await getDocument("MEMBERS", comment.user_id);
     comment.name = user.lastname + user.firstname;
+    const pic = await getPicsLink(
+      1,
+      `images/MEMBERS/${comment.user_id}`,
+      "member"
+    );
+
+    if (pic) {
+      comment.pic = pic;
+    }
   });
 });
 
+const submitCommentEl = ref();
 const inputComment = ref("");
 const error = ref(null);
 const computedInputCommentLen = computed(() => inputComment.value.length);
@@ -199,12 +214,31 @@ const submitComment = async () => {
   };
 
   await setDataSubCollection(productTarget, subCollectionData);
-  comments.value.push(subCollectionData);
 
-  const selectedComments = store.state.products.find(
-    (product) => product.id === route.params.productId
-  ).comments;
-  selectedComments.push(subCollectionData);
+  const newComments = await getSubCollectionDocuments(
+    {
+      collectionName: "PRODUCTS",
+      documentId: route.params.productId,
+      subCollectionName: "COMMENTS",
+    },
+    [],
+    ["date"]
+  );
+
+  for (let i = 0; i < newComments.length; i++) {
+    const pic = await getPicsLink(
+      1,
+      `images/MEMBERS/${newComments[i].user_id}`,
+      "member"
+    );
+
+    if (pic) {
+      newComments[i].pic = pic;
+    }
+  }
+
+  comments.value = [...newComments];
+  submitCommentEl.value.scrollIntoView();
 
   store.state.isPending = false;
   inputComment.value = "";
