@@ -74,12 +74,12 @@ const computedRenderManageCopywritings = computed(() => {
     ? store.state.curPage * 4
     : store.state.curPage * 5;
 
-  return store.state.ManageCopywritings.slice(start, end);
+  return store.getters.renderManageCopywritings.slice(start, end);
 });
 const computedTotalPages = computed(() => {
   // 計算總頁數
-  if (store.state.ManageCopywritings.length === 0) return 1;
-  const len = store.state.ManageCopywritings.length; //state :return的東西
+  if (store.getters.renderManageCopywritings.length === 0) return 1;
+  const len = store.getters.renderManageCopywritings.length; //state :return的東西
   return store.state.isMobile
     ? len % 4 === 0 // 手機
       ? len > 4
