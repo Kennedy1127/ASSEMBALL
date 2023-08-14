@@ -45,7 +45,10 @@
       <div class="copywriting_header_team">
         <div class="copywriting_header_team_icon">
           <img
-            src="~@/assets/images/recruitment/team-icons/team-icon-1-lg.png"
+            :src="
+              copywriting.team_pic ||
+              require('@/assets/images/recruitment/team-icons/team-icon-1-lg.png')
+            "
             alt="team icon"
           />
         </div>
@@ -122,6 +125,7 @@ import roles from "@/composables/tables/roles";
 import exps from "@/composables/tables/exps";
 import roleDesc from "@/composables/tables/roleDesc";
 import getData from "@/composables/data/getData";
+import useStorage from "@/composables/data/useStorage";
 import CopywritingSubmitApply from "@/components/recruitments/copywriting/CopywritingSubmitApply.vue";
 import CopywritingSwiper from "@/components/recruitments/copywriting/CopywritingSwiper.vue";
 import { watchEffect, ref } from "vue";
@@ -132,6 +136,7 @@ const store = useStore();
 const route = useRoute();
 const router = useRouter();
 const { getDocument } = getData();
+const { getPicsLink } = useStorage();
 
 watchEffect(async () => {
   store.state.isPending = true;
@@ -143,11 +148,17 @@ watchEffect(async () => {
     }
 
     const team = await getDocument("TEAMS", res.team_id);
+    const pics = await getPicsLink(
+      1,
+      `images/TEAMS/${res.team_id}`,
+      "team-pic"
+    );
 
     copywriting.value = {
       ...res,
       team_name: team.teamName,
       team_intro: team.intro,
+      team_pic: pics ? pics[0] : null,
     };
   }
 

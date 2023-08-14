@@ -437,11 +437,6 @@ const handleSubmit = async () => {
           }
         }
       }
-
-      // div:first-of-type {
-      //   padding: 0.5rem 1rem;
-
-      // }
     }
     textarea {
       width: 100%;
@@ -518,6 +513,9 @@ const handleSubmit = async () => {
         width: 100%;
         margin-bottom: 0;
       }
+      &_error {
+        top: 9rem;
+      }
     }
     &_label {
       &_title {
@@ -534,7 +532,6 @@ const handleSubmit = async () => {
       display: block;
       button {
         width: 100%;
-        // !important
       }
       & button:nth-child(2) {
         margin: 1.25rem 0;
@@ -543,30 +540,3 @@ const handleSubmit = async () => {
   }
 }
 </style>
-<!-- &_select {
-        width: 30%;
-        .selector-component {
-          width: 100%;
-          height: 50px;
-
-          .ivu-select-selection {
-            border: 2px solid var(--secondary-blue-1);
-
-            color: (--secondary-blue-1);
-
-            .ivu-select-placeholder {
-              color: var(--secondary-blue-1);
-            }
-
-            div:first-of-type {
-              padding: 0.5rem 1rem;
-
-              i {
-                &::before {
-                  color: var(--secondary-blue-1);
-                }
-              }
-            }
-          }
-        }
-      } -->

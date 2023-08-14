@@ -88,21 +88,41 @@ export default createStore({
   getters: {
     //////////////////////////////////////////////////////
     notifysUnRead(state) {
+      if (!state.isLoggedIn) {
+        state.userNotifys = [];
+        return null;
+      }
+
       return state.userNotifys.filter((notify) => notify.read === false).length;
     },
 
     // 使用者加入請求通知
     userNotifysJoin(state) {
+      if (!state.isLoggedIn) {
+        state.userNotifys = [];
+        return [];
+      }
+
       return state.userNotifys.filter((notify) => notify.type === 0);
     },
 
     // 使用者訂單通知
     userNotifysOrder(state) {
+      if (!state.isLoggedIn) {
+        state.userNotifys = [];
+        return [];
+      }
+
       return state.userNotifys.filter((notify) => notify.type === 1);
     },
 
     // 使用者邀請加入通知
     userNotifysTeam(state) {
+      if (!state.isLoggedIn) {
+        state.userNotifys = [];
+        return [];
+      }
+
       const userNotifys = state.userNotifys.filter(
         (notify) => notify.type === 2
       );
@@ -193,29 +213,29 @@ export default createStore({
     //////////////////////////////////////////////////////
     // 招募文案區塊
     // 招募初心者數量
-    inexperencedCount(state) {
-      return state.copywritings.filter(
+    inexperencedCount(state, getters) {
+      return getters.filteredCopywritings.filter(
         (copywriting) => Number(copywriting.exp) === 0
       ).length;
     },
 
     // 招募新手數量
-    entryCount(state) {
-      return state.copywritings.filter(
+    entryCount(state, getters) {
+      return getters.filteredCopywritings.filter(
         (copywriting) => Number(copywriting.exp) === 1
       ).length;
     },
 
     // 招募老手數量
-    intermediateCount(state) {
-      return state.copywritings.filter(
+    intermediateCount(state, getters) {
+      return getters.filteredCopywritings.filter(
         (copywriting) => Number(copywriting.exp) === 2
       ).length;
     },
 
     // 經歷不拘數量
-    freeCount(state) {
-      return state.copywritings.filter(
+    freeCount(state, getters) {
+      return getters.filteredCopywritings.filter(
         (copywriting) => Number(copywriting.exp) === 3
       ).length;
     },

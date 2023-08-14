@@ -90,7 +90,6 @@
 
 <script setup>
 import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
-import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
 import getData from "@/composables/data/getData";
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
@@ -177,10 +176,7 @@ updateData;
 .recruitment_post {
   margin-top: 6rem;
   display: flex;
-  &_aside {
-    // TODO:在思考要不要把側邊欄拿掉(設計圖原本有)
-    display: none;
-  }
+
   &_breadcrumb {
     margin-bottom: 4rem;
     display: flex;
@@ -334,10 +330,7 @@ updateData;
   .recruitment_post {
     display: block;
     margin: 0;
-    &_aside {
-      // TODO:在思考要不要把側邊欄拿掉(設計圖原本有)
-      display: none;
-    }
+
     &_breadcrumb {
       display: none;
     }
