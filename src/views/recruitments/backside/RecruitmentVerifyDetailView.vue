@@ -94,7 +94,7 @@ import RecruitmentPostAside from "@/components/recruitments/backside/Recruitment
 import getData from "@/composables/data/getData";
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import useData from "@/composables/data/useData";
 
 const { getDocument } = getData();
@@ -103,6 +103,7 @@ const { updateData } = useData();
 const title = ref("審核應徵");
 const store = useStore();
 const route = useRoute();
+const router = useRouter();
 // const computedRenderApply = ref([]);
 onMounted(async () => {
   const data = store.state.ApplyRecords.find(
@@ -153,18 +154,20 @@ const getlevelLabel = (exp) => {
 const verifyPassStatus = () => {
   updateData(
     { collectionName: "APPLYS", documentId: applyData.value.id },
-    { status: 2 }
+    { status: 1 }
   );
-  console.log("pass");
+  alert("已同意應徵者加入!");
+  router.push({ name: "recruitmentVerify" });
 };
 
 // 拒絕應徵者加入
 const verifyDeclineStatus = () => {
   updateData(
     { collectionName: "APPLYS", documentId: applyData.value.id },
-    { status: 1 }
+    { status: -1 }
   );
-  console.log("bye");
+  alert("已拒絕應徵者加入!");
+  router.push({ name: "recruitmentVerify" });
 };
 
 updateData;

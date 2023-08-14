@@ -171,7 +171,7 @@ import { icon } from "@fortawesome/fontawesome-svg-core";
 export default {
   data() {
     return {
-      statusColor: ["yellow", "red", "green"],
+      statusColor: ["yellow", "orange", "green"],
 
       recruitPosts: [
         {
@@ -341,8 +341,8 @@ export default {
       &.yellow {
         background-color: yellow;
       }
-      &.red {
-        background-color: red;
+      &.orange {
+        background-color: var(--error-yellow);
       }
       &.green {
         background-color: green;

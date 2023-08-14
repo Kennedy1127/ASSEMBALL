@@ -180,6 +180,16 @@ export default createStore({
       );
     },
 
+    // 已-審核應徵者
+    VerifyApplyRecords(state) {
+      return state.ApplyRecords.filter((apply) => apply.status === 2);
+    },
+    // 尚未-審核應徵者
+    unVerifyApplyRecords(state) {
+      return state.ApplyRecords.filter(
+        (apply) => apply.status === 0 || apply.status === 1
+      );
+    },
     //////////////////////////////////////////////////////
     // 招募文案區塊
     // 招募初心者數量
