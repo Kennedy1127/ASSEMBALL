@@ -53,7 +53,7 @@
       <tbody>
         <tr v-for="item in $props.tableData" :key="item.id">
           <td
-            :class="convertStatusColor()"
+            :class="convertStatusColor(item.status)"
             v-if="title === '審核應徵' || title === '記錄管理'"
           ></td>
           <td v-if="title === '管理職缺' || title === '審核應徵'">
@@ -215,14 +215,9 @@ export default {
           iconTrashCan: "fa-solid fa-trash-can",
         },
       ],
-      // role: [],
     };
   },
   props: {
-    status: {
-      type: Number,
-      default: 0,
-    },
     tableData: {
       type: Array,
       default: [
@@ -276,8 +271,8 @@ export default {
     },
   },
   methods: {
-    convertStatusColor() {
-      return { [this.statusColor[this.$props.status]]: true };
+    convertStatusColor(status) {
+      return { [this.statusColor[status]]: true };
     },
     convertDate(inputDate) {
       const date = new Date(inputDate);
@@ -309,25 +304,6 @@ export default {
       const roleObject = roles.find((roleValue) => roleValue.value === role);
       return roleObject ? roleObject.label : "";
     },
-  },
-  computed: {
-    // getRoleLabel() {
-    //   const roles = [
-    //     { value: 0, label: "投手" },
-    //     { value: 1, label: "捕手" },
-    //     { value: 2, label: "一壘手" },
-    //     { value: 3, label: "二壘手" },
-    //     { value: 4, label: "游擊手" },
-    //     { value: 5, label: "三壘手" },
-    //     { value: 6, label: "左外野手" },
-    //     { value: 7, label: "中外野手" },
-    //     { value: 8, label: "右外野手" },
-    //   ];
-    //   return (roleValue) => {
-    //     const roleObject = roles.find((role) => role.value === role);
-    //     return roleObject ? roleObject.label : "";
-    //   };
-    // },
   },
 };
 </script>

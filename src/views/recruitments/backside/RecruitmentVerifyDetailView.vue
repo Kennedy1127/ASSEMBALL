@@ -95,7 +95,10 @@ import getData from "@/composables/data/getData";
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
+import useData from "@/composables/data/useData";
+
 const { getDocument } = getData();
+const { updateData } = useData();
 
 const title = ref("審核應徵");
 const store = useStore();
@@ -146,13 +149,25 @@ const getlevelLabel = (exp) => {
   return levelObject ? levelObject.label : "";
 };
 
+// 同意應徵者加入
 const verifyPassStatus = () => {
+  updateData(
+    { collectionName: "APPLYS", documentId: applyData.value.id },
+    { status: 2 }
+  );
   console.log("pass");
 };
 
+// 拒絕應徵者加入
 const verifyDeclineStatus = () => {
+  updateData(
+    { collectionName: "APPLYS", documentId: applyData.value.id },
+    { status: 1 }
+  );
   console.log("bye");
 };
+
+updateData;
 </script>
 
 <style lang="scss">
