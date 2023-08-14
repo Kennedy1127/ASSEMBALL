@@ -44,14 +44,30 @@ import RecruitmentNoResults from "@/components/recruitments/recruitment/Recruitm
 import RecruitmentAside from "@/components/recruitments/recruitment/RecruitmentAside.vue";
 import RecruitmentMobileButtons from "@/components/recruitments/recruitment/RecruitmentMobileButtons.vue";
 import RecruitmentSwiper from "@/components/recruitments/recruitment/RecruitmentSwiper.vue";
+import useStorage from "@/composables/data/useStorage";
 import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
+const { getPicsLink } = useStorage();
 
 onMounted(async () => {
   store.state.isPending = true;
   await store.dispatch("getCopywritings");
+
+  for (let i = 0; i < store.state.copywritings.length; i++) {
+    const res = await getPicsLink(
+      1,
+      `images/TEAMS/${store.state.copywritings[i].team_id}`,
+      "team-pic"
+    );
+
+    if (!res) {
+      continue;
+    }
+    store.state.copywritings[i].pic = res[0];
+  }
+
   store.state.isPending = false;
 });
 
