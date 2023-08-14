@@ -24,10 +24,7 @@
         <div class="block"></div>
         <div style="font-weight: 600">審核應徵</div>
       </div>
-      <div class="recruitment_post_main_filter">
-        <!--RecruitmentSearchbar.vue  -->
-        <RecruitmentSearchbar />
-      </div>
+
       <div class="recruitment_post_main_table">
         <RecruitmentTable
           :tableData="computedRendergetApplyRecords"

@@ -75,14 +75,15 @@ export default {
   padding: 1rem;
 
   .side_list {
-    width: 115px;
-    height: 42px;
+    width: 150px;
+    height: 60px;
+    font-size: 1.25rem;
     background-color: var(--secondary-blue-2);
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 8px;
-    font-size: 1rem;
+   
     margin-top: 3rem;
     margin-bottom: 3rem;
   }

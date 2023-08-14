@@ -1,20 +1,58 @@
 <template>
-  <div @click="goToTop" class="goToTop">
-    <font-awesome-icon icon="fa-solid fa-angle-up" />
-  </div>
+  <transition name="fade" mode="out-in">
+    <div @click="scrollToTop" v-if="showBackToTopButton" class="fade-button">
+      <font-awesome-icon icon="fa-solid fa-angle-up" />
+    </div>
+  </transition>
 </template>
 
-<script setup>
-const goToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
+<script>
+export default {
+  data() {
+    return {
+      showBackToTopButton: false,
+      scrollToShowButton: 400, // 設定滾動到多少距離時顯示按鈕（以像素為單位）
+    };
+  },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+    this.handleScroll(); // 初始時檢查是否需要顯示按鈕
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.handleScroll);
+  },
+  methods: {
+    handleScroll() {
+      const scrollPosition =
+        document.documentElement.scrollTop || document.body.scrollTop;
+
+      if (scrollPosition >= this.scrollToShowButton) {
+        this.showBackToTopButton = true;
+      } else {
+        this.showBackToTopButton = false;
+      }
+    },
+    scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    },
+  },
 };
 </script>
 
 <style scoped lang="scss">
-.goToTop {
+//淡出淡入
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-button {
   z-index: 800;
   text-align: center;
   padding: 0.5rem;
@@ -26,11 +64,14 @@ const goToTop = () => {
   color: var(--primary-blue);
   border: solid 1px var(--primary-blue);
   position: fixed;
-  right: 1rem;
+  right: 2rem;
   bottom: 2rem;
-  transition: 0.5s;
+  transition: all 0.1s ease-in-out;
+  @media all and (max-width: 420px) {
+    right: 0.5rem;
+    bottom: 4rem;
+  }
   &:hover {
-    transition: 0.5s;
     background-color: var(--primary-blue);
     color: var(--pale-white);
   }

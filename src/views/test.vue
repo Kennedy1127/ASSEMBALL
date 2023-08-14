@@ -1,77 +1,131 @@
 <template>
   <section class="test">
-    <div class="wrapper">
-      <div>
-        <router-link :to="{ name: 'Home' }">我是前台</router-link>
-        <router-link :to="{ name: 'BackstageLogin' }">我是後台</router-link>
-     
-      </div>
+    <div class="title">ASSEMBALL</div>
+    <div class="wrap"></div>
+    <div class="btn">
+      <router-link :to="{ name: 'HomeLoading' }">前台</router-link>
+      <router-link :to="{ name: 'BackstageLogin' }">後台</router-link>
     </div>
   </section>
+  <div class="detail">
+    <div>
+      {{ footerDetail }}<br />
+      {{ footerDetails }}
+    </div>
+  </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  data() {
+    return {
+      footerDetail:
+        "本網站為緯育TibaMe_前端設計工程師班第83期學員專題成果作品,本平台僅供學習、展示之用。",
+      footerDetails:
+        "若有抵觸有關著作權,或有第三人主張侵害智慧財產權等情事,均由學員負法律上責任,緯育公司概不負責，若有侵權疑慮，您可以私訊緯育Tibame，後續會由專人協助處理。",
+    };
+  },
+};
+</script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.title {
+  font-size: 5rem;
+  font-weight: 700;
+  font-family: "Montserrat";
+  letter-spacing: 20px;
+  padding-bottom: 4rem;
+  color: var(--pale-white);
+}
+
 .test {
-  background-color: var(--secondary-blue-4);
-  padding: 4rem 0;
-  padding-top: 8rem;
-  &_backlink {
-    width: 100%;
-    padding: 0 8rem;
-    margin: auto;
-    & a {
-      display: inline-block;
-      color: var(--primary-blue);
-      font-size: 1.25rem;
-      font-weight: 500;
-      padding-bottom: 0.5rem;
-      cursor: pointer;
-      & span {
-        color: var(--primary-blue);
-        font-size: 1.25rem;
-        padding-right: 0.5rem;
-      }
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: var(--pale-white);
+  background-image: url(@/assets/loading/test_back.jpg);
+  background-position: cover;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  z-index: 1;
+  .wrap {
+    padding: 14rem 28rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-heavy);
+    background-color: var(--pale-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    opacity: 0.5;
+  }
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10rem;
+    position: absolute;
+    z-index: 10;
+    opacity: 1;
+    padding-top: 10rem;
+    a:nth-child(1) {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background-color: var(--primary-blue);
+      text-align: center;
+      line-height: 300px;
+      color: var(--pale-white);
+      font-size: 3rem;
+      transition: all 0.09s ease-in;
+      opacity: 0.9;
+    }
+    a:nth-child(1):hover {
+      background-color: var(--accent-red);
+      background-image: url(@/assets/loading/test_ball.svg);
+      background-position: 25% 85%;
+      background-size: 20%;
+      background-repeat: no-repeat;
+    }
+    a:nth-child(2) {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background-color: var(--primary-blue);
+      text-align: center;
+      line-height: 300px;
+      color: var(--pale-white);
+      font-size: 3rem;
+      transition: all 0.09s ease-in;
+      opacity: 0.9;
+    }
+    a:nth-child(2):hover {
+      background-color: var(--success-green);
+      background-image: url(@/assets/loading/test_ball.svg);
+      background-position: 25% 85%;
+      background-size: 20%;
+      background-repeat: no-repeat;
     }
   }
-  .wrapper {
-    background-color: #fff;
-    box-shadow: var(--shadow-heavy);
-    border-radius: var(--round);
-    padding: 3rem 8rem;
-    margin-top: 2rem;
-    div {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10rem;
-      a:nth-child(1) {
-        width: 300px;
-        height: 300px;
-        border-radius: 50%;
-        background-color: var(--primary-blue);
-        text-align: center;
-        line-height: 300px;
-        color: #fff;
-        font-size: 3rem;
-      }
-      a:nth-child(1):hover {
-        background-color: var(--accent-red);
-      }
-      a:nth-child(2) {
-        width: 300px;
-        height: 300px;
-        border-radius: 50%;
-        background-color: var(--primary-blue);
-        text-align: center;
-        line-height: 300px;
-        color: #fff;
-        font-size: 3rem;
-      }
-      a:nth-child(2):hover {
-        background-color: var(--success-green);
-      }
+}
+
+.detail {
+  width: 100%;
+  background-color: var(--primary-black);
+  color: var(--secondary-gray-2);
+  font-size: 0.875rem;
+  font-weight: 400;
+  padding: 3rem 2rem;
+  text-align: center;
+  & div {
+    @media all and (max-width: 420px) {
+      text-align: left;
+      padding-bottom: 3rem;
     }
   }
 }

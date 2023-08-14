@@ -26,16 +26,19 @@
         </div>
         <div class="homePage_newsKeyword_form_content">
           <div
-            v-for="(item, index) in newsKeyword"
-            :key="item"
+            v-for="(item, index) in NewsKeyword"
+            :key="item.Id"
             class="newsKeyword_item"
           >
-            <button @click="removeNews(index)" class="newsKeyword_item_del">
+            <button
+              @click="removeNews(index, item.data_id)"
+              class="newsKeyword_item_del"
+            >
               <font-awesome-icon icon="fa-solid fa-trash-can" />
             </button>
 
             <div class="newsKeyword_item_text">
-              {{ item.newsKeywordItem }}
+              {{ item.KeyWord }}
             </div>
           </div>
         </div>
@@ -63,8 +66,8 @@
         <!-- 跑馬燈關鍵字表單內容 -->
         <div class="homePage_marqueeKeyword_form_content">
           <div
-            v-for="(item, index) in marqueeKeyword"
-            :key="item"
+            v-for="(item, index) in MarqueeKeyword"
+            :key="item.Id"
             class="marqueeKeyword_item"
           >
             <button
@@ -74,7 +77,7 @@
               <font-awesome-icon icon="fa-solid fa-trash-can" />
             </button>
             <div class="marqueeKeyword_item_text">
-              {{ item.marqueeKeywordItem }}
+              {{ item.KeyWord }}
             </div>
           </div>
         </div>
@@ -84,19 +87,54 @@
     <div class="homePage_card_area">
       <div class="homePage_card">
         <div class="homePage_card_title">最新消息卡片</div>
-        <div class="homePage_card_list">標題:<input type="text" /></div>
-        <div class="homePage_card_list">日期:<input type="text" /></div>
         <div class="homePage_card_list">
-          加入照片:<input type="text" />
-          <button class="homePage_card_pic_btn">
-            <font-awesome-icon icon="fa-solid fa-circle-plus" />
+          欄位:<input type="text" :value="CurrentPos" />
+          <ul class="NewsCard_menu" v-if="NewsCardPosMenuShow">
+            <li
+              v-for="(item, index) in NewsCardPos"
+              :key="item.pos"
+              @click="updatePos(item.pos, item.id)"
+            >
+              {{ item.pos }}
+            </li>
+          </ul>
+          <button @click="NewsCardPosMenu" class="menu_btn" ref="Pos">
+            <font-awesome-icon icon="fa-solid fa-angle-down" />
           </button>
+        </div>
+        <div class="homePage_card_list">
+          標題:<input type="text" v-model="TitleText" />
+        </div>
+        <div class="homePage_card_list">
+          副標題:<input type="text" v-model="SubTitleText" />
+        </div>
+        <div class="homePage_card_list">
+          照片:<input
+            type="file"
+            class="pic_file"
+            id="UploadPic"
+            accept="image/*"
+            @change="ChangePic"
+          />
+     
+        </div>
+        <div class="homePage_card_list">
+          內文照片:<input
+            type="file"
+            class="pic_file"
+            id="UploadSubPic"
+            accept="image/*"
+            @change="ChangeSubPic"
+          />
+       
         </div>
         <div class="homePage_card_list homePage_card_list_article">
           文章內容:
-          <textarea name="" id="" cols="30" rows="10"></textarea>
+          <textarea cols="30" rows="10" v-model="ArticleText"></textarea>
         </div>
-        <button class="homePage_card_send_btn">送出</button>
+        <button class="homePage_card_send_btn" @click="AddNewsCard()">
+          送出
+        </button>
       </div>
     </div>
   </div>
@@ -129,7 +167,6 @@ input {
       position: relative;
       input {
         margin-left: 1rem;
-
         border-radius: 8px;
       }
       .homePage_newsKeyword_enter_btn {
@@ -313,6 +350,29 @@ input {
     &_list {
       margin-top: 1rem;
       position: relative;
+      .menu_btn {
+        position: absolute;
+        top: 0.1rem;
+        right: 0.5rem;
+        background-color: var(--pale-white);
+        color: var(--primary-black);
+      }
+      .NewsCard_menu {
+        position: absolute;
+        width: 300px;
+        right: 0;
+        top: 1.5rem;
+        border: var(--primary-black) solid;
+        background-color: var(--pale-white);
+        z-index: 1;
+        li {
+          text-align: center;
+        }
+        li:hover {
+          cursor: pointer;
+          background-color: var(--secondary-gray-2);
+        }
+      }
       .homePage_card_pic_btn {
         position: absolute;
         width: 1rem;
@@ -321,6 +381,10 @@ input {
         border-radius: 8px;
         top: 0;
         right: -1.5rem;
+      }
+      .pic_file {
+        border: none;
+        border-radius: 0px;
       }
 
       input {
@@ -350,55 +414,144 @@ input {
   }
 }
 </style>
+
 <script>
-const newsKeywordDefault = [
-  { newsKeywordItem: "＃球隊交易", link: "#" },
-  { newsKeywordItem: "＃MVP候選", link: "#" },
-  { newsKeywordItem: "＃熱門球隊", link: "#" },
-  { newsKeywordItem: "＃傷兵消息", link: "#" },
-  { newsKeywordItem: "＃比賽結果", link: "#" },
-  { newsKeywordItem: "＃紀錄突破", link: "#" },
-  { newsKeywordItem: "＃防禦統計", link: "#" },
-];
-const marqueeKeywordDefault = [
-  { marqueeKeywordItem: "*球隊交易" },
-  { marqueeKeywordItem: "*MVP候選" },
-  { marqueeKeywordItem: "*熱門球隊" },
-  { marqueeKeywordItem: "*傷兵消息" },
-  { marqueeKeywordItem: "*比賽結果" },
-  { marqueeKeywordItem: "*紀錄突破" },
-  { marqueeKeywordItem: "*防禦統計" },
-];
+import { db } from "@/firebase/config"; //引入data base
+import {
+  addDoc,
+  doc,
+  getDoc,
+  addDocs,
+  deleteDoc,
+  updateDoc,
+  serverTimestamp,
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  getBlob,
+} from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { Link } from "view-ui-plus";
+import useStorage from "@/composables/data/useStorage";
+// const MarqueeKeywordDefault = [
+//   { Id: "1", marqueeKeywordItem: "*球隊交易" },
+//   { Id: "2", marqueeKeywordItem: "*MVP候選" },
+//   { Id: "3", marqueeKeywordItem: "*熱門球隊" },
+//   { Id: "4", marqueeKeywordItem: "*傷兵消息" },
+//   { Id: "5", marqueeKeywordItem: "*比賽結果" },
+//   { Id: "6", marqueeKeywordItem: "*紀錄突破" },
+//   { Id: "7", marqueeKeywordItem: "*防禦統計" },
+// ];
 export default {
   data() {
     return {
       AddnewsText: "",
       AddnewsLink: "",
       AddMarquee: "",
-      newsKeyword: [...newsKeywordDefault],
+      NewsKeyword: [],
+      NewsCard: [],
 
-      marqueeKeyword: [...marqueeKeywordDefault],
+      ArticleText:"",
+      TitleText:"",
+      SubTitleText:"",
+      PicFile: "",
+      SubFile: "",
+      HaveNewsPic: "",
+      HaveNewsSubPic: "",
+
+      NewsCardPos: [],
+      CurrentPos: 0,
+      CurrentId: "V1Ted65d78HD8JPFL79q",
+      NewsCardPosMenuShow: false,
+      // NewsKeyword: [
+      //   {
+      //     Id: "1",
+      //     KeyWord: "#WBC",
+      //     Link: "https://www.youtube.com/watch?v=JwaztJhIisU&t=628s",
+      //   },
+      //   {
+      //     Id: "2",
+      //     KeyWord: "#精彩時刻",
+      //     Link: "https://www.youtube.com/watch?v=2K90w_xYRFo",
+      //   },
+      //   {
+      //     Id: "3",
+      //     KeyWord: "#完全比賽",
+      //     Link: "https://www.youtube.com/watch?v=7OfBXJYb6Jc&t=76s",
+      //   },
+      //   {
+      //     Id: "4",
+      //     KeyWord: "#張育誠",
+      //     Link: "https://www.youtube.com/watch?v=60W-E3tq-34",
+      //   },
+      //   {
+      //     Id: "5",
+      //     KeyWord: "#大谷翔平",
+      //     Link: "https://www.youtube.com/watch?v=yT0_dxTJs48&t=178s",
+      //   },
+      // ],
+
+      MarqueeKeyword: [
+        { Id: "1", KeyWord: "滑球" },
+        { Id: "2", KeyWord: "投手教學" },
+        { Id: "3", KeyWord: "Mike Trout" },
+        { Id: "4", KeyWord: "打擊技巧" },
+        { Id: "5", KeyWord: "二手商品" },
+        { Id: "6", KeyWord: "商品出清" },
+      ],
     };
   },
   methods: {
-    AddNewsKeywordItem() {
+    updatePos(e, x) {
+      this.CurrentPos = e;
+      this.CurrentId = x;
+
+      // console.log(e, x);
+    },
+    CloseMenu(e) {
+      // console.log("e.target.closest", 111);
+      if (e.target.closest(".menu_btn") === this.$refs.Pos) {
+        this.NewsCardPosMenuShow = true;
+      } else {
+        this.NewsCardPosMenuShow = false;
+      }
+    },
+    async AddNewsKeywordItem() {
       //新增最新消息關鍵字
       if (this.AddnewsText === "") {
         alert("請輸入關鍵字");
       } else {
-        this.newsKeyword.push({
-          newsKeywordItem: this.AddnewsText,
+        //新增至NewsKeyword陣列內
+        let v = this.NewsKeyword.length;
+        this.NewsKeyword.push({
+          Id: v + 1,
+          KeyWord: this.AddnewsText,
           link: this.AddnewsLink,
         });
+        const NewsKeywordCollection = collection(db, "NEWSKEYWORD"); //新增至firebase
+        const NewKeyword = {
+          Id: v + 1,
+          KeyWord: this.AddnewsText,
+          Link: this.AddnewsLink,
+        };
+        addDoc(NewsKeywordCollection, NewKeyword);
         this.resetNewsInput();
       }
     },
+    NewsCardPosMenu() {
+      this.NewsCardPos = this.NewsCard.map((e) => ({ pos: e.pos, id: e.id }));
+      this.NewsCardPosMenuShow = !this.NewsCardPosMenuShow;
+    },
+
     AddMarqueeKeywordItem() {
       //新增跑馬燈關鍵字
       if (this.AddMarquee === "") {
         alert("請輸入關鍵字");
       } else {
-        this.marqueeKeyword.push({
+        let v = this.MarqueeKeyword.length;
+        this.MarqueeKeyword.push({
+          Id: v + 1,
           marqueeKeywordItem: this.AddMarquee,
         });
         this.resetMarqueeInput();
@@ -408,21 +561,119 @@ export default {
     resetNewsInput() {
       //把input清空
       this.AddnewsText = "";
+      this.AddnewsLink = "";
     },
     resetMarqueeInput() {
       //把input清空
       this.AddMarquee = "";
     },
-    removeNews(itemIndex) {
+    removeNews(e, id) {
+      // console.log(id);
       //移除最新消息關鍵字
-
-      this.newsKeyword.splice(itemIndex, 1);
+      const NewsKeywordCollection = doc(db, "NEWSKEYWORD", id);
+      this.NewsKeyword.splice(e, 1); //從NewsKeyword移除
+      deleteDoc(NewsKeywordCollection); //從資料庫移除
     },
-    removeMarquee(itemIndex) {
+    removeMarquee(e) {
       //移除跑馬燈關鍵字
-
-      this.marqueeKeyword.splice(itemIndex, 1);
+      this.MarqueeKeyword.splice(e, 1);
     },
+    //從firebase引入NEWSKEYWORD資料
+    async GetData() {
+      try {
+        const KeyWordCollection = collection(db, "NEWSKEYWORD"); // 取得集合
+        const KeyWordDocuments = await getDocs(KeyWordCollection); // 取得集合內的所有物件
+        KeyWordDocuments.forEach((x) => {
+          // console.log("x.data",x.data());//陣列內的某一物件
+          // console.log("x",x)
+          const data = { ...x.data(), data_id: x.id }; //將x.data()拆開並塞入新屬性data_id:x.id後重新組成物件
+          // console.log("data",data)
+          this.NewsKeyword.push(data); // 物件轉陣列
+        });
+      } catch (err) {
+        alert(err);
+      }
+    },
+    //從firebase引入News資料
+    async GetCardData() {
+      try {
+        const CardCollection = collection(db, "NEWS"); // 取得集合
+        const CardDocuments = await getDocs(CardCollection); // 取得集合內的所有物件
+        CardDocuments.forEach((x) => {
+          // console.log(x.data());
+          this.NewsCard.push(x.data()); // 物件轉陣列
+        });
+      } catch (err) {
+        alert(err);
+      }
+    },
+
+    //     AddData(){
+    //  //Products的資料上傳到firebase
+    //         const NewsKeywordCollection = collection(db, "NEWSKEYWORD");
+    //         this.NewsKeyword.forEach(x =>
+    //         {
+
+    //          const docRef = addDoc(NewsKeywordCollection, x)//
+    //           // console.log("資料", docRef);
+    //         })
+    // }
+
+    ChangePic(e) {
+      this.PicFile = e.target.files[0];
+    this.HaveNewsPic="1";
+      // console.log("圖片", this.PicFile);
+    },
+    ChangeSubPic(e) {
+      this.SubPicFile = e.target.files[0];
+      this.HaveNewsSubPic="1";
+      // console.log("圖片2", this.SubPicFile);
+    },
+    async AddNewsCard() {
+      if (
+        (this.HaveNewsPic !="")&&
+        (this.HaveNewsSubPic !="")&&
+        (this.ArticleText != "") &&
+        (this.TitleText != "") &&
+        (this.SubTitleText != "")
+      ) {
+        console.log("判斷")
+      const { setPics } = useStorage(); //拉useStorage的setPics來用
+       const NewsPic = await setPics("images/NEWS", [this.PicFile], "NewsPic"); //傳入(路徑,檔案,檔案名稱)並傳至資料庫,返回該檔案的urls[]
+      const NewsSubPic = await setPics(
+        "/images/NEWS",
+        [this.SubPicFile],
+        "NewsSubPic"
+      ); //傳入(路徑,檔案,檔案名稱)並傳至資料庫,返回該檔案的urls[]
+      //console.log("sss",NewsPic)
+
+      //編輯最新消息卡片
+      const NewsCardCollection = doc(db, "NEWS", this.CurrentId);
+      await updateDoc(NewsCardCollection, {
+        date: serverTimestamp(),
+        pic: NewsPic[0],
+        popup_pic:NewsSubPic[0],
+        pos: this.CurrentPos,
+        id: this.CurrentId,
+        // text: "在這支球隊中，一位年輕的新秀球員嶄露頭角，成為了球隊的新希望。雖然他在球隊中賽龍躍馬，但他卻展現出了驚人的天賦和實力。他的出現為整個球隊注入了新的生機和能量。這位新秀球員不僅在守備上做得出色，而且在攻擊方面也表現出色。他總能在關鍵時刻挺身而出，帶領球隊向勝利進軍。在他的帶領下，球隊的整體實力也得到了提升，成績有了明顯的進步。儘管他還很年輕，但這位新秀球員已經成為球迷心中的寵兒。他們期待著他未來更加耀眼的表現，相信他將成為球隊的核心球員，帶領球隊走向更多的勝利。",
+        // title: "新秀耀眼！",
+        // title_breakpoint: "年輕球員成為球隊的希望",
+        text: this.ArticleText,
+        title: this.TitleText,
+        title_breakpoint: this.SubTitleText,
+      });
+      }
+      else{alert("內容不可為空");
+        return;}
+    },
+  
+  },
+  mounted() {
+  
+    window.addEventListener("click", this.CloseMenu);
+    // this.AddData();
+    this.GetData();
+    this.GetCardData();
   },
 };
 </script>

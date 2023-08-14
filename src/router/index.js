@@ -130,6 +130,8 @@ const routes = [
       import("@/views/recruitments/backside/RecruitmentManageView.vue"),
     beforeEnter: (to, from, next) => {
       store.commit("resetPaginationCurPage");
+
+      store.commit("resetFilters");
       next();
     },
   },
@@ -138,6 +140,12 @@ const routes = [
     name: "recruitmentVerify",
     component: () =>
       import("@/views/recruitments/backside/RecruitmentVerifyView.vue"),
+    beforeEnter: (to, from, next) => {
+      store.commit("resetPaginationCurPage");
+
+      store.commit("resetFilters");
+      next();
+    },
   },
   {
     path: "/recruitments/recruitment-verify-detail",

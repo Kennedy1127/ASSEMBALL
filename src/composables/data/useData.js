@@ -30,7 +30,12 @@ const useData = () => {
     }
   };
 
-  const setDataSubCollection = async (target, data) => {
+  const setDataSubCollection = async (
+    target,
+    data,
+    pics = null,
+    filename = null
+  ) => {
     setDataError.value = null;
 
     try {
@@ -42,7 +47,17 @@ const useData = () => {
       );
       const docRef = doc(colRef);
       data.id = docRef.id;
+
+      if (pics && filename) {
+        await setPics(
+          `images/${target.collectionName}/${target.documentId}/${target.subCollectionName}/${docRef.id}`,
+          pics,
+          filename
+        );
+      }
+
       await setDoc(docRef, data);
+      return docRef.id;
     } catch (err) {
       console.error("Something went wrong!");
       setDataError.value = err.message;
@@ -56,11 +71,13 @@ const useData = () => {
       const docRef = doc(db, target.collectionName, target.documentId);
 
       if (pics && filename) {
-        await setPics(
+        const urls = await setPics(
           `images/${target.collectionName}/${target.documentId}`,
           pics,
           filename
         );
+
+        data.picUrls = [...urls];
       }
 
       await updateDoc(docRef, data);

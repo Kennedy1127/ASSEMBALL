@@ -21,7 +21,7 @@
       <div class="myplayer_function_race_list">
         <div
           class="myplayer_function_race_package"
-          v-for="item in myplayer_race_list"
+          v-for="item in $store.state.myplayerRaceList"
           :key="item.id"
         >
           <div class="myplayer_function_race_title_wrap">
@@ -37,27 +37,40 @@
           </div>
           <div class="myplayer_function_race_item">
             <div class="myplayer_function_race_item_day">
-              {{ item.formattedDate }}
+              {{ item.gamedate }}
               <div class="myplayer_function_race_edit">
                 <font-awesome-icon
+                  v-if="editCommentId !== item.id"
                   :icon="['fas', 'trash-can']"
                   class="icon icon--pen"
+                  @click="openEditComment(item.id)"
                 />
                 <font-awesome-icon
+                  v-if="editCommentId === item.id"
                   class="icon icon--check"
                   :icon="['fas', 'check']"
+                  @click="confirmItem(item.id)"
                 />
                 <font-awesome-icon
+                  v-if="editCommentId === item.id"
                   class="icon icon--xmark"
                   :icon="['fas', 'xmark']"
+                  @click="cancelItem(item.id)"
                 />
               </div>
             </div>
+
             <div class="myplayer_function_race_item_name">
               <div class="myplayer_function_race_item_team1">
                 <div
                   class="myplayer_function_race_item_logo1"
-                  v-bind:style="{ backgroundImage: `url('${item.homeicon}')` }"
+                  v-bind:style="{
+                    backgroundImage: `url('${
+                      item.pics
+                        ? item.pics[0]
+                        : require('@/assets/images/icons/main-icon.png')
+                    }')`,
+                  }"
                 ></div>
                 <div class="myplayer_function_race_item_score1">
                   {{ item.homescore }}
@@ -70,7 +83,13 @@
               <div class="myplayer_function_race_item_team2">
                 <div
                   class="myplayer_function_race_item_logo2"
-                  v-bind:style="{ backgroundImage: `url('${item.hosticon}')` }"
+                  v-bind:style="{
+                    backgroundImage: `url('${
+                      item.pics
+                        ? item.pics[1]
+                        : require('@/assets/images/icons/main-icon.png')
+                    }')`,
+                  }"
                 ></div>
                 <div class="myplayer_function_race_item_score2">
                   {{ item.hostscore }}
@@ -102,22 +121,36 @@
 import MyplayerRaceEdit from "@/components/MyplayerTeam/MyplayerRaceEdit.vue";
 import OverlayComponent from "../utilities/OverlayComponent.vue";
 import MyplayerCalendar from "@/components/MyplayerTeam/MyplayerCalendar";
+import useStorage from "@/composables/data/useStorage";
+import getData from "@/composables/data/getData";
+import { remove } from "@vue/shared";
+import { doc, deleteDoc } from "firebase/firestore";
+import { db } from "@/firebase/config";
+
+const { getSubCollectionDocuments } = getData();
+const { getPicsLink } = useStorage();
+
 export default {
   async mounted() {
-    const allData = await this.$store.dispatch("getMyplayerTeam");
-    console.log(allData);
-    this.myplayer_race_list = allData.teamGameData;
+    const res = await getSubCollectionDocuments({
+      collectionName: "TEAMS",
+      documentId: "iECrL2hQ89BPzKkX32u4",
+      subCollectionName: "GAME",
+    });
 
-    const options = { month: "numeric", day: "numeric" };
-    for (const item of this.myplayer_race_list) {
-      const timestamp = {
-        seconds: item.gamedate.seconds,
-        nanoseconds: item.gamedate.nanoseconds,
-      };
-      const gamedate = new Date(timestamp.seconds * 1000);
-      item.formattedDate = gamedate.toLocaleDateString(undefined, options);
+    for (let i = 0; i < res.length; i++) {
+      const pics = await getPicsLink(
+        2,
+        `images/TEAMS/${"iECrL2hQ89BPzKkX32u4"}/GAME/${res[i].id}`,
+        "teamLogoPic"
+      );
+
+      res[i].pics = pics;
     }
+
+    this.$store.state.myplayerRaceList = res;
   },
+
   components: {
     MyplayerCalendar,
     MyplayerRaceEdit,
@@ -125,54 +158,34 @@ export default {
   },
   data() {
     return {
-      myplayer_race_list: [
-        // {
-        //   id: "1",
-        //   team1: "猛虎隊",
-        //   team2: "銀箭隊",
-        //   day: "07/05",
-        //   logo1: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_1.png"),
-        //   logo2: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_2.png"),
-        //   score1: 1,
-        //   score2: 3,
-        // },
-        // {
-        //   id: "2",
-        //   team1: "猛虎隊",
-        //   team2: "銀箭隊",
-        //   day: "07/02",
-        //   logo1: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_1.png"),
-        //   logo2: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_3.png"),
-        //   score1: 2,
-        //   score2: 4,
-        // },
-        // {
-        //   id: "3",
-        //   team1: "猛虎隊",
-        //   team2: "銀箭隊",
-        //   day: "07/01",
-        //   logo1: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_1.png"),
-        //   logo2: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_3.png"),
-        //   score1: 1,
-        //   score2: 4,
-        // },
-        // {
-        //   id: "4",
-        //   team1: "猛虎隊",
-        //   team2: "銀箭隊",
-        //   day: "06/25",
-        //   logo1: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_1.png"),
-        //   logo2: require("/src/assets/images/myplayer_team/myplayer_team_logo/team_logo_2.png"),
-        //   score1: 1,
-        //   score2: 2,
-        // },
-      ],
+      myplayer_race_list: [],
+      editMode: false,
+      editCommentId: null,
+      editComment: null,
       isVisible: false,
     };
   },
   methods: {
     myplayerRaceEditToggle() {
       this.isVisible = true;
+    },
+    submitData() {
+      this.isVisible = !this.isVisible;
+    },
+    openEditComment(id) {
+      this.editMode = true;
+      this.editCommentId = id;
+    },
+    async confirmItem(id) {
+      await deleteDoc(doc(db, "TEAMS", "iECrL2hQ89BPzKkX32u4", "GAME", id));
+      const index = this.$store.state.myplayerRaceList.findIndex(
+        (race) => race.id === id
+      );
+      this.$store.state.myplayerRaceList.splice(index, 1);
+    },
+
+    cancelItem() {
+      this.editCommentId = null;
     },
   },
 };

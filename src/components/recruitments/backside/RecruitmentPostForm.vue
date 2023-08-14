@@ -100,14 +100,31 @@
 <script setup>
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
 import useData from "@/composables/data/useData";
+import getData from "@/composables/data/getData";
 import { timestamp } from "@/firebase/config";
-import { computed, ref } from "vue";
+import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const store = useStore();
+const route = useRoute();
 const router = useRouter();
 const { setData } = useData();
+const { getDocument } = getData();
+
+onMounted(async () => {
+  if (!route.query.id) return;
+
+  store.state.isPending = true;
+
+  const copywritingData = await getDocument("COPYWRITINGS", route.query.id);
+  copywritingName.value = copywritingData.title;
+  exp.value = copywritingData.exp;
+  role.value = copywritingData.role;
+  area.value = copywritingData.area;
+  copywritingInfo.value = copywritingData.intro;
+  store.state.isPending = false;
+});
 
 const copywritingName = ref("");
 const copywritingInfo = ref("");

@@ -44,7 +44,12 @@
           <div class="header_list_aside">
             <div @click="toggleNotify">
               <span><font-awesome-icon icon="fa-solid fa-bell" /></span>
-              <div class="header_list_aside_notify">{{ notify }}</div>
+              <div
+                v-if="$store.getters.notifysUnRead"
+                class="header_list_aside_notify"
+              >
+                {{ $store.getters.notifysUnRead }}
+              </div>
               <router-link to="/"></router-link>
             </div>
             <div @click="toggleMember">

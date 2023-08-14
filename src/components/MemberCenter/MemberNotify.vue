@@ -1,21 +1,43 @@
 <template>
   <div class="Member_notify">
     <div
+      v-if="
+        !$store.getters.userNotifysJoin.length &&
+        !$store.getters.userNotifysOrder.length &&
+        !$store.getters.userNotifysTeam.length
+      "
+      class="Member_notify_noResults"
+    >
+      <div class="Member_notify_noResults_img">
+        <img src="~@/assets/images/recruitment/no-results.svg" alt="" />
+      </div>
+      <p class="Member_notify_noResults_text">目前沒有任何的新通知哦！</p>
+    </div>
+
+    <div
       class="Member_notify_join"
-      v-for="item in MemberNotifyJoin"
+      v-for="item in $store.getters.userNotifysJoin"
       :key="item.join"
+      @click="goToApply(item)"
     >
       <div class="Member_notify_join_title">
         <span><font-awesome-icon icon="fa-solid fa-user" /></span>
         {{ item.title }}
       </div>
       <div class="Member_notify_join_content">
-        {{ item.content }}
+        {{ item.text }}
+      </div>
+      <div class="apply_xmark" @click.stop="deleteNotify(item)">
+        <font-awesome-icon
+          :icon="['fas', 'circle-xmark']"
+          class="apply_xmark_icon"
+        />
       </div>
     </div>
+
     <div
       class="Member_notify_order"
-      v-for="item in MemberNotifyOrder"
+      v-for="item in $store.getters.userNotifysOrder"
       :key="item.order"
     >
       <div class="Member_notify_order_title">
@@ -23,20 +45,30 @@
         >{{ item.title }}
       </div>
       <div class="Member_notify_order_content">
-        {{ item.content }}
+        {{ item.text }}
+      </div>
+      <div class="apply_xmark" @click="deleteNotify(item)">
+        <font-awesome-icon
+          :icon="['fas', 'circle-xmark']"
+          class="apply_xmark_icon"
+        />
       </div>
     </div>
+
     <div
       class="Member_notify_team"
-      v-for="item in MemberNotifyTeam"
+      v-for="item in $store.getters.userNotifysTeam"
       :key="item.team"
     >
-      <img :src="item.imgSrc" :alt="Member_notify_team_pic" />
+      <img
+        :src="item.pic || require('@/assets/images/icons/main-icon.png')"
+        alt="Member_notify_team_pic"
+      />
       <div class="Member_notify_team_aside">
         <div class="Member_notify_team_aside_title">{{ item.title }}</div>
         <div class="Member_notify_team_aside_btn">
-          <button>確定</button>
-          <button>拒絕</button>
+          <button @click="submitJoin(item)">確定</button>
+          <button @click="submitReject(item)">拒絕</button>
         </div>
       </div>
     </div>
@@ -44,50 +76,84 @@
 </template>
 
 <script>
+import useData from "@/composables/data/useData";
+import { auth } from "@/firebase/config";
+const { updateDataSubCollection } = useData();
+
 export default {
-  data() {
-    return {
-      MemberNotifyJoin: [
+  mounted() {
+    this.$store.state.userNotifys.forEach((notify) => {
+      updateDataSubCollection(
         {
-          title: "Bruce Lee 要求加入球隊",
-          content: "你好，我是Bruce Lee，想加入你們球隊！",
+          collectionName: "MEMBERS",
+          documentId: auth.currentUser.uid,
+          subCollectionName: "NOTIFY",
+          subDocumentId: notify.id,
         },
         {
-          title: "Bruce Lee 要求加入球隊",
-          content: "你好，我是Bruce Lee，想加入你們球隊！",
-        },
-      ],
-      MemberNotifyOrder: [
+          read: true,
+        }
+      );
+    });
+  },
+
+  methods: {
+    deleteNotify(notify) {
+      updateDataSubCollection(
         {
-          title: " 訂單已成立",
-          content:
-            "訂單編號 2023087570050 已成立，等待物流派送中，請耐心等候。",
-        },
-        {
-          title: " 訂單已成立",
-          content:
-            "訂單編號 2023087570050 已成立，等待物流派送中，請耐心等候。",
-        },
-      ],
-      MemberNotifyTeam: [
-        {
-          imgSrc: require("@/assets/images/MemberCenter/Member_notify_team_pic1.png"),
-          title: "信義天使隊 邀請您加入",
+          collectionName: "MEMBERS",
+          documentId: auth.currentUser.uid,
+          subCollectionName: "NOTIFY",
+          subDocumentId: notify.id,
         },
         {
-          imgSrc: require("@/assets/images/MemberCenter/Member_notify_team_pic1.png"),
-          title: "信義天使隊 邀請您加入",
+          status: false,
+        }
+      );
+    },
+
+    goToApply(data) {
+      console.log(data);
+    },
+
+    submitJoin(data) {
+      console.log(data);
+
+      this.$store.state.userNotifys
+        .filter((notify) => notify.type === 2)
+        .forEach((notify) => {
+          updateDataSubCollection(
+            {
+              collectionName: "MEMBERS",
+              documentId: auth.currentUser.uid,
+              subCollectionName: "NOTIFY",
+              subDocumentId: notify.id,
+            },
+            {
+              status: false,
+            }
+          );
+        });
+    },
+
+    submitReject(data) {
+      updateDataSubCollection(
+        {
+          collectionName: "MEMBERS",
+          documentId: auth.currentUser.uid,
+          subCollectionName: "NOTIFY",
+          subDocumentId: data.id,
         },
         {
-          imgSrc: require("@/assets/images/MemberCenter/Member_notify_team_pic1.png"),
-          title: "信義天使隊 邀請您加入",
-        },
-        {
-          imgSrc: require("@/assets/images/MemberCenter/Member_notify_team_pic1.png"),
-          title: "信義天使隊 邀請您加入",
-        },
-      ],
-    };
+          status: false,
+        }
+      );
+
+      const index = this.MemberNotifyTeam.findIndex(
+        (notify) => notify.id === data.id
+      );
+      this.MemberNotifyTeam.splice(index, 1);
+    },
   },
 };
 </script>
@@ -112,6 +178,7 @@ export default {
   @media all and (max-width: 420px) {
     max-width: 100%;
     max-height: 90vh;
+    height: 100vh;
     left: 0;
     z-index: 48;
     top: 4.2rem;
@@ -119,6 +186,48 @@ export default {
     padding-top: 1rem;
     padding-bottom: 4rem;
   }
+
+  &_noResults {
+    min-height: 40vh;
+
+    &_img {
+      width: 70%;
+      height: 70%;
+      margin: 0 auto;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    p {
+      color: var(--secondary-gray-3);
+      font-weight: 400;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+  }
+
+  .apply_xmark {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+
+    width: 25px;
+    height: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &_icon {
+      font-size: 1.25rem;
+      color: var(--primary-blue);
+      cursor: pointer;
+    }
+  }
+
   &_join {
     position: relative;
     width: 100%;
@@ -136,6 +245,7 @@ export default {
       }
     }
     &_content {
+      width: 80%;
       padding-left: 0.5rem;
       font-size: 0.875rem;
       color: var(--secondary-gray-1);
@@ -162,6 +272,7 @@ export default {
       }
     }
     &_content {
+      width: 80%;
       padding-left: 0.5rem;
       font-size: 0.875rem;
       color: var(--secondary-gray-1);
