@@ -203,29 +203,29 @@ export default createStore({
     //////////////////////////////////////////////////////
     // 招募文案區塊
     // 招募初心者數量
-    inexperencedCount(state) {
-      return state.copywritings.filter(
+    inexperencedCount(state, getters) {
+      return getters.filteredCopywritings.filter(
         (copywriting) => Number(copywriting.exp) === 0
       ).length;
     },
 
     // 招募新手數量
-    entryCount(state) {
-      return state.copywritings.filter(
+    entryCount(state, getters) {
+      return getters.filteredCopywritings.filter(
         (copywriting) => Number(copywriting.exp) === 1
       ).length;
     },
 
     // 招募老手數量
-    intermediateCount(state) {
-      return state.copywritings.filter(
+    intermediateCount(state, getters) {
+      return getters.filteredCopywritings.filter(
         (copywriting) => Number(copywriting.exp) === 2
       ).length;
     },
 
     // 經歷不拘數量
-    freeCount(state) {
-      return state.copywritings.filter(
+    freeCount(state, getters) {
+      return getters.filteredCopywritings.filter(
         (copywriting) => Number(copywriting.exp) === 3
       ).length;
     },
