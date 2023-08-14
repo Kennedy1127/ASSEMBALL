@@ -29,7 +29,7 @@
 
             <div class="recruitment_post_main_content_personalInfo_text">
               <div class="recruitment_post_main_content_personalInfo_name">
-                {{ applyData.candidate_name }}
+                {{ applyData.user?.lastname + applyData.user?.firstname }}
               </div>
               <div class="recruitment_post_main_content_personalInfo_item">
                 <div
@@ -40,7 +40,7 @@
                 <div
                   class="recruitment_post_main_content_personalInfo_item_text"
                 >
-                  {{ applyData.area }}
+                  {{ applyData.user?.area }}
                 </div>
               </div>
               <div class="recruitment_post_main_content_personalInfo_item">
@@ -52,7 +52,7 @@
                 <div
                   class="recruitment_post_main_content_personalInfo_item_text"
                 >
-                  {{ applyData.email }}
+                  {{ applyData.user?.email }}
                 </div>
               </div>
               <div class="recruitment_post_main_content_personalInfo_item">
@@ -65,7 +65,7 @@
                   class="recruitment_post_main_content_personalInfo_item_text"
                 >
                   <div class="levelbox"></div>
-                  <div>{{ getlevelLabel(applyData.status) }}</div>
+                  <div>{{ getlevelLabel(applyData.user?.exp) }}</div>
                 </div>
               </div>
             </div>
@@ -80,8 +80,8 @@
           </div>
         </div>
         <div class="recruitment_post_main_content_btn">
-          <button>確認</button>
-          <button>拒絕</button>
+          <button @click="verifyPassStatus">確認</button>
+          <button @click="verifyDeclineStatus">拒絕</button>
         </div>
       </div>
     </main>
@@ -91,32 +91,38 @@
 <script setup>
 import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
+import getData from "@/composables/data/getData";
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
+const { getDocument } = getData();
+
 const title = ref("審核應徵");
 const store = useStore();
 const route = useRoute();
 // const computedRenderApply = ref([]);
-onMounted(() => {
-  // store.dispatch("getApply"); //用index.js的 action 要用dispatch
-
-  console.log(route.query.id);
-  console.log(store.state.ApplyRecords);
+onMounted(async () => {
   const data = store.state.ApplyRecords.find(
     (apply) => apply.id === route.query.id
   );
+
   if (!data) {
-    return;
+    const apply = await getDocument("APPLYS", route.query.id);
+    // console.log(apply);
+    const user = await getDocument("MEMBERS", apply.user_id);
+
+    // console.log(user);
+
+    return (applyData.value = { ...apply, user });
   }
 
   applyData.value = { ...data };
-  console.log(data);
+  console.log(applyData.value);
 });
 
 const applyData = ref({});
 
-const getlevelLabel = computed(() => {
+const getlevelLabel = (exp) => {
   const levels = [
     {
       value: 0,
@@ -135,11 +141,18 @@ const getlevelLabel = computed(() => {
       label: "經歷不拘",
     },
   ];
-  return (levelValue) => {
-    const levelObject = levels.find((status) => status.value === levelValue);
-    return levelObject ? levelObject.label : "";
-  };
-});
+
+  const levelObject = levels.find((status) => status.value === exp);
+  return levelObject ? levelObject.label : "";
+};
+
+const verifyPassStatus = () => {
+  console.log("pass");
+};
+
+const verifyDeclineStatus = () => {
+  console.log("bye");
+};
 </script>
 
 <style lang="scss">
