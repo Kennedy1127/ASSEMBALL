@@ -151,10 +151,9 @@ export default {
     console.log(productData);
     this.ProductPaymentItems = [
       {
-        // imgSrc: require("@/assets/images/products/ProductPayment_pic1.png"),
         name: productData.title,
         price: productData.price,
-        // date: new Date().toLocaleDateString(),
+        id: productData.seller_id,
         seller: productData.seller_name,
       },
     ];
@@ -166,6 +165,14 @@ export default {
       "product"
     );
     this.picSrc = res[0];
+
+    const memberNameData = await getDocument(
+      "MEMBERS",
+      this.ProductPaymentItems[0].id
+    );
+    console.log(memberNameData);
+
+    this.memberNameData = memberNameData;
   },
 
   data() {
@@ -174,6 +181,7 @@ export default {
       picSrc: "", //商品圖
       productData: [],
       ProductPaymentItems: [],
+      memberNameData: {},
       // 表單資料
       phone: "",
       address: "",
@@ -194,6 +202,12 @@ export default {
   },
   //數字限制
   computed: {
+    //姓氏 + 名字
+    dynamicTitle() {
+      const firstname = this.memberNameData.firstname;
+      const lastname = this.memberNameData.lastname;
+      return `${lastname}${firstname}`;
+    },
     computedCommentLen() {
       return this.creditCardNumber.length;
     },
@@ -274,7 +288,7 @@ export default {
           date: this.todayDate,
           name: this.ProductPaymentItems[0].name,
           price: this.ProductPaymentItems[0].price,
-          seller: this.ProductPaymentItems[0].seller,
+          seller: this.dynamicTitle,
           buyerPhone: this.phone,
           buyerAddress: this.address,
           buyerCreditCardNumber: this.creditCardNumber,
@@ -289,7 +303,7 @@ export default {
           {
             collectionName: "MEMBERS",
             documentId: this.$store.state.user.id,
-            subCollectionName: "PRODUCTMANAGE",
+            subCollectionName: "ORDERMANAGE",
           },
           data
         );

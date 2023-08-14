@@ -93,8 +93,13 @@ const routes = [
     path: "/products/products-payment",
     name: "ProductPayment",
     component: () => import("@/views/products/ProductPayment.vue"),
-    beforeEnter: () => {
-      // if (!store.state.isLoggedIn) return { name: "Home" };
+    beforeEnter: (to, from, next) => {
+      if (!store.state.isLoggedIn) {
+        alert("請先登入才可以進行購買喔！");
+        next({ name: "Login" }); // 導向到 Login 頁面
+      } else {
+        next();
+      }
     },
   },
   /////////////////////////////////////////

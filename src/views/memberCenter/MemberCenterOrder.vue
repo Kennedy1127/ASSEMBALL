@@ -14,29 +14,30 @@
         </div>
         <div
           class="MemberCenter_Order_list_item"
-          v-for="item in memberCenterOrder"
-          :key="item.Orderlist"
+          v-for="(orders, index) in orders"
+          :key="index"
+          :orders="computedRenderOrderManage"
         >
-          <img :src="item.member_icon" :alt="memberCenterOrder_list_item_pic" />
+          <img :src="orders.pic" :alt="memberCenterOrder_list_item_pic" />
           <div class="MemberCenter_Order_list_item_name">
-            {{ item.member_firstName }}
+            {{ orders.name }}
           </div>
           <div class="MemberCenter_Order_list_item_seller">
-            {{ item.member_lastName }}
+            {{ orders.seller }}
           </div>
           <div class="MemberCenter_Order_list_item_price">
-            {{ item.member_area }}
+            NT${{ orders.price }}
           </div>
           <div class="MemberCenter_Order_list_item_date">
-            <span>購買日期：</span>{{ item.member_exp }}
+            <span>購買日期：</span>{{ orders.date }}
           </div>
         </div>
       </div>
-      <!-- //頁碼未處理 -->
-      <!-- <PaginationComponent
+      <!-- 頁碼-->
+      <PaginationComponent
         :totalPages="computedTotalPages"
         type="BacksideRecruit"
-      /> -->
+      />
     </div>
   </section>
 </template>
@@ -45,37 +46,39 @@
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
 
-// //把抓到的內容放進表格內
-// const store = useStore();
-// onMounted(() => {
-//   store.dispatch("getMemberCenterOrderManage"); //用index.js的 action 要用dispatch
-// });
-// 一頁放幾個項目
-// const computedRenderMemberCenterOrderManage = computed(() => {
-//   const start = store.state.isMobile
-//     ? (store.state.curPage - 1) * 4
-//     : (store.state.curPage - 1) * 5;
-//   const end = store.state.isMobile
-//     ? store.state.curPage * 4
-//     : store.state.curPage * 5;
-//   return store.state.MemberCenterOrderManage.slice(start, end);
-// });
-// const computedTotalPages = computed(() => {
-//   // 計算總頁數
-//   if (store.state.MemberCenterOrderManage.length === 0) return 1;
-//   const len = store.state.MemberCenterOrderManage.length; //state :return的東西
-//   return store.state.isMobile
-//     ? len % 4 === 0 // 手機
-//       ? len > 4
-//         ? len / 4
-//         : 1
-//       : Math.ceil(len / 4)
-//     : len % 5 === 0 // 桌機板
-//     ? len > 5
-//       ? len / 5
-//       : 1
-//     : Math.ceil(len / 5);
-// });
+//把抓到的內容放進表格內
+const store = useStore();
+onMounted(() => {
+  store.dispatch("getOrderManage"); //用index.js的 action 要用dispatch
+});
+
+// 一頁放幾個項目;
+const computedRenderOrderManage = computed(() => {
+  const start = store.state.isMobile
+    ? (store.state.curPage - 1) * 4
+    : (store.state.curPage - 1) * 5;
+  const end = store.state.isMobile
+    ? store.state.curPage * 4
+    : store.state.curPage * 5;
+  return store.state.orderManage.slice(start, end);
+});
+
+const computedTotalPages = computed(() => {
+  // 計算總頁數
+  if (store.state.orderManage.length === 0) return 1;
+  const len = store.state.orderManage.length; //state :return的東西
+  return store.state.isMobile
+    ? len % 4 === 0 // 手機
+      ? len > 4
+        ? len / 4
+        : 1
+      : Math.ceil(len / 4)
+    : len % 5 === 0 // 桌機板
+    ? len > 5
+      ? len / 5
+      : 1
+    : Math.ceil(len / 5);
+});
 </script>
 
 <script>
@@ -84,8 +87,9 @@ import PaginationComponent from "@/components/utilities/PaginationComponent";
 export default {
   //抓購買訂單資料
   async mounted() {
-    const ProductDate = await this.$store.dispatch("getProductManage");
-    console.log(ProductDate);
+    const OrderDate = await this.$store.dispatch("getOrderManage");
+    console.log(OrderDate);
+    this.orders = OrderDate;
   },
 
   components: {
@@ -94,37 +98,8 @@ export default {
   props: ["totalPages"],
   data() {
     return {
+      orders: [],
       lastPage: this.$props.totalPages,
-      memberCenterOrder: [
-        {
-          imgSrc: require("@/assets/images/MemberCenter/MemberCenterOrder_pic01.png"),
-          name: "酷炫手套",
-          seller: "麥當當",
-          price: "$4,500",
-          date: "2023 / 05 / 17",
-        },
-        {
-          imgSrc: require("@/assets/images/MemberCenter/MemberCenterOrder_pic02.png"),
-          name: "酷炫鞋子",
-          seller: "麥當當",
-          price: "$4,500",
-          date: "2023 / 05 / 17",
-        },
-        {
-          imgSrc: require("@/assets/images/MemberCenter/MemberCenterOrder_pic03.png"),
-          name: "酷炫球棒",
-          seller: "麥當當",
-          price: "$4,500",
-          date: "2023 / 05 / 17",
-        },
-        {
-          imgSrc: require("@/assets/images/MemberCenter/MemberCenterOrder_pic04.png"),
-          name: "可愛手套",
-          seller: "麥當當",
-          price: "$4,500",
-          date: "2023 / 05 / 17",
-        },
-      ],
     };
   },
 };

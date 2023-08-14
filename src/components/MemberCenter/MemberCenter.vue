@@ -103,7 +103,7 @@ export default {
     dynamicTitle() {
       const firstname = this.$store.state.user.firstname;
       const lastname = this.$store.state.user.lastname;
-      return `${lastname} ${firstname}`;
+      return `${lastname}${firstname}`;
     },
   },
 };

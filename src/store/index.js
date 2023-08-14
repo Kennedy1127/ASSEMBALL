@@ -51,7 +51,8 @@ export default createStore({
     //////////////////////////////////////////////////////
     //會員中心區塊
     memberCenter: [],
-    productManage: [],
+    // productManage: [],
+    orderManage: [],
     application: [],
 
     //////////////////////////////////////////////////////
@@ -70,7 +71,6 @@ export default createStore({
     ///////////////////////////////////////////
     // 我的球隊區塊
     myplayerPopupsOpen: false,
-
     myplayerEditOpen: false,
     myplayerOverlay: true,
     myplayerTeam: {},
@@ -282,10 +282,16 @@ export default createStore({
       state.application = [...payload];
     },
 
-    //取得購買訂單資料
+    //取得商品管理資料
     setProductManage(state, payload) {
       console.log(payload);
       state.productManage = [...payload];
+    },
+
+    //取得購買紀錄資料
+    setOrderManage(state, payload) {
+      console.log(payload);
+      state.orderManage = [...payload];
     },
 
     //登出時清除會員資料
@@ -539,17 +545,30 @@ export default createStore({
       return memberApplyDate;
     },
 
-    // 撈訂單管理
-    async getProductManage(context, payload) {
-      const productManageDate = await getSubCollectionDocuments({
+    // 撈會員中心訂單管理
+    async getOrderManage(context, payload) {
+      const orderManageDate = await getSubCollectionDocuments({
         collectionName: "MEMBERS",
         documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
-        subCollectionName: "PRODUCTMANAGE",
+        subCollectionName: "ORDERMANAGE",
       });
-      console.log(productManageDate);
+      console.log(orderManageDate);
 
-      context.commit("setProductManage", productManageDate);
-      return productManageDate;
+      context.commit("setOrderManage", orderManageDate);
+      return orderManageDate;
+    },
+
+    // 撈訂單管理
+    async getProductManage(context, payload) {
+      try {
+        const res = await getSubCollectionDocuments(payload);
+        if (!res) throw new Error("Cannot fetch response");
+        return res;
+      } catch (err) {
+        console.error(err);
+      }
+      context.commit("setProductManage", res);
+      return res;
     },
 
     ///////////////////////////////////////
