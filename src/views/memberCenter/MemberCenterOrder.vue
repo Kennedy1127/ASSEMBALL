@@ -1,11 +1,6 @@
 <template>
   <section class="MemberCenter_Order">
     <div class="wrapper">
-      <!-- <div class="MemberCenter_Order_backlink">
-        <router-link to="/">
-          <span><font-awesome-icon icon="fa-solid fa-angle-left" /></span>返回
-        </router-link>
-      </div> -->
       <div class="MemberCenter_Order_title">
         <div class="block"><span>購買紀錄</span></div>
       </div>
@@ -38,10 +33,10 @@
         </div>
       </div>
       <!-- //頁碼未處理 -->
-      <PaginationComponent
+      <!-- <PaginationComponent
         :totalPages="computedTotalPages"
         type="BacksideRecruit"
-      />
+      /> -->
     </div>
   </section>
 </template>
@@ -87,6 +82,12 @@ import { computed, onMounted, ref } from "vue";
 import PaginationComponent from "@/components/utilities/PaginationComponent";
 
 export default {
+  //抓購買訂單資料
+  async mounted() {
+    const ProductDate = await this.$store.dispatch("getProductManage");
+    console.log(ProductDate);
+  },
+
   components: {
     PaginationComponent,
   },

@@ -270,6 +270,7 @@ export default {
 
         // 購買的商品資料
         const data = {
+          pic: this.picSrc,
           date: this.todayDate,
           name: this.ProductPaymentItems[0].name,
           price: this.ProductPaymentItems[0].price,

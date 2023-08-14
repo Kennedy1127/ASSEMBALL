@@ -51,6 +51,7 @@ export default createStore({
     //////////////////////////////////////////////////////
     //會員中心區塊
     memberCenter: [],
+    productManage: [],
     application: [],
 
     //////////////////////////////////////////////////////
@@ -279,6 +280,12 @@ export default createStore({
     setApplication(state, payload) {
       console.log(payload);
       state.application = [...payload];
+    },
+
+    //取得購買訂單資料
+    setProductManage(state, payload) {
+      console.log(payload);
+      state.productManage = [...payload];
     },
 
     //登出時清除會員資料
@@ -528,25 +535,21 @@ export default createStore({
       });
       console.log(memberApplyDate);
 
-      // const allMemberDate = {
-      //   ...memberDate[1],
-      //   memberApplyDate,
-      // };
-      // console.log(allTeamData);
-
       context.commit("setApplication", memberApplyDate);
       return memberApplyDate;
     },
 
     // 撈訂單管理
     async getProductManage(context, payload) {
-      try {
-        const res = await getSubCollectionDocuments(payload);
-        if (!res) throw new Error("Cannot fetch response");
-        return res;
-      } catch (err) {
-        console.error(err);
-      }
+      const productManageDate = await getSubCollectionDocuments({
+        collectionName: "MEMBERS",
+        documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
+        subCollectionName: "PRODUCTMANAGE",
+      });
+      console.log(productManageDate);
+
+      context.commit("setProductManage", productManageDate);
+      return productManageDate;
     },
 
     ///////////////////////////////////////
