@@ -26,13 +26,16 @@
         <div style="font-weight: 600">紀錄管理</div>
       </div>
 
-      <div class="recruitment_post_main_table">
+      <div class="recruitment_post_main_table" v-if="!isNoResults">
         <RecruitmentTable
           :tableData="computedRenderApplyRecords"
           :tablekey="tablekey"
           :title="title"
         >
         </RecruitmentTable>
+      </div>
+      <div class="no-data" v-else="isNoResults">
+        <img src="~@/assets/images/recruitment/no-data.png" alt="no-data" />
       </div>
       <div class="recruitment_post_main_page">
         <PaginationComponent />
@@ -53,6 +56,10 @@ import { computed, onMounted, ref } from "vue";
 const tablekey = ref(2);
 const title = ref("記錄管理");
 
+const isNoResults = computed(
+  () => store.getters.renderManageCopywritings.length === 0
+);
+
 //把抓到的內容放進表格內
 const store = useStore();
 onMounted(() => {
@@ -69,12 +76,12 @@ const computedRenderApplyRecords = computed(() => {
     ? store.state.curPage * 4
     : store.state.curPage * 5;
 
-  return store.state.ApplyRecords.slice(start, end);
+  return store.getters.VerifyApplyRecords.slice(start, end);
 });
 const computedTotalPages = computed(() => {
   // 計算總頁數
-  if (store.state.ApplyRecords.length === 0) return 1;
-  const len = store.state.ApplyRecords.length; //state :return的東西
+  if (store.state.getters.VerifyApplyRecords.length === 0) return 1;
+  const len = store.getters.VerifyApplyRecords.length; //state :return的東西
   return store.state.isMobile
     ? len % 4 === 0 // 手機
       ? len > 4
