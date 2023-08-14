@@ -34,13 +34,13 @@ export default {
 
   methods: {
     submitFilters() {
-      const searchObj = {
-        searchText: this.searchText,
-        role: this.role,
-        area: this.area,
-      };
-      console.log(role);
-      this.$store.commit("selectCopywritingsSearch", searchObj);
+      // const searchObj = {
+      //   role: this.role,
+      //   area: this.area,
+      // };
+      this.$store.state.selectedManageCopywritingsRole = this.role;
+      this.$store.state.selectedManageCopywritingsArea = this.area;
+      this.$store.commit("resetPaginationCurPage");
     },
   },
 };

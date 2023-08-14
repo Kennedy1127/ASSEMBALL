@@ -67,6 +67,8 @@ export default createStore({
     //----球隊徵人招募-後台
     ManageCopywritings: [],
     ApplyRecords: [],
+    selectedManageCopywritingsRole: -1,
+    selectedManageCopywritingsArea: "",
 
     ///////////////////////////////////////////
     // 我的球隊區塊
@@ -150,6 +152,44 @@ export default createStore({
       return products;
     },
 
+    //////////////////////////////////////////////////////
+    // 球員招募後台
+
+    // 如果守備位置條件符合的話或為-1時，return true
+    includedManageCopywritingsByRole: (state) => (copywriting) => {
+      if (state.selectedManageCopywritingsRole < 0) return true;
+      return state.selectedManageCopywritingsRole === Number(copywriting.role);
+    },
+
+    // 如果地區條件符合的話或為空字串、-1時，return true
+    includedManageCopywritingsByArea: (state) => (copywriting) => {
+      if (
+        !state.selectedManageCopywritingsArea ||
+        state.selectedManageCopywritingsArea === -1
+      )
+        return true;
+
+      return state.selectedManageCopywritingsArea.includes(copywriting.area);
+    },
+
+    renderManageCopywritings(state, getters) {
+      return state.ManageCopywritings.filter((copywriting) =>
+        getters.includedManageCopywritingsByRole(copywriting)
+      ).filter((copywriting) =>
+        getters.includedManageCopywritingsByArea(copywriting)
+      );
+    },
+
+    // 已-審核應徵者
+    VerifyApplyRecords(state) {
+      return state.ApplyRecords.filter((apply) => apply.status === 2);
+    },
+    // 尚未-審核應徵者
+    unVerifyApplyRecords(state) {
+      return state.ApplyRecords.filter(
+        (apply) => apply.status === 0 || apply.status === 1
+      );
+    },
     //////////////////////////////////////////////////////
     // 招募文案區塊
     // 招募初心者數量
@@ -404,6 +444,12 @@ export default createStore({
       state.ApplyRecords = [...payload]; //payload:要運送出來的東西
     },
 
+    // reset 管理、審查的篩選器
+    resetFilters(state) {
+      state.selectedManageCopywritingsRole = -1;
+      state.selectedManageCopywritingsArea = "";
+    },
+
     ///////////////////////////////////////
     //我的球隊彈窗頁面切換
     myplayerPopupsToggle(state) {
@@ -656,6 +702,19 @@ export default createStore({
         // const res = await axios.get("http://localhost:3000/candidate-apply");
         // if (!res) throw new Error("Cannot fetch response");
         const res = await getDocuments("APPLYS");
+
+        for (let i = 0; i < res.length; i++) {
+          const copywriting = await getDocument(
+            "COPYWRITINGS",
+            res[i].copywriting_id
+          );
+          const user = await getDocument("MEMBERS", res[i].user_id);
+
+          res[i].copywriting = copywriting;
+          res[i].user = user;
+        }
+
+        // console.log(res);
         context.commit("setApplyRecords", res); //setManageCopywritings: 寫在mutation裡面
         // context.commit("setCopywritingsCount", res.data.length);
       } catch (err) {

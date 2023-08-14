@@ -23,49 +23,58 @@
   <div class="home_product_all">
     <div
       class="home_product_all_top"
-      v-for="data in topProductData"
-      :key="data"
-      @click="goToProducts(data.product_id)"
+      v-for="item in ProductPaymentItem"
+      :key="item.Payment"
+      @click="goToProducts(item.product_id)"
     >
       <h2 class="home_product_all_top_title">{{ data.top }}</h2>
       <div class="home_product_all_top_pic">
-        <img :src="data.imgUrl" alt="product" />
+        <img :src="item.imgSrc" :alt="ProductPayment_form_item_pic" />
       </div>
       <h3 class="home_product_all_top_name">
-        {{ data.productName }}
+        {{ item.name }}
       </h3>
-      <div class="home_product_all_top_date">{{ data.date }}</div>
+      <div class="home_product_all_top_date">{{ item.date }}</div>
     </div>
   </div>
 </template>
 
 <script>
+import getData from "@/composables/data/getData";
+const { getDocument, getDocuments, getSubCollectionDocuments } = getData();
 export default {
+  async mounted() {
+    const productsDate = await getDocuments("PRODUCTS", [
+      ["status", "==", true],
+    ]);
+    console.log(productsDate);
+  },
+
   data() {
     return {
-      topProductData: [
-        {
-          top: "TOP2",
-          imgUrl: require("@/assets/images/index/product_top02.jpg"),
-          productName: "高品質二手棒球護具套裝",
-          date: "2023-05-19",
-          product_id: "64c09a3e4b8f780513fbf2f4",
-        },
-        {
-          top: "TOP1",
-          imgUrl: require("@/assets/images/index/product_top01.jpg"),
-          productName: "精選二手棒球珍品",
-          date: "2023-07-29",
-          product_id: "64c09a3e63fb8e32470551e5",
-        },
-        {
-          top: "TOP3",
-          imgUrl: require("@/assets/images/index/product_top03.jpg"),
-          productName: "品牌投手手套尋找新主人",
-          date: "2023-06-09",
-          product_id: "64c09a3efe9f0f5052cb66c4",
-        },
-      ],
+      //     topProductData: [
+      //       // {
+      //       //   top: "TOP2",
+      //       //   imgUrl: require("@/assets/images/index/product_top02.jpg"),
+      //       //   productName: "高品質二手棒球護具套裝",
+      //       //   date: "2023-05-19",
+      //       //   product_id: "64c09a3e4b8f780513fbf2f4",
+      //       // },
+      //       // {
+      //       //   top: "TOP1",
+      //       //   imgUrl: require("@/assets/images/index/product_top01.jpg"),
+      //       //   productName: "精選二手棒球珍品",
+      //       //   date: "2023-07-29",
+      //       //   product_id: "64c09a3e63fb8e32470551e5",
+      //       // },
+      //       // {
+      //       //   top: "TOP3",
+      //       //   imgUrl: require("@/assets/images/index/product_top03.jpg"),
+      //       //   productName: "品牌投手手套尋找新主人",
+      //       //   date: "2023-06-09",
+      //       //   product_id: "64c09a3efe9f0f5052cb66c4",
+      //       // },
+      //     ],
     };
   },
   methods: {

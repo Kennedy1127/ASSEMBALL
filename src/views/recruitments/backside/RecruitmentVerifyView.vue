@@ -24,10 +24,7 @@
         <div class="block"></div>
         <div style="font-weight: 600">審核應徵</div>
       </div>
-      <div class="recruitment_post_main_filter">
-        <!--RecruitmentSearchbar.vue  -->
-        <RecruitmentSearchbar />
-      </div>
+
       <div class="recruitment_post_main_table">
         <RecruitmentTable
           :tableData="computedRendergetApplyRecords"
@@ -73,12 +70,12 @@ const computedRendergetApplyRecords = computed(() => {
     ? store.state.curPage * 4
     : store.state.curPage * 5;
 
-  return store.state.ApplyRecords.slice(start, end);
+  return store.getters.unVerifyApplyRecords.slice(start, end);
 });
 const computedTotalPages = computed(() => {
   // 計算總頁數
-  if (store.state.ApplyRecords.length === 0) return 1;
-  const len = store.state.ApplyRecords.length; //state :return的東西
+  if (store.getters.unVerifyApplyRecords.length === 0) return 1;
+  const len = store.getters.unVerifyApplyRecords.length; //state :return的東西
   return store.state.isMobile
     ? len % 4 === 0 // 手機
       ? len > 4

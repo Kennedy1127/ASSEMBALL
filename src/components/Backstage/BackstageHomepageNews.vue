@@ -116,9 +116,7 @@
             accept="image/*"
             @change="ChangePic"
           />
-          <button class="homePage_card_pic_btn">
-            <font-awesome-icon icon="fa-solid fa-circle-plus" />
-          </button>
+     
         </div>
         <div class="homePage_card_list">
           內文照片:<input
@@ -128,9 +126,7 @@
             accept="image/*"
             @change="ChangeSubPic"
           />
-          <button class="homePage_card_pic_btn">
-            <font-awesome-icon icon="fa-solid fa-circle-plus" />
-          </button>
+       
         </div>
         <div class="homePage_card_list homePage_card_list_article">
           文章內容:
@@ -456,6 +452,9 @@ export default {
       NewsKeyword: [],
       NewsCard: [],
 
+      ArticleText:"",
+      TitleText:"",
+      SubTitleText:"",
       PicFile: "",
       SubFile: "",
       HaveNewsPic: "",
@@ -632,15 +631,13 @@ export default {
     },
     async AddNewsCard() {
       if (
-        this.HaveNewsPic ==""||
-        this.HaveNewsSubPic ==""||
-        this.ArticleText == "" ||
-        this.TitleText == "" ||
-        this.SubTitleText == ""
+        (this.HaveNewsPic !="")&&
+        (this.HaveNewsSubPic !="")&&
+        (this.ArticleText != "") &&
+        (this.TitleText != "") &&
+        (this.SubTitleText != "")
       ) {
-        alert("內容不可為空");
-        return;
-      }
+        console.log("判斷")
       const { setPics } = useStorage(); //拉useStorage的setPics來用
        const NewsPic = await setPics("images/NEWS", [this.PicFile], "NewsPic"); //傳入(路徑,檔案,檔案名稱)並傳至資料庫,返回該檔案的urls[]
       const NewsSubPic = await setPics(
@@ -648,7 +645,7 @@ export default {
         [this.SubPicFile],
         "NewsSubPic"
       ); //傳入(路徑,檔案,檔案名稱)並傳至資料庫,返回該檔案的urls[]
-      console.log("sss",NewsPic)
+      //console.log("sss",NewsPic)
 
       //編輯最新消息卡片
       const NewsCardCollection = doc(db, "NEWS", this.CurrentId);
@@ -665,6 +662,9 @@ export default {
         title: this.TitleText,
         title_breakpoint: this.SubTitleText,
       });
+      }
+      else{alert("內容不可為空");
+        return;}
     },
   
   },
