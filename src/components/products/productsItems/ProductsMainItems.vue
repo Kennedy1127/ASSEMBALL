@@ -21,7 +21,13 @@
         <div class="products_item_price">NT${{ convertPrice(item.price) }}</div>
         <div class="products_item_seller">
           <div class="products_item_seller_icon">
-            <img src="~@/assets/images/icons/main-icon.png" alt="seller icon" />
+            <img
+              :src="
+                item.seller_pic ||
+                require('@/assets/images/icons/main-icon.png')
+              "
+              alt="seller icon"
+            />
           </div>
           <div class="products_item_seller_msg">
             <span>賣家留言：</span> <br />
@@ -202,6 +208,17 @@ const goToProductDetail = (id) => {
   &_seller {
     display: flex;
     gap: 10px;
+
+    &_icon {
+      width: 4rem;
+      height: 4rem;
+
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
+    }
 
     &_msg {
       flex: 1;
