@@ -33,6 +33,15 @@
           </div>
         </div>
       </div>
+      <div class="MemberCenter_Order_img" v-if="orders.length == 0">
+        <div class="Member_notify_noResults_img">
+          <img
+            src="~@/assets/images/recruitment/no-results.svg"
+            alt="no_results"
+          />
+        </div>
+        <p class="MemberCenter_Order_img_text">目前沒有任何的購買紀錄哦！</p>
+      </div>
       <!-- 頁碼-->
       <PaginationComponent
         :totalPages="computedTotalPages"
@@ -42,7 +51,31 @@
   </section>
 </template>
 
-<script setup>
+<script>
+import PaginationComponent from "@/components/utilities/PaginationComponent";
+
+export default {
+  //抓購買訂單資料
+  async mounted() {
+    const OrderDate = await this.$store.dispatch("getOrderManage");
+    console.log(OrderDate);
+    this.orders = OrderDate;
+  },
+
+  components: {
+    PaginationComponent,
+  },
+  props: ["totalPages"],
+  data() {
+    return {
+      orders: [],
+      lastPage: this.$props.totalPages,
+    };
+  },
+};
+</script>
+
+<!-- <script setup>
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
 
@@ -79,31 +112,7 @@ const computedTotalPages = computed(() => {
       : 1
     : Math.ceil(len / 5);
 });
-</script>
-
-<script>
-import PaginationComponent from "@/components/utilities/PaginationComponent";
-
-export default {
-  //抓購買訂單資料
-  async mounted() {
-    const OrderDate = await this.$store.dispatch("getOrderManage");
-    console.log(OrderDate);
-    this.orders = OrderDate;
-  },
-
-  components: {
-    PaginationComponent,
-  },
-  props: ["totalPages"],
-  data() {
-    return {
-      orders: [],
-      lastPage: this.$props.totalPages,
-    };
-  },
-};
-</script>
+</script> -->
 
 <style lang="scss">
 .MemberCenter_Order {
@@ -155,6 +164,22 @@ export default {
       border-left: 1rem solid var(--primary-blue);
       & span {
         padding-left: 1.5rem;
+      }
+    }
+  }
+
+  //沒有購買紀錄的提示
+  &_img {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    p {
+      font-size: 1.5rem;
+      color: var(--secondary-gray-3);
+      @media all and (max-width: 420px) {
+        font-size: 1.25rem;
+        padding-bottom: 2rem;
       }
     }
   }
