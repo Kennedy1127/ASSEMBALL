@@ -150,6 +150,13 @@ const computedTotalPages = computed(() => {
         }
       }
     }
+    .no-data {
+      padding-top: 2rem;
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
   }
 }
 @media screen and (max-width: 768px) {
