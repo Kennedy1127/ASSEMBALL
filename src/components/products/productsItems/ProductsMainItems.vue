@@ -151,7 +151,7 @@ const goToProductDetail = (id) => {
   }
 
   &_header {
-    width: 315px;
+    width: 100%;
     height: 195px;
     background-color: #eaeaea;
     border-radius: 8px;

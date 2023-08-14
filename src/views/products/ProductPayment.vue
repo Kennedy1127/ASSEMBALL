@@ -151,10 +151,9 @@ export default {
     console.log(productData);
     this.ProductPaymentItems = [
       {
-        // imgSrc: require("@/assets/images/products/ProductPayment_pic1.png"),
         name: productData.title,
         price: productData.price,
-        // date: new Date().toLocaleDateString(),
+        id: productData.seller_id,
         seller: productData.seller_name,
       },
     ];
@@ -166,6 +165,14 @@ export default {
       "product"
     );
     this.picSrc = res[0];
+
+    const memberNameData = await getDocument(
+      "MEMBERS",
+      this.ProductPaymentItems[0].id
+    );
+    console.log(memberNameData);
+
+    this.memberNameData = memberNameData;
   },
 
   data() {
@@ -174,6 +181,7 @@ export default {
       picSrc: "", //商品圖
       productData: [],
       ProductPaymentItems: [],
+      memberNameData: {},
       // 表單資料
       phone: "",
       address: "",
@@ -194,6 +202,12 @@ export default {
   },
   //數字限制
   computed: {
+    //姓氏 + 名字
+    dynamicTitle() {
+      const firstname = this.memberNameData.firstname;
+      const lastname = this.memberNameData.lastname;
+      return `${lastname}${firstname}`;
+    },
     computedCommentLen() {
       return this.creditCardNumber.length;
     },
@@ -236,77 +250,98 @@ export default {
 
     //提交表單
     async submitForm() {
-      this.PhoneError = "";
-      this.CardError = "";
-      this.DateError = "";
-      this.CVVError = "";
-      this.validatePhone();
-      this.validateCard();
-      this.validateDate();
-      this.validateCVV();
+      if (confirm("請問確定要提交付款資料嗎？") == true) {
+        this.PhoneError = "";
+        this.CardError = "";
+        this.DateError = "";
+        this.CVVError = "";
+        this.validatePhone();
+        this.validateCard();
+        this.validateDate();
+        this.validateCVV();
 
-      //顯示錯誤訊息
-      if (
-        !this.isPhoneValid ||
-        !this.isCardValid ||
-        !this.isDateValid ||
-        !this.isCVVValid
-      ) {
-        alert("付款資料有誤，請重新檢查喔！");
-        if (!this.isPhoneValid) {
-          this.PhoneError = "請輸入有效的手機號碼 (格式：09xxxxxxxx)";
+        //顯示錯誤訊息
+        if (
+          !this.isPhoneValid ||
+          !this.isCardValid ||
+          !this.isDateValid ||
+          !this.isCVVValid
+        ) {
+          alert("付款資料有誤，請重新檢查喔！");
+          if (!this.isPhoneValid) {
+            this.PhoneError = "請輸入有效的手機號碼 (格式：09xxxxxxxx)";
+          }
+          if (!this.isCardValid) {
+            this.CardError = "請輸入有效的信用卡號 (16位數字)";
+          }
+          if (!this.isDateValid) {
+            this.DateError = "請輸入有效的到期日 (3位數字)";
+          }
+          if (!this.isCVVValid) {
+            this.CVVError = "請輸入有效的CVV (3位數字)";
+          }
+        } else {
+          alert(
+            "親愛的球友，您的付款資料已成功提交，可以至 會員中心 > 訂單管理 查看您的購買紀錄喔！ "
+          );
+
+          // 購買的商品資料
+          const data = {
+            pic: this.picSrc,
+            date: this.todayDate,
+            name: this.ProductPaymentItems[0].name,
+            price: this.ProductPaymentItems[0].price,
+            seller: this.dynamicTitle,
+            buyerPhone: this.phone,
+            buyerAddress: this.address,
+            buyerCreditCardNumber: this.creditCardNumber,
+            buyerCreditCardDate: this.creditCardDate,
+            buyerCreditCardCVV: this.creditCardCVV,
+          };
+
+          console.log(data);
+
+          //上傳購買的商品資料
+          await setDataSubCollection(
+            {
+              collectionName: "MEMBERS",
+              documentId: this.$store.state.user.id,
+              subCollectionName: "ORDERMANAGE",
+            },
+            data
+          );
+
+          // 已購買的商品資料
+          const boughtData = {
+            status: false,
+          };
+
+          //把已購買的商品status上架狀態改成False
+          await updateData(
+            {
+              collectionName: "PRODUCTS",
+              documentId: this.$route.query.id,
+            },
+            boughtData
+          );
+
+          // // 表單資料確認
+          // console.log("手機號碼：", this.phone);
+          // console.log("收件地址：", this.address);
+          // console.log("信用卡號：", this.creditCardNumber);
+          // console.log("到期日：", this.creditCardDate);
+          // console.log("CVV：", this.creditCardCVV);
+
+          //提交後重置表單資料
+          this.phone = "";
+          this.address = "";
+          this.creditCardNumber = "";
+          this.creditCardDate = "";
+          this.creditCardCVV = "";
+
+          // 跳轉頁面到拍賣專區
+          this.$router.push({ name: "Products" });
         }
-        if (!this.isCardValid) {
-          this.CardError = "請輸入有效的信用卡號 (16位數字)";
-        }
-        if (!this.isDateValid) {
-          this.DateError = "請輸入有效的到期日 (3位數字)";
-        }
-        if (!this.isCVVValid) {
-          this.CVVError = "請輸入有效的CVV (3位數字)";
-        }
-      } else {
-        alert("付款資料提交成功！");
-
-        // 購買的商品資料
-        const data = {
-          pic: this.picSrc,
-          date: this.todayDate,
-          name: this.ProductPaymentItems[0].name,
-          price: this.ProductPaymentItems[0].price,
-          seller: this.ProductPaymentItems[0].seller,
-          buyerPhone: this.phone,
-          buyerAddress: this.address,
-          buyerCreditCardNumber: this.creditCardNumber,
-          buyerCreditCardDate: this.creditCardDate,
-          buyerCreditCardCVV: this.creditCardCVV,
-        };
-
-        console.log(data);
-
-        //上傳購買的商品資料
-        await setDataSubCollection(
-          {
-            collectionName: "MEMBERS",
-            documentId: this.$store.state.user.id,
-            subCollectionName: "PRODUCTMANAGE",
-          },
-          data
-        );
-
-        // // 表單資料確認
-        // console.log("手機號碼：", this.phone);
-        // console.log("收件地址：", this.address);
-        // console.log("信用卡號：", this.creditCardNumber);
-        // console.log("到期日：", this.creditCardDate);
-        // console.log("CVV：", this.creditCardCVV);
-
-        //提交後重置表單資料
-        this.phone = "";
-        this.address = "";
-        this.creditCardNumber = "";
-        this.creditCardDate = "";
-        this.creditCardCVV = "";
       }
     },
   },
