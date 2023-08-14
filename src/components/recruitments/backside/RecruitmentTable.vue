@@ -57,20 +57,29 @@
             v-if="title === '審核應徵' || title === '記錄管理'"
           ></td>
           <td v-if="title === '管理職缺' || title === '審核應徵'">
-            {{ item.title }}
+            {{ item.title || item.copywriting.title }}
           </td>
 
-          <td v-else>{{ getRoleLabel(item.role) }}</td>
+          <td v-else>{{ getRoleLabel(item.role || item.copywriting.role) }}</td>
 
-          <td v-if="title === '管理職缺' || title === '審核應徵'">
+          <td v-if="title === '管理職缺'">
             <!-- <span v-if=""></span>  -->
             {{ getRoleLabel(item.role) }}
           </td>
 
-          <td v-else>{{ item.area }}</td>
+          <td v-else-if="title === '審核應徵'">
+            <!-- <span v-if=""></span>  -->
+            {{ getRoleLabel(item.copywriting?.role) }}
+          </td>
 
-          <td v-if="title === '管理職缺' || title === '審核應徵'">
+          <td v-else>{{ item.copywriting.area }}</td>
+
+          <td v-if="title === '管理職缺'">
             {{ item.area }}
+          </td>
+
+          <td v-else-if="title === '審核應徵'">
+            {{ item.copywriting?.area }}
           </td>
 
           <td v-else>{{ convertDate(item.date.toDate()) }}</td>
@@ -79,7 +88,7 @@
             <div>{{ convertDate(item.date.toDate()) }}</div>
           </td>
 
-          <td v-else>{{ item.candidate_name }}</td>
+          <td v-else>{{ item.user.lastname + item.user.firstname }}</td>
 
           <td v-if="title === '管理職缺'" class="Icon">
             <div class="icon-pen" @click="goEditCopywriting(item.id)">
@@ -212,7 +221,7 @@ export default {
   props: {
     status: {
       type: Number,
-      default: 1,
+      default: 0,
     },
     tableData: {
       type: Array,
@@ -284,9 +293,7 @@ export default {
     goEditCopywriting(id) {
       this.$router.push({ name: "recruitmentPost", query: { id } });
     },
-  },
-  computed: {
-    getRoleLabel() {
+    getRoleLabel(role) {
       const roles = [
         { value: 0, label: "投手" },
         { value: 1, label: "捕手" },
@@ -298,11 +305,29 @@ export default {
         { value: 7, label: "中外野手" },
         { value: 8, label: "右外野手" },
       ];
-      return (roleValue) => {
-        const roleObject = roles.find((role) => role.value === roleValue);
-        return roleObject ? roleObject.label : "";
-      };
+
+      const roleObject = roles.find((roleValue) => roleValue.value === role);
+      return roleObject ? roleObject.label : "";
     },
+  },
+  computed: {
+    // getRoleLabel() {
+    //   const roles = [
+    //     { value: 0, label: "投手" },
+    //     { value: 1, label: "捕手" },
+    //     { value: 2, label: "一壘手" },
+    //     { value: 3, label: "二壘手" },
+    //     { value: 4, label: "游擊手" },
+    //     { value: 5, label: "三壘手" },
+    //     { value: 6, label: "左外野手" },
+    //     { value: 7, label: "中外野手" },
+    //     { value: 8, label: "右外野手" },
+    //   ];
+    //   return (roleValue) => {
+    //     const roleObject = roles.find((role) => role.value === role);
+    //     return roleObject ? roleObject.label : "";
+    //   };
+    // },
   },
 };
 </script>
