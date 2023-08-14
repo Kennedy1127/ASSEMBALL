@@ -337,9 +337,11 @@ export default createStore({
     //登出時清除會員資料
     clearUserData(state) {
       state.isLoggedIn = false;
-      state.userNotifies = [];
+      state.user = null;
+      state.userNotifys = [];
       state.userOrders = [];
       state.memberCenter = [];
+      state.orderManage = [];
       state.application = [];
       // 其他需要重置的資料也在這裡添加
     },

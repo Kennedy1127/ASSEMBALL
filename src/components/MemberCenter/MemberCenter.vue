@@ -101,9 +101,17 @@ export default {
   computed: {
     //姓氏 + 名字
     dynamicTitle() {
-      const firstname = this.$store.state.user.firstname;
-      const lastname = this.$store.state.user.lastname;
-      return `${lastname}${firstname}`;
+      if (this.$store.state.user) {
+        const firstname = this.$store.state.user.firstname
+          ? this.$store.state.user.firstname
+          : "";
+        const lastname = this.$store.state.user.lastname
+          ? this.$store.state.user.lastname
+          : "";
+        return `${lastname}${firstname}`;
+      } else {
+        return ""; // 如果 this.$store.state.user 為 null，直接返回空字串
+      }
     },
   },
 };
