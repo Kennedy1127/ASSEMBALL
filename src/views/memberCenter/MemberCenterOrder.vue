@@ -1,11 +1,6 @@
 <template>
   <section class="MemberCenter_Order">
     <div class="wrapper">
-      <!-- <div class="MemberCenter_Order_backlink">
-        <router-link to="/">
-          <span><font-awesome-icon icon="fa-solid fa-angle-left" /></span>返回
-        </router-link>
-      </div> -->
       <div class="MemberCenter_Order_title">
         <div class="block"><span>購買紀錄</span></div>
       </div>
@@ -19,7 +14,7 @@
         </div>
         <div
           class="MemberCenter_Order_list_item"
-          v-for="item in computedRenderMemberCenterOrderManage"
+          v-for="item in memberCenterOrder"
           :key="item.Orderlist"
         >
           <img :src="item.member_icon" :alt="memberCenterOrder_list_item_pic" />
@@ -38,10 +33,10 @@
         </div>
       </div>
       <!-- //頁碼未處理 -->
-      <PaginationComponent
+      <!-- <PaginationComponent
         :totalPages="computedTotalPages"
         type="BacksideRecruit"
-      />
+      /> -->
     </div>
   </section>
 </template>
@@ -56,37 +51,43 @@ import { computed, onMounted, ref } from "vue";
 //   store.dispatch("getMemberCenterOrderManage"); //用index.js的 action 要用dispatch
 // });
 // 一頁放幾個項目
-const computedRenderMemberCenterOrderManage = computed(() => {
-  const start = store.state.isMobile
-    ? (store.state.curPage - 1) * 4
-    : (store.state.curPage - 1) * 5;
-  const end = store.state.isMobile
-    ? store.state.curPage * 4
-    : store.state.curPage * 5;
-  return store.state.MemberCenterOrderManage.slice(start, end);
-});
-const computedTotalPages = computed(() => {
-  // 計算總頁數
-  if (store.state.MemberCenterOrderManage.length === 0) return 1;
-  const len = store.state.MemberCenterOrderManage.length; //state :return的東西
-  return store.state.isMobile
-    ? len % 4 === 0 // 手機
-      ? len > 4
-        ? len / 4
-        : 1
-      : Math.ceil(len / 4)
-    : len % 5 === 0 // 桌機板
-    ? len > 5
-      ? len / 5
-      : 1
-    : Math.ceil(len / 5);
-});
+// const computedRenderMemberCenterOrderManage = computed(() => {
+//   const start = store.state.isMobile
+//     ? (store.state.curPage - 1) * 4
+//     : (store.state.curPage - 1) * 5;
+//   const end = store.state.isMobile
+//     ? store.state.curPage * 4
+//     : store.state.curPage * 5;
+//   return store.state.MemberCenterOrderManage.slice(start, end);
+// });
+// const computedTotalPages = computed(() => {
+//   // 計算總頁數
+//   if (store.state.MemberCenterOrderManage.length === 0) return 1;
+//   const len = store.state.MemberCenterOrderManage.length; //state :return的東西
+//   return store.state.isMobile
+//     ? len % 4 === 0 // 手機
+//       ? len > 4
+//         ? len / 4
+//         : 1
+//       : Math.ceil(len / 4)
+//     : len % 5 === 0 // 桌機板
+//     ? len > 5
+//       ? len / 5
+//       : 1
+//     : Math.ceil(len / 5);
+// });
 </script>
 
 <script>
 import PaginationComponent from "@/components/utilities/PaginationComponent";
 
 export default {
+  //抓購買訂單資料
+  async mounted() {
+    const ProductDate = await this.$store.dispatch("getProductManage");
+    console.log(ProductDate);
+  },
+
   components: {
     PaginationComponent,
   },

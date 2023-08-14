@@ -21,7 +21,11 @@
         <input
           type="text"
           class="myplayerRaceEdit_name_team_type"
-          placeholder="請輸入時間"
+          placeholder="ex:8/13"
+          oninput="this.value=this.value.replace(/[^0-9/]+/g, '')"
+          maxlength="4"
+          v-model="gamedate"
+          required
         />
       </div>
     </div>
@@ -35,6 +39,10 @@
           type="text"
           class="myplayerRaceEdit_name_team_type"
           placeholder="請輸入名稱"
+          oninput="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')"
+          maxlength="4"
+          v-model="homename"
+          required
         />
       </div>
     </div>
@@ -47,6 +55,10 @@
           type="text"
           class="myplayerRaceEdit_name_team_type"
           placeholder="請輸入分數"
+          maxlength="2"
+          v-model="homescore"
+          oninput="this.value=this.value.replace(/[^0-9]+/,'')"
+          required
         />
       </div>
     </div>
@@ -60,6 +72,10 @@
           type="text"
           class="myplayerRaceEdit_name_team_type"
           placeholder="請輸入名稱"
+          oninput="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')"
+          maxlength="4"
+          v-model="hostname"
+          required
         />
       </div>
     </div>
@@ -72,6 +88,10 @@
           type="text"
           class="myplayerRaceEdit_name_team_type"
           placeholder="請輸入分數"
+          maxlength="2"
+          v-model="hostscore"
+          oninput="this.value=this.value.replace(/[^0-9]+/,'')"
+          required
         />
       </div>
     </div>
@@ -85,7 +105,8 @@
           type="file"
           accept="image/*"
           class="myplayerRaceEdit_name_team_type"
-          placeholder="請輸入名稱"
+          @change="handleFileChange($event, 'home')"
+          required
         />
       </div>
     </div>
@@ -98,12 +119,13 @@
           type="file"
           accept="image/*"
           class="myplayerRaceEdit_name_team_type"
-          placeholder="請輸入分數"
+          @change="handleFileChange($event, 'host')"
+          required
         />
       </div>
     </div>
     <div class="myplayerRaceEdit_btn">
-      <button class="myplayerRaceEdit_submit">送出</button>
+      <button class="myplayerRaceEdit_submit" @click="submitData">送出</button>
     </div>
 
     <!-- <div class="myplayerRaceEdit_score1"></div>
@@ -111,7 +133,80 @@
     <div class="myplayerRaceEdit_score2"></div> -->
   </section>
 </template>
-<script></script>
+<script>
+import useStorage from "@/composables/data/useStorage";
+import useData from "@/composables/data/useData";
+import { timestamp } from "@/firebase/config";
+
+export default {
+  emits: ["closeModal"],
+  data() {
+    return {
+      homename: "",
+      gamedate: "",
+      homescore: "",
+      hostname: "",
+      hostscore: "",
+      homepic: null,
+      hostpic: null,
+    };
+  },
+
+  methods: {
+    handleFileChange(event, condition) {
+      if (condition === "home") {
+        this.homepic = event.target.files[0];
+      } else if (condition === "host") {
+        this.hostpic = event.target.files[0];
+      }
+    },
+    async submitData() {
+      const data = {
+        gamedate: this.gamedate,
+        homename: this.homename,
+        homescore: this.homescore,
+        hostname: this.hostname,
+        hostscore: this.hostscore,
+        status: true,
+      };
+
+      if (!this.homepic || !this.hostpic) {
+        return;
+      }
+
+      const { setDataSubCollection } = useData();
+      const id = await setDataSubCollection(
+        {
+          collectionName: "TEAMS",
+          documentId: "iECrL2hQ89BPzKkX32u4", //you have to change this id
+          subCollectionName: "GAME",
+        },
+        data,
+        [this.homepic, this.hostpic],
+        "teamLogoPic"
+      );
+
+      const { getPicsLink } = useStorage();
+      const res = await getPicsLink(
+        2,
+        `images/TEAMS/iECrL2hQ89BPzKkX32u4/GAME/${id}`, //you have to change this id
+        "teamLogoPic"
+      );
+
+      data.pics = res;
+      this.$store.state.myplayerRaceList.unshift(data);
+      this.gamedate = "";
+      this.homename = "";
+      this.homescore = "";
+      this.hostname = "";
+      this.hostscore = "";
+      this.homepic = null;
+      this.hostpic = null;
+      this.$emit("closeModal");
+    },
+  },
+};
+</script>
 <style lang="scss">
 .myplayerRaceEdit {
   width: 30%;
