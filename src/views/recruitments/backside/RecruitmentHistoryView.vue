@@ -57,7 +57,7 @@ const tablekey = ref(2);
 const title = ref("記錄管理");
 
 const isNoResults = computed(
-  () => store.getters.renderManageCopywritings.length === 0
+  async () => (await store.getters.renderManageCopywritings.length) === 0
 );
 
 //把抓到的內容放進表格內

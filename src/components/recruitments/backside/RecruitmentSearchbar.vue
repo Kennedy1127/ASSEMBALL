@@ -21,7 +21,6 @@ export default {
   },
 
   components: {
-    // RecruitmentSelect,
     RecruitmentSelector,
   },
   data() {
@@ -34,10 +33,6 @@ export default {
 
   methods: {
     submitFilters() {
-      // const searchObj = {
-      //   role: this.role,
-      //   area: this.area,
-      // };
       this.$store.state.selectedManageCopywritingsRole = this.role;
       this.$store.state.selectedManageCopywritingsArea = this.area;
       this.$store.commit("resetPaginationCurPage");
@@ -55,10 +50,9 @@ export default {
     margin: 2rem 0 3rem 0;
   }
   &_bar {
-    width: 380px; //不跑版設定
     display: flex;
     gap: 10px;
-
+    width: 380px;
     border: 3px solid var(--primary-blue);
 
     border-radius: var(--round);
@@ -73,16 +67,6 @@ export default {
       background-color: var(--primary-blue);
     }
   }
-  // div:nth-child(1) {
-  //   position: relative;
-  //   &::after {
-  //     position: absolute;
-  //     content: "";
-  //     right: 0;
-  //     width: 3px;
-  //     background-color: var(--primary-blue);
-  //
-  //   }
 
   &_btn button {
     width: 200px;
@@ -102,19 +86,23 @@ export default {
     background-color: var(--secondary-blue-1);
   }
 }
-@media screen and (max-width: 420px) {
-  // TODO: select中間的藍線消失
+@media screen and (max-width: 630px) {
   .recruitSearchbar {
+    &_bar {
+      width: 100%;
+    }
     &_wrapper {
       margin: 2rem 0;
+      display: block;
     }
-    &_bar {
-      // width: 100%;
-      margin: auto;
-    }
-
     &_btn {
-      display: none;
+      margin: 1.5rem auto auto 0;
+
+      button {
+        width: 100%;
+
+        margin: 0;
+      }
     }
   }
 }
