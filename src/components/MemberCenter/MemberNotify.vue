@@ -178,6 +178,7 @@ export default {
   @media all and (max-width: 420px) {
     max-width: 100%;
     max-height: 90vh;
+    height: 100vh;
     left: 0;
     z-index: 48;
     top: 4.2rem;

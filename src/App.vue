@@ -185,9 +185,11 @@ export default {
         this.MainHeaderLight = false;
         this.MainHeader = true;
         //不顯示通知、會員頁面
-        // this.$store.state.isNotifyVisible = false;
-        // this.$store.state.isPersonalVisible = false;
-        // this.$store.state.isMemberVisible = false;
+        if (window.innerWidth <= 420) {
+          this.$store.state.isNotifyVisible = false;
+          this.$store.state.isPersonalVisible = false;
+          this.$store.state.isMemberVisible = false;
+        }
       }
     },
 
