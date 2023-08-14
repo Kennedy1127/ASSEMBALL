@@ -88,21 +88,41 @@ export default createStore({
   getters: {
     //////////////////////////////////////////////////////
     notifysUnRead(state) {
+      if (!state.isLoggedIn) {
+        state.userNotifys = [];
+        return null;
+      }
+
       return state.userNotifys.filter((notify) => notify.read === false).length;
     },
 
     // 使用者加入請求通知
     userNotifysJoin(state) {
+      if (!state.isLoggedIn) {
+        state.userNotifys = [];
+        return [];
+      }
+
       return state.userNotifys.filter((notify) => notify.type === 0);
     },
 
     // 使用者訂單通知
     userNotifysOrder(state) {
+      if (!state.isLoggedIn) {
+        state.userNotifys = [];
+        return [];
+      }
+
       return state.userNotifys.filter((notify) => notify.type === 1);
     },
 
     // 使用者邀請加入通知
     userNotifysTeam(state) {
+      if (!state.isLoggedIn) {
+        state.userNotifys = [];
+        return [];
+      }
+
       const userNotifys = state.userNotifys.filter(
         (notify) => notify.type === 2
       );
