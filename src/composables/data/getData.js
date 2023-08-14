@@ -8,7 +8,6 @@ import {
   where,
   query,
   orderBy,
-  onSnapshot,
 } from "firebase/firestore";
 
 const getData = () => {

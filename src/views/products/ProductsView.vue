@@ -96,6 +96,14 @@ onMounted(async () => {
       "product"
     );
     product.pic = pics[0];
+
+    const seller_pics = await getPicsLink(
+      1,
+      `images/MEMBERS/${product.seller_id}`,
+      "member"
+    );
+
+    product.seller_pic = seller_pics[0];
   });
 
   store.state.isPending = false;
