@@ -34,6 +34,7 @@ export default {
       padding-left: 1rem;
     }
     & a {
+      margin: 0.5rem;
       display: inline-block;
       color: var(--primary-blue);
       font-size: 1.25rem;
