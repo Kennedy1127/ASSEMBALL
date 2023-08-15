@@ -19,16 +19,15 @@
         <table class="Member_table_form">
           <!-- 表頭 -->
           <tr class="table_row">
-            <td class="table_row_number">會員編號</td>
             <td class="table_row_name">會員姓名</td>
             <td class="table_row_teamName">
               <ul class="table_row_teamName_menu" v-if="TeamNameMenuShow">
                 <li
                   v-for="(item, index) in TeamNameArray"
                   :key="index"
-                  @click="updateTeamName(item.TeamName)"
+                  @click="updateTeamName(convertTeam(item.team_id))"
                 >
-                  {{ item.TeamName }}
+                  {{ convertTeam(item.team_id) }}
                 </li>
               </ul>
               所屬球隊
@@ -42,9 +41,9 @@
                 <li
                   v-for="(item, index) in ManagerArray"
                   :key="index"
-                  @click="updateManager(item.Manager)"
+                  @click="updateManager(item.teammanager)"
                 >
-                  {{ item.Manager }}
+                  {{ item.teammanager }}
                 </li>
               </ul>
               球隊管理者
@@ -57,9 +56,9 @@
                 <li
                   v-for="(item, index) in ViolationArray"
                   :key="index"
-                  @click="updateViolation(item.Violation)"
+                  @click="updateViolation(item.violations)"
                 >
-                  {{ item.Violation }}
+                  {{ item.violations }}
                 </li>
               </ul>
               違規次數
@@ -77,9 +76,9 @@
                 <li
                   v-for="(item, index) in StateArray"
                   :key="index"
-                  @click="updateState(item.State)"
+                  @click="updateState(item.state)"
                 >
-                  {{ item.State }}
+                  {{ item.state }}
                 </li>
               </ul>
               權限狀態
@@ -94,23 +93,20 @@
             :key="index"
             class="table_row"
           >
-            <td class="table_row_number">{{ convertFont(item.Number) }}</td>
-            <td class="table_row_name">{{ convertFont(item.Name) }}</td>
+            <td class="table_row_name">{{ convertFont(item.firstname) }}</td>
             <td class="table_row_teamName">
-              {{ convertFont(item.TeamName) }}
+              {{ convertFont(convertTeam(item.team_id)) }}
             </td>
             <td class="table_row_manager">
-              {{ convertFont(item.Manager) }}
-          
+              {{ convertFont(convertManage(item.teammanager)) }}
             </td>
             <td class="table_row_violation">
-              {{ convertFont(item.Violation) }}
+              {{ convertFont(convertViolations(item.violations)) }}
             </td>
             <td class="table_row_state">
-       
               <input
                 type="checkbox"
-                v-model="item.State"
+                v-model="item.state"
                 name="State"
                 :value="index"
               />
@@ -127,8 +123,6 @@
       </div>
     </div>
   </div>
-
- 
 </template>
 <script>
 import { db } from "@/firebase/config"; //引入data base
@@ -141,250 +135,67 @@ export default {
     return {
       page: 1,
       perPage: 17,
-      Member: [
-        {
-          
-          Number: "1",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Manager: "是",
-          Violation: 2,
-          State: true,
-        },
-        {
-          Number: "2",
-          Name: "阿豪",
-          TeamName: "教士隊",
-          Manager: "否",
-          Violation: 3,
-          State: true,
-        },
-        {
-          Number: "3",
-          Name: "狗今生",
-          TeamName: "兄弟隊",
-          Manager: "是",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "4",
-          Name: "狗今生",
-          TeamName: "洋基隊",
-          Manager: "是",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "5",
-          Name: "狗今生",
-          TeamName: "洋基隊",
-          Manager: "是",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "6",
-          Name: "狗今生",
-          TeamName: "洋基隊",
-          Manager: "是",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "7",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Manager: "是",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "8",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Manager: "是",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "9",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Manager: "是",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "10",
-          Name: "狗今生",
-          TeamName: "熱火隊",
-          Manager: "是",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "11",
-          Name: "狗今生",
-          TeamName: "勇士隊",
-          Manager: "是",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "12",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Manager: "是",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "13",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Manager: "是",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "14",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Manager: "是",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "15",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Manager: "是",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "16",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Manager: "是",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "17",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Manager: "是",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "18",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Manager: "否",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "19",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Manager: "否",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "20",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Manager: "否",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "21",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Manager: "否",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "22",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Manager: "否",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "23",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Manager: "否",
-          Violation: 1,
-         State: true,
-        },
-        {
-          Number: "24",
-          Name: "狗今生",
-          TeamName: "天使隊",
-          Manager: "是",
-          Violation: 1,
-         State: true,
-        },
-      ],
+      // Member: [
+      //   {
+
+      //     Number: "1",
+      //     Name: "狗今生",
+      //     TeamName: "天使隊",
+      //     Manager: "是",
+      //     Violation: 2,
+      //     State: true,
+      //   },
+      // ],
       TeamNameArray: [], //球隊名稱陣列
       ManagerArray: [],
       ViolationArray: [],
       StateArray: [],
-      // Member:[],
+      Member: [],
+      Teams: [],
 
       TeamNameMenuShow: false, //切換是否顯示下拉式選單
       ManagerMenuShow: false,
       ViolationMenuShow: false,
       StateMenuShow: false,
 
-      currentTeamName: 0, //現在球隊名稱
-      currentManager: 0,
-      currentViolation: 0,
-      currentState: 0,
+      currentTeamName: "", //現在球隊名稱
+      currentManager: "",
+      currentViolation: "",
+      currentState: "",
       currentSearch: "",
     };
   },
   computed: {
     MemberFilterTeamName() {
       //篩選球隊名稱
-      if (this.currentTeamName == 0) return this.Member; //還沒篩選時回傳所有資料
-      return this.Member.filter((v) => v.TeamName == this.currentTeamName); //篩選現在點擊到的球隊名稱
+      if (this.currentTeamName === "") return this.Member; //還沒篩選時回傳所有資料
+      return this.Member.filter((v) => v.team_id == this.currentTeamName); //篩選現在點擊到的球隊名稱
     },
     MemberFilterManager() {
-      if (this.currentManager == 0) return this.MemberFilterTeamName;
+      if (this.currentManager === "") return this.MemberFilterTeamName;
       return this.MemberFilterTeamName.filter(
-        (v) => v.Manager == this.currentManager
+        (v) => v.teammanager == this.currentManager
       );
     },
 
     MemberFilterViolation() {
-      if (this.currentViolation == 0) return this.MemberFilterManager;
+      if (this.currentViolation === "") return this.MemberFilterManager;
       return this.MemberFilterManager.filter(
-        (v) => v.Violation == this.currentViolation
+        (v) => v.violations == this.currentViolation
       );
     },
 
     MemberFilterState() {
-      if (this.currentState == 0) return this.MemberFilterViolation;
+      if (this.currentState === "") return this.MemberFilterViolation;
       return this.MemberFilterViolation.filter(
-        (v) => v.State == this.currentState
+        (v) => v.state == this.currentState
       );
     },
 
     MemberFilterSearch() {
-      if (this.currentSearch == "") return this.MemberFilterState;
+      if (this.currentSearch === "") return this.MemberFilterState;
       return this.MemberFilterState.filter((v) =>
-        v.Name.includes(this.currentSearch)
+        v.firstname.includes(this.currentSearch)
       );
     },
 
@@ -397,36 +208,61 @@ export default {
     },
   },
   methods: {
+    //球隊ID轉球隊名
+    convertTeam(e) {
+      const index = this.Teams.findIndex((v) => v.id === e);
+      if (index == -1) {
+        return "無";
+      }
+      return this.Teams[index]?.teamName;
+    },
+    convertViolations(e) {
+      if (e == 0) {
+        return "0";
+      } else {
+        return e;
+      }
+    },
+    convertManage(e) {
+      if (e == false) {
+        return "否";
+      } else {
+        return "是";
+      }
+    },
+
     TeamNameMenu() {
-      const TeamNameSet = new Set(this.Member.map((e) => e.TeamName)); //把Member陣列中每個物件的TeamName提出來回傳並組成set
+      const TeamNameSet = new Set(this.Member.map((e) => e.team_id)); //把Member陣列中每個物件的TeamName提出來回傳並組成set
       this.TeamNameArray = Array.from(TeamNameSet).map((item) => ({
-        TeamName: item,
+        team_id: item,
       })); //將set資料放進陣列
       this.TeamNameMenuShow = !this.TeamNameMenuShow;
     },
     ManagerMenu() {
-      const ManagerSet = new Set(this.Member.map((e) => e.Manager));
+      const ManagerSet = new Set(this.Member.map((e) => e.teammanager));
       this.ManagerArray = Array.from(ManagerSet).map((item) => ({
-        Manager: item,
+        teammanager: item,
       })); //將set資料放進陣列
       this.ManagerMenuShow = !this.ManagerMenuShow;
     },
 
     ViolationMenu() {
-      const ViolationSet = new Set(this.Member.map((e) => e.Violation));
+      const ViolationSet = new Set(this.Member.map((e) => e.violations));
       this.ViolationArray = Array.from(ViolationSet).map((item) => ({
-        Violation: item,
+        violations: item,
       })); //將set資料放進陣列
       this.ViolationMenuShow = !this.ViolationMenuShow;
     },
     StateMenu() {
-      const StateSet = new Set(this.Member.map((e) => e.State));
-      this.StateArray = Array.from(StateSet).map((item) => ({ State: item })); //將set資料放進陣列
+      const StateSet = new Set(this.Member.map((e) => e.state));
+      this.StateArray = Array.from(StateSet).map((item) => ({ state: item })); //將set資料放進陣列
       this.StateMenuShow = !this.StateMenuShow;
     },
 
     convertFont(str) {
-      if(!str){return};
+      if (!str) {
+        return;
+      }
       //限制資料字數
       if (str.length > 10) {
         return str.slice(0, 10) + "...";
@@ -464,13 +300,13 @@ export default {
     },
     updateSearch() {
       this.currentSearch = this.SearchText;
-      this.SearchText="";
+      this.SearchText = "";
     },
     Reset() {
-      this.currentTeamName = 0;
-      this.currentManager = 0;
-      this.currentViolation = 0;
-      this.currentState = 0;
+      this.currentTeamName = "";
+      this.currentManager = "";
+      this.currentViolation = "";
+      this.currentState = "";
       this.currentSearch = "";
     },
 
@@ -492,14 +328,20 @@ export default {
         this.StateMenuShow = false;
       }
     },
-     //從firebase引入資料
-     async GetData() {
+    //從firebase引入資料
+    async GetData() {
       try {
-        const MemberCollection = collection(db, "BACKSTAGEMEMBER"); // 取得集合
+        const MemberCollection = collection(db, "MEMBERS"); // 取得集合
         const MemberDocuments = await getDocs(MemberCollection); // 取得集合內的所有物件
         MemberDocuments.forEach((x) => {
           // console.log(x.data());
           this.Member.push(x.data()); // 物件轉陣列
+        });
+        const TeamsCollection = collection(db, "TEAMS"); // 取得球隊清單集合
+        const TeamsDocuments = await getDocs(TeamsCollection); // 取得集合內的所有物件
+        TeamsDocuments.forEach((x) => {
+          // console.log(x.data());
+          this.Teams.push(x.data()); // 物件轉陣列
         });
       } catch (err) {
         alert(err);
@@ -507,15 +349,14 @@ export default {
     },
     //   AddData(){
     //  //將資料上傳到firebase
-    //         const MemberCollection = collection(db, "BACKSTAGEMEMBER"); 
+    //         const MemberCollection = collection(db, "BACKSTAGEMEMBER");
     //         this.Member.forEach(x =>
     //         {
-            
+
     //           const docRef = addDoc(MemberCollection, x)//
     //           // console.log("資料", docRef);
     //         })
     // }
-
   },
   mounted() {
     window.addEventListener("click", this.CloseMenu); //監聽如果任意位置有被點擊觸發CloseMenu
