@@ -85,7 +85,7 @@ const routes = [
     name: "ProductsManage",
     component: () => import("@/views/products/ProductManageView.vue"),
     beforeEnter: () => {
-      // if (!store.state.isLoggedIn) return { name: "Home" };
+      if (!store.state.isLoggedIn && !auth.currentUser) return { name: "Home" };
     },
   },
   {
