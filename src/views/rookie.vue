@@ -8,7 +8,6 @@
         <div class="bread_crumbs_arrow">
           <span> <font-awesome-icon icon="fa-solid fa-chevron-right" /></span>
         </div>
-
         新手上路
       </div>
       <div class="rookie_title">
@@ -33,8 +32,7 @@
         <!-- 教學清單區域--------------------------------- -->
         <div class="rookie_teaching_container">
           <button @click="pageup" class="change_page_btn_up">
-              <font-awesome-icon icon="fa-solid fa-circle-chevron-up"
-            />
+            <font-awesome-icon icon="fa-solid fa-circle-chevron-up" />
           </button>
           <div
             v-for="item in currentList"
@@ -62,8 +60,7 @@
             </div>
           </div>
           <button @click="pagedown" class="change_page_btn_down">
-           <font-awesome-icon icon="fa-solid fa-circle-chevron-down"
-            />
+            <font-awesome-icon icon="fa-solid fa-circle-chevron-down" />
           </button>
         </div>
       </div>
@@ -184,6 +181,9 @@ export default {
   gap: 1rem;
   font-size: 1.25rem;
   color: var(--primary-black);
+  @media all and (max-width: 420px) {
+    font-size: 1rem;
+  }
 
   a {
     display: block;
@@ -192,6 +192,9 @@ export default {
     text-decoration: underline;
     text-underline-offset: 4px;
     padding-bottom: 0.2rem;
+    @media all and (max-width: 420px) {
+      font-size: 1rem;
+    }
   }
 
   .bread_crumbs_arrow {
@@ -213,11 +216,17 @@ export default {
   font-size: 2rem;
   color: var(--primary-blue);
   font-weight: 600;
+  @media all and (max-width: 420px) {
+    font-size: 1.75rem;
+  }
 
   .color_block {
     width: 15px;
     height: 50px;
     background-color: var(--primary-blue);
+    @media all and (max-width: 420px) {
+      height: 40px;
+    }
   }
 }
 
@@ -235,7 +244,6 @@ export default {
   }
 }
 .rookie_decorate {
- 
   .rookie_area_poster {
     //新手上路大字報
     margin-top: 3rem;
@@ -243,7 +251,9 @@ export default {
     position: relative;
     color: var(--primary-blue);
     font-weight: 600;
-
+    @media screen and (max-width: 420px) {
+      font-size: 3rem;
+    }
     span {
       bottom: -6rem;
       right: 2rem;
@@ -260,6 +270,10 @@ export default {
       margin-top: 4rem;
       right: 3rem;
     }
+    img {
+      width: 80%;
+      padding-bottom: 2rem;
+    }
   }
 }
 
@@ -270,10 +284,9 @@ export default {
   width: 50%;
 
   position: relative;
-  @media screen and (max-width: 420px){
+  @media screen and (max-width: 420px) {
     width: 100%;
   }
-
 }
 
 .change_page_btn_up {
@@ -286,7 +299,7 @@ export default {
   background-color: var(--pale-white);
 }
 
-.change_page_btn_down  {
+.change_page_btn_down {
   //教學清單頁面向下切換按鈕
   font-size: 2.5rem;
   background-color: var(--pale-white);
@@ -294,7 +307,7 @@ export default {
   position: absolute;
   bottom: -3rem;
   right: 1.5rem;
-  @media screen and (max-width: 420px){
+  @media screen and (max-width: 420px) {
     bottom: -1rem;
   }
 }
@@ -308,8 +321,8 @@ export default {
     position: relative;
     margin-bottom: 3rem;
     border-bottom: var(--secondary-gray-3) solid;
-   width: 100%;
- 
+    width: 100%;
+
     @media screen and (max-width: 420px) {
       position: relative;
     }
@@ -321,8 +334,8 @@ export default {
       position: relative;
       font-weight: 600;
       @media screen and (max-width: 420px) {
-     margin-left: 2rem;
-    }
+        margin-left: 2rem;
+      }
 
       &_arrow {
         position: absolute;

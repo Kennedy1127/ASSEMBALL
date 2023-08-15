@@ -543,7 +543,6 @@ const handleSubmit = async () => {
     area: area.value,
     date: timestamp,
     status: true,
-    home_status: -1,
     seller_id: auth.currentUser.uid,
   };
 

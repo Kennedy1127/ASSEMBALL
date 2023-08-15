@@ -1,36 +1,5 @@
 <template>
   <div class="recruitment_table">
-    <!-- <table v-if="tablekey === 1" class="fixed_headers">
-      <thead>
-        <tr>
-          <th>標題</th>
-          <th>守備位置</th>
-          <th>地區</th>
-          <th v-if="title === '管理職缺'">更新日期</th>
-          <th v-if="title === '管理職缺'">編輯</th>
-          <th v-else :colspan="'2'">更新日期</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in $props.tableData" :key="item.id">
-          <td>{{ item.copywriting_title }}</td>
-          <td>{{ item.copywriting_role }}</td>
-          <td>{{ item.copywriting_area }}</td>
-          <td>{{ item.copywriting_date }}</td>
-          <td v-if="title === '管理職缺'" class="Icon">
-            <div class="icon-pen">
-              <font-awesome-icon icon="fa-solid fa-pen" />
-            </div>
-          </td>
-          <td v-else class="Icon">
-            <button>
-              更多<font-awesome-icon icon="fa-solid fa-chevron-right" />
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table> -->
-
     <table class="fixed_headers">
       <thead>
         <tr v-if="tablekey === 1">
@@ -53,7 +22,7 @@
       <tbody>
         <tr v-for="item in $props.tableData" :key="item.id">
           <td
-            :class="convertStatusColor()"
+            :class="convertStatusColor(item.status)"
             v-if="title === '審核應徵' || title === '記錄管理'"
           ></td>
           <td v-if="title === '管理職缺' || title === '審核應徵'">
@@ -114,19 +83,34 @@
         <tbody>
           <tr v-for="item in $props.tableData" :key="item.id">
             <td>
+              <!-- <div
+                :class="convertStatusColor(item.status)"
+                v-if="title === '審核應徵' || title === '記錄管理'"
+              ></div> -->
               <div v-if="tablekey === 1" class="td_item">
                 <div class="td_title">標題</div>
-                <div>
-                  {{ item.title }}
+                <div v-if="title === '管理職缺' || title === '審核應徵'">
+                  {{ item.title || item.copywriting.title }}
+                </div>
+              </div>
+
+              <div class="td_item">
+                <div class="td_title">守備位置</div>
+                <div v-if="title === '管理職缺'">
+                  {{ getRoleLabel(item.role) }}
+                </div>
+                <div v-else-if="title === '審核應徵'">
+                  {{ getRoleLabel(item.copywriting?.role) }}
                 </div>
               </div>
               <div class="td_item">
-                <div class="td_title">守備位置</div>
-                <div>{{ getRoleLabel(item.role) }}</div>
-              </div>
-              <div class="td_item">
                 <div class="td_title">地區</div>
-                <div>{{ item.area }}</div>
+                <div v-if="title === '管理職缺'">
+                  {{ item.area }}
+                </div>
+                <div v-else-if="title === '審核應徵'">
+                  {{ item.copywriting?.area }}
+                </div>
               </div>
             </td>
             <td>
@@ -171,7 +155,7 @@ import { icon } from "@fortawesome/fontawesome-svg-core";
 export default {
   data() {
     return {
-      statusColor: ["yellow", "red", "green"],
+      statusColor: ["yellow", "orange", "green"],
 
       recruitPosts: [
         {
@@ -215,14 +199,9 @@ export default {
           iconTrashCan: "fa-solid fa-trash-can",
         },
       ],
-      // role: [],
     };
   },
   props: {
-    status: {
-      type: Number,
-      default: 0,
-    },
     tableData: {
       type: Array,
       default: [
@@ -276,8 +255,8 @@ export default {
     },
   },
   methods: {
-    convertStatusColor() {
-      return { [this.statusColor[this.$props.status]]: true };
+    convertStatusColor(status) {
+      return { [this.statusColor[status]]: true };
     },
     convertDate(inputDate) {
       const date = new Date(inputDate);
@@ -309,25 +288,6 @@ export default {
       const roleObject = roles.find((roleValue) => roleValue.value === role);
       return roleObject ? roleObject.label : "";
     },
-  },
-  computed: {
-    // getRoleLabel() {
-    //   const roles = [
-    //     { value: 0, label: "投手" },
-    //     { value: 1, label: "捕手" },
-    //     { value: 2, label: "一壘手" },
-    //     { value: 3, label: "二壘手" },
-    //     { value: 4, label: "游擊手" },
-    //     { value: 5, label: "三壘手" },
-    //     { value: 6, label: "左外野手" },
-    //     { value: 7, label: "中外野手" },
-    //     { value: 8, label: "右外野手" },
-    //   ];
-    //   return (roleValue) => {
-    //     const roleObject = roles.find((role) => role.value === role);
-    //     return roleObject ? roleObject.label : "";
-    //   };
-    // },
   },
 };
 </script>
@@ -365,8 +325,8 @@ export default {
       &.yellow {
         background-color: yellow;
       }
-      &.red {
-        background-color: red;
+      &.orange {
+        background-color: var(--error-yellow);
       }
       &.green {
         background-color: green;

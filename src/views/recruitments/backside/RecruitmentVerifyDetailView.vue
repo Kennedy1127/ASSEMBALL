@@ -21,7 +21,7 @@
           <div class="recruitment_post_main_content_personalInfo">
             <div class="recruitment_post_main_content_personalInfo_pic">
               <img
-                src="~@/assets/images/recruitment/applicant/applicant-1.jpg"
+                :src="picSrc"
                 alt="userphoto"
                 class="recruitment_aside_personalInfo_photo"
               />
@@ -90,34 +90,66 @@
 
 <script setup>
 import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
-import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
 import getData from "@/composables/data/getData";
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
-const { getDocument } = getData();
+import { useRoute, useRouter } from "vue-router";
+import useData from "@/composables/data/useData";
+import useStorage from "@/composables/data/useStorage";
+
+const { getDocument, getUser } = getData();
+const { getPicsLink } = useStorage();
+const { updateData } = useData();
 
 const title = ref("審核應徵");
 const store = useStore();
 const route = useRoute();
+const router = useRouter();
+const picSrc = ref("");
+
 // const computedRenderApply = ref([]);
 onMounted(async () => {
-  const data = store.state.ApplyRecords.find(
-    (apply) => apply.id === route.query.id
-  );
+  // const data = store.state.ApplyRecords.find(
+  //   (apply) => apply.id === route.query.id
+  // );
 
-  if (!data) {
-    const apply = await getDocument("APPLYS", route.query.id);
-    // console.log(apply);
-    const user = await getDocument("MEMBERS", apply.user_id);
+  // if (!data) {
+  //   const apply = await getDocument("APPLYS", route.query.id);
+  //   // console.log(apply);
+  //   const user = await getDocument("MEMBERS", apply.user_id);
 
-    // console.log(user);
+  //   // console.log(user);
+  //   const res = await getPicsLink(
+  //     1,
+  //     `images/MEMBERS/${store.state.user?.id}`,
+  //     "member"
+  //   );
+  //   console.log(res);
 
-    return (applyData.value = { ...apply, user });
-  }
+  //   return (applyData.value = { ...apply, user, res });
+  // }
 
-  applyData.value = { ...data };
-  console.log(applyData.value);
+  const apply = await getDocument("APPLYS", route.query.id);
+  // console.log(apply);
+  const user = await getDocument("MEMBERS", apply.user_id);
+
+  // console.log(user);
+  const res = await getPicsLink(1, `images/MEMBERS/${user.id}`, "member");
+  console.log(res);
+
+  picSrc.value = res[0];
+  applyData.value = { ...apply, user };
+
+  // console.log(applyData.value);
+
+  // 帶入user的大頭貼
+
+  // if (!store.state.user?.id) {
+  //   user = await getUser();
+  // }
+  // console.log(applyData.user_id);
+
+  // console.log(picSrc.value);
 });
 
 const applyData = ref({});
@@ -146,23 +178,34 @@ const getlevelLabel = (exp) => {
   return levelObject ? levelObject.label : "";
 };
 
+// 同意應徵者加入
 const verifyPassStatus = () => {
-  console.log("pass");
+  updateData(
+    { collectionName: "APPLYS", documentId: applyData.value.id },
+    { status: 1 }
+  );
+  alert("已同意應徵者加入!");
+  router.push({ name: "recruitmentVerify" });
 };
 
+// 拒絕應徵者加入
 const verifyDeclineStatus = () => {
-  console.log("bye");
+  updateData(
+    { collectionName: "APPLYS", documentId: applyData.value.id },
+    { status: -1 }
+  );
+  alert("已拒絕應徵者加入!");
+  router.push({ name: "recruitmentVerify" });
 };
+
+// updateData;
 </script>
 
 <style lang="scss">
 .recruitment_post {
   margin-top: 6rem;
   display: flex;
-  &_aside {
-    // TODO:在思考要不要把側邊欄拿掉(設計圖原本有)
-    display: none;
-  }
+
   &_breadcrumb {
     margin-bottom: 4rem;
     display: flex;
@@ -302,16 +345,21 @@ const verifyDeclineStatus = () => {
       }
     }
   }
+
+  .no-data {
+    padding-top: 2rem;
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
 }
 
 @media screen and (max-width: 768px) {
   .recruitment_post {
     display: block;
     margin: 0;
-    &_aside {
-      // TODO:在思考要不要把側邊欄拿掉(設計圖原本有)
-      display: none;
-    }
+
     &_breadcrumb {
       display: none;
     }

@@ -51,7 +51,8 @@ export default createStore({
     //////////////////////////////////////////////////////
     //會員中心區塊
     memberCenter: [],
-    productManage: [],
+    // productManage: [],
+    orderManage: [],
     application: [],
 
     //////////////////////////////////////////////////////
@@ -72,7 +73,6 @@ export default createStore({
     ///////////////////////////////////////////
     // 我的球隊區塊
     myplayerPopupsOpen: false,
-
     myplayerEditOpen: false,
     myplayerOverlay: true,
     myplayerTeam: {},
@@ -88,21 +88,41 @@ export default createStore({
   getters: {
     //////////////////////////////////////////////////////
     notifysUnRead(state) {
+      if (!state.isLoggedIn) {
+        state.userNotifys = [];
+        return null;
+      }
+
       return state.userNotifys.filter((notify) => notify.read === false).length;
     },
 
     // 使用者加入請求通知
     userNotifysJoin(state) {
+      if (!state.isLoggedIn) {
+        state.userNotifys = [];
+        return [];
+      }
+
       return state.userNotifys.filter((notify) => notify.type === 0);
     },
 
     // 使用者訂單通知
     userNotifysOrder(state) {
+      if (!state.isLoggedIn) {
+        state.userNotifys = [];
+        return [];
+      }
+
       return state.userNotifys.filter((notify) => notify.type === 1);
     },
 
     // 使用者邀請加入通知
     userNotifysTeam(state) {
+      if (!state.isLoggedIn) {
+        state.userNotifys = [];
+        return [];
+      }
+
       const userNotifys = state.userNotifys.filter(
         (notify) => notify.type === 2
       );
@@ -180,32 +200,42 @@ export default createStore({
       );
     },
 
+    // 已-審核應徵者
+    VerifyApplyRecords(state) {
+      return state.ApplyRecords.filter((apply) => apply.status === 2);
+    },
+    // 尚未-審核應徵者
+    unVerifyApplyRecords(state) {
+      return state.ApplyRecords.filter(
+        (apply) => apply.status === 0 || apply.status === 1
+      );
+    },
     //////////////////////////////////////////////////////
     // 招募文案區塊
     // 招募初心者數量
-    inexperencedCount(state) {
-      return state.copywritings.filter(
+    inexperencedCount(state, getters) {
+      return getters.filteredCopywritings.filter(
         (copywriting) => Number(copywriting.exp) === 0
       ).length;
     },
 
     // 招募新手數量
-    entryCount(state) {
-      return state.copywritings.filter(
+    entryCount(state, getters) {
+      return getters.filteredCopywritings.filter(
         (copywriting) => Number(copywriting.exp) === 1
       ).length;
     },
 
     // 招募老手數量
-    intermediateCount(state) {
-      return state.copywritings.filter(
+    intermediateCount(state, getters) {
+      return getters.filteredCopywritings.filter(
         (copywriting) => Number(copywriting.exp) === 2
       ).length;
     },
 
     // 經歷不拘數量
-    freeCount(state) {
-      return state.copywritings.filter(
+    freeCount(state, getters) {
+      return getters.filteredCopywritings.filter(
         (copywriting) => Number(copywriting.exp) === 3
       ).length;
     },
@@ -312,18 +342,26 @@ export default createStore({
       state.application = [...payload];
     },
 
-    //取得購買訂單資料
+    //取得商品管理資料
     setProductManage(state, payload) {
       console.log(payload);
       state.productManage = [...payload];
     },
 
+    //取得購買紀錄資料
+    setOrderManage(state, payload) {
+      console.log(payload);
+      state.orderManage = [...payload];
+    },
+
     //登出時清除會員資料
     clearUserData(state) {
       state.isLoggedIn = false;
-      state.userNotifies = [];
+      state.user = null;
+      state.userNotifys = [];
       state.userOrders = [];
       state.memberCenter = [];
+      state.orderManage = [];
       state.application = [];
       // 其他需要重置的資料也在這裡添加
     },
@@ -575,17 +613,30 @@ export default createStore({
       return memberApplyDate;
     },
 
-    // 撈訂單管理
-    async getProductManage(context, payload) {
-      const productManageDate = await getSubCollectionDocuments({
+    // 撈會員中心訂單管理
+    async getOrderManage(context, payload) {
+      const orderManageDate = await getSubCollectionDocuments({
         collectionName: "MEMBERS",
         documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
-        subCollectionName: "PRODUCTMANAGE",
+        subCollectionName: "ORDERMANAGE",
       });
-      console.log(productManageDate);
+      console.log(orderManageDate);
 
-      context.commit("setProductManage", productManageDate);
-      return productManageDate;
+      context.commit("setOrderManage", orderManageDate);
+      return orderManageDate;
+    },
+
+    // 撈訂單管理
+    async getProductManage(context, payload) {
+      try {
+        const res = await getSubCollectionDocuments(payload);
+        if (!res) throw new Error("Cannot fetch response");
+        return res;
+      } catch (err) {
+        console.error(err);
+      }
+      context.commit("setProductManage", res);
+      return res;
     },
 
     ///////////////////////////////////////

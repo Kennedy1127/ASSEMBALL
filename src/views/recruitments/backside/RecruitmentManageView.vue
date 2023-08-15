@@ -28,13 +28,16 @@
         <!--RecruitmentSearchbar.vue  -->
         <RecruitmentSearchbar :color="blue"> </RecruitmentSearchbar>
       </div>
-      <div class="recruitment_post_main_table">
+      <div class="recruitment_post_main_table" v-if="!isNoResults">
         <RecruitmentTable
           :tableData="computedRenderManageCopywritings"
           :tablekey="tablekey"
           :title="title"
         >
         </RecruitmentTable>
+      </div>
+      <div class="no-data" v-else="isNoResults">
+        <img src="~@/assets/images/recruitment/no-data.png" alt="no-data" />
       </div>
       <div class="recruitment_post_main_page">
         <PaginationComponent
@@ -58,6 +61,11 @@ import { computed, onMounted, ref } from "vue";
 const tablekey = ref(1);
 
 const title = ref("管理職缺");
+
+const isNoResults = computed(
+  () => store.getters.renderManageCopywritings.length === 0
+);
+
 //把抓到的內容放進表格內
 const store = useStore();
 onMounted(() => {
@@ -154,6 +162,13 @@ const computedTotalPages = computed(() => {
   &_main_page {
     padding-top: 3rem;
     padding-bottom: 2rem;
+  }
+  .no-data {
+    padding-top: 2rem;
+    img {
+      width: 100%;
+      height: auto;
+    }
   }
 }
 @media screen and (max-width: 768px) {
