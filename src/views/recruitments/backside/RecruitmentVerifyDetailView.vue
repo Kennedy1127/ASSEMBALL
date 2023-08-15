@@ -148,9 +148,8 @@ onMounted(async () => {
 
   // console.log(user);
   const res = await getPicsLink(1, `images/MEMBERS/${user.id}`, "member");
-  console.log(res);
 
-  picSrc.value = res[0];
+  picSrc.value = res ? res[0] : require("@/assets/images/icons/main-icon.png");
   applyData.value = { ...apply, user, team };
 
   // console.log(applyData.value);

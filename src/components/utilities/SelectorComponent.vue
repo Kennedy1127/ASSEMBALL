@@ -4,6 +4,7 @@
       :model-value="modelValue"
       :placeholder="placeholder"
       @on-change="onChange"
+      :disabled="disabled"
     >
       <Option v-for="item in options" :value="item.id" :key="item.id">{{
         item.label
@@ -25,6 +26,7 @@ const props = defineProps({
   modelValue: {
     required: true,
   },
+  disabled: {},
 });
 
 const emit = defineEmits(["update:modelValue"]);

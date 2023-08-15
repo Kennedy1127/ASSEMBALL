@@ -128,7 +128,7 @@ import getData from "@/composables/data/getData";
 import useStorage from "@/composables/data/useStorage";
 import CopywritingSubmitApply from "@/components/recruitments/copywriting/CopywritingSubmitApply.vue";
 import CopywritingSwiper from "@/components/recruitments/copywriting/CopywritingSwiper.vue";
-import { watchEffect, ref } from "vue";
+import { watchEffect, ref, provide } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 
@@ -190,6 +190,8 @@ const convertDate = (copywritingDate) => {
     "0"
   )}.${String(date.getDate()).padStart(2, "0")}`;
 };
+
+provide("team_id", copywriting);
 </script>
 
 <style scoped lang="scss">
