@@ -9,12 +9,33 @@ import {
   query,
   orderBy,
 } from "firebase/firestore";
+import useData from "@/composables/data/useData";
+
+const { setData } = useData();
 
 const getData = () => {
   const getUser = async () => {
     try {
       const docRef = doc(db, "MEMBERS", auth.currentUser.uid);
       const res = await getDoc(docRef);
+      if (!res.data()) {
+        const userData = {
+          id: auth.currentUser.uid,
+          firstname: "使用者",
+          lastname: "第三方登入",
+          username: auth.currentUser.displayName,
+          email: auth.currentUser.email,
+          exp: 0,
+          area: "台灣",
+          pic: null,
+          team_id: null,
+          access: true,
+          violations: 0,
+        };
+
+        await setData("MEMBERS", userData);
+        return userData;
+      }
 
       return res.data();
     } catch (err) {

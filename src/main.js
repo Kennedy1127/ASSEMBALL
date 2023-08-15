@@ -58,7 +58,11 @@ import {
   faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { faFacebook, faLine } from "@fortawesome/free-brands-svg-icons";
+import {
+  faFacebook,
+  faLine,
+  faGoogle,
+} from "@fortawesome/free-brands-svg-icons";
 
 library.add(
   faTrashCan,
@@ -106,6 +110,7 @@ library.add(
   faHouse,
   faFacebook,
   faLine,
+  faGoogle,
   faXmark,
   faCheck
 );
