@@ -208,7 +208,7 @@ const submitComment = async () => {
 
   const subCollectionData = {
     comment: inputComment.value,
-    name: store.state.user.firstname + store.state.user.lastname,
+    name: store.state.user.lastname + store.state.user.firstname,
     user_id: auth.currentUser.uid,
     date: timestamp,
     read: false,
