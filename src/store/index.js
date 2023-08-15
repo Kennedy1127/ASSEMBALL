@@ -704,14 +704,17 @@ export default createStore({
     },
 
     // 撈後台-招募文案資料
-    async getManageCopywritings(context) {
+    async getManageCopywritings(context, payload) {
       try {
         // const res = await axios.get(
         //   "http://localhost:3000/candidate-copywritings"
         // );
         // get;
         // if (!res) throw new Error("Cannot fetch response");
-        const res = await getDocuments("COPYWRITINGS");
+        const res = await getDocuments("COPYWRITINGS", [
+          ["team_id", "==", payload],
+        ]);
+
         context.commit("setManageCopywritings", res); //setManageCopywritings: 寫在mutation裡面
         // context.commit("setCopywritingsCount", res.data.length);
       } catch (err) {
@@ -719,11 +722,11 @@ export default createStore({
       }
     },
     // 撈後台-應徵紀錄資料
-    async getApplyRecords(context) {
+    async getApplyRecords(context, payload) {
       try {
         // const res = await axios.get("http://localhost:3000/candidate-apply");
         // if (!res) throw new Error("Cannot fetch response");
-        const res = await getDocuments("APPLYS");
+        const res = await getDocuments("APPLYS", [["team_id", "==", payload]]);
 
         for (let i = 0; i < res.length; i++) {
           const copywriting = await getDocument(
