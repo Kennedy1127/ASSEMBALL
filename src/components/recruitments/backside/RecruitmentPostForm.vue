@@ -416,7 +416,7 @@ const handleSubmit = async () => {
 
         .ivu-select-single {
           .ivu-select-selection {
-            border: 3px solid var(--secondary-blue-1);
+            border: 2px solid var(--secondary-blue-1);
             border-radius: 10px;
             color: var(--secondary-blue-1);
 

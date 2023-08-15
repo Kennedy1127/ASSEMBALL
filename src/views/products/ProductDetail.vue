@@ -91,7 +91,7 @@ onMounted(async () => {
   comments.forEach(async (comment) => {
     if (
       comment.read === false &&
-      auth.currentUser.uid === productData.seller_id
+      auth.currentUser?.uid === productData.seller_id
     ) {
       await updateDataSubCollection(
         {

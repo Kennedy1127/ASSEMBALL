@@ -217,7 +217,7 @@ export default {
   color: var(--primary-blue);
   font-weight: 600;
   @media all and (max-width: 420px) {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 
   .color_block {
@@ -297,6 +297,9 @@ export default {
   top: -4rem;
   right: 1.5rem;
   background-color: var(--pale-white);
+  @media screen and (max-width: 420px) {
+    font-size: 2rem;
+  }
 }
 
 .change_page_btn_down {
@@ -308,6 +311,8 @@ export default {
   bottom: -3rem;
   right: 1.5rem;
   @media screen and (max-width: 420px) {
+    font-size: 2rem;
+    padding-bottom: 1rem;
     bottom: -1rem;
   }
 }
@@ -324,13 +329,14 @@ export default {
     width: 100%;
 
     @media screen and (max-width: 420px) {
+      padding-bottom: 2rem;
       position: relative;
     }
 
     &_title {
       //清單標題
       color: var(--primary-blue);
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       position: relative;
       font-weight: 600;
       @media screen and (max-width: 420px) {
@@ -354,6 +360,10 @@ export default {
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 3;
+      margin-bottom: 0.5rem;
+      @media screen and (max-width: 420px) {
+        font-size: 1rem;
+      }
     }
 
     //內文
@@ -364,6 +374,11 @@ export default {
       color: var(--primary-blue);
       font-weight: 600;
       background-color: #fff;
+      @media screen and (max-width: 420px) {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        font-size: 0.875rem;
+      }
     }
   }
 }

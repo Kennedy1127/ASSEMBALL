@@ -370,6 +370,7 @@ export default {
             margin-top: 0.75rem;
             & img {
               width: 100%;
+              height: 220px;
             }
           }
           & button {
@@ -454,6 +455,7 @@ export default {
             margin-top: 1rem;
             & img {
               width: 100%;
+              height: 300px;
             }
           }
           &_text {

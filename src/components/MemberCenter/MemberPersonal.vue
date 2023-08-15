@@ -161,7 +161,9 @@ export default {
     return {
       // 表單資料
       pic: null,
-      avatar: this.$store.state.user.picUrls[0],
+      avatar: this.$store.state.user.picUrls
+        ? this.$store.state.user.picUrls[0]
+        : require("@/assets/images/icons/main-icon.png"),
       lastname: this.$store.state.user.lastname,
       name: this.$store.state.user.firstname,
       email: this.$store.state.user.email,
@@ -425,6 +427,8 @@ export default {
         padding: 2rem 0;
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
         & img {
           width: 100px;
           height: 100px;

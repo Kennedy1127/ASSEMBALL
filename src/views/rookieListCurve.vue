@@ -43,7 +43,7 @@
       <div class="rookieListCurve_video">
         <iframe
           width="80%"
-         height="100%"
+          height="100%"
           src="https://www.youtube.com/embed/AfuaiiWOGCs"
           title="YouTube video player"
           frameborder="0"
@@ -105,6 +105,9 @@ export default {
     text-decoration: underline;
     text-underline-offset: 4px;
     padding-bottom: 0.2rem;
+    @media screen and (max-width: 420px) {
+      font-size: 1rem;
+    }
   }
   .bread_crumbs_arrow {
     margin-top: 0.5rem;
@@ -114,7 +117,7 @@ export default {
     }
   }
   @media screen and (max-width: 420px) {
-    display: none;
+    font-size: 1rem;
   }
 }
 
@@ -176,7 +179,7 @@ export default {
     .rookieListCurve_content {
       //文字段落
       color: var(--primary-black);
-      font-size: 1.25rem;
+      font-size: 1rem;
       margin-bottom: 3rem;
     }
   }
@@ -216,16 +219,16 @@ export default {
   height: 40rem;
   justify-content: center;
 
-  @media screen and (max-width: 420px){
+  @media screen and (max-width: 420px) {
     margin-top: 3rem;
     width: 100%;
-  height: 12rem;
+    height: 12rem;
   }
 }
 hr {
   margin-top: 8rem;
   color: var(--secondary-gray-3);
-  @media screen and (max-width: 420px){
+  @media screen and (max-width: 420px) {
     margin-top: 1rem;
   }
 }

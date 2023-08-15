@@ -28,10 +28,10 @@ export default {
 
 @media screen and (max-width: 768px) {
   .goback {
-    margin-top: 6rem;
+    margin-top: 5rem;
     display: block;
     @media all and (max-width: 420px) {
-      padding-left: 1rem;
+      padding-left: 0.5rem;
     }
     & a {
       margin: 0.5rem;
