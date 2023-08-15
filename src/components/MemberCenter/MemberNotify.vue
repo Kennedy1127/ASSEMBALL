@@ -77,8 +77,8 @@
 
 <script>
 import useData from "@/composables/data/useData";
-import { auth } from "@/firebase/config";
-const { updateData, updateDataSubCollection } = useData();
+import { auth, timestamp } from "@/firebase/config";
+const { setDataSubCollection, updateData, updateDataSubCollection } = useData();
 
 export default {
   mounted() {
@@ -131,7 +131,28 @@ export default {
         }
       );
 
+      setDataSubCollection(
+        {
+          collectionName: "MEMBERS",
+          documentId: data.auth_id,
+          subCollectionName: "NOTIFY",
+        },
+        {
+          date: timestamp,
+          title: `${
+            this.$store.state.user.lastname + this.$store.state.user.firstname
+          }加入球隊`,
+          text: `熱烈歡迎${
+            this.$store.state.user.lastname + this.$store.state.user.firstname
+          }加入球隊，讓我們期待他吧`,
+          read: false,
+          status: true,
+          type: 0,
+        }
+      );
+
       this.$store.state.user.team_id = data.team_id;
+      this.$router.push({ name: "myplayerTeam", params: { id: data.team_id } });
 
       this.$store.state.userNotifys
         .filter((notify) => notify.type === 2)
@@ -150,8 +171,35 @@ export default {
         });
     },
 
-    submitReject(data) {
-      updateDataSubCollection(
+    async submitReject(data) {
+      await updateData(
+        { collectionName: "APPLYS", documentId: data.apply_id },
+        {
+          status: -1,
+        }
+      );
+
+      setDataSubCollection(
+        {
+          collectionName: "MEMBERS",
+          documentId: data.auth_id,
+          subCollectionName: "NOTIFY",
+        },
+        {
+          date: timestamp,
+          title: `${
+            this.$store.state.user.lastname + this.$store.state.user.firstname
+          }拒絕加入`,
+          text: `很遺憾，${
+            this.$store.state.user.lastname + this.$store.state.user.firstname
+          }拒絕加入，讓我們懷念他`,
+          read: false,
+          status: true,
+          type: 0,
+        }
+      );
+
+      await updateDataSubCollection(
         {
           collectionName: "MEMBERS",
           documentId: auth.currentUser.uid,
@@ -163,10 +211,10 @@ export default {
         }
       );
 
-      const index = this.MemberNotifyTeam.findIndex(
-        (notify) => notify.id === data.id
-      );
-      this.MemberNotifyTeam.splice(index, 1);
+      // const index = this.MemberNotifyTeam.findIndex(
+      //   (notify) => notify.id === data.id
+      // );
+      // this.MemberNotifyTeam.splice(index, 1);
     },
   },
 };

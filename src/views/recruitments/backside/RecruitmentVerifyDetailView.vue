@@ -107,7 +107,7 @@ import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useData from "@/composables/data/useData";
 import useStorage from "@/composables/data/useStorage";
-import { timestamp } from "@/firebase/config";
+import { timestamp, auth } from "@/firebase/config";
 
 const { getDocument, getUser } = getData();
 const { getPicsLink } = useStorage();
@@ -214,6 +214,7 @@ const verifyPassStatus = () => {
       status: true,
       type: 2,
       apply_id: applyData.value.id,
+      auth_id: auth.currentUser.uid,
     }
   );
 
@@ -247,6 +248,7 @@ const verifyDeclineStatus = () => {
       status: true,
       type: 0,
       apply_id: applyData.value.id,
+      auth_id: auth.currentUser.uid,
     }
   );
 
