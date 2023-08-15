@@ -21,7 +21,7 @@
           <div class="recruitment_post_main_content_personalInfo">
             <div class="recruitment_post_main_content_personalInfo_pic">
               <img
-                src="~@/assets/images/recruitment/applicant/applicant-1.jpg"
+                :src="picSrc"
                 alt="userphoto"
                 class="recruitment_aside_personalInfo_photo"
               />
@@ -95,32 +95,61 @@ import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useData from "@/composables/data/useData";
+import useStorage from "@/composables/data/useStorage";
 
-const { getDocument } = getData();
+const { getDocument, getUser } = getData();
+const { getPicsLink } = useStorage();
 const { updateData } = useData();
 
 const title = ref("審核應徵");
 const store = useStore();
 const route = useRoute();
 const router = useRouter();
+const picSrc = ref("");
+
 // const computedRenderApply = ref([]);
 onMounted(async () => {
-  const data = store.state.ApplyRecords.find(
-    (apply) => apply.id === route.query.id
-  );
+  // const data = store.state.ApplyRecords.find(
+  //   (apply) => apply.id === route.query.id
+  // );
 
-  if (!data) {
-    const apply = await getDocument("APPLYS", route.query.id);
-    // console.log(apply);
-    const user = await getDocument("MEMBERS", apply.user_id);
+  // if (!data) {
+  //   const apply = await getDocument("APPLYS", route.query.id);
+  //   // console.log(apply);
+  //   const user = await getDocument("MEMBERS", apply.user_id);
 
-    // console.log(user);
+  //   // console.log(user);
+  //   const res = await getPicsLink(
+  //     1,
+  //     `images/MEMBERS/${store.state.user?.id}`,
+  //     "member"
+  //   );
+  //   console.log(res);
 
-    return (applyData.value = { ...apply, user });
-  }
+  //   return (applyData.value = { ...apply, user, res });
+  // }
 
-  applyData.value = { ...data };
-  console.log(applyData.value);
+  const apply = await getDocument("APPLYS", route.query.id);
+  // console.log(apply);
+  const user = await getDocument("MEMBERS", apply.user_id);
+
+  // console.log(user);
+  const res = await getPicsLink(1, `images/MEMBERS/${user.id}`, "member");
+  console.log(res);
+
+  picSrc.value = res[0];
+  applyData.value = { ...apply, user };
+
+  // console.log(applyData.value);
+
+  // 帶入user的大頭貼
+
+  // if (!store.state.user?.id) {
+  //   user = await getUser();
+  // }
+  // console.log(applyData.user_id);
+
+  // console.log(picSrc.value);
 });
 
 const applyData = ref({});
@@ -169,7 +198,7 @@ const verifyDeclineStatus = () => {
   router.push({ name: "recruitmentVerify" });
 };
 
-updateData;
+// updateData;
 </script>
 
 <style lang="scss">
