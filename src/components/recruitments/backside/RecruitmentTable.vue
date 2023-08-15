@@ -22,6 +22,7 @@
       <tbody>
         <tr v-for="item in $props.tableData" :key="item.id">
           <td
+            class="StatusColor"
             :class="convertStatusColor(item.status)"
             v-if="title === '審核應徵' || title === '記錄管理'"
           ></td>
@@ -83,11 +84,12 @@
         <tbody>
           <tr v-for="item in $props.tableData" :key="item.id">
             <td>
-              <!-- <div
+              <div
+                class="StatusColor"
                 :class="convertStatusColor(item.status)"
                 v-if="title === '審核應徵' || title === '記錄管理'"
-              ></div> -->
-              <div v-if="tablekey === 1" class="td_item">
+              ></div>
+              <div class="td_item">
                 <div class="td_title">標題</div>
                 <div v-if="title === '管理職缺' || title === '審核應徵'">
                   {{ item.title || item.copywriting.title }}
@@ -320,7 +322,7 @@ export default {
       padding: 3rem 0;
       text-align: center;
     }
-    td:nth-child(1) {
+    .StatusColor {
       width: 10px;
       &.yellow {
         background-color: yellow;
@@ -373,7 +375,9 @@ export default {
         }
       }
       tr {
+        padding-top: 0.5rem;
         display: flex;
+        position: relative;
         td {
           width: 50%;
           vertical-align: top;
@@ -383,6 +387,22 @@ export default {
           gap: 1rem;
           justify-content: space-between;
 
+          .StatusColor {
+            width: 100%;
+            height: 10px;
+            top: 0;
+            left: 0;
+            position: absolute;
+            &.yellow {
+              background-color: yellow;
+            }
+            &.orange {
+              background-color: var(--error-yellow);
+            }
+            &.green {
+              background-color: green;
+            }
+          }
           .td_title {
             color: var(--primary-blue);
             margin-bottom: 0.5rem;
