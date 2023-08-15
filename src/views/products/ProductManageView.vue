@@ -100,7 +100,6 @@ import { auth } from "@/firebase/config";
 import getData from "@/composables/data/getData";
 import useData from "@/composables/data/useData";
 
-
 export default {
   components: {
     SelectorComponent,

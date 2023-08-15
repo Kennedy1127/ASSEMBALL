@@ -25,7 +25,6 @@ const routes = [
     name: "Register",
     component: () => import("@/views/authentications/RegisterView.vue"),
     beforeEnter: () => {
-      if (auth.currentUser) signout();
       if (store.state.isLoggedIn) return { name: "Home" };
     },
   },
@@ -78,7 +77,7 @@ const routes = [
     name: "ProductPost",
     component: () => import("@/views/products/ProductPost.vue"), // 檔名
     beforeEnter: () => {
-      // if (!store.state.isLoggedIn) return { name: "Home" };
+      if (!store.state.isLoggedIn && !auth.currentUser) return { name: "Home" };
     },
   },
   {

@@ -108,13 +108,23 @@ const getData = () => {
         docRef,
         ...conditions.map((condition) => {
           return where(condition[0], condition[1], condition[2]);
-        }),
-        desc === true
-          ? [...orders.map((order) => orderBy(order, "desc"))][0]
-          : [...orders.map((order) => orderBy(order))][0]
+        })
       );
 
-      const res = await getDocs(q);
+      const q2 =
+        desc === true
+          ? query(
+              q,
+
+              [...orders.map((order) => orderBy(order, "desc"))][0]
+            )
+          : query(
+              q,
+
+              ...orders.map((order) => orderBy(order))
+            );
+
+      const res = await getDocs(q2);
       return res.docs.map((doc) => doc.data());
     } catch (err) {
       console.error("Something went wrong!");
