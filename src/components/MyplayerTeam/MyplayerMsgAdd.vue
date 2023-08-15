@@ -91,7 +91,9 @@ export default {
           "member"
         );
 
-        posts[i].avatar = pics[0];
+        posts[i].avatar = pics
+          ? pics[0]
+          : require("@/assets/images/icons/main-icon.png");
       }
 
       this.$store.state.myplayerMessageCard = [...posts];

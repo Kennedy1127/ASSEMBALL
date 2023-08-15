@@ -1,7 +1,8 @@
 <template>
   <div class="home_message_title">
     <h2>
-      <router-link :to="{ name: 'myplayerTeam' }"
+      <router-link
+        :to="{ name: 'myplayerTeam', params: { id: '5KhosRZOJ7TmLfECUb5D' } }"
         >交流留言板<Icon type="ios-arrow-dropright-circle"
       /></router-link>
     </h2>
@@ -45,9 +46,13 @@
     >
       <div class="home_message_all_text_header">
         <h3>
-          <router-link :to="{ name: 'myplayerTeam' }">{{
-            item.title
-          }}</router-link>
+          <router-link
+            :to="{
+              name: 'myplayerTeam',
+              params: { id: '5KhosRZOJ7TmLfECUb5D' },
+            }"
+            >{{ item.title }}</router-link
+          >
         </h3>
         <span class="home_message_all_text_header_date">
           {{ item.postdate }}
