@@ -78,7 +78,7 @@
 <script>
 import useData from "@/composables/data/useData";
 import { auth } from "@/firebase/config";
-const { updateDataSubCollection } = useData();
+const { updateData, updateDataSubCollection } = useData();
 
 export default {
   mounted() {
@@ -116,8 +116,22 @@ export default {
       console.log(data);
     },
 
-    submitJoin(data) {
-      console.log(data);
+    async submitJoin(data) {
+      await updateData(
+        { collectionName: "MEMBERS", documentId: auth.currentUser.uid },
+        {
+          team_id: data.team_id,
+        }
+      );
+
+      await updateData(
+        { collectionName: "APPLYS", documentId: data.apply_id },
+        {
+          status: 2,
+        }
+      );
+
+      this.$store.state.user.team_id = data.team_id;
 
       this.$store.state.userNotifys
         .filter((notify) => notify.type === 2)

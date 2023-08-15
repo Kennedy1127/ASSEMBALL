@@ -213,6 +213,7 @@ const verifyPassStatus = () => {
       read: false,
       status: true,
       type: 2,
+      apply_id: applyData.value.id,
     }
   );
 
@@ -240,10 +241,12 @@ const verifyDeclineStatus = () => {
     {
       date: timestamp,
       title: `${applyData.value.team.teamName}拒絕您加入`,
+      text: `非常抱歉，${applyData.value.team.teamName}拒絕您加入，您可以嘗試其他的隊伍！`,
       team_id: applyData.value.team_id,
       read: false,
       status: true,
       type: 0,
+      apply_id: applyData.value.id,
     }
   );
 

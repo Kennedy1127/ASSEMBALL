@@ -85,7 +85,6 @@ const useData = () => {
       console.error("Something went wrong!");
       setDataError.value = err.message;
       console.error(err);
-      // }
     }
   };
 
