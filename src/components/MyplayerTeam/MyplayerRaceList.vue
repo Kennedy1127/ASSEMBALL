@@ -123,7 +123,7 @@ import OverlayComponent from "../utilities/OverlayComponent.vue";
 import MyplayerCalendar from "@/components/MyplayerTeam/MyplayerCalendar";
 import useStorage from "@/composables/data/useStorage";
 import getData from "@/composables/data/getData";
-import { remove } from "@vue/shared";
+// import { remove } from "@vue/shared";
 import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
 
@@ -134,14 +134,14 @@ export default {
   async mounted() {
     const res = await getSubCollectionDocuments({
       collectionName: "TEAMS",
-      documentId: "iECrL2hQ89BPzKkX32u4",
+      documentId: this.$route.params.id,
       subCollectionName: "GAME",
     });
 
     for (let i = 0; i < res.length; i++) {
       const pics = await getPicsLink(
         2,
-        `images/TEAMS/${"iECrL2hQ89BPzKkX32u4"}/GAME/${res[i].id}`,
+        `images/TEAMS/${this.$route.params.id}/GAME/${res[i].id}`,
         "teamLogoPic"
       );
 
@@ -177,7 +177,7 @@ export default {
       this.editCommentId = id;
     },
     async confirmItem(id) {
-      await deleteDoc(doc(db, "TEAMS", "iECrL2hQ89BPzKkX32u4", "GAME", id));
+      await deleteDoc(doc(db, "TEAMS", this.$route.params.id, "GAME", id));
       const index = this.$store.state.myplayerRaceList.findIndex(
         (race) => race.id === id
       );

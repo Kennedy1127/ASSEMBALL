@@ -4,7 +4,10 @@
       <div class="myplayer_album_rect"></div>
       <h3 class="myplayer_album_title">相簿</h3>
     </div>
-    <router-link to="/MyplayerGallery" class="myplayer_album_gallery">
+    <router-link
+      :to="{ name: 'MyplayerGallery', params: { id: $route.params.id } }"
+      class="myplayer_album_gallery"
+    >
       <div class="myplayer_album_gallery_text">觀看更多</div>
     </router-link>
   </section>

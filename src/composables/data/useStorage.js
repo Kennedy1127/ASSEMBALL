@@ -76,7 +76,6 @@ const useStorage = () => {
     const storageRef = ref(storage, path);
     const res = await listAll(storageRef);
 
-<<<<<<< HEAD
     const urls = [];
 
     for (let i = 0; i < res.items.length; i++) {
@@ -92,12 +91,6 @@ const useStorage = () => {
     // });
 
     return urls;
-=======
-    res.items.forEach(async (el) => {
-      const test = await getDownloadURL(el);
-      console.log(test);
-    });
->>>>>>> eeebc4c0fbe9f7ce89af35e74cb53b5e4c60c5f9
   };
 
   return { setPics, getPics, getPicsLink, getAllPics, uploadPic };

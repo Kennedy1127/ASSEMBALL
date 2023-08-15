@@ -12,7 +12,7 @@
       <MyplayerMessage @openPopup="openPopup" />
     </div>
 
-    <MyplayerPopups :postData="postData" />
+    <!-- <MyplayerPopups :postData="postData" /> -->
   </main>
 </template>
 <script>
@@ -22,6 +22,7 @@ import MyplayerRaceList from "@/components/MyplayerTeam/MyplayerRaceList";
 import MyplayerGallery from "@/components/MyplayerTeam/MyplayerGallery";
 import MyplayerMessage from "@/components/MyplayerTeam/MyplayerMessage";
 import MyplayerPopups from "@/components/MyplayerTeam/MyplayerPopups";
+
 import { auth } from "@/firebase/config";
 
 export default {
@@ -34,7 +35,8 @@ export default {
     MyplayerPopups,
   },
   mounted() {
-    this.$store.dispatch("getMyplayerTeam");
+    this.$store.dispatch("getMyplayerTeam", this.$route.params.id);
+    this.$store.state.isPending = true;
     const scrollToComments = this.$route.query.scrollToComments;
 
     if (scrollToComments) {
@@ -56,6 +58,7 @@ export default {
         }
       }, 100);
     }
+    this.$store.state.isPending = false;
   },
   data() {
     return {
