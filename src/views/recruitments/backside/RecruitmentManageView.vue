@@ -57,6 +57,7 @@ import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTabl
 import PaginationComponent from "@/components/utilities/PaginationComponent.vue";
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
+import getData from "@/composables/data/getData";
 
 const tablekey = ref(1);
 
@@ -68,8 +69,11 @@ const isNoResults = computed(
 
 //把抓到的內容放進表格內
 const store = useStore();
-onMounted(() => {
-  store.dispatch("getManageCopywritings"); //用index.js的 action 要用dispatch
+const { getUser } = getData();
+onMounted(async () => {
+  const user = await getUser();
+
+  store.dispatch("getManageCopywritings", user.team_id); //用index.js的 action 要用dispatch
 });
 
 // 一頁放幾個項目

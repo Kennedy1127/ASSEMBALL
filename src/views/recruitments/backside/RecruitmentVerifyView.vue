@@ -48,16 +48,19 @@ import RecruitmentPostAside from "@/components/recruitments/backside/Recruitment
 import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
 import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";
 import PaginationComponent from "@/components/utilities/PaginationComponent.vue";
+import getData from "@/composables/data/getData";
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
 
 const tablekey = ref(1);
 const title = ref("審核應徵");
+const { getUser } = getData();
 
 //把抓到的內容放進表格內
 const store = useStore();
-onMounted(() => {
-  store.dispatch("getApplyRecords"); //用index.js的 action 要用dispatch
+onMounted(async () => {
+  const user = await getUser();
+  store.dispatch("getApplyRecords", user.team_id); //用index.js的 action 要用dispatch
 });
 
 // 一頁放幾個項目
