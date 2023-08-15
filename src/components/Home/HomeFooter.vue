@@ -45,11 +45,7 @@
             >
           </li>
           <li>
-            <router-link
-              :to="{
-                name: 'myplayerTeam',
-                params: { id: '5KhosRZOJ7TmLfECUb5D' },
-              }"
+            <router-link :to="goToTeam"
               ><span><font-awesome-icon icon="fa-solid fa-user-group" /></span>
               我的球隊</router-link
             >
@@ -92,6 +88,20 @@ export default {
         novice: "新手上路",
       },
     };
+  },
+  computed: {
+    goToTeam() {
+      if (!this.$store.state.user) {
+        return {
+          name: "Home",
+        };
+      }
+
+      return {
+        name: "myplayerTeam",
+        params: { id: this.$store.state.user.team_id },
+      };
+    },
   },
 };
 </script>
