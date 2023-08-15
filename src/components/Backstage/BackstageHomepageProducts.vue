@@ -25,9 +25,9 @@
                 <li
                   v-for="(item, index) in PriceArray"
                   :key="index"
-                  @click="updatePrice(item.Price)"
+                  @click="updatePrice(item.price)"
                 >
-                  {{ item.Price }}
+                  {{ item.price }}
                 </li>
               </ul>
 
@@ -41,9 +41,9 @@
                 <li
                   v-for="(item, index) in TypeArray"
                   :key="index"
-                  @click="updateType(item.Type)"
+                  @click="updateType(item.type)"
                 >
-                  {{ item.Type }}
+                  {{ item.type }}
                 </li>
               </ul>
               商品種類
@@ -56,9 +56,9 @@
                 <li
                   v-for="(item, index) in DateArray"
                   :key="index"
-                  @click="updateDate(item.Date)"
+                  @click="updateDate(item.date)"
                 >
-                  {{ item.Date }}
+                  {{ convertDate(item.date.toDate()) }}
                 </li>
               </ul>
               上架日期
@@ -72,9 +72,9 @@
                 <li
                   v-for="(item, index) in FocusArray"
                   :key="index"
-                  @click="updateFocus(item.Focus)"
+                  @click="updateFocus(item.focus)"
                 >
-                  {{ item.Focus }}
+                  {{ item.focus }}
                 </li>
               </ul>
               <button @click="FocusMenu" class="table_row_menu" ref="Focus">
@@ -86,9 +86,9 @@
                 <li
                   v-for="(item, index) in TopArray"
                   :key="index"
-                  @click="updateTop(item.Top)"
+                  @click="updateTop(item.top)"
                 >
-                  {{ item.Top }}
+                  {{ item.top }}
                 </li>
               </ul>
               TOP商品 {{ topNum }} /3
@@ -103,16 +103,18 @@
             :key="item.id"
             class="table_row"
           >
-            <td class="table_row_name">{{ convertFont(item.ProductsName) }}</td>
+            <td class="table_row_name">{{ convertFont(item.title) }}</td>
             <td class="table_row_price">
-              {{ convertFont(item.ProductsPrice) }}
+              {{ convertFont(item.price) }}
             </td>
-            <td class="table_row_type">{{ convertFont(item.ProductsType) }}</td>
-            <td class="table_row_date">{{ convertFont(item.ProductsDate) }}</td>
+            <td class="table_row_type">{{ convertFont(item.type) }}</td>
+            <td class="table_row_date">
+              {{ convertDate(item.date.toDate()) }}
+            </td>
             <!-- 焦點商品 -->
             <td class="table_row_focus">
               <input
-                v-if="item.ProductsFocus"
+                v-if="item.focus"
                 type="checkbox"
                 checked
                 @click="handleFocusChange(item, $event)"
@@ -128,7 +130,7 @@
             <!-- 熱門商品 -->
             <td class="table_row_top">
               <input
-                v-if="item.ProductsTop"
+                v-if="item.top"
                 type="checkbox"
                 checked
                 @click="handleTopChange(item, $event)"
@@ -157,7 +159,13 @@
 <script>
 import { db } from "@/firebase/config"; //引入data base
 import { addDoc, doc, getDoc, addDocs } from "firebase/firestore";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 // import axios from "axios"; //引入axios來抓json檔
 export default {
   data() {
@@ -169,259 +177,9 @@ export default {
       //     id: "1",
       //     ProductsName: "二手白樺木球棒",
       //     ProductsPrice: "2400",
-      //     ProductsType: "球棒",
+      //     type: "球棒",
       //     ProductsDate: "2023/07/04",
       //     // ProductsFocus:  "是",
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "2",
-      //     ProductsName: "二手手套",
-      //     ProductsPrice: "2000",
-      //     ProductsType: "手套",
-      //     ProductsDate: "2023/08/04",
-      //     // ProductsFocus: "是",
-      //     ProductsFocus: true,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "3",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "1400",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/14",
-      //     // ProductsFocus: "是",
-      //     ProductsFocus: true,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "4",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "2500",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/24",
-      //     // ProductsFocus: "是",
-      //     ProductsFocus: true,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "5",
-      //     ProductsName: "二手打擊頭盔",
-      //     ProductsPrice: "2700",
-      //     ProductsType: "頭盔",
-      //     ProductsDate: "2023/07/11",
-      //     // ProductsFocus: "是",
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "6",
-      //     ProductsName: "二手捕手護具",
-      //     ProductsPrice: "2900",
-      //     ProductsType: "護具",
-      //     ProductsDate: "2023/07/05",
-
-      //     ProductsFocus: true,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "7",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "2422",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/04",
-
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "8",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "24400",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/09",
-
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "9",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "2420",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/24",
-
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "10",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "2850",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/08/14",
-
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "11",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "2100",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/08/08",
-
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "12",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "1400",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/08/04",
-
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "13",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "4400",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/04",
-
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "14",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "24400",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/04",
-
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "15",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "2400",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/04",
-
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "16",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "2400",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/04",
-
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "17",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "2400",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/04",
-
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "18",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "2400",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/04",
-
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "19",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "2400",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/04",
-      //     // ProductsFocus: "否",
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "20",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "2400",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/04",
-      //     // ProductsFocus: "否",
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "21",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "2400",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/04",
-      //     // ProductsFocus: "否",
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "22",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "2400",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/04",
-      //     // ProductsFocus: "否",
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "23",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "2400",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/04",
-      //     // ProductsFocus: "否",
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "24",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "2400",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/04",
-      //     // ProductsFocus: "否",
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "25",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "2400",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/04",
-
-      //     ProductsFocus: false,
-      //     ProductsTop: false,
-      //   },
-      //   {
-      //     id: "26",
-      //     ProductsName: "二手球褲",
-      //     ProductsPrice: "2400",
-      //     ProductsType: "球褲",
-      //     ProductsDate: "2023/07/04",
-
       //     ProductsFocus: false,
       //     ProductsTop: false,
       //   },
@@ -451,46 +209,38 @@ export default {
   computed: {
     focusNum() {
       //focus被勾了幾個
-      return this.Products.filter((v) => v.ProductsFocus).length; //返回Products中ProductsFocus的項目組成的陣列的長度
+      return this.Products.filter((v) => v.focus).length; //返回Products中ProductsFocus的項目組成的陣列的長度
     },
     topNum() {
-      return this.Products.filter((v) => v.ProductsTop).length;
+      return this.Products.filter((v) => v.top).length;
     },
     productFilterPrice() {
       //篩選價格
       if (this.currentPrice == 0) return this.Products; //還沒篩選時回傳所有資料
-      return this.Products.filter((v) => v.ProductsPrice == this.currentPrice); //篩選現在點擊到的價格
+      return this.Products.filter((v) => v.price == this.currentPrice); //篩選現在點擊到的價格
     },
     productFilterType() {
       //篩選類型如果沒選的話會去抓價格的資料
       if (this.currentType == 0) return this.productFilterPrice;
-      return this.productFilterPrice.filter(
-        (v) => v.ProductsType == this.currentType
-      );
+      return this.productFilterPrice.filter((v) => v.type == this.currentType);
     },
     productFilterDate() {
       //篩選日期
       if (this.currentDate == 0) return this.productFilterType;
-      return this.productFilterType.filter(
-        (v) => v.ProductsDate == this.currentDate
-      );
+      return this.productFilterType.filter((v) => v.date == this.currentDate);
     },
     productFilterFocus() {
       if (this.currentFocus === 0) return this.productFilterDate;
-      return this.productFilterDate.filter(
-        (v) => v.ProductsFocus == this.currentFocus
-      );
+      return this.productFilterDate.filter((v) => v.focus == this.currentFocus);
     },
     productFilterTop() {
       if (this.currentTop == 0) return this.productFilterFocus;
-      return this.productFilterFocus.filter(
-        (v) => v.ProductsTop == this.currentTop
-      );
+      return this.productFilterFocus.filter((v) => v.top == this.currentTop);
     },
     productFilterSearch() {
       if (this.currentSearch == "") return this.productFilterTop;
       return this.productFilterTop.filter((v) =>
-        v.ProductsName.includes(this.currentSearch)
+        v.title.includes(this.currentSearch)
       );
     },
     ProductsList() {
@@ -502,31 +252,40 @@ export default {
     },
   },
   methods: {
+    convertDate(inputDate) {
+      //日期轉字串
+      console.log(inputDate);
+      const date = new Date(inputDate);
+      console.log("日期", date);
+      return `${date.getFullYear()} / ${String(date.getMonth() + 1).padStart(
+        2,
+        0
+      )} / ${String(date.getDate()).padStart(2, 0)}`;
+    },
     PriceMenu() {
-      const PricesSet = new Set( //新增一個set並將Products內每個項目的價格放入
-        this.Products.map((item) => item.ProductsPrice)
-      );
-      this.PriceArray = Array.from(PricesSet).map((item) => ({ Price: item })); //將set資料放進陣列
+      const PricesSet = new Set(this.Products.map((item) => item.price)); //新增一個set並將Products內每個項目的價格放入
+      this.PriceArray = Array.from(PricesSet).map((item) => ({ price: item })); //將set資料放進陣列
       this.PriceMenuShow = !this.PriceMenuShow;
     },
     TypeMenu() {
-      const TypeSet = new Set(this.Products.map((item) => item.ProductsType)); //用set篩掉重複的type
-      this.TypeArray = Array.from(TypeSet).map((item) => ({ Type: item }));
+      const TypeSet = new Set(this.Products.map((item) => item.type)); //用set篩掉重複的type
+      this.TypeArray = Array.from(TypeSet).map((item) => ({ type: item }));
       this.TypeMenuShow = !this.TypeMenuShow;
     },
     DateMenu() {
-      const DateSet = new Set(this.Products.map((item) => item.ProductsDate)); //Set
-      this.DateArray = Array.from(DateSet).map((item) => ({ Date: item }));
+      // const DateSet = new Set(this.Products.map((item) =>this.convertDate(item) ));
+      const DateSet = new Set(this.Products.map((item) => item.date)); //Set
+      this.DateArray = Array.from(DateSet).map((item) => ({ date: item }));
       this.DateMenuShow = !this.DateMenuShow;
     },
     FocusMenu() {
-      const FocusSet = new Set(this.Products.map((item) => item.ProductsFocus)); //Set
-      this.FocusArray = Array.from(FocusSet).map((item) => ({ Focus: item }));
+      const FocusSet = new Set(this.Products.map((item) => item.focus)); //Set
+      this.FocusArray = Array.from(FocusSet).map((item) => ({ focus: item }));
       this.FocusMenuShow = !this.FocusMenuShow;
     },
     TopMenu() {
-      const TOPSet = new Set(this.Products.map((item) => item.ProductsTop)); //Set
-      this.TopArray = Array.from(TOPSet).map((item) => ({ Top: item }));
+      const TOPSet = new Set(this.Products.map((item) => item.top)); //Set
+      this.TopArray = Array.from(TOPSet).map((item) => ({ top: item }));
       this.TopMenuShow = !this.TopMenuShow;
     },
 
@@ -545,7 +304,7 @@ export default {
     },
     topcheckChange(item) {
       //TOP商品checkbox切換
-      item.ProductsTop = !item.ProductsTop;
+      item.top = !item.top;
     },
     pageup() {
       if (this.page != 1) {
@@ -617,25 +376,24 @@ export default {
       //用findIndex方法返回=當前點到checkbox的物件id之索引值
       // console.log("當前物件索引值",index)
 
-      if (this.Products[index].ProductsFocus || this.focusNum < 5)
+      if (this.Products[index].focus || this.focusNum < 5)
         //用index的索引值來查找Products中的ProductsFocus是否為true
-        this.Products[index].ProductsFocus =
-          !this.Products[index].ProductsFocus;
+        this.Products[index].focus = !this.Products[index].focus;
     },
     handleTopChange(Top, e) {
       e.preventDefault(); //阻止checkbox預設行為
       const index = this.Products.findIndex((v) => v.id === Top.id);
       //用findIndex方法返回=當前點到checkbox的物件id之索引值
       // console.log("當前物件索引值",index)
-      if (this.Products[index].ProductsTop || this.topNum < 3)
+      if (this.Products[index].top || this.topNum < 3)
         //用index的索引值來查找Products中的ProductsTop是否為true
-        this.Products[index].ProductsTop = !this.Products[index].ProductsTop;
+        this.Products[index].top = !this.Products[index].top;
     },
 
     //從firebase引入資料
     async GetData() {
       try {
-        const ProductsCollection = collection(db, "BACKSTAGEPRODUCTS"); // 取得集合
+        const ProductsCollection = collection(db, "PRODUCTS"); // 取得集合
         const BackStageDocuments = await getDocs(ProductsCollection); // 取得集合內的所有物件
         BackStageDocuments.forEach((x) => {
           // console.log(x.data());
@@ -645,8 +403,14 @@ export default {
         alert(err);
       }
     },
+    //資料庫焦點商品切換
+    async AddProductsFocus() {
+      const ProductsCollection = doc(db, "PRODUCTS", "4akPJqmt2vrCo5kyVEDJ");
+      await updateDoc(ProductsCollection, {
+        focus: false,
+      });
+    },
 
- 
     //     AddData(){
     //  //Products的資料上傳到firebase
     //         const ProductsCollection = collection(db, "BACKSTAGEPRODUCTS"); // 將ProductsCollection設定為BACKSTAGEPRODUCTS集合
@@ -764,7 +528,7 @@ export default {
           }
           //個別欄位設定
           &_name {
-            width: 20%;
+            width: 10%;
           }
           &_price {
             width: 15%;
@@ -790,7 +554,7 @@ export default {
             }
           }
           &_type {
-            width: 20%;
+            width: 10%;
             position: relative;
             &_menu {
               top: 2rem;
@@ -812,7 +576,7 @@ export default {
             }
           }
           &_date {
-            width: 20%;
+            width: 30%;
             position: relative;
             &_menu {
               top: 2rem;
@@ -834,7 +598,7 @@ export default {
             }
           }
           &_focus {
-            width: 15%;
+            width: 10%;
             position: relative;
 
             &_menu {
