@@ -1,5 +1,9 @@
 import { auth } from "@/firebase/config";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
 import { ref } from "vue";
 
 const useSignin = () => {
@@ -17,7 +21,12 @@ const useSignin = () => {
     }
   };
 
-  return { signinError, signin };
+  const signinWithGoogle = async () => {
+    const providerGoogle = new GoogleAuthProvider();
+    await signInWithPopup(auth, providerGoogle);
+  };
+
+  return { signinError, signin, signinWithGoogle };
 };
 
 export default useSignin;

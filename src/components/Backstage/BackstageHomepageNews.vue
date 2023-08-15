@@ -44,12 +44,11 @@
         </div>
       </div>
     </div>
-
-    <div class="homepage_marqueeKeyword">
-      <!-- 首頁跑馬燈管理 -->
+     <!-- 首頁跑馬燈管理 -->
+    <!-- <div class="homepage_marqueeKeyword">
       <div class="homepage_marqueeKeyword_title">跑馬燈關鍵字</div>
       <div class="homepage_marqueeKeyword_enter">
-        <!--  跑馬燈關鍵字輸入框-->
+  
         輸入關鍵字: <input type="text" v-model="AddMarquee" />
         <button
           @click="AddMarqueeKeywordItem"
@@ -58,12 +57,12 @@
           <font-awesome-icon icon="fa-solid fa-circle-plus" />
         </button>
       </div>
-      <!-- 跑馬燈關鍵字表單 -->
+
       <div class="homepage_marqueeKeyword_form">
         <div class="homepage_marqueeKeyword_form_title">
           <div class="homepage_marqueeKeyword_form_title_text">目前關鍵字</div>
         </div>
-        <!-- 跑馬燈關鍵字表單內容 -->
+ 
         <div class="homePage_marqueeKeyword_form_content">
           <div
             v-for="(item, index) in MarqueeKeyword"
@@ -82,7 +81,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- 最新消息卡片-------------------------- -->
     <div class="homePage_card_area">
       <div class="homePage_card">
@@ -350,7 +349,7 @@ input {
       position: relative;
       .menu_btn {
         position: absolute;
-        top: 0.1rem;
+        top: 0.15rem;
         right: 0.5rem;
         background-color: var(--pale-white);
         color: var(--primary-black);
