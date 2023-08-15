@@ -23,63 +23,69 @@
   <div class="home_product_all">
     <div
       class="home_product_all_top"
-      v-for="item in ProductPaymentItem"
-      :key="item.Payment"
-      @click="goToProducts(item.product_id)"
+      v-for="item in ProductPaymentItems"
+      :key="item.id"
+      @click="goToProducts(item.id)"
     >
-      <h2 class="home_product_all_top_title">{{ data.top }}</h2>
+      <h2 class="home_product_all_top_title">TOP{{ item.top }}</h2>
       <div class="home_product_all_top_pic">
-        <img :src="item.imgSrc" :alt="ProductPayment_form_item_pic" />
+        <img :src="item.imgSrc" alt="ProductPayment_form_item_pic" />
       </div>
       <h3 class="home_product_all_top_name">
-        {{ item.name }}
+        {{ item.title }}
       </h3>
-      <div class="home_product_all_top_date">{{ item.date }}</div>
+      <div class="home_product_all_top_date">{{ item.formattedDate }}</div>
     </div>
   </div>
 </template>
 
 <script>
 import getData from "@/composables/data/getData";
-const { getDocument, getDocuments, getSubCollectionDocuments } = getData();
+import useStorage from "@/composables/data/useStorage";
+
+const { getDocuments } = getData();
+const { getPicsLink } = useStorage();
+
 export default {
   async mounted() {
-    const productsDate = await getDocuments("PRODUCTS", [
+    const productData = await getDocuments("PRODUCTS", [
       ["status", "==", true],
+      ["top", "==", true],
     ]);
-    console.log(productsDate);
+    console.log(productData);
+
+    for (let i = 0; i < productData.length; i++) {
+      const res = await getPicsLink(
+        1,
+        `images/PRODUCTS/${productData[i].id}`,
+        "product"
+      );
+
+      productData[i].imgSrc = res[0];
+      productData[i].top = i + 1;
+      productData[i].formattedDate = this.convertDate(productData[i].date);
+    }
+
+    this.ProductPaymentItems = [...productData];
   },
 
   data() {
     return {
-      //     topProductData: [
-      //       // {
-      //       //   top: "TOP2",
-      //       //   imgUrl: require("@/assets/images/index/product_top02.jpg"),
-      //       //   productName: "高品質二手棒球護具套裝",
-      //       //   date: "2023-05-19",
-      //       //   product_id: "64c09a3e4b8f780513fbf2f4",
-      //       // },
-      //       // {
-      //       //   top: "TOP1",
-      //       //   imgUrl: require("@/assets/images/index/product_top01.jpg"),
-      //       //   productName: "精選二手棒球珍品",
-      //       //   date: "2023-07-29",
-      //       //   product_id: "64c09a3e63fb8e32470551e5",
-      //       // },
-      //       // {
-      //       //   top: "TOP3",
-      //       //   imgUrl: require("@/assets/images/index/product_top03.jpg"),
-      //       //   productName: "品牌投手手套尋找新主人",
-      //       //   date: "2023-06-09",
-      //       //   product_id: "64c09a3efe9f0f5052cb66c4",
-      //       // },
-      //     ],
+      picSrc: "", //商品圖
+      ProductPaymentItems: [],
     };
   },
   methods: {
     goToProducts(id) {
-      this.$router.push({ name: "ProductDetail", params: { id } });
+      this.$router.push({ name: "ProductDetail", params: { productId: id } });
+    },
+    convertDate(msgDate) {
+      if (!msgDate) return "";
+      const date = msgDate.toDate ? msgDate.toDate() : new Date(msgDate);
+      return `${date.getFullYear()} / ${String(date.getMonth() + 1).padStart(
+        2,
+        "0"
+      )} / ${String(date.getDate()).padStart(2, "0")}`;
     },
   },
 };
@@ -167,7 +173,7 @@ export default {
       line-height: 1.25;
     }
     &_pic {
-      width: 80%;
+      width: 85%;
       margin: auto;
       padding-bottom: 0;
       box-shadow: var(--shadow-wide);
@@ -175,6 +181,7 @@ export default {
       border-radius: var(--round);
       & img {
         width: 100%;
+        height: 260px;
         transform: scale(1.05);
         transition: 0.5s;
       }
@@ -202,8 +209,11 @@ export default {
       transform: scale(1.25);
     }
   }
-  &_top:nth-child(2) {
+  &_top:nth-child(1) {
     margin: 2% 3% 0 3%;
+  }
+  &_top:nth-child(2) {
+    order: -1;
   }
 }
 @media screen and (max-width: 1280px) {
@@ -289,7 +299,7 @@ export default {
       }
     }
     &_top:nth-child(2) {
-      order: -1;
+      order: 0;
     }
     &_top:nth-child(3) {
       margin-bottom: 2rem;
@@ -361,7 +371,7 @@ export default {
     }
     &_top:nth-child(2) {
       margin-right: auto;
-      order: -1;
+      order: 0;
       .home_product_all_top_title {
         bottom: 4rem;
         right: -3rem;
