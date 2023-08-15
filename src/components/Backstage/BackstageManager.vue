@@ -27,7 +27,12 @@
 
             <td class="table_row_state">
               <div class="super" v-if="item.Super">超級管理員</div>
-              <input type="checkbox" v-model="item.State" name="State" v-if="!item.Super"/>
+              <input
+                type="checkbox"
+                v-model="item.State"
+                name="State"
+                v-if="!item.Super"
+              />
             </td>
             <td class="table_row_super">
               <div class="super" v-if="item.Super">是</div>
@@ -41,7 +46,7 @@
         <button class="btn_down" @click="pagedown">
           <font-awesome-icon icon="fa-solid fa-angle-down" />
         </button>
-        <button class="btn_send">送出</button>
+        <button class="btn_send" @click="AddManager">送出</button>
       </div>
     </div>
   </div>
@@ -49,13 +54,13 @@
 <script>
 import { db } from "@/firebase/config"; //引入data base
 import { addDoc, doc, getDoc, addDocs } from "firebase/firestore";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, orderBy ,updateDoc} from "firebase/firestore";
 export default {
   data() {
     return {
       page: 1,
       perPage: 17,
-      Manager:[],
+      Manager: [],
       // Manager: [
       //   {
       //     Number: "1",
@@ -63,54 +68,7 @@ export default {
       //     State: true,
       //     Super: true,
       //   },
-      //   {
-      //     Number: "2",
-      //     Name: "阿貓",
-      //     State: true,
-      //     Super: false,
-      //   },
-      //   {
-      //     Number: "3",
-      //     Name: "來福",
-      //     State: true,
-      //     Super: false,
-      //   },
-      //   {
-      //     Number: "4",
-      //     Name: "旺財",
-      //     State: true,
-      //     Super: false,
-      //   },
-      //   {
-      //     Number: "5",
-      //     Name: "常威",
-      //     State: true,
-      //     Super: false,
-      //   },
-      //   {
-      //     Number: "6",
-      //     Name: "阿梅",
-      //     State: true,
-      //     Super: false,
-      //   },
-      //   {
-      //     Number: "7",
-      //     Name: "阿真",
-      //     State: true,
-      //     Super: false,
-      //   },
-      //   {
-      //     Number: "8",
-      //     Name: "阿強",
-      //     State: true,
-      //     Super: false,
-      //   },
-      //   {
-      //     Number: "9",
-      //     Name: "賴世原",
-      //     State: true,
-      //     Super: false,
-      //   },
+
       // ],
       Super: [], //給V-model的陣列
       State: [], //給V-model的陣列
@@ -127,7 +85,9 @@ export default {
   },
   methods: {
     convertFont(str) {
-      if(!str){return};
+      if (!str) {
+        return;
+      }
       //限制資料字數
       if (str.length > 10) {
         return str.slice(0, 10) + "...";
@@ -135,7 +95,7 @@ export default {
         return str;
       }
     },
- 
+
     pageup() {
       if (this.page != 1) {
         //往上換頁
@@ -149,8 +109,17 @@ export default {
         this.page++;
       }
     },
-     //從firebase引入資料
-     async GetData() {
+     //更動內容上傳資料庫
+     async AddManager() {
+      for (let i = 0; i < this.Manager.length; i++) {
+        const ManagerCollection = doc(db, "BACKSTAGEMANAGER",this.Manager[i].id);
+        await updateDoc(ManagerCollection, {
+          State: this.Manager[i].State,
+        });
+      }
+    },
+    //從firebase引入資料
+    async GetData() {
       try {
         const ManagerCollection = collection(db, "BACKSTAGEMANAGER"); // 取得集合
         const ManagerDocuments = await getDocs(ManagerCollection); // 取得集合內的所有物件
@@ -158,13 +127,16 @@ export default {
           // console.log(x.data());
           this.Manager.push(x.data()); // 物件轉陣列
         });
+        this.Manager.sort(function (a, b) {
+          return a.Number - b.Number; // 升序排序
+        });
       } catch (err) {
         alert(err);
       }
     },
     //         AddData(){
     //  //將資料上傳到firebase
-    //         const MamagerCollection = collection(db, "BACKSTAGEMANAGER"); 
+    //         const MamagerCollection = collection(db, "BACKSTAGEMANAGER");
     //         this.Manager.forEach(x =>
     //         {
     //           const docRef = addDoc(MamagerCollection, x)//
@@ -172,12 +144,11 @@ export default {
     //         })
     // }
   },
-  mounted(){
+  mounted() {
     // this.AddData();
     this.GetData();
-  }
+  },
 };
-
 </script>
 <style scoped lang="scss">
 .Manager {

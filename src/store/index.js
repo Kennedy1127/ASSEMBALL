@@ -77,6 +77,7 @@ export default createStore({
     myplayerOverlay: true,
     myplayerTeam: {},
     myplayerRaceList: [],
+    myplayerMessageCard: [],
 
     //////////////////////////////////////////////////////
     // 頁碼區塊
@@ -491,8 +492,6 @@ export default createStore({
 
     //我的球隊撈資料
     setMyplayerTeam(state, payload) {
-      console.log(payload);
-
       state.myplayerTeam = { ...payload };
     },
 
@@ -665,24 +664,13 @@ export default createStore({
     //撈我的球隊的資料
 
     async getMyplayerTeam(context, payload) {
-      const teamData = await getDocuments("TEAMS");
-      // console.log(teamData);
-
-      const teamGameData = await getSubCollectionDocuments({
-        collectionName: "TEAMS",
-        documentId: "5KhosRZOJ7TmLfECUb5D",
-        subCollectionName: "GAME",
-      });
-      // console.log(teamGameData);
-
-      //const picData=
+      const teamData = await getDocument("TEAMS", payload);
 
       const scheduleData = await getSubCollectionDocuments({
         collectionName: "TEAMS",
         documentId: "5KhosRZOJ7TmLfECUb5D",
         subCollectionName: "SCHEDULE",
       });
-      // console.log(scheduleData);
 
       const teamPostData = await getSubCollectionDocuments({
         collectionName: "TEAMS",
@@ -692,8 +680,8 @@ export default createStore({
       // console.log(teamPostData);
 
       const allTeamData = {
-        ...teamData[0],
-        teamGameData,
+        ...teamData,
+
         scheduleData,
         teamPostData,
       };

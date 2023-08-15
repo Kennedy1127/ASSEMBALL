@@ -93,7 +93,8 @@ const getData = () => {
   const getSubCollectionDocuments = async (
     target,
     conditions = [],
-    orders = []
+    orders = [],
+    desc = false
   ) => {
     try {
       const docRef = collection(
@@ -108,7 +109,9 @@ const getData = () => {
         ...conditions.map((condition) => {
           return where(condition[0], condition[1], condition[2]);
         }),
-        ...orders.map((order) => orderBy(order))
+        desc === true
+          ? [...orders.map((order) => orderBy(order, "desc"))][0]
+          : [...orders.map((order) => orderBy(order))][0]
       );
 
       const res = await getDocs(q);

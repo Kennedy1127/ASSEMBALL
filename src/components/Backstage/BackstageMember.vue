@@ -119,14 +119,14 @@
         <button class="btn_down" @click="pagedown">
           <font-awesome-icon icon="fa-solid fa-angle-down" />
         </button>
-        <button class="btn_send">送出</button>
+        <button class="btn_send" @click="AddMember">送出</button>
       </div>
     </div>
   </div>
 </template>
 <script>
 import { db } from "@/firebase/config"; //引入data base
-import { addDoc, doc, getDoc, addDocs } from "firebase/firestore";
+import { addDoc, doc, getDoc, addDocs,updateDoc } from "firebase/firestore";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 
@@ -326,6 +326,16 @@ export default {
         this.ManagerMenuShow = false;
         this.ViolationMenuShow = false;
         this.StateMenuShow = false;
+      }
+    },
+     //更動內容上傳資料庫
+     async AddMember() {
+      for (let i = 0; i < this.Member.length; i++) {
+        // console.log("i在這", i, "陣列", this.Article[i].id);
+        const MemberCollection = doc(db, "MEMBERS",this.Member[i].id);
+        await updateDoc(MemberCollection, {
+          state: this.Member[i].state,
+        });
       }
     },
     //從firebase引入資料

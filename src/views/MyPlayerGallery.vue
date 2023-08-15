@@ -5,7 +5,9 @@
         <div class="myplayer_gallery_return_arrow">
           <font-awesome-icon :icon="['fas', 'chevron-left']" />
         </div>
-        <router-link to="/myplayerTeam/" class="myplayer_gallery_return_word"
+        <router-link
+          :to="{ name: 'myplayerTeam', params: { id: $route.params.id } }"
+          class="myplayer_gallery_return_word"
           >返回</router-link
         >
       </div>
@@ -17,7 +19,7 @@
         id="addPhoto"
         accept="image/*"
         ref="fileInput"
-        @change="handleFileChange()"
+        @change="handleFileChange"
       />
 
       <div
@@ -49,13 +51,15 @@ import useStorage from "@/composables/data/useStorage";
 // const photoId = ref(null);
 export default {
   async mounted() {
+    console.log(this.$route.params.id);
     // this.$route.params.id
+    this.$store.state.isPending = true;
     const { getAllPics } = useStorage();
     const teamPic = await getAllPics(
-      `images/TEAMS/iECrL2hQ89BPzKkX32u4/gallery`
+      `images/TEAMS/${this.$route.params.id}/gallery`
     );
 
-    console.log(teamPic);
+    // console.log(teamPic);
 
     teamPic.forEach((el, i) => {
       this.myplayerGalleryCard[i] = {
@@ -63,6 +67,7 @@ export default {
         myGalleryPic: el,
       };
     });
+    this.$store.state.isPending = false;
   },
   components: {
     MyplayerPhotoPopus,
@@ -89,12 +94,12 @@ export default {
       // this.$route.params.id
       const { uploadPic, getAllPics } = useStorage();
       await uploadPic(
-        `images/TEAMS/iECrL2hQ89BPzKkX32u4/gallery/${this.pic.name}`,
+        `images/TEAMS/${this.$route.params.id}/gallery/${this.pic.name}`,
         this.pic
       );
 
       const teamPic = await getAllPics(
-        `images/TEAMS/iECrL2hQ89BPzKkX32u4/gallery`
+        `images/TEAMS/${this.$route.params.id}/gallery`
       );
 
       console.log(teamPic);
@@ -128,7 +133,7 @@ export default {
       this.curIndex = id;
     },
     goToRight() {
-      if (this.curIndex === this.myplayerGalleryCard.length - 1) return;
+      if (this.curIndex === this.myplayerGalleryCard.length) return;
       this.curIndex++;
       // console.log(this.curIndex);
 

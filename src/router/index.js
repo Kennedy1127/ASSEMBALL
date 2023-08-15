@@ -166,7 +166,7 @@ const routes = [
   },
   /////////////////////////////////////////
   {
-    path: "/myplayerTeam",
+    path: "/myplayerTeam/:id",
     name: "myplayerTeam",
     component: () => import("@/views/MyPlayerTeam.vue"),
   },
@@ -193,7 +193,7 @@ const routes = [
     component: () => import("@/views/Backstage.vue"),
   },
   {
-    path: "/MyplayerGallery",
+    path: "/MyplayerGallery/:id",
     name: "MyplayerGallery",
     component: () => import("@/views/MyPlayerGallery.vue"),
   },

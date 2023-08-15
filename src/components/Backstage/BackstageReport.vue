@@ -19,7 +19,7 @@
         <table class="Report_table_form">
           <!-- 表頭 -->
           <tr class="table_row">
-            <td class="table_row_number">會員編號</td>
+            <td class="table_row_number">編號</td>
             <td class="table_row_name">會員姓名</td>
             <td class="table_row_type">
               <ul class="table_row_type_menu" v-if="TypeMenuShow">
@@ -103,6 +103,13 @@
             <td class="table_row_link">{{ convertFont(item.Link) }}</td>
             <td class="table_row_points">
               {{ convertFont(item.Points) }}
+
+              <button class="points_btn" @click="PointsChange(item)">
+                <font-awesome-icon icon="fa-solid fa-angle-down" />
+              </button>
+              <button class="points_down_btn" @click="PointsChangeCancel(item)">
+                <font-awesome-icon icon="fa-solid fa-angle-down" />
+              </button>
             </td>
             <td class="table_row_blockade">
               <input
@@ -111,7 +118,6 @@
                 name="Blockade"
                 :value="index"
               />
-          
             </td>
           </tr>
         </table>
@@ -121,7 +127,7 @@
         <button class="btn_down" @click="pagedown">
           <font-awesome-icon icon="fa-solid fa-angle-down" />
         </button>
-        <button class="btn_send">送出</button>
+        <button class="btn_send" @click="AddReport">送出</button>
       </div>
     </div>
   </div>
@@ -129,7 +135,13 @@
 <script>
 import { db } from "@/firebase/config"; //引入data base
 import { addDoc, doc, getDoc, addDocs } from "firebase/firestore";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 export default {
   data() {
     return {
@@ -376,6 +388,25 @@ export default {
     },
   },
   methods: {
+    PointsChange(x) {
+      if (x.PointsCancel == false) {
+        const index = this.Report.findIndex((v) => v.id === x.id);
+        //用findIndex方法返回=當前點到checkbox的物件id之索引值
+        // console.log("當前物件索引值",index)
+
+        this.Report[index].Points++;
+        x.PointsCancel = true;
+      }
+    },
+    PointsChangeCancel(x) {
+      if (x.PointsCancel == true) {
+        const index = this.Report.findIndex((v) => v.id === x.id);
+        //用findIndex方法返回=當前點到checkbox的物件id之索引值
+        this.Report[index].Points--;
+        x.PointsCancel = false;
+      }
+    },
+
     TypeMenu() {
       const TypeSet = new Set(this.Report.map((item) => item.Type)); //Set
       this.TypeArray = Array.from(TypeSet).map((item) => ({ Type: item }));
@@ -466,8 +497,19 @@ export default {
       this.currentBlockade = 0;
       this.currentSearch = "";
     },
-     //從firebase引入資料
-     async GetData() {
+    //更動內容上傳資料庫
+    async AddReport() {
+      for (let i = 0; i < this.Report.length; i++) {
+        // console.log("i在這", i, "陣列", this.Article[i].id);
+        const ReportCollection = doc(db, "BACKSTAGEREPORT", this.Report[i].id);
+        await updateDoc(ReportCollection, {
+          Blockade: this.Report[i].Blockade,
+          Points:this.Report[i].Points
+        });
+      }
+    },
+    //從firebase引入資料
+    async GetData() {
       try {
         const ReportCollection = collection(db, "BACKSTAGEREPORT"); // 取得集合
         const ReportDocuments = await getDocs(ReportCollection); // 取得集合內的所有物件
@@ -475,13 +517,20 @@ export default {
           // console.log(x.data());
           this.Report.push(x.data()); // 物件轉陣列
         });
+        this.Report.sort(function (a, b) {
+            return a.Number - b.Number; // 升序排序
+          });
       } catch (err) {
         alert(err);
+      }
+      for (let i = 0; i < this.Report.length; i++) {
+        //重置取消狀態
+        this.Report[i].PointsCancel = false;
       }
     },
     //      AddData(){
     //  //將資料上傳到firebase
-    //         const ReportCollection = collection(db, "BACKSTAGEREPORT"); 
+    //         const ReportCollection = collection(db, "BACKSTAGEREPORT");
     //         this.Report.forEach(x =>
     //         {
     //           const docRef = addDoc(ReportCollection, x)//
@@ -696,6 +745,12 @@ export default {
             }
           }
         }
+      }
+      .points_btn {
+        transform: rotate(180deg);
+      }
+      .points_down_btn {
+        margin-left: 0.5rem;
       }
 
       .btn_up {

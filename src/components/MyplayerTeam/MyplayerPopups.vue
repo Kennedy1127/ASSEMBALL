@@ -1,24 +1,30 @@
 <template>
   <div>
-    <section
-      class="myplayer_message_popups"
-      v-show="$store.state.myplayerPopupsOpen"
-    >
-      <div class="myplayer_message_overlay" @click="myplayerClose"></div>
+    <section class="myplayer_message_popups">
       <div class="myplayer_popups">
         <div class="myplayer_popups_title">
           <div class="myplayer_popups_title_avatar">
-            <div class="myplayer_popups_title_avatar_pic"></div>
+            <div
+              class="myplayer_popups_title_avatar_pic"
+              v-bind:style="{ backgroundImage: `url('${msgData.avatar}')` }"
+            ></div>
             <div class="myplayer_popups_title_avatar_info">
               <span class="myplayer_popups_title_avatar_account">{{
-                postData.user_id
+                msgData.name
               }}</span>
               <span class="myplayer_popups_title_avatar_day">{{
-                postData.postdate
+                msgData.postdate
               }}</span>
             </div>
           </div>
-          <div class="myplayer_popups_title_dot" @click="myplayer_dot_btn">
+          <div
+            class="myplayer_popups_title_dot"
+            @click="myplayer_dot_btn"
+            v-if="
+              authID === msgData.user_id ||
+              authID === $store.state.myplayerTeam.user_id
+            "
+          >
             ...
             <div
               class="myplayer_popups_edit_visible"
@@ -26,11 +32,12 @@
             >
               <div class="myplayer_popups_title_dot_wrap">
                 <div class="myplayer_popups_edit_wrap">
-                  <span class="myplayer_popups_dot_edit"
-                    ><font-awesome-icon :icon="['fas', 'pen']" /></span
-                  ><span class="myplayer_popups_dot_edit">編輯</span>
+                  <span class="myplayer_popups_dot_edit"></span>
                 </div>
-                <div class="myplayer_popups_delete_wrap">
+                <div
+                  class="myplayer_popups_delete_wrap"
+                  @click="confirmItem(msgData.id)"
+                >
                   <span class="myplayer_popups_dot_delete"
                     ><font-awesome-icon :icon="['fas', 'trash-can']"
                   /></span>
@@ -44,18 +51,28 @@
         <div class="myplayer_popups_content">
           <div class="myplayer_popups_content_wrap">
             <h3 class="myplayer_popups_content_wrap_title">
-              {{ postData.title }}
+              {{ msgData.title }}
             </h3>
-            <div class="myplayer_popups_content_wrap_text">
-              {{ postData.text }}
+            <textarea class="myplayer_popups_content_wrap_text">
+              {{ msgData.text }}
+            </textarea>
+            <div class="myplayer_popups_content_wrap_message" ref="messageWrap">
+              <p v-for="message in messages" :key="message">{{ message }}</p>
             </div>
-            <div class="myplayer_popups_content_wrap_message"></div>
           </div>
         </div>
         <div class="myplayer_popups_content_wrap_typing">
-          <input type="text" class="myplayer_popups_content_typing_box" />
+          <input
+            type="text"
+            placeholder="請輸入留言內容......"
+            class="myplayer_popups_content_typing_box"
+            v-model="inputText"
+            @keyup.enter="sendMessage"
+          />
           <span class="myplayer_popups_content_typing_arrow"
-            ><font-awesome-icon :icon="['fas', 'paper-plane']"
+            ><font-awesome-icon
+              :icon="['fas', 'paper-plane']"
+              @click="sendMessage"
           /></span>
         </div>
       </div>
@@ -63,21 +80,40 @@
   </div>
 </template>
 <script>
+import { doc, deleteDoc } from "firebase/firestore";
+import { auth } from "@/firebase/config";
+import { db } from "@/firebase/config";
 export default {
-  props: { postData: { type: Object, default: {} } },
-
+  props: { postData: { type: Object, default: {} }, msgData: {} },
   data() {
     return {
       myplayer_content: false,
       myplayer_message_popups: false,
+      editMode: true,
+      editCommentId: null,
+      editComment: null,
+      inputText: "",
+      messages: [],
+      authID: auth.currentUser.uid,
     };
   },
   methods: {
-    myplayerClose() {
-      this.$store.commit("myplayerOverlayToggle");
-    },
     myplayer_dot_btn() {
       this.$store.commit("myplayerEditToggle");
+    },
+    sendMessage() {
+      if (this.inputText.trim() !== "") {
+        this.messages.push(this.inputText);
+        this.inputText = "";
+      }
+    },
+    async confirmItem(id) {
+      await deleteDoc(doc(db, "TEAMS", this.$route.params.id, "POST", id));
+      const index = this.$store.state.myplayerMessageCard.findIndex(
+        (myplayerMsg) => myplayerMsg.id === id
+      );
+      this.$store.state.myplayerMessageCard.splice(index, 1);
+      this.$emit("closeModal");
     },
   },
 };
@@ -247,16 +283,16 @@ export default {
     // border: 1px solid black;
     // height: 600px;
   }
-  &_message_overlay {
-    position: fixed;
-    // display: none;
-    z-index: -1;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--overlay-black);
-  }
+  // &_message_overlay {
+  // position: fixed;
+  // // display: none;
+  // z-index: -1;
+  // top: 0;
+  // right: 0;
+  // width: 100%;
+  // height: 100%;
+  // background-color: var(--overlay-black);
+  // }
   &_popups {
     width: 100%;
     // height: 100%;
@@ -276,7 +312,6 @@ export default {
         &_pic {
           width: 100px;
           height: 100px; //warning
-          background-image: url(/src/assets/images/myplayer_team/myplayer_card/player_1.jpg);
           border-radius: 50%;
           background-size: cover;
           background-repeat: no-repeat;
@@ -316,7 +351,7 @@ export default {
         transform: translateY(1rem);
         &_wrap {
           width: 100px;
-          height: 100px;
+          height: 70px;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -378,16 +413,19 @@ export default {
         &_text {
           font-size: 1.25rem;
           color: var(--primary-blue);
-          padding: 1.5rem 0rem;
+          border: 1px solid transparent;
           height: 15rem;
           overflow: auto;
+          &:focus {
+            outline: none;
+          }
         }
         &_message {
           width: 100%;
           height: 8rem;
           border-radius: 0.5rem;
           border: 2px solid var(--secondary-blue-1);
-          padding: 1.5rem 0rem;
+          padding: 1.5rem 1.5rem;
           background-color: var(--secondary-blue-4);
           overflow: auto; // scroll
         }
@@ -407,6 +445,9 @@ export default {
         font-size: 1rem;
         border: 2px solid var(--secondary-blue-1);
         padding: 1rem;
+        &:focus {
+          outline: none;
+        }
       }
       &_typing_arrow {
         width: 4rem;
