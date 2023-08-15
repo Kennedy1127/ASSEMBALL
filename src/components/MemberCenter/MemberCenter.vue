@@ -82,7 +82,9 @@ export default {
   data() {
     return {
       MemberCenterMember: {
-        imgSrc: this.$store.state.user.picUrls[0],
+        imgSrc: this.$store.state.user.picUrls
+          ? this.$store.state.user.picUrls[0]
+          : require("@/assets/images/icons/main-icon.png"),
         // title: this.$store.state.user.firstname,
       },
     };

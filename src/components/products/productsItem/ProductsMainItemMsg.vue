@@ -81,8 +81,9 @@
       <div class="product_message_importing_user_pic">
         <img
           :src="
-            store.state.user?.picUrls[0] ||
-            require('@/assets/images/icons/main-icon.png')
+            store.state.user?.picUrls
+              ? store.state.user?.picUrls[0]
+              : require('@/assets/images/icons/main-icon.png')
           "
           alt="importing_pic"
         />
