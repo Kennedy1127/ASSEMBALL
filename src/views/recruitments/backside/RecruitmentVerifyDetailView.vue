@@ -142,6 +142,9 @@ onMounted(async () => {
   // }
 
   const apply = await getDocument("APPLYS", route.query.id);
+  if (apply.status === -1) {
+    return router.go(-1);
+  }
   // console.log(apply);
   const user = await getDocument("MEMBERS", apply.user_id);
   const team = await getDocument("TEAMS", apply.team_id);
