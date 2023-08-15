@@ -19,7 +19,7 @@
         <table class="Create_table_form">
           <!-- 表頭 -->
           <tr class="table_row">
-            <td class="table_row_number">會員編號</td>
+            <td class="table_row_number">編號</td>
             <td class="table_row_name">會員姓名</td>
             <td class="table_row_teamName">球隊名稱</td>
             <td class="table_row_area">
@@ -79,7 +79,6 @@
                 name="Result"
                 :value="index"
               />
-        
             </td>
           </tr>
         </table>
@@ -89,7 +88,7 @@
         <button class="btn_down" @click="pagedown">
           <font-awesome-icon icon="fa-solid fa-angle-down" />
         </button>
-        <button class="btn_send">送出</button>
+        <button class="btn_send" @click="AddCreate">送出</button>
       </div>
     </div>
   </div>
@@ -97,7 +96,14 @@
 <script>
 import { db } from "@/firebase/config"; //引入data base
 import { addDoc, doc, getDoc, addDocs } from "firebase/firestore";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 export default {
   data() {
     return {
@@ -107,7 +113,7 @@ export default {
       //   {
       //     Number: "1",
       //     Name: "狗今生",
-      //     TeamName: "天使隊",
+      //     TeamName: "吱吱隊",
       //     Area: "台北",
       //     Type: "老手",
       //     Illustrate:
@@ -117,7 +123,7 @@ export default {
       //   {
       //     Number: "2",
       //     Name: "阿福",
-      //     TeamName: "天使隊",
+      //     TeamName: "爪爪隊",
       //     Area: "台南",
       //     Type: "初心者",
       //     Illustrate:
@@ -126,8 +132,8 @@ export default {
       //   },
       //   {
       //     Number: "3",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
+      //     Name: "阿牛",
+      //     TeamName: "喵喵隊",
       //     Area: "台東",
       //     Type: "初心者",
       //     Illustrate:
@@ -136,9 +142,9 @@ export default {
       //   },
       //   {
       //     Number: "4",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
-      //     Area: "台中",
+      //     Name: "阿鬼",
+      //     TeamName: "邦邦隊",
+      //     Area: "台東",
       //     Type: "初心者",
       //     Illustrate:
       //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
@@ -146,166 +152,38 @@ export default {
       //   },
       //   {
       //     Number: "5",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
-      //     Area: "新北",
-      //     Type: "新手",
+      //     Name: "阿真",
+      //     TeamName: "香蕉隊",
+      //     Area: "台北",
+      //     Type: "初心者",
       //     Illustrate:
       //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
       //      Result: false,
       //   },
       //   {
       //     Number: "6",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
-      //     Area: "宜蘭",
-      //     Type: "新手",
+      //     Name: "阿西",
+      //     TeamName: "西瓜隊",
+      //     Area: "台北",
+      //     Type: "初心者",
       //     Illustrate:
       //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
       //      Result: false,
       //   },
       //   {
       //     Number: "7",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
-      //     Area: "桃園",
-      //     Type: "新手",
-      //     Illustrate:
-      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-      //      Result: false,
-      //   },
-      //   {
-      //     Number: "8",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
+      //     Name: "阿東",
+      //     TeamName: "鳳梨隊",
       //     Area: "台北",
-      //     Type: "新手",
+      //     Type: "初心者",
       //     Illustrate:
       //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
       //      Result: false,
       //   },
-      //   {
-      //     Number: "9",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
-      //     Area: "台北",
-      //     Type: "新手",
-      //     Illustrate:
-      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-      //      Result: false,
-      //   },
-      //   {
-      //     Number: "10",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
-      //     Area: "台北",
-      //     Type: "新手",
-      //     Illustrate:
-      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-      //      Result: false,
-      //   },
-      //   {
-      //     Number: "11",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
-      //     Area: "台北",
-      //     Type: "新手",
-      //     Illustrate:
-      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-      //      Result: false,
-      //   },
-      //   {
-      //     Number: "12",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
-      //     Area: "台北",
-      //     Type: "新手",
-      //     Illustrate:
-      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-      //      Result: false,
-      //   },
-      //   {
-      //     Number: "13",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
-      //     Area: "台北",
-      //     Type: "新手",
-      //     Illustrate:
-      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-      //      Result: false,
-      //   },
-      //   {
-      //     Number: "14",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
-      //     Area: "台北",
-      //     Type: "新手",
-      //     Illustrate:
-      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-      //      Result: false,
-      //   },
-      //   {
-      //     Number: "15",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
-      //     Area: "台北",
-      //     Type: "新手",
-      //     Illustrate:
-      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-      //      Result: false,
-      //   },
-      //   {
-      //     Number: "16",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
-      //     Area: "台北",
-      //     Type: "新手",
-      //     Illustrate:
-      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-      //      Result: false,
-      //   },
-      //   {
-      //     Number: "17",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
-      //     Area: "台北",
-      //     Type: "新手",
-      //     Illustrate:
-      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-      //      Result: false,
-      //   },
-      //   {
-      //     Number: "18",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
-      //     Area: "台北",
-      //     Type: "新手",
-      //     Illustrate:
-      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-      //      Result: false,
-      //   },
-      //   {
-      //     Number: "19",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
-      //     Area: "台北",
-      //     Type: "新手",
-      //     Illustrate:
-      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-      //      Result: false,
-      //   },
-      //   {
-      //     Number: "20",
-      //     Name: "狗今生",
-      //     TeamName: "天使隊",
-      //     Area: "台北",
-      //     Type: "新手",
-      //     Illustrate:
-      //       "我們的球隊以團結和合作為基石。我們相互支持，彼此信任，並相信每個隊員都有為球隊做出貢獻的能力，我們的目標是共同成長，一起攜手打造一支強大的球隊。",
-      //      Result: false,
-      //   },
+
       // ],
-      Create:[],
+      Create: [],
+      Teams: [],
       AreaArray: [], //篩選地區陣列
       TypeArray: [],
 
@@ -314,7 +192,7 @@ export default {
 
       currentArea: 0,
       currentType: 0,
-      currentSearch:"",
+      currentSearch: "",
     };
   },
   computed: {
@@ -328,7 +206,9 @@ export default {
     },
     CreateFilterSearch() {
       if (this.currentSearch == "") return this.CreateFilterType;
-      return this.CreateFilterType.filter((v) => v.Name.includes(this.currentSearch));
+      return this.CreateFilterType.filter((v) =>
+        v.Name.includes(this.currentSearch)
+      );
     },
     CreateList() {
       //回傳頁碼對應的十筆索引值的資料組成的陣列
@@ -353,7 +233,7 @@ export default {
     Reset() {
       this.currentArea = 0;
       this.currentType = 0;
-      this.currentSearch="";
+      this.currentSearch = "";
     },
     CloseMenu(e) {
       if (e.target.closest(".table_row_menu") === this.$refs.Area) {
@@ -367,7 +247,9 @@ export default {
     },
 
     convertFont(str) {
-      if(!str){return};
+      if (!str) {
+        return;
+      }
       //限制資料字數
       if (str.length > 10) {
         return str.slice(0, 10) + "...";
@@ -397,16 +279,48 @@ export default {
     },
     updateSearch() {
       this.currentSearch = this.SearchText;
-      this.SearchText="";
+      this.SearchText = "";
     },
-     //從firebase引入資料
-     async GetData() {
+    //更動內容上傳資料庫
+    async AddCreate() {
+      for (let i = 0; i < this.Create.length; i++) {
+        const CreateCollection = doc(db, "BACKSTAGECREATE", this.Create[i].id);
+
+        if (this.Create[i].Result == true) {
+          const TeamsCollection = collection(db, "TEAMS"); //新增至firebase
+          const NewTeams = {//隊伍資料新增至TEAMS
+            id:this.Create[i].id,
+            intro: this.Create[i].Illustrate,
+            location: this.Create[i].Area,
+            user_id:this.Create[i].Name,
+            teamName:this.Create[i].TeamName,
+          };
+          addDoc(TeamsCollection, NewTeams);
+        }
+        await updateDoc(CreateCollection, {
+          Result: this.Create[i].Result,
+        });
+
+      
+      }
+    },
+    //從firebase引入資料
+    async GetData() {
       try {
         const CreateCollection = collection(db, "BACKSTAGECREATE"); // 取得集合
         const CreateDocuments = await getDocs(CreateCollection); // 取得集合內的所有物件
         CreateDocuments.forEach((x) => {
           // console.log(x.data());
           this.Create.push(x.data()); // 物件轉陣列
+          this.Create.sort(function (a, b) {
+            return a.Number - b.Number; // 升序排序
+          });
+        });
+        const TeamsCollection = collection(db, "TEAMS"); // 取得集合
+        const TeamsDocuments = await getDocs(TeamsCollection); // 取得集合內的所有物件
+        CreateDocuments.forEach((x) => {
+          // console.log(x.data());
+          this.Teams.push(x.data()); // 物件轉陣列
         });
       } catch (err) {
         alert(err);
@@ -414,7 +328,7 @@ export default {
     },
     //      AddData(){
     //  //將資料上傳到firebase
-    //         const CreateCollection = collection(db, "BACKSTAGECREATE"); 
+    //         const CreateCollection = collection(db, "BACKSTAGECREATE");
     //         this.Create.forEach(x =>
     //         {
     //           const docRef = addDoc(CreateCollection, x)//
