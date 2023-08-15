@@ -56,6 +56,7 @@ import {
   faHouse,
   faXmark,
   faCheck,
+  faRotateRight
 } from "@fortawesome/free-solid-svg-icons";
 
 import { faFacebook, faLine } from "@fortawesome/free-brands-svg-icons";
@@ -107,7 +108,8 @@ library.add(
   faFacebook,
   faLine,
   faXmark,
-  faCheck
+  faCheck,
+  faRotateRight
 );
 
 // firebase 狀態觀察設定
