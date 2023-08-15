@@ -476,6 +476,7 @@ export default {
   }
   .myplayer_popups_content_wrap_text {
     font-size: 1rem;
+    padding: 1rem 0rem;
   }
 }
 @media screen and (max-width: 767px) {
@@ -493,9 +494,11 @@ export default {
   }
   .myplayer_popups_content_wrap_text {
     font-size: 1rem;
+    height: 10rem;
   }
   .myplayer_message_popups {
     width: 80%;
+    margin: 0rem auto 3rem auto;
   }
   .myplayer_popups_title_avatar_pic {
     width: 80px;
@@ -514,14 +517,18 @@ export default {
   .myplayer_popups_title_dot_wrap {
     width: 80px;
     height: 80px;
-    right: calc(50% - 40px);
+    right: calc(50% - 30px);
     bottom: 65%;
   }
   .myplayer_popups {
-    padding: 2rem 1rem 2rem 1rem;
+    padding: 1rem;
   }
   .myplayer_popups_content_typing_arrow {
     font-size: 2rem;
+  }
+  .myplayer_popups_title_avatar_info {
+    text-wrap: nowrap;
+    padding: 0rem;
   }
 }
 </style>

@@ -40,7 +40,10 @@
               {{ item.gamedate }}
               <div class="myplayer_function_race_edit">
                 <font-awesome-icon
-                  v-if="editCommentId !== item.id"
+                  v-if="
+                    editCommentId !== item.id &&
+                    authID === $store.state.myplayerTeam.user_id
+                  "
                   :icon="['fas', 'trash-can']"
                   class="icon icon--pen"
                   @click="openEditComment(item.id)"
@@ -123,6 +126,7 @@ import OverlayComponent from "../utilities/OverlayComponent.vue";
 import MyplayerCalendar from "@/components/MyplayerTeam/MyplayerCalendar";
 import useStorage from "@/composables/data/useStorage";
 import getData from "@/composables/data/getData";
+import { auth } from "@/firebase/config";
 // import { remove } from "@vue/shared";
 import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
@@ -163,6 +167,7 @@ export default {
       editCommentId: null,
       editComment: null,
       isVisible: false,
+      authID: auth.currentUser.uid,
     };
   },
   methods: {
