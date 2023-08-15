@@ -646,7 +646,9 @@ export default createStore({
     // 撈招募文案資料
     async getCopywritings(context) {
       try {
-        const res = await getDocuments("COPYWRITINGS");
+        const res = await getDocuments("COPYWRITINGS", [
+          ["status", "==", true],
+        ]);
         if (!res) throw new Error("Cannot fetch response");
 
         const copywritings = [];

@@ -136,6 +136,13 @@ export default {
         }
       );
 
+      await updateData(
+        { collectionName: "COPYWRITINGS", documentId: data.copywriting_id },
+        {
+          status: false,
+        }
+      );
+
       setDataSubCollection(
         {
           collectionName: "MEMBERS",
