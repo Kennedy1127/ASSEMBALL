@@ -80,8 +80,19 @@
           </div>
         </div>
         <div class="recruitment_post_main_content_btn">
-          <button @click="verifyPassStatus">確認</button>
-          <button @click="verifyDeclineStatus">拒絕</button>
+          <button
+            type="button"
+            @click="verifyPassStatus"
+            :disabled="applyData.status === 1 || applyData.status === 2"
+          >
+            確認
+          </button>
+          <button
+            @click="verifyDeclineStatus"
+            :disabled="applyData.status === 1 || applyData.status === 2"
+          >
+            拒絕
+          </button>
         </div>
       </div>
     </main>
@@ -96,10 +107,11 @@ import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useData from "@/composables/data/useData";
 import useStorage from "@/composables/data/useStorage";
+import { timestamp } from "@/firebase/config";
 
 const { getDocument, getUser } = getData();
 const { getPicsLink } = useStorage();
-const { updateData } = useData();
+const { updateData, setDataSubCollection } = useData();
 
 const title = ref("審核應徵");
 const store = useStore();
@@ -132,13 +144,14 @@ onMounted(async () => {
   const apply = await getDocument("APPLYS", route.query.id);
   // console.log(apply);
   const user = await getDocument("MEMBERS", apply.user_id);
+  const team = await getDocument("TEAMS", apply.team_id);
 
   // console.log(user);
   const res = await getPicsLink(1, `images/MEMBERS/${user.id}`, "member");
   console.log(res);
 
   picSrc.value = res[0];
-  applyData.value = { ...apply, user };
+  applyData.value = { ...apply, user, team };
 
   // console.log(applyData.value);
 
@@ -180,20 +193,61 @@ const getlevelLabel = (exp) => {
 
 // 同意應徵者加入
 const verifyPassStatus = () => {
+  if (applyData.value.status === 1 || applyData.value.status === 2) {
+    return;
+  }
   updateData(
     { collectionName: "APPLYS", documentId: applyData.value.id },
     { status: 1 }
   );
+
+  setDataSubCollection(
+    {
+      collectionName: "MEMBERS",
+      documentId: applyData.value.user.id,
+      subCollectionName: "NOTIFY",
+    },
+    {
+      date: timestamp,
+      title: `${applyData.value.team.teamName}邀請您加入`,
+      team_id: applyData.value.team_id,
+      read: false,
+      status: true,
+      type: 2,
+    }
+  );
+
   alert("已同意應徵者加入!");
   router.push({ name: "recruitmentVerify" });
 };
 
 // 拒絕應徵者加入
 const verifyDeclineStatus = () => {
+  if (applyData.value.status === 1 || applyData.value.status === 2) {
+    return;
+  }
+
   updateData(
     { collectionName: "APPLYS", documentId: applyData.value.id },
     { status: -1 }
   );
+
+  setDataSubCollection(
+    {
+      collectionName: "MEMBERS",
+      documentId: applyData.value.user.id,
+      subCollectionName: "NOTIFY",
+    },
+    {
+      date: timestamp,
+      title: `${applyData.value.team.teamName}拒絕您加入`,
+      team_id: applyData.value.team_id,
+      read: false,
+      status: true,
+      type: 0,
+    }
+  );
+
   alert("已拒絕應徵者加入!");
   router.push({ name: "recruitmentVerify" });
 };
@@ -334,6 +388,7 @@ const verifyDeclineStatus = () => {
           border-radius: 10px;
           margin-bottom: 3rem;
         }
+
         button:nth-child(1) {
           background-color: var(--primary-blue);
           color: var(--pale-white);
@@ -341,6 +396,10 @@ const verifyDeclineStatus = () => {
         button:nth-child(2) {
           background-color: var(--secondary-blue-2);
           color: var(--secondary-gray-1);
+        }
+        button:disabled {
+          background-color: rgba(128, 128, 128, 0.18);
+          color: var(--split-gray);
         }
       }
     }
