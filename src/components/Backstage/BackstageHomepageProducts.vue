@@ -151,7 +151,7 @@
         <button class="btn_down" @click="pagedown">
           <font-awesome-icon icon="fa-solid fa-angle-down" />
         </button>
-        <button class="btn_send">送出</button>
+        <button class="btn_send" @click="AddProducts">送出</button>
       </div>
     </div>
   </div>
@@ -389,6 +389,17 @@ export default {
         //用index的索引值來查找Products中的ProductsTop是否為true
         this.Products[index].top = !this.Products[index].top;
     },
+    //更動內容上傳資料庫
+    async AddProducts() {
+      for (let i = 0; i < this.Products.length; i++) {
+        // console.log("i在這", i, "陣列", this.Products[i].id);
+        const ProductsCollection = doc(db, "PRODUCTS", this.Products[i].id);
+        await updateDoc(ProductsCollection, {
+          focus: this.Products[i].focus,
+          top:this.Products[i].top,
+        });
+      }
+    },
 
     //從firebase引入資料
     async GetData() {
@@ -402,13 +413,6 @@ export default {
       } catch (err) {
         alert(err);
       }
-    },
-    //資料庫焦點商品切換
-    async AddProductsFocus() {
-      const ProductsCollection = doc(db, "PRODUCTS", "4akPJqmt2vrCo5kyVEDJ");
-      await updateDoc(ProductsCollection, {
-        focus: false,
-      });
     },
 
     //     AddData(){
@@ -437,7 +441,7 @@ export default {
   &_window {
     //視窗
     width: 100%;
-    height: 853px;
+    // height: 853px;
     background-color: var();
     border: var(--primary-black) solid;
 
