@@ -104,7 +104,9 @@ export default createStore({
         return [];
       }
 
-      return state.userNotifys.filter((notify) => notify.type === 0);
+      return state.userNotifys
+        .filter((notify) => notify.type === 0)
+        .sort((a, b) => b.date.toDate() - a.date.toDate());
     },
 
     // 使用者訂單通知
@@ -114,7 +116,9 @@ export default createStore({
         return [];
       }
 
-      return state.userNotifys.filter((notify) => notify.type === 1);
+      return state.userNotifys
+        .filter((notify) => notify.type === 1)
+        .sort((a, b) => b.date.toDate() - a.date.toDate());
     },
 
     // 使用者邀請加入通知
@@ -124,9 +128,9 @@ export default createStore({
         return [];
       }
 
-      const userNotifys = state.userNotifys.filter(
-        (notify) => notify.type === 2
-      );
+      const userNotifys = state.userNotifys
+        .filter((notify) => notify.type === 2)
+        .sort((a, b) => b.date.toDate() - a.date.toDate());
 
       for (let i = 0; i < userNotifys.length; i++) {
         getPicsLink(

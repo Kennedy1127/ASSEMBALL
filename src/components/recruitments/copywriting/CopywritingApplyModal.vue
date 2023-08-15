@@ -49,12 +49,13 @@ import { onMounted, ref, watchEffect, inject } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import store from "@/store";
 
-const team_id = inject("team_id").value.team_id;
+const team_id = inject("data").value.team_id;
+const auth_id = inject("data").value.team_user;
 
 const route = useRoute();
 const router = useRouter();
 const emit = defineEmits(["closeModal"]);
-const { setData } = useData();
+const { setData, setDataSubCollection } = useData();
 const { getSubCollectionDocuments } = getData();
 
 onMounted(async () => {
@@ -104,7 +105,28 @@ const submitApply = async () => {
     team_id: team_id,
   };
 
-  await setData("APPLYS", submitData);
+  const id = await setData("APPLYS", submitData);
+
+  await setDataSubCollection(
+    {
+      collectionName: "MEMBERS",
+      documentId: auth_id,
+      subCollectionName: "NOTIFY",
+    },
+    {
+      date: timestamp,
+      title: `${
+        store.state.user.lastname + store.state.user.firstname
+      }要求加入球隊`,
+      text: `${
+        store.state.user.lastname + store.state.user.firstname
+      }想加入球隊，讓我們期待他吧`,
+      read: false,
+      status: true,
+      type: 0,
+      apply_id: id,
+    }
+  );
 
   router.push({ name: "Recruitments" });
   store.state.isPending = false;

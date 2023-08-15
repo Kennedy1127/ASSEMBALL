@@ -156,6 +156,7 @@ watchEffect(async () => {
 
     copywriting.value = {
       ...res,
+      team_user: team.user_id,
       team_name: team.teamName,
       team_intro: team.intro,
       team_pic: pics ? pics[0] : null,
@@ -191,7 +192,7 @@ const convertDate = (copywritingDate) => {
   )}.${String(date.getDate()).padStart(2, "0")}`;
 };
 
-provide("team_id", copywriting);
+provide("data", copywriting);
 </script>
 
 <style scoped lang="scss">
