@@ -113,7 +113,12 @@ export default {
     },
 
     goToApply(data) {
-      console.log(data);
+      if (data.apply_id) {
+        this.$router.push({
+          name: "recruitmentVerifyDetail",
+          query: { id: data.apply_id },
+        });
+      }
     },
 
     async submitJoin(data) {
