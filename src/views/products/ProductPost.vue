@@ -126,8 +126,8 @@
                   id="phone"
                   placeholder="請輸入手機號碼(格式：09xxxxxxxx)"
                   v-model="phone"
-                  maxlength="11"
-                  pattern="09\d{2}-\d{6}"
+                  maxlength="10"
+                  pattern="09\d{2}\d{6}"
                   required
                 />
               </div>
@@ -615,7 +615,7 @@ const deleteProduct = async () => {
 
     & a {
       color: var(--primary-blue);
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       font-weight: 500;
       padding-bottom: 0.5rem;
       cursor: pointer;
@@ -632,7 +632,7 @@ const deleteProduct = async () => {
 
       & span {
         color: var(--primary-blue);
-        font-size: 1.5rem;
+        font-size: 1.25rem;
         font-weight: 400;
       }
     }

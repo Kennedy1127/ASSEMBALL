@@ -427,6 +427,8 @@ export default {
         padding: 2rem 0;
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
         & img {
           width: 100px;
           height: 100px;

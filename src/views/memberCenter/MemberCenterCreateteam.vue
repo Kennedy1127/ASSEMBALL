@@ -3,7 +3,8 @@
     <div class="wrapper">
       <div class="MemberCenter_Createteam_title">
         <div class="block">
-          <span>創立球隊 <span>( 注意：一位會員只能創立一個球隊 )</span> </span>
+          <span>創立球隊</span>
+          <span>( 注意：一位會員只能創立一個球隊 )</span>
         </div>
       </div>
       <!-- //表單 -->
@@ -231,10 +232,13 @@ export default {
       font-weight: 500;
       padding-bottom: 0.5rem;
       cursor: pointer;
-      & span {
-        color: var(--primary-blue);
-        font-size: 1.25rem;
-        padding-right: 0.5rem;
+    }
+    & span {
+      color: var(--primary-blue);
+      font-size: 1.25rem;
+      padding-right: 0.5rem;
+      @media all and (max-width: 420px) {
+        font-size: 1rem;
       }
     }
   }
@@ -259,12 +263,13 @@ export default {
     margin-bottom: 3rem;
     & div {
       border-left: 1rem solid var(--primary-blue);
-      & span {
+      & span:nth-child(1) {
         padding-left: 1.5rem;
-        span {
-          color: var(--accent-red);
-          font-size: 1.25rem;
-        }
+      }
+      & span:nth-child(2) {
+        
+        color: var(--accent-red);
+        font-size: 1rem;
       }
     }
   }

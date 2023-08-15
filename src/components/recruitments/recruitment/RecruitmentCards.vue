@@ -161,10 +161,10 @@ const convertDate = (copywritingDate) => {
   &_card {
     min-height: 400px;
     padding: 0 0.5rem;
-    transition: all 0.15s ease-in-out;
+    transition: all 0.2s ease-in-out;
 
     &:hover {
-      background-color: var(--secondary-blue-4);
+      transform: translateY(-10px);
     }
 
     a {
