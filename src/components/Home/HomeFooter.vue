@@ -45,7 +45,11 @@
             >
           </li>
           <li>
-            <router-link :to="{ name: 'myplayerTeam' }"
+            <router-link
+              :to="{
+                name: 'myplayerTeam',
+                params: { id: '5KhosRZOJ7TmLfECUb5D' },
+              }"
               ><span><font-awesome-icon icon="fa-solid fa-user-group" /></span>
               我的球隊</router-link
             >

@@ -20,7 +20,10 @@
           <div
             class="myplayer_popups_title_dot"
             @click="myplayer_dot_btn"
-            v-if="(authID = msgData.user_id)"
+            v-if="
+              authID === msgData.user_id ||
+              authID === $store.state.myplayerTeam.user_id
+            "
           >
             ...
             <div
