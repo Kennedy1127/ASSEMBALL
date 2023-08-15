@@ -287,7 +287,8 @@ onMounted(async () => {
       documentId: route.query.id,
       subCollectionName: "COMMENTS",
     },
-    [["user_id", "==", auth.currentUser.uid]]
+    [],
+    ["date"]
   );
 
   comment.value = commentData[0].comment;
