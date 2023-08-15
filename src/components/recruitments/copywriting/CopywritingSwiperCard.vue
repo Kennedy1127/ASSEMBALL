@@ -14,7 +14,10 @@
         <div class="copywriting_card_info">
           <div class="copywriting_card_icon">
             <img
-              src="~@/assets/images/recruitment/team-icons/team-icon-1.png"
+              :src="
+                copywriting.team_pic ||
+                require('@/assets/images/recruitment/team-icons/team-icon-1.png')
+              "
               alt="team icon"
             />
           </div>

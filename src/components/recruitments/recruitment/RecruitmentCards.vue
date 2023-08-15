@@ -40,7 +40,10 @@
           <div class="recruit_copywritings_card_team">
             <div class="recruit_copywritings_card_team_icon">
               <img
-                src="~@/assets/images/recruitment/team-icons/team-icon-1.png"
+                :src="
+                  item.pic ||
+                  require('@/assets/images/recruitment/team-icons/team-icon-1.png')
+                "
                 alt="team icon"
               />
             </div>
@@ -146,8 +149,7 @@ const convertDate = (copywritingDate) => {
 
     display: grid;
     align-items: start;
-    grid-template-columns: repeat(3, 1fr);
-    // column-gap: 1rem;
+    grid-template-columns: repeat(3, 340px);
     row-gap: 3rem;
 
     @media all and (max-width: 420px) {
@@ -159,10 +161,10 @@ const convertDate = (copywritingDate) => {
   &_card {
     min-height: 400px;
     padding: 0 0.5rem;
-    transition: all 0.15s ease-in-out;
+    transition: all 0.2s ease-in-out;
 
     &:hover {
-      background-color: var(--secondary-blue-4);
+      transform: translateY(-10px);
     }
 
     a {
@@ -248,6 +250,11 @@ const convertDate = (copywritingDate) => {
       &_icon {
         width: 90px;
         height: 90px;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
       }
 
       &_name {

@@ -32,9 +32,9 @@
           <div class="ProductPayment_form_item_name">
             {{ item.name }}
           </div>
-          <div class="ProductPayment_form_item_price">{{ item.price }}</div>
+          <div class="ProductPayment_form_item_price">NT${{ item.price }}</div>
           <div class="ProductPayment_form_item_date">
-            <span>購買日期：</span>{{ formatDate(item.date) }}
+            <span>購買日期：</span>{{ todayDate }}
           </div>
         </div>
         <div class="ProductPayment_form_title">
@@ -136,10 +136,13 @@
 <script>
 import getData from "@/composables/data/getData";
 import useStorage from "@/composables/data/useStorage";
-import { useRoute, useRouter } from "vue-router";
+import useData from "@/composables/data/useData";
+import { timestamp } from "@/firebase/config";
 
-// const route = useRoute();
 const { getDocument, getDocuments, getSubCollectionDocuments } = getData();
+
+const { setData, updateData, setDataSubCollection, updateDataSubCollection } =
+  useData();
 /////////////////////////
 
 export default {
@@ -149,10 +152,10 @@ export default {
     console.log(productData);
     this.ProductPaymentItems = [
       {
-        // imgSrc: require("@/assets/images/products/ProductPayment_pic1.png"),
         name: productData.title,
         price: productData.price,
-        date: productData.date,
+        id: productData.seller_id,
+        seller: productData.seller_name,
       },
     ];
 
@@ -163,13 +166,23 @@ export default {
       "product"
     );
     this.picSrc = res[0];
+
+    const memberNameData = await getDocument(
+      "MEMBERS",
+      this.ProductPaymentItems[0].id
+    );
+    console.log(memberNameData);
+
+    this.memberNameData = memberNameData;
   },
 
   data() {
     return {
+      todayDate: "",
       picSrc: "", //商品圖
       productData: [],
       ProductPaymentItems: [],
+      memberNameData: {},
       // 表單資料
       phone: "",
       address: "",
@@ -184,21 +197,40 @@ export default {
       ////////////////////
     };
   },
+
+  created() {
+    this.getTodayDate();
+  },
   //數字限制
   computed: {
+    //姓氏 + 名字
+    dynamicTitle() {
+      const firstname = this.memberNameData.firstname;
+      const lastname = this.memberNameData.lastname;
+      return `${lastname}${firstname}`;
+    },
     computedCommentLen() {
       return this.creditCardNumber.length;
     },
   },
   methods: {
-    //轉日期
-    formatDate(timestamp) {
-      const date = new Date(timestamp.seconds * 1000); // 將秒數轉變為毫秒數
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1; // 月份從0開始，要加1
-      const day = date.getDate();
-      return `${year} / ${month} / ${day}`;
+    //生成今日日期
+    getTodayDate() {
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+      const day = ("0" + currentDate.getDate()).slice(-2);
+
+      this.todayDate = `${year} / ${month} / ${day}`;
     },
+    // //轉日期
+    // formatDate(timestamp) {
+    //   const date = new Date(timestamp.seconds * 1000); // 將秒數轉變為毫秒數
+    //   const year = date.getFullYear();
+    //   const month = date.getMonth() + 1; // 月份從0開始，要加1
+    //   const day = date.getDate();
+    //   return `${year} / ${month} / ${day}`;
+    // },
     //驗證
     validatePhone() {
       const phoneRegex = /^09\d{8}$/;
@@ -216,52 +248,135 @@ export default {
       const cvvRegex = /^\d{3}$/;
       this.isCVVValid = cvvRegex.test(this.creditCardCVV);
     },
+
     //提交表單
-    submitForm() {
-      this.PhoneError = "";
-      this.CardError = "";
-      this.DateError = "";
-      this.CVVError = "";
-      this.validatePhone();
-      this.validateCard();
-      this.validateDate();
-      this.validateCVV();
+    async submitForm() {
+      if (confirm("請問確定要提交付款資料嗎？") == true) {
+        this.PhoneError = "";
+        this.CardError = "";
+        this.DateError = "";
+        this.CVVError = "";
+        this.validatePhone();
+        this.validateCard();
+        this.validateDate();
+        this.validateCVV();
 
-      //顯示錯誤訊息
-      if (
-        !this.isPhoneValid ||
-        !this.isCardValid ||
-        !this.isDateValid ||
-        !this.isCVVValid
-      ) {
-        alert("付款資料有誤，請重新檢查喔！");
-        if (!this.isPhoneValid) {
-          this.PhoneError = "請輸入有效的手機號碼 (格式：09xxxxxxxx)";
-        }
-        if (!this.isCardValid) {
-          this.CardError = "請輸入有效的信用卡號 (16位數字)";
-        }
-        if (!this.isDateValid) {
-          this.DateError = "請輸入有效的到期日 (3位數字)";
-        }
-        if (!this.isCVVValid) {
-          this.CVVError = "請輸入有效的CVV (3位數字)";
-        }
-      } else {
-        alert("付款資料提交成功！");
-        // 表單資料確認
-        console.log("手機號碼：", this.phone);
-        console.log("收件地址：", this.address);
-        console.log("信用卡號：", this.creditCardNumber);
-        console.log("到期日：", this.creditCardDate);
-        console.log("CVV：", this.creditCardCVV);
+        //顯示錯誤訊息
+        if (
+          !this.isPhoneValid ||
+          !this.isCardValid ||
+          !this.isDateValid ||
+          !this.isCVVValid
+        ) {
+          alert("付款資料有誤，請重新檢查喔！");
+          if (!this.isPhoneValid) {
+            this.PhoneError = "請輸入有效的手機號碼 (格式：09xxxxxxxx)";
+          }
+          if (!this.isCardValid) {
+            this.CardError = "請輸入有效的信用卡號 (16位數字)";
+          }
+          if (!this.isDateValid) {
+            this.DateError = "請輸入有效的到期日 (3位數字)";
+          }
+          if (!this.isCVVValid) {
+            this.CVVError = "請輸入有效的CVV (3位數字)";
+          }
+        } else {
+          alert(
+            "親愛的球友，您的付款資料已成功提交，可以至 會員中心 > 訂單管理 查看您的購買紀錄喔！ "
+          );
 
-        //提交後重置表單資料
-        this.phone = "";
-        this.address = "";
-        this.creditCardNumber = "";
-        this.creditCardDate = "";
-        this.creditCardCVV = "";
+          // 購買的商品資料
+          const data = {
+            pic: this.picSrc,
+            date: this.todayDate,
+            name: this.ProductPaymentItems[0].name,
+            price: this.ProductPaymentItems[0].price,
+            seller: this.dynamicTitle,
+            buyerPhone: this.phone,
+            buyerAddress: this.address,
+            buyerCreditCardNumber: this.creditCardNumber,
+            buyerCreditCardDate: this.creditCardDate,
+            buyerCreditCardCVV: this.creditCardCVV,
+          };
+
+          console.log(data);
+
+          //上傳購買的商品資料
+          await setDataSubCollection(
+            {
+              collectionName: "MEMBERS",
+              documentId: this.$store.state.user.id,
+              subCollectionName: "ORDERMANAGE",
+            },
+            data
+          );
+
+          // 已購買的商品資料
+          const boughtData = {
+            status: false,
+          };
+
+          //把已購買的商品status上架狀態改成False
+          await updateData(
+            {
+              collectionName: "PRODUCTS",
+              documentId: this.$route.query.id,
+            },
+            boughtData
+          );
+
+          // // 表單資料確認
+          // console.log("手機號碼：", this.phone);
+          // console.log("收件地址：", this.address);
+          // console.log("信用卡號：", this.creditCardNumber);
+          // console.log("到期日：", this.creditCardDate);
+          // console.log("CVV：", this.creditCardCVV);
+
+          //提交後重置表單資料
+          this.phone = "";
+          this.address = "";
+          this.creditCardNumber = "";
+          this.creditCardDate = "";
+          this.creditCardCVV = "";
+
+          // 跳轉頁面到拍賣專區
+          this.$router.push({ name: "Products" });
+
+          //////////////買家的訊息
+          // 通知訊息資料
+          const productNotify = {
+            read: false,
+            status: true,
+            text: `訂單編號 ${this.$route.query.id} 已成立，等待物流派送中，請耐心等候。`,
+            title: "訂單已成立",
+            type: 1,
+            date: timestamp,
+          };
+
+          console.log(productNotify);
+
+          //上傳 通知訊息資料
+          await setDataSubCollection(
+            {
+              collectionName: "MEMBERS",
+              documentId: this.$store.state.user.id,
+              subCollectionName: "NOTIFY",
+            },
+            productNotify
+          );
+          //////////////////////賣家的訊息
+
+          //上傳 通知訊息資料
+          await setDataSubCollection(
+            {
+              collectionName: "MEMBERS",
+              documentId: this.ProductPaymentItems[0].id,
+              subCollectionName: "NOTIFY",
+            },
+            productNotify
+          );
+        }
       }
     },
   },
@@ -389,7 +504,7 @@ export default {
         color: var(--accent-red);
       }
       &_date {
-        padding-right: 4rem;
+        padding-right: 5rem;
         @media all and (max-width: 420px) {
           padding-right: 0rem;
         }

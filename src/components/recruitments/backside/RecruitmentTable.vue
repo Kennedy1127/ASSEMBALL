@@ -1,36 +1,5 @@
 <template>
   <div class="recruitment_table">
-    <!-- <table v-if="tablekey === 1" class="fixed_headers">
-      <thead>
-        <tr>
-          <th>標題</th>
-          <th>守備位置</th>
-          <th>地區</th>
-          <th v-if="title === '管理職缺'">更新日期</th>
-          <th v-if="title === '管理職缺'">編輯</th>
-          <th v-else :colspan="'2'">更新日期</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in $props.tableData" :key="item.id">
-          <td>{{ item.copywriting_title }}</td>
-          <td>{{ item.copywriting_role }}</td>
-          <td>{{ item.copywriting_area }}</td>
-          <td>{{ item.copywriting_date }}</td>
-          <td v-if="title === '管理職缺'" class="Icon">
-            <div class="icon-pen">
-              <font-awesome-icon icon="fa-solid fa-pen" />
-            </div>
-          </td>
-          <td v-else class="Icon">
-            <button>
-              更多<font-awesome-icon icon="fa-solid fa-chevron-right" />
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table> -->
-
     <table class="fixed_headers">
       <thead>
         <tr v-if="tablekey === 1">
@@ -53,24 +22,34 @@
       <tbody>
         <tr v-for="item in $props.tableData" :key="item.id">
           <td
-            :class="convertStatusColor()"
+            class="StatusColor"
+            :class="convertStatusColor(item.status)"
             v-if="title === '審核應徵' || title === '記錄管理'"
           ></td>
           <td v-if="title === '管理職缺' || title === '審核應徵'">
-            {{ item.title }}
+            {{ item.title || item.copywriting.title }}
           </td>
 
-          <td v-else>{{ getRoleLabel(item.role) }}</td>
+          <td v-else>{{ getRoleLabel(item.role || item.copywriting.role) }}</td>
 
-          <td v-if="title === '管理職缺' || title === '審核應徵'">
+          <td v-if="title === '管理職缺'">
             <!-- <span v-if=""></span>  -->
             {{ getRoleLabel(item.role) }}
           </td>
 
-          <td v-else>{{ item.area }}</td>
+          <td v-else-if="title === '審核應徵'">
+            <!-- <span v-if=""></span>  -->
+            {{ getRoleLabel(item.copywriting?.role) }}
+          </td>
 
-          <td v-if="title === '管理職缺' || title === '審核應徵'">
+          <td v-else>{{ item.copywriting.area }}</td>
+
+          <td v-if="title === '管理職缺'">
             {{ item.area }}
+          </td>
+
+          <td v-else-if="title === '審核應徵'">
+            {{ item.copywriting?.area }}
           </td>
 
           <td v-else>{{ convertDate(item.date.toDate()) }}</td>
@@ -79,7 +58,7 @@
             <div>{{ convertDate(item.date.toDate()) }}</div>
           </td>
 
-          <td v-else>{{ item.candidate_name }}</td>
+          <td v-else>{{ item.user.lastname + item.user.firstname }}</td>
 
           <td v-if="title === '管理職缺'" class="Icon">
             <div class="icon-pen" @click="goEditCopywriting(item.id)">
@@ -105,19 +84,35 @@
         <tbody>
           <tr v-for="item in $props.tableData" :key="item.id">
             <td>
-              <div v-if="tablekey === 1" class="td_item">
+              <div
+                class="StatusColor"
+                :class="convertStatusColor(item.status)"
+                v-if="title === '審核應徵' || title === '記錄管理'"
+              ></div>
+              <div class="td_item">
                 <div class="td_title">標題</div>
-                <div>
-                  {{ item.title }}
+                <div v-if="title === '管理職缺' || title === '審核應徵'">
+                  {{ item.title || item.copywriting.title }}
+                </div>
+              </div>
+
+              <div class="td_item">
+                <div class="td_title">守備位置</div>
+                <div v-if="title === '管理職缺'">
+                  {{ getRoleLabel(item.role) }}
+                </div>
+                <div v-else-if="title === '審核應徵'">
+                  {{ getRoleLabel(item.copywriting?.role) }}
                 </div>
               </div>
               <div class="td_item">
-                <div class="td_title">守備位置</div>
-                <div>{{ getRoleLabel(item.role) }}</div>
-              </div>
-              <div class="td_item">
                 <div class="td_title">地區</div>
-                <div>{{ item.area }}</div>
+                <div v-if="title === '管理職缺'">
+                  {{ item.area }}
+                </div>
+                <div v-else-if="title === '審核應徵'">
+                  {{ item.copywriting?.area }}
+                </div>
               </div>
             </td>
             <td>
@@ -162,7 +157,7 @@ import { icon } from "@fortawesome/fontawesome-svg-core";
 export default {
   data() {
     return {
-      statusColor: ["yellow", "red", "green"],
+      statusColor: ["yellow", "orange", "green"],
 
       recruitPosts: [
         {
@@ -206,14 +201,9 @@ export default {
           iconTrashCan: "fa-solid fa-trash-can",
         },
       ],
-      // role: [],
     };
   },
   props: {
-    status: {
-      type: Number,
-      default: 1,
-    },
     tableData: {
       type: Array,
       default: [
@@ -267,8 +257,8 @@ export default {
     },
   },
   methods: {
-    convertStatusColor() {
-      return { [this.statusColor[this.$props.status]]: true };
+    convertStatusColor(status) {
+      return { [this.statusColor[status]]: true };
     },
     convertDate(inputDate) {
       const date = new Date(inputDate);
@@ -284,9 +274,7 @@ export default {
     goEditCopywriting(id) {
       this.$router.push({ name: "recruitmentPost", query: { id } });
     },
-  },
-  computed: {
-    getRoleLabel() {
+    getRoleLabel(role) {
       const roles = [
         { value: 0, label: "投手" },
         { value: 1, label: "捕手" },
@@ -298,10 +286,9 @@ export default {
         { value: 7, label: "中外野手" },
         { value: 8, label: "右外野手" },
       ];
-      return (roleValue) => {
-        const roleObject = roles.find((role) => role.value === roleValue);
-        return roleObject ? roleObject.label : "";
-      };
+
+      const roleObject = roles.find((roleValue) => roleValue.value === role);
+      return roleObject ? roleObject.label : "";
     },
   },
 };
@@ -335,13 +322,13 @@ export default {
       padding: 3rem 0;
       text-align: center;
     }
-    td:nth-child(1) {
+    .StatusColor {
       width: 10px;
       &.yellow {
         background-color: yellow;
       }
-      &.red {
-        background-color: red;
+      &.orange {
+        background-color: var(--error-yellow);
       }
       &.green {
         background-color: green;
@@ -388,7 +375,9 @@ export default {
         }
       }
       tr {
+        padding-top: 0.5rem;
         display: flex;
+        position: relative;
         td {
           width: 50%;
           vertical-align: top;
@@ -398,6 +387,22 @@ export default {
           gap: 1rem;
           justify-content: space-between;
 
+          .StatusColor {
+            width: 100%;
+            height: 10px;
+            top: 0;
+            left: 0;
+            position: absolute;
+            &.yellow {
+              background-color: yellow;
+            }
+            &.orange {
+              background-color: var(--error-yellow);
+            }
+            &.green {
+              background-color: green;
+            }
+          }
           .td_title {
             color: var(--primary-blue);
             margin-bottom: 0.5rem;

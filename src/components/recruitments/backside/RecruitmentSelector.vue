@@ -1,14 +1,5 @@
 <template>
   <div class="selector-component">
-    <!-- <Select
-      :model-value="modelValue"
-      :placeholder="placeholder"
-      @on-change="onChange"
-    >
-      <Option v-for="item in options" :value="item.id" :key="item.id">{{
-        item.label
-      }}</Option>
-    </Select> -->
     <Select
       :model-value="modelValue"
       @on-change="onChange"

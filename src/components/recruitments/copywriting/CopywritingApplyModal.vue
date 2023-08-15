@@ -14,12 +14,9 @@
         />
       </div>
       <div class="apply_text">
-        <textarea
-          v-model="computedSelectedTemplate.text"
-          maxlength="200"
-        ></textarea>
+        <textarea v-model="selectedTemplateText" maxlength="200"></textarea>
         <div class="apply_text_count">
-          {{ computedSelectedTemplate.text.length }}／200
+          {{ selectedTemplateText.length }}／200
         </div>
       </div>
       <div class="apply_btn">
@@ -42,7 +39,8 @@
 import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
 import { auth, timestamp } from "@/firebase/config";
 import useData from "@/composables/data/useData";
-import { computed, ref } from "vue";
+import getData from "@/composables/data/getData";
+import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import store from "@/store";
 
@@ -50,32 +48,37 @@ const route = useRoute();
 const router = useRouter();
 const emit = defineEmits(["closeModal"]);
 const { setData } = useData();
+const { getSubCollectionDocuments } = getData();
 
-const templates = ref([
-  {
-    id: 0,
-    label: "模板 1",
-    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae nesciunt accusamus temporibus et deleniti. Quibusdam, laboriosam eum?",
-  },
-  {
-    id: 1,
-    label: "模板 2",
-    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae nesciunt accusamus temporibus et deleniti. Quibusdam, laboriosam eum? Dolor, enda ducimus saepe aspernatur consequuntur iure eius, accusamus rem.",
-  },
-  {
-    id: 2,
-    label: "模板 3",
-    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-  },
-]);
+onMounted(async () => {
+  const res = await getSubCollectionDocuments({
+    collectionName: "MEMBERS",
+    documentId: store.state.user.id,
+    subCollectionName: "APPLY",
+  });
 
-const selectedTemplateNum = ref(-1);
-const computedSelectedTemplate = computed(() =>
-  selectedTemplateNum.value === -1
-    ? templates.value[0]
-    : templates.value.find(
-        (template) => template.id === selectedTemplateNum.value
-      )
+  console.log(res);
+
+  res.forEach((template) => {
+    template.id = template.templateID;
+    template.label = `模板 ${template.templateID + 1}`;
+    template.text = template.textareaValue;
+
+    if (template.inputValue) {
+      selectedTemplateNum.value = template.templateID;
+    }
+  });
+
+  templates.value = [...res];
+});
+
+const templates = ref([]);
+const selectedTemplateNum = ref(0);
+const selectedTemplateText = computed(
+  () =>
+    templates.value.find(
+      (template) => template.id === selectedTemplateNum.value
+    )?.text || ""
 );
 
 const closeModal = () => {
@@ -88,8 +91,9 @@ const submitApply = async () => {
   const submitData = {
     copywriting_id: route.params.id,
     user_id: auth.currentUser.uid,
-    text: computedSelectedTemplate.value.text,
+    text: selectedTemplateText.value,
     date: timestamp,
+    status: 0,
   };
 
   await setData("APPLYS", submitData);

@@ -21,7 +21,7 @@
           <div class="recruitment_post_main_content_personalInfo">
             <div class="recruitment_post_main_content_personalInfo_pic">
               <img
-                src="~@/assets/images/recruitment/applicant/applicant-1.jpg"
+                :src="picSrc"
                 alt="userphoto"
                 class="recruitment_aside_personalInfo_photo"
               />
@@ -29,7 +29,7 @@
 
             <div class="recruitment_post_main_content_personalInfo_text">
               <div class="recruitment_post_main_content_personalInfo_name">
-                {{ applyData.candidate_name }}
+                {{ applyData.user?.lastname + applyData.user?.firstname }}
               </div>
               <div class="recruitment_post_main_content_personalInfo_item">
                 <div
@@ -40,7 +40,7 @@
                 <div
                   class="recruitment_post_main_content_personalInfo_item_text"
                 >
-                  {{ applyData.area }}
+                  {{ applyData.user?.area }}
                 </div>
               </div>
               <div class="recruitment_post_main_content_personalInfo_item">
@@ -52,7 +52,7 @@
                 <div
                   class="recruitment_post_main_content_personalInfo_item_text"
                 >
-                  {{ applyData.email }}
+                  {{ applyData.user?.email }}
                 </div>
               </div>
               <div class="recruitment_post_main_content_personalInfo_item">
@@ -65,7 +65,7 @@
                   class="recruitment_post_main_content_personalInfo_item_text"
                 >
                   <div class="levelbox"></div>
-                  <div>{{ getlevelLabel(applyData.status) }}</div>
+                  <div>{{ getlevelLabel(applyData.user?.exp) }}</div>
                 </div>
               </div>
             </div>
@@ -80,8 +80,19 @@
           </div>
         </div>
         <div class="recruitment_post_main_content_btn">
-          <button>確認</button>
-          <button>拒絕</button>
+          <button
+            type="button"
+            @click="verifyPassStatus"
+            :disabled="applyData.status === 1 || applyData.status === 2"
+          >
+            確認
+          </button>
+          <button
+            @click="verifyDeclineStatus"
+            :disabled="applyData.status === 1 || applyData.status === 2"
+          >
+            拒絕
+          </button>
         </div>
       </div>
     </main>
@@ -90,33 +101,73 @@
 
 <script setup>
 import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
-import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
+import getData from "@/composables/data/getData";
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import useData from "@/composables/data/useData";
+import useStorage from "@/composables/data/useStorage";
+import { timestamp } from "@/firebase/config";
+
+const { getDocument, getUser } = getData();
+const { getPicsLink } = useStorage();
+const { updateData, setDataSubCollection } = useData();
+
 const title = ref("審核應徵");
 const store = useStore();
 const route = useRoute();
+const router = useRouter();
+const picSrc = ref("");
+
 // const computedRenderApply = ref([]);
-onMounted(() => {
-  // store.dispatch("getApply"); //用index.js的 action 要用dispatch
+onMounted(async () => {
+  // const data = store.state.ApplyRecords.find(
+  //   (apply) => apply.id === route.query.id
+  // );
 
-  console.log(route.query.id);
-  console.log(store.state.ApplyRecords);
-  const data = store.state.ApplyRecords.find(
-    (apply) => apply.id === route.query.id
-  );
-  if (!data) {
-    return;
-  }
+  // if (!data) {
+  //   const apply = await getDocument("APPLYS", route.query.id);
+  //   // console.log(apply);
+  //   const user = await getDocument("MEMBERS", apply.user_id);
 
-  applyData.value = { ...data };
-  console.log(data);
+  //   // console.log(user);
+  //   const res = await getPicsLink(
+  //     1,
+  //     `images/MEMBERS/${store.state.user?.id}`,
+  //     "member"
+  //   );
+  //   console.log(res);
+
+  //   return (applyData.value = { ...apply, user, res });
+  // }
+
+  const apply = await getDocument("APPLYS", route.query.id);
+  // console.log(apply);
+  const user = await getDocument("MEMBERS", apply.user_id);
+  const team = await getDocument("TEAMS", apply.team_id);
+
+  // console.log(user);
+  const res = await getPicsLink(1, `images/MEMBERS/${user.id}`, "member");
+  console.log(res);
+
+  picSrc.value = res[0];
+  applyData.value = { ...apply, user, team };
+
+  // console.log(applyData.value);
+
+  // 帶入user的大頭貼
+
+  // if (!store.state.user?.id) {
+  //   user = await getUser();
+  // }
+  // console.log(applyData.user_id);
+
+  // console.log(picSrc.value);
 });
 
 const applyData = ref({});
 
-const getlevelLabel = computed(() => {
+const getlevelLabel = (exp) => {
   const levels = [
     {
       value: 0,
@@ -135,21 +186,80 @@ const getlevelLabel = computed(() => {
       label: "經歷不拘",
     },
   ];
-  return (levelValue) => {
-    const levelObject = levels.find((status) => status.value === levelValue);
-    return levelObject ? levelObject.label : "";
-  };
-});
+
+  const levelObject = levels.find((status) => status.value === exp);
+  return levelObject ? levelObject.label : "";
+};
+
+// 同意應徵者加入
+const verifyPassStatus = () => {
+  if (applyData.value.status === 1 || applyData.value.status === 2) {
+    return;
+  }
+  updateData(
+    { collectionName: "APPLYS", documentId: applyData.value.id },
+    { status: 1 }
+  );
+
+  setDataSubCollection(
+    {
+      collectionName: "MEMBERS",
+      documentId: applyData.value.user.id,
+      subCollectionName: "NOTIFY",
+    },
+    {
+      date: timestamp,
+      title: `${applyData.value.team.teamName}邀請您加入`,
+      team_id: applyData.value.team_id,
+      read: false,
+      status: true,
+      type: 2,
+    }
+  );
+
+  alert("已同意應徵者加入!");
+  router.push({ name: "recruitmentVerify" });
+};
+
+// 拒絕應徵者加入
+const verifyDeclineStatus = () => {
+  if (applyData.value.status === 1 || applyData.value.status === 2) {
+    return;
+  }
+
+  updateData(
+    { collectionName: "APPLYS", documentId: applyData.value.id },
+    { status: -1 }
+  );
+
+  setDataSubCollection(
+    {
+      collectionName: "MEMBERS",
+      documentId: applyData.value.user.id,
+      subCollectionName: "NOTIFY",
+    },
+    {
+      date: timestamp,
+      title: `${applyData.value.team.teamName}拒絕您加入`,
+      team_id: applyData.value.team_id,
+      read: false,
+      status: true,
+      type: 0,
+    }
+  );
+
+  alert("已拒絕應徵者加入!");
+  router.push({ name: "recruitmentVerify" });
+};
+
+// updateData;
 </script>
 
 <style lang="scss">
 .recruitment_post {
   margin-top: 6rem;
   display: flex;
-  &_aside {
-    // TODO:在思考要不要把側邊欄拿掉(設計圖原本有)
-    display: none;
-  }
+
   &_breadcrumb {
     margin-bottom: 4rem;
     display: flex;
@@ -278,6 +388,7 @@ const getlevelLabel = computed(() => {
           border-radius: 10px;
           margin-bottom: 3rem;
         }
+
         button:nth-child(1) {
           background-color: var(--primary-blue);
           color: var(--pale-white);
@@ -286,7 +397,19 @@ const getlevelLabel = computed(() => {
           background-color: var(--secondary-blue-2);
           color: var(--secondary-gray-1);
         }
+        button:disabled {
+          background-color: rgba(128, 128, 128, 0.18);
+          color: var(--split-gray);
+        }
       }
+    }
+  }
+
+  .no-data {
+    padding-top: 2rem;
+    img {
+      width: 100%;
+      height: auto;
     }
   }
 }
@@ -295,10 +418,7 @@ const getlevelLabel = computed(() => {
   .recruitment_post {
     display: block;
     margin: 0;
-    &_aside {
-      // TODO:在思考要不要把側邊欄拿掉(設計圖原本有)
-      display: none;
-    }
+
     &_breadcrumb {
       display: none;
     }

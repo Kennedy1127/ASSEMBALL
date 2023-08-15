@@ -24,10 +24,7 @@
         <div class="block"></div>
         <div style="font-weight: 600">審核應徵</div>
       </div>
-      <div class="recruitment_post_main_filter">
-        <!--RecruitmentSearchbar.vue  -->
-        <RecruitmentSearchbar />
-      </div>
+
       <div class="recruitment_post_main_table">
         <RecruitmentTable
           :tableData="computedRendergetApplyRecords"
@@ -51,16 +48,19 @@ import RecruitmentPostAside from "@/components/recruitments/backside/Recruitment
 import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
 import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";
 import PaginationComponent from "@/components/utilities/PaginationComponent.vue";
+import getData from "@/composables/data/getData";
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
 
 const tablekey = ref(1);
 const title = ref("審核應徵");
+const { getUser } = getData();
 
 //把抓到的內容放進表格內
 const store = useStore();
-onMounted(() => {
-  store.dispatch("getApplyRecords"); //用index.js的 action 要用dispatch
+onMounted(async () => {
+  const user = await getUser();
+  store.dispatch("getApplyRecords", user.team_id); //用index.js的 action 要用dispatch
 });
 
 // 一頁放幾個項目
@@ -73,12 +73,12 @@ const computedRendergetApplyRecords = computed(() => {
     ? store.state.curPage * 4
     : store.state.curPage * 5;
 
-  return store.state.ApplyRecords.slice(start, end);
+  return store.getters.unVerifyApplyRecords.slice(start, end);
 });
 const computedTotalPages = computed(() => {
   // 計算總頁數
-  if (store.state.ApplyRecords.length === 0) return 1;
-  const len = store.state.ApplyRecords.length; //state :return的東西
+  if (store.getters.unVerifyApplyRecords.length === 0) return 1;
+  const len = store.getters.unVerifyApplyRecords.length; //state :return的東西
   return store.state.isMobile
     ? len % 4 === 0 // 手機
       ? len > 4

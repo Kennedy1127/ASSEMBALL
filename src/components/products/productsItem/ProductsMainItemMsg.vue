@@ -81,8 +81,9 @@
       <div class="product_message_importing_user_pic">
         <img
           :src="
-            store.state.user?.picUrls[0] ||
-            require('@/assets/images/icons/main-icon.png')
+            store.state.user?.picUrls
+              ? store.state.user?.picUrls[0]
+              : require('@/assets/images/icons/main-icon.png')
           "
           alt="importing_pic"
         />
@@ -207,7 +208,7 @@ const submitComment = async () => {
 
   const subCollectionData = {
     comment: inputComment.value,
-    name: store.state.user.firstname + store.state.user.lastname,
+    name: store.state.user.lastname + store.state.user.firstname,
     user_id: auth.currentUser.uid,
     date: timestamp,
     read: false,

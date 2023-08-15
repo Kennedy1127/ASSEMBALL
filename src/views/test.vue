@@ -56,7 +56,7 @@ export default {
     padding: 14rem 28rem;
     border-radius: 8px;
     box-shadow: var(--shadow-heavy);
-    background-color: var(--pale-white);
+    // background-color: var(--pale-white);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,17 +77,19 @@ export default {
       width: 300px;
       height: 300px;
       border-radius: 50%;
-      background-color: var(--primary-blue);
+      background-color: var(--pale-white);
+      color: var(--primary-blue);
       text-align: center;
       line-height: 300px;
-      color: var(--pale-white);
+
       font-size: 3rem;
-      transition: all 0.09s ease-in;
+      transition: all 0.3s ease-in;
       opacity: 0.9;
     }
     a:nth-child(1):hover {
-      background-color: var(--accent-red);
+      background-color: var(--accent-pink);
       background-image: url(@/assets/loading/test_ball.svg);
+      // transform: rotate(45deg);
       background-position: 25% 85%;
       background-size: 20%;
       background-repeat: no-repeat;
@@ -96,16 +98,19 @@ export default {
       width: 300px;
       height: 300px;
       border-radius: 50%;
-      background-color: var(--primary-blue);
+      // background-color: var(--primary-blue);
+      background-color: var(--pale-white);
+      color: var(--primary-blue);
       text-align: center;
       line-height: 300px;
-      color: var(--pale-white);
+      // color: var(--pale-white);
       font-size: 3rem;
-      transition: all 0.09s ease-in;
+      transition: all 0.3s ease-in;
       opacity: 0.9;
     }
     a:nth-child(2):hover {
-      background-color: var(--success-green);
+      // background-color: var(--success-green);
+      background-color: var(--accent-yellow);
       background-image: url(@/assets/loading/test_ball.svg);
       background-position: 25% 85%;
       background-size: 20%;

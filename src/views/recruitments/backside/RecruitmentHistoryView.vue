@@ -25,18 +25,17 @@
         <div class="block"></div>
         <div style="font-weight: 600">紀錄管理</div>
       </div>
-      <div class="recruitment_post_main_filter">
-        <!--RecruitmentSearchbar.vue  -->
 
-        <RecruitmentSearchbar />
-      </div>
-      <div class="recruitment_post_main_table">
+      <div class="recruitment_post_main_table" v-if="!isNoResults">
         <RecruitmentTable
           :tableData="computedRenderApplyRecords"
           :tablekey="tablekey"
           :title="title"
         >
         </RecruitmentTable>
+      </div>
+      <div class="no-data" v-else>
+        <img src="~@/assets/images/recruitment/no-data.png" alt="no-data" />
       </div>
       <div class="recruitment_post_main_page">
         <PaginationComponent />
@@ -53,14 +52,21 @@ import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTabl
 import PaginationComponent from "@/components/utilities/PaginationComponent.vue";
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
+import getData from "@/composables/data/getData";
+import { useRoute } from "vue-router";
 
 const tablekey = ref(2);
 const title = ref("記錄管理");
+const isNoResults = computed(
+  () => store.getters.VerifyApplyRecords.length === 0
+);
 
 //把抓到的內容放進表格內
 const store = useStore();
-onMounted(() => {
-  store.dispatch("getApplyRecords"); //用index.js的 action 要用dispatch
+const { getUser } = getData();
+onMounted(async () => {
+  const user = await getUser();
+  store.dispatch("getApplyRecords", user.team_id); //用index.js的 action 要用dispatch
 });
 
 // 一頁放幾個項目
@@ -73,12 +79,12 @@ const computedRenderApplyRecords = computed(() => {
     ? store.state.curPage * 4
     : store.state.curPage * 5;
 
-  return store.state.ApplyRecords.slice(start, end);
+  return store.getters.VerifyApplyRecords.slice(start, end);
 });
 const computedTotalPages = computed(() => {
   // 計算總頁數
-  if (store.state.ApplyRecords.length === 0) return 1;
-  const len = store.state.ApplyRecords.length; //state :return的東西
+  if (store.state.getters.VerifyApplyRecords.length === 0) return 1;
+  const len = store.getters.VerifyApplyRecords.length; //state :return的東西
   return store.state.isMobile
     ? len % 4 === 0 // 手機
       ? len > 4
@@ -145,6 +151,13 @@ const computedTotalPages = computed(() => {
         img {
           width: 100%;
         }
+      }
+    }
+    .no-data {
+      padding-top: 2rem;
+      img {
+        width: 100%;
+        height: auto;
       }
     }
   }
