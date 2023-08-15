@@ -137,6 +137,7 @@
 import getData from "@/composables/data/getData";
 import useStorage from "@/composables/data/useStorage";
 import useData from "@/composables/data/useData";
+import { timestamp } from "@/firebase/config";
 
 const { getDocument, getDocuments, getSubCollectionDocuments } = getData();
 
@@ -341,6 +342,40 @@ export default {
 
           // 跳轉頁面到拍賣專區
           this.$router.push({ name: "Products" });
+
+          //////////////買家的訊息
+          // 通知訊息資料
+          const productNotify = {
+            read: false,
+            status: true,
+            text: `訂單編號 ${this.$route.query.id} 已成立，等待物流派送中，請耐心等候。`,
+            title: "訂單已成立",
+            type: 1,
+            date: timestamp,
+          };
+
+          console.log(productNotify);
+
+          //上傳 通知訊息資料
+          await setDataSubCollection(
+            {
+              collectionName: "MEMBERS",
+              documentId: this.$store.state.user.id,
+              subCollectionName: "NOTIFY",
+            },
+            productNotify
+          );
+          //////////////////////賣家的訊息
+
+          //上傳 通知訊息資料
+          await setDataSubCollection(
+            {
+              collectionName: "MEMBERS",
+              documentId: this.ProductPaymentItems[0].id,
+              subCollectionName: "NOTIFY",
+            },
+            productNotify
+          );
         }
       }
     },
