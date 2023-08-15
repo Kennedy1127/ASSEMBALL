@@ -34,7 +34,7 @@
         >
         </RecruitmentTable>
       </div>
-      <div class="no-data" v-else="isNoResults">
+      <div class="no-data" v-else>
         <img src="~@/assets/images/recruitment/no-data.png" alt="no-data" />
       </div>
       <div class="recruitment_post_main_page">
@@ -52,18 +52,21 @@ import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTabl
 import PaginationComponent from "@/components/utilities/PaginationComponent.vue";
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
+import getData from "@/composables/data/getData";
+import { useRoute } from "vue-router";
 
 const tablekey = ref(2);
 const title = ref("記錄管理");
-
 const isNoResults = computed(
-  async () => (await store.getters.renderManageCopywritings.length) === 0
+  () => store.getters.VerifyApplyRecords.length === 0
 );
 
 //把抓到的內容放進表格內
 const store = useStore();
-onMounted(() => {
-  store.dispatch("getApplyRecords"); //用index.js的 action 要用dispatch
+const { getUser } = getData();
+onMounted(async () => {
+  const user = await getUser();
+  store.dispatch("getApplyRecords", user.team_id); //用index.js的 action 要用dispatch
 });
 
 // 一頁放幾個項目
