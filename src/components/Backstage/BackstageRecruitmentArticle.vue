@@ -61,7 +61,7 @@
                   :key="index"
                   @click="updateDate(item.date)"
                 >
-                  {{ convertDate(item.date.toDate()) }}
+                  {{ item.date }}
                 </li>
               </ul>
               上架日期
@@ -101,7 +101,7 @@
               {{ convertFont(convertRole(item.role)) }}
             </td>
             <td class="table_row_date">
-              {{ convertDate(item.date.toDate()) }}
+              {{item.date}}
             </td>
             <td class="table_row_focus">
               <input
@@ -583,6 +583,11 @@ export default {
           // console.log(x.data());
           this.Article.push(x.data()); // 物件轉陣列
         });
+        for (let i = 0; i < this.Article.length; i++) {
+          this.Article[i].date = this.convertDate(
+            this.Article[i].date.toDate()
+          );
+        }
 
         const TeamMessageCollection = collection(db, "BACKSTAGETEAMMESSAGE"); // 取得集合
         const TeamMessageDocuments = await getDocs(TeamMessageCollection); // 取得集合內的所有物件
@@ -989,7 +994,7 @@ export default {
           width: 10%;
         }
         &_date {
-          width: 15%;
+          width: 25%;
           position: relative;
           &_menu {
             top: 2rem;
@@ -1011,7 +1016,7 @@ export default {
           }
         }
         &_content {
-          width: 30%;
+          width: 25%;
           position: relative;
         }
         &_focus {

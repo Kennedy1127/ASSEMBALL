@@ -58,7 +58,8 @@
                   :key="index"
                   @click="updateDate(item.date)"
                 >
-                  {{ convertDate(item.date.toDate()) }}
+                  <!-- {{ convertDate(item.date.toDate()) }} -->
+                  {{ item.date }}
                 </li>
               </ul>
               上架日期
@@ -109,7 +110,7 @@
             </td>
             <td class="table_row_type">{{ convertFont(item.type) }}</td>
             <td class="table_row_date">
-              {{ convertDate(item.date.toDate()) }}
+              {{ item.date }}
             </td>
             <!-- 焦點商品 -->
             <td class="table_row_focus">
@@ -184,7 +185,7 @@ export default {
       //     ProductsTop: false,
       //   },
       // ],
-    
+
       PriceArray: [], //價格種類陣列(存放每一種價格並排除重複的)
       TypeArray: [], //商品類型陣列
       DateArray: [],
@@ -396,7 +397,7 @@ export default {
         const ProductsCollection = doc(db, "PRODUCTS", this.Products[i].id);
         await updateDoc(ProductsCollection, {
           focus: this.Products[i].focus,
-          top:this.Products[i].top,
+          top: this.Products[i].top,
         });
       }
     },
@@ -408,8 +409,14 @@ export default {
         const BackStageDocuments = await getDocs(ProductsCollection); // 取得集合內的所有物件
         BackStageDocuments.forEach((x) => {
           // console.log(x.data());
+
           this.Products.push(x.data()); // 物件轉陣列
         });
+        for (let i = 0; i < this.Products.length; i++) {
+          this.Products[i].date = this.convertDate(
+            this.Products[i].date.toDate()
+          );
+        }
       } catch (err) {
         alert(err);
       }
@@ -437,7 +444,7 @@ export default {
 <style scoped lang="scss">
 .HomepageProducts {
   width: 100%;
-  padding: 10rem;
+  padding: 8rem;
   &_window {
     //視窗
     width: 100%;
@@ -504,6 +511,7 @@ export default {
     }
     .HomepageProducts_table {
       //表格
+
       position: relative;
       width: 100%;
       display: flex;
