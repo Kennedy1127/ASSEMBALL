@@ -9,9 +9,12 @@
           <font-awesome-icon class="icon" :icon="['fab', 'facebook']" />
           <span>Facebook</span>
         </button>
-        <button class="authentication_text_quickLogin_LINE">
-          <font-awesome-icon class="icon" :icon="['fab', 'line']" />
-          <span>Line</span>
+        <button
+          class="authentication_text_quickLogin_GOOGLE"
+          @click.prevent="googleSignIn"
+        >
+          <font-awesome-icon class="icon" :icon="['fab', 'google']" />
+          <span>GOOGLE</span>
         </button>
       </div>
       <fieldset>
@@ -46,17 +49,17 @@
       </div>
 
       <div class="authentication_text_rememberPsw">
-        <span class="authentication_text_rememberPsw_itemtext">
+        <!-- <span class="authentication_text_rememberPsw_itemtext">
           <label class="authentication_text_rememberPsw_checkbox">
             <input type="checkbox" />
             <span>
               <font-awesome-icon icon="fa-solid fa-circle-check" />
             </span> </label
           >記住密碼</span
-        >
+        > -->
 
         <span class="authentication_text_rememberPsw_item">
-          <router-link :to="{ name: 'ForgotPassword' }"> 忘記密碼?</router-link>
+          <router-link :to="{ name: 'ForgotPassword' }">忘記密碼?</router-link>
         </span>
       </div>
 
@@ -102,7 +105,7 @@ import { useRouter } from "vue-router";
 
 const store = useStore();
 const router = useRouter();
-const { signinError, signin } = useSignin();
+const { signinError, signin, signinWithGoogle } = useSignin();
 const { changePersistence } = useSetPersistence();
 const { getUser } = getData();
 
@@ -159,6 +162,17 @@ const getNotifys = () => {
   });
 
   store.state.closeNotifys = closeNotifys;
+};
+
+const googleSignIn = async () => {
+  await changePersistence();
+  await signinWithGoogle();
+  store.state.isPending = true;
+  store.state.user = await getUser();
+  store.state.isLoggedIn = true;
+  getNotifys();
+  router.push({ name: "Home" });
+  store.state.isPending = false;
 };
 
 const handleSignin = async () => {
@@ -304,8 +318,8 @@ const handleSignin = async () => {
         }
       }
 
-      &_LINE {
-        background-color: #1dcb42;
+      &_GOOGLE {
+        background-color: #fbbf24;
       }
       &_FB {
         background-color: #1a76f2;
@@ -318,7 +332,7 @@ const handleSignin = async () => {
     &_rememberPsw {
       margin-bottom: 10rem;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       margin-top: 1rem;
       font-size: 1.25rem;
       color: var(--secondary-gray-1);

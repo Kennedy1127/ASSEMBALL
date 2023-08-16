@@ -103,6 +103,7 @@ export default {
     &_content {
       display: flex;
       gap: 4rem;
+      padding-bottom: 2rem;
       &_form {
         width: 60%;
       }

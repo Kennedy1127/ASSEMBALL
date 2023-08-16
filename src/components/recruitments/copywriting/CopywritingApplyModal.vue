@@ -11,10 +11,15 @@
           v-model="selectedTemplateNum"
           :options="templates"
           placeholder="系統預設"
+          :disabled="templates.length === 0"
         />
       </div>
       <div class="apply_text">
-        <textarea v-model="selectedTemplateText" maxlength="200"></textarea>
+        <textarea
+          v-model="selectedTemplateText"
+          maxlength="200"
+          placeholder="向你應徵的球隊介紹一點自己吧！"
+        ></textarea>
         <div class="apply_text_count">
           {{ selectedTemplateText.length }}／200
         </div>
@@ -40,14 +45,17 @@ import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
 import { auth, timestamp } from "@/firebase/config";
 import useData from "@/composables/data/useData";
 import getData from "@/composables/data/getData";
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref, watchEffect, inject } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import store from "@/store";
+
+const team_id = inject("data").value.team_id;
+const auth_id = inject("data").value.team_user;
 
 const route = useRoute();
 const router = useRouter();
 const emit = defineEmits(["closeModal"]);
-const { setData } = useData();
+const { setData, setDataSubCollection } = useData();
 const { getSubCollectionDocuments } = getData();
 
 onMounted(async () => {
@@ -57,8 +65,6 @@ onMounted(async () => {
     subCollectionName: "APPLY",
   });
 
-  console.log(res);
-
   res.forEach((template) => {
     template.id = template.templateID;
     template.label = `模板 ${template.templateID + 1}`;
@@ -66,6 +72,7 @@ onMounted(async () => {
 
     if (template.inputValue) {
       selectedTemplateNum.value = template.templateID;
+      selectedTemplateText.value = template.textareaValue;
     }
   });
 
@@ -73,13 +80,14 @@ onMounted(async () => {
 });
 
 const templates = ref([]);
-const selectedTemplateNum = ref(0);
-const selectedTemplateText = computed(
-  () =>
-    templates.value.find(
-      (template) => template.id === selectedTemplateNum.value
-    )?.text || ""
-);
+const selectedTemplateNum = ref(-1);
+const selectedTemplateText = ref("");
+
+watchEffect(() => {
+  selectedTemplateText.value = templates.value[selectedTemplateNum.value]
+    ? templates.value[selectedTemplateNum.value].textareaValue
+    : "";
+});
 
 const closeModal = () => {
   emit("closeModal");
@@ -94,9 +102,31 @@ const submitApply = async () => {
     text: selectedTemplateText.value,
     date: timestamp,
     status: 0,
+    team_id: team_id,
   };
 
-  await setData("APPLYS", submitData);
+  const id = await setData("APPLYS", submitData);
+
+  await setDataSubCollection(
+    {
+      collectionName: "MEMBERS",
+      documentId: auth_id,
+      subCollectionName: "NOTIFY",
+    },
+    {
+      date: timestamp,
+      title: `${
+        store.state.user.lastname + store.state.user.firstname
+      }要求加入球隊`,
+      text: `${
+        store.state.user.lastname + store.state.user.firstname
+      }想加入球隊，讓我們期待他吧`,
+      read: false,
+      status: true,
+      type: 0,
+      apply_id: id,
+    }
+  );
 
   router.push({ name: "Recruitments" });
   store.state.isPending = false;

@@ -77,4 +77,23 @@ export default {
     transform: translateX(-120%);
   }
 }
+@media screen and (max-width: 767px) {
+  .myplayer_photo {
+    width: 250px;
+    height: 200px;
+    margin: 10rem auto 0rem auto;
+  }
+  .myplayer_photo_rightArrow {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+    top: calc(50% - 1rem);
+  }
+  .myplayer_photo_leftArrow {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+    top: calc(50% - 1rem);
+  }
+}
 </style>

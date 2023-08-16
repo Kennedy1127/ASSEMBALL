@@ -70,7 +70,7 @@ export default {
   },
   computed: {
     goToTeam() {
-      if (!this.$store.state.user) {
+      if (!this.$store.state.user || !this.$store.state.user.team_id) {
         return {
           name: "Home",
         };
