@@ -266,6 +266,9 @@ export default {
     border: 0px solid;
     font-size: 1rem;
     padding: 0.5rem;
+    &:focus {
+      outline: none;
+    }
   }
   .myplayerRaceEdit_btn {
     width: 100%;
