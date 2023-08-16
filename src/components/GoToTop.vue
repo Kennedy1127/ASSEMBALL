@@ -53,7 +53,7 @@ export default {
   opacity: 0;
 }
 .fade-button {
-  z-index: 800;
+  z-index: 30;
   text-align: center;
   padding: 0.5rem;
   font-size: 1rem;
@@ -69,7 +69,7 @@ export default {
   transition: all 0.1s ease-in-out;
   @media all and (max-width: 420px) {
     right: 0.5rem;
-    bottom: 4rem;
+    bottom: 7.5rem;
   }
   &:hover {
     background-color: var(--primary-blue);

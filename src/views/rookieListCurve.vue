@@ -178,9 +178,12 @@ export default {
     }
     .rookieListCurve_content {
       //文字段落
-      color: var(--primary-black);
-      font-size: 1rem;
+      color: var(--secondary-gray-1S);
+      font-size: 1.25rem;
       margin-bottom: 3rem;
+      @media screen and (max-width: 420px) {
+        font-size: 1rem;
+      }
     }
   }
   .rookieListCurve_imgArea {

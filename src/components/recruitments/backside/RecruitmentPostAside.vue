@@ -74,8 +74,6 @@ export default {
 
     const res = await getPicsLink(
       1,
-      // "images/TEAMS/WDijArOSzukkfqrtkgX2",
-
       `images/TEAMS/${this.$store.state.user?.team_id || user.team_id}`,
       "team-pic"
     );
@@ -92,12 +90,15 @@ export default {
 </script>
 
 <style lang="scss">
-.recruitment_aside_list li.active {
-  background-color: var(--secondary-blue-3);
-}
-.recruitment_aside_list a.active {
-  color: var(--primary-blue);
-}
+// .recruitment_aside_list {
+//   li.active {
+//     background-color: var(--secondary-blue-3);
+//     transition: 0.3s;
+//   }
+// }
+// .recruitment_aside_list a.active {
+//   color: var(--primary-blue);
+// }
 
 .recruitment_aside {
   width: 18vw;
@@ -133,21 +134,19 @@ export default {
         text-align: center;
         font-size: 1.25rem;
         padding: 2rem 0;
-        // color: var(--secondary-gray-3);
         cursor: pointer;
+        transition: 0.3s;
+        &.active {
+          background-color: var(--secondary-blue-3);
+          color: var(--primary-blue);
+          transition: 0.3s;
+        }
+        &:hover {
+          color: var(--primary-blue);
+          transition: 0.3s;
+        }
       }
     }
-
-    // a:hover,
-    // a:focus {
-    //   color: var(--primary-blue);
-    // }
-    // li:hover {
-    //   background-color: var(--secondary-blue-3);
-    // }
-    // li:hover a {
-    //   color: var(--primary-blue);
-    // }
   }
   &_hitterpic {
     width: 100%;
@@ -178,8 +177,6 @@ export default {
     &_list {
       margin: auto;
       display: flex;
-      // justify-content: space-between;
-
       a {
         color: var(--pale-white);
         width: 25%;
@@ -187,9 +184,21 @@ export default {
         padding: 0rem;
         color: #000;
         border-right: #fff 1px solid;
+        &:hover {
+          transition: 0.2s ease;
+        }
         li {
           width: 100%;
           color: var(--pale-white);
+          &.active {
+            background-color: var(--primary-blue);
+            color: var(--pale-white);
+            transition: 0.3s;
+          }
+          &:hover {
+            color: var(--secondary-blue-4);
+            transition: 0.3s;
+          }
         }
         padding: 0;
       }
@@ -197,16 +206,6 @@ export default {
         border: 0;
       }
     }
-    // a:hover,
-    // a:focus {
-    //   color: var(--pale-white);
-    // }
-    // li:hover {
-    //   background-color: var(--primary-blue);
-    // }
-    // li:hover a {
-    //   color: var(--pale-white);
-    // }
   }
 }
 </style>

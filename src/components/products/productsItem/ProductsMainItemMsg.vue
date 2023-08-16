@@ -386,7 +386,7 @@ const submitUpdateComment = async (id) => {
             color: inherit;
             width: 100%;
             min-height: 150px;
-            padding: 0rem 0.5rem;
+            // padding: 0rem 0.5rem;
             border: none;
             background-color: transparent;
 

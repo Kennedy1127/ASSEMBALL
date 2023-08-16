@@ -165,6 +165,7 @@ const getNotifys = () => {
 };
 
 const googleSignIn = async () => {
+  await changePersistence();
   await signinWithGoogle();
   store.state.isPending = true;
   store.state.user = await getUser();

@@ -43,7 +43,7 @@
           <div class="manage_item_list manage_item_icon">商品修改</div>
         </div>
 
-        <div v-for="item in computedManage" class="manage_item">
+        <div v-for="item in computedManage" :key="item.id" class="manage_item">
           <div class="manage_item_list manage_checkbox">
             <input
               type="checkbox"
@@ -99,7 +99,6 @@ import SelectorComponent from "@/components/utilities/SelectorComponent.vue";
 import { auth } from "@/firebase/config";
 import getData from "@/composables/data/getData";
 import useData from "@/composables/data/useData";
-
 
 export default {
   components: {
@@ -445,7 +444,10 @@ button {
   margin-left: 2rem;
   margin-right: 2rem;
   font-size: 1.25rem;
-
+  input {
+    width: 20px;
+    height: 20px;
+  }
   @media all and (max-width: 420px) {
     margin: 0;
   }
@@ -482,6 +484,11 @@ button {
       &.manage_checkbox {
         grid-row: 1 / span 3;
         align-self: start;
+
+        input {
+          width: 20px;
+          height: 20px;
+        }
       }
 
       &.manage_item_title {

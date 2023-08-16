@@ -85,7 +85,7 @@
       </div>
 
       <div class="copywriting_content_btn">
-        <button @click="overlayIsOpen = true">
+        <button @click="checkAuth">
           應徵
           <font-awesome-icon :icon="['fas', 'envelope']" />
         </button>
@@ -126,9 +126,10 @@ import exps from "@/composables/tables/exps";
 import roleDesc from "@/composables/tables/roleDesc";
 import getData from "@/composables/data/getData";
 import useStorage from "@/composables/data/useStorage";
+import { auth } from "@/firebase/config";
 import CopywritingSubmitApply from "@/components/recruitments/copywriting/CopywritingSubmitApply.vue";
 import CopywritingSwiper from "@/components/recruitments/copywriting/CopywritingSwiper.vue";
-import { watchEffect, ref } from "vue";
+import { watchEffect, ref, provide } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 
@@ -138,7 +139,7 @@ const router = useRouter();
 const { getDocument } = getData();
 const { getPicsLink } = useStorage();
 
-watchEffect(async () => {
+const removeWatchRoute = watchEffect(async () => {
   store.state.isPending = true;
 
   if (route.params.id) {
@@ -156,6 +157,7 @@ watchEffect(async () => {
 
     copywriting.value = {
       ...res,
+      team_user: team.user_id,
       team_name: team.teamName,
       team_intro: team.intro,
       team_pic: pics ? pics[0] : null,
@@ -190,6 +192,26 @@ const convertDate = (copywritingDate) => {
     "0"
   )}.${String(date.getDate()).padStart(2, "0")}`;
 };
+
+const checkAuth = () => {
+  if (!store.state.isLoggedIn || !auth.currentUser) {
+    alert("必須登入後才能應徵哦！");
+    return router.push({ name: "Login" });
+  }
+
+  if (store.state.user.team_id) {
+    alert("你已經是其他隊伍的成員囉！");
+    removeWatchRoute();
+    return router.push({
+      name: "myplayerTeam",
+      params: { id: store.state.user.team_id },
+    });
+  }
+
+  overlayIsOpen.value = true;
+};
+
+provide("data", copywriting);
 </script>
 
 <style scoped lang="scss">

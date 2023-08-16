@@ -89,9 +89,12 @@
                 :class="convertStatusColor(item.status)"
                 v-if="title === '審核應徵' || title === '記錄管理'"
               ></div>
-              <div class="td_item">
+              <div
+                class="td_item"
+                v-if="title === '管理職缺' || title === '審核應徵'"
+              >
                 <div class="td_title">標題</div>
-                <div v-if="title === '管理職缺' || title === '審核應徵'">
+                <div>
                   {{ item.title || item.copywriting.title }}
                 </div>
               </div>
@@ -101,7 +104,7 @@
                 <div v-if="title === '管理職缺'">
                   {{ getRoleLabel(item.role) }}
                 </div>
-                <div v-else-if="title === '審核應徵'">
+                <div v-else-if="title === '審核應徵' || title === '記錄管理'">
                   {{ getRoleLabel(item.copywriting?.role) }}
                 </div>
               </div>
@@ -110,8 +113,12 @@
                 <div v-if="title === '管理職缺'">
                   {{ item.area }}
                 </div>
-                <div v-else-if="title === '審核應徵'">
+                <div v-else-if="title === '審核應徵' || title === '記錄管理'">
                   {{ item.copywriting?.area }}
+                </div>
+                <div class="td_item" v-if="title === '記錄管理'">
+                  <div class="td_title">姓名</div>
+                  <div>{{ item.user.lastname + item.user.firstname }}</div>
                 </div>
               </div>
             </td>
@@ -124,10 +131,7 @@
                 <div class="td_title">應徵日期</div>
                 <div>{{ convertDate(item.date.toDate()) }}</div>
               </div>
-              <div v-if="title === '記錄管理'" class="td_item">
-                <div class="td_title">姓名</div>
-                <div>{{ item.candidate_name }}</div>
-              </div>
+
               <div
                 v-if="title === '管理職缺'"
                 class="icon-pen"
