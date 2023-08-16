@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import store from "@/store/index";
 import { auth } from "@/firebase/config";
-import useSignout from "@/composables/authentication/useSignout";
-const { signout } = useSignout();
+import getData from "@/composables/data/getData";
+
+const { getDocument, getUser } = getData();
 
 const routes = [
   {
@@ -77,7 +78,7 @@ const routes = [
     name: "ProductPost",
     component: () => import("@/views/products/ProductPost.vue"), // 檔名
     beforeEnter: () => {
-      if (!store.state.isLoggedIn && !auth.currentUser) return { name: "Home" };
+      if (!store.state.isLoggedIn || !auth.currentUser) return { name: "Home" };
     },
   },
   {
@@ -85,7 +86,7 @@ const routes = [
     name: "ProductsManage",
     component: () => import("@/views/products/ProductManageView.vue"),
     beforeEnter: () => {
-      if (!store.state.isLoggedIn && !auth.currentUser) return { name: "Home" };
+      if (!store.state.isLoggedIn || !auth.currentUser) return { name: "Home" };
     },
   },
   {
@@ -126,15 +127,27 @@ const routes = [
     name: "recruitmentPost",
     component: () =>
       import("@/views/recruitments/backside/RecruitmentPostView.vue"),
+    beforeEnter: async () => {
+      if (!store.state.isLoggedIn || !auth.currentUser) return { name: "Home" };
+      const user = await getUser();
+      if (!user.team_id) return { name: "Home" };
+      const team = await getDocument("TEAMS", user.team_id);
+      if (team.user_id !== user.id) return { name: "Home" };
+    },
   },
   {
     path: "/recruitments/recruitment-manage",
     name: "recruitmentManage",
     component: () =>
       import("@/views/recruitments/backside/RecruitmentManageView.vue"),
-    beforeEnter: (to, from, next) => {
-      store.commit("resetPaginationCurPage");
+    beforeEnter: async (to, from, next) => {
+      if (!store.state.isLoggedIn || !auth.currentUser) next({ name: "Home" });
+      const user = await getUser();
+      if (!user.team_id) next({ name: "Home" });
+      const team = await getDocument("TEAMS", user.team_id);
+      if (team.user_id !== user.id) next({ name: "Home" });
 
+      store.commit("resetPaginationCurPage");
       store.commit("resetFilters");
       next();
     },
@@ -144,9 +157,14 @@ const routes = [
     name: "recruitmentVerify",
     component: () =>
       import("@/views/recruitments/backside/RecruitmentVerifyView.vue"),
-    beforeEnter: (to, from, next) => {
-      store.commit("resetPaginationCurPage");
+    beforeEnter: async (to, from, next) => {
+      if (!store.state.isLoggedIn || !auth.currentUser) next({ name: "Home" });
+      const user = await getUser();
+      if (!user.team_id) next({ name: "Home" });
+      const team = await getDocument("TEAMS", user.team_id);
+      if (team.user_id !== user.id) next({ name: "Home" });
 
+      store.commit("resetPaginationCurPage");
       store.commit("resetFilters");
       next();
     },
@@ -156,12 +174,26 @@ const routes = [
     name: "recruitmentVerifyDetail",
     component: () =>
       import("@/views/recruitments/backside/RecruitmentVerifyDetailView.vue"),
+    beforeEnter: async () => {
+      if (!store.state.isLoggedIn || !auth.currentUser) return { name: "Home" };
+      const user = await getUser();
+      if (!user.team_id) return { name: "Home" };
+      const team = await getDocument("TEAMS", user.team_id);
+      if (team.user_id !== user.id) return { name: "Home" };
+    },
   },
   {
     path: "/recruitments/recruitment-history",
     name: "recruitmentHistory",
     component: () =>
       import("@/views/recruitments/backside/RecruitmentHistoryView.vue"),
+    beforeEnter: async () => {
+      if (!store.state.isLoggedIn || !auth.currentUser) return { name: "Home" };
+      const user = await getUser();
+      if (!user.team_id) return { name: "Home" };
+      const team = await getDocument("TEAMS", user.team_id);
+      if (team.user_id !== user.id) return { name: "Home" };
+    },
   },
   /////////////////////////////////////////
   {
