@@ -161,6 +161,7 @@ export default {
       }
     },
     async submitData() {
+      this.$store.state.isPending = true;
       const data = {
         gamedate: this.gamedate,
         homename: this.homename,
@@ -178,7 +179,7 @@ export default {
       const id = await setDataSubCollection(
         {
           collectionName: "TEAMS",
-          documentId: "iECrL2hQ89BPzKkX32u4", //you have to change this id
+          documentId: `${this.$route.params.id}`, //you have to change this id
           subCollectionName: "GAME",
         },
         data,
@@ -189,7 +190,7 @@ export default {
       const { getPicsLink } = useStorage();
       const res = await getPicsLink(
         2,
-        `images/TEAMS/iECrL2hQ89BPzKkX32u4/GAME/${id}`, //you have to change this id
+        `images/TEAMS/${this.$route.params.id}/GAME/${id}`, //you have to change this id
         "teamLogoPic"
       );
 
@@ -203,6 +204,7 @@ export default {
       this.homepic = null;
       this.hostpic = null;
       this.$emit("closeModal");
+      this.$store.state.isPending = false;
     },
   },
 };

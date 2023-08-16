@@ -256,7 +256,10 @@ export default {
     stopEnterTeam() {
       if (this.$store.state.user.team_id) {
         alert("親愛的球友，你已經創立了一個球隊，不能再創立別的球隊了喔！");
-        this.$router.push("/myplayerTeam"); // 重新導向別的頁面
+        this.$router.push({
+          name: "myplayerTeam",
+          params: this.$store.state.user.team_id,
+        }); // 重新導向別的頁面
       } else {
         this.$router.push("/MemberCenter-Createteam");
       }

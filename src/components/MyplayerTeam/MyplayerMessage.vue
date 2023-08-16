@@ -9,7 +9,10 @@
     <div class="myplayer_message_area_card_wrap">
       <div
         class="myplayer_message_area_card"
-        v-for="(item, index) in myplayer_message_card.slice(0, visiblePosts)"
+        v-for="(item, index) in $store.state.myplayerMessageCard.slice(
+          0,
+          visiblePosts
+        )"
         :key="item.id"
       >
         <div class="myplayer_message_avatar_wrap">
@@ -17,7 +20,7 @@
             class="myplayer_message_avatar"
             v-bind:style="{ backgroundImage: `url('${item.avatar}')` }"
           ></div>
-          <div class="myplayer_message_name">{{ item.user_id }}</div>
+          <div class="myplayer_message_name">{{ item.name }}</div>
         </div>
         <div class="myplayer_message_area_content_wrap">
           <div class="myplayer_message_area_title">{{ item.title }}</div>
@@ -40,7 +43,7 @@
       </div>
       <div
         class="myplayer_message_more_wrap"
-        v-if="visiblePosts < myplayer_message_card.length"
+        v-if="visiblePosts < $store.state.myplayerMessageCard.length"
       >
         <div class="myplayer_message_more_group" @click="showMorePosts">
           <div class="myplayer_message_more">觀看更多</div>
@@ -51,48 +54,68 @@
       </div>
     </div>
     <div class="myplayer_message_editPen">
-      <div class="myplayer_message_editPen_wrap">
+      <div class="myplayer_message_editPen_wrap" @click="editPenVisible">
         <font-awesome-icon
           :icon="['fas', 'plus']"
           class="myplayer_message_editPen_item"
         />
-        <font-awesome-icon
-          :icon="['fas', 'trash-can']"
-          class="myplayer_message_editPen_trash"
-        />
       </div>
     </div>
   </section>
+  <OverlayComponent
+    type="msgPopups"
+    :msgData="msgData"
+    v-if="isVisible"
+    @closeOverlay="closeOverlay"
+  />
+  <OverlayComponent
+    type="MsgAdd"
+    v-if="isShowup"
+    @closeOverlay="closeEditPen"
+  />
 </template>
 <script>
 import useStorage from "@/composables/data/useStorage";
+import OverlayComponent from "../utilities/OverlayComponent.vue";
 import getData from "@/composables/data/getData";
-const { getSubCollectionDocuments } = getData();
+const { getSubCollectionDocuments, getDocument } = getData();
 const { getPicsLink } = useStorage();
 export default {
+  components: {
+    OverlayComponent,
+  },
   async mounted() {
-    const res = await getSubCollectionDocuments({
-      collectionName: "TEAMS",
-      documentId: "5KhosRZOJ7TmLfECUb5D",
-      subCollectionName: "POST",
-    });
+    this.$store.state.isPending = true;
+    const posts = await getSubCollectionDocuments(
+      {
+        collectionName: "TEAMS",
+        documentId: this.$route.params.id,
+        subCollectionName: "POST",
+      },
+      [],
+      ["postdate"],
+      true
+    );
 
-    console.log(res);
+    for (let i = 0; i < posts.length; i++) {
+      const member = await getDocument("MEMBERS", posts[i].user_id);
+      posts[i].name = member.lastname + member.firstname;
 
-    this.myplayer_message_card = [...res];
+      const pics = await getPicsLink(
+        1,
+        `images/MEMBERS/${posts[i].user_id}`,
+        "member"
+      );
 
-    // for (let i = 0; i < res.length; i++) {
-    //   const pics = await getPicsLink(
-    //     2,
-    //     `images/TEAMS/${"5KhosRZOJ7TmLfECUb5D"}/POST/${res[i].id}`,
-    //     "avatarPic"
-    //   );
+      posts[i].avatar = pics
+        ? pics[0]
+        : require("@/assets/images/icons/main-icon.png");
+    }
 
-    //   res[i].pics = pics;
-    // }
+    this.$store.state.myplayerMessageCard = [...posts];
 
     const options = { year: "numeric", month: "numeric", day: "numeric" };
-    for (const item of this.myplayer_message_card) {
+    for (const item of this.$store.state.myplayerMessageCard) {
       const timestamp = {
         seconds: item.postdate.seconds,
         nanoseconds: item.postdate.nanoseconds,
@@ -100,6 +123,7 @@ export default {
       const postdate = new Date(timestamp.seconds * 1000);
       item.postdate = postdate.toLocaleDateString(undefined, options);
     }
+    this.$store.state.isPending = false;
   },
 
   emits: ["openPopup"],
@@ -180,18 +204,30 @@ export default {
       ],
       visiblePosts: 6,
       additionalPosts: 6,
+      isVisible: false,
+      isShowup: false,
+      msgData: {},
     };
   },
   methods: {
+    closeOverlay() {
+      this.$store.state.myplayerEditOpen = false;
+      this.isVisible = false;
+    },
+    closeEditPen() {
+      this.isShowup = false;
+    },
     myplayer_message_more_btn(data) {
-      console.log(data);
-      this.$store.commit("myplayerPopupsToggle");
-      this.$emit("openPopup", data);
+      this.msgData = data;
+      this.isVisible = true;
     },
     showMorePosts() {
-      if (this.visiblePosts < this.myplayer_message_card.length) {
+      if (this.visiblePosts < this.$store.state.myplayerMessageCard.length) {
         this.visiblePosts += this.additionalPosts;
       }
+    },
+    editPenVisible() {
+      this.isShowup = true;
     },
   },
 };
@@ -378,8 +414,7 @@ export default {
       top: 150px;
       right: 10px;
     }
-    &_item,
-    &_trash {
+    &_item {
       width: 2rem;
       height: 2rem;
       background-color: var(--pale-white);
@@ -390,14 +425,10 @@ export default {
       cursor: pointer;
       transition: 0.3s;
     }
-    &_item:hover,
-    &_trash:hover {
+    &_item:hover {
       background-color: var(--primary-blue);
       color: var(--pale-white);
       transition: 0.3s;
-    }
-    &_trash {
-      margin-top: 0.5rem;
     }
   }
   &_message_area_checkbox {

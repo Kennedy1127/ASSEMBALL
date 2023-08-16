@@ -77,6 +77,7 @@ export default createStore({
     myplayerOverlay: true,
     myplayerTeam: {},
     myplayerRaceList: [],
+    myplayerMessageCard: [],
 
     //////////////////////////////////////////////////////
     // 頁碼區塊
@@ -103,7 +104,9 @@ export default createStore({
         return [];
       }
 
-      return state.userNotifys.filter((notify) => notify.type === 0);
+      return state.userNotifys
+        .filter((notify) => notify.type === 0)
+        .sort((a, b) => b.date.toDate() - a.date.toDate());
     },
 
     // 使用者訂單通知
@@ -113,7 +116,9 @@ export default createStore({
         return [];
       }
 
-      return state.userNotifys.filter((notify) => notify.type === 1);
+      return state.userNotifys
+        .filter((notify) => notify.type === 1)
+        .sort((a, b) => b.date.toDate() - a.date.toDate());
     },
 
     // 使用者邀請加入通知
@@ -123,9 +128,9 @@ export default createStore({
         return [];
       }
 
-      const userNotifys = state.userNotifys.filter(
-        (notify) => notify.type === 2
-      );
+      const userNotifys = state.userNotifys
+        .filter((notify) => notify.type === 2)
+        .sort((a, b) => b.date.toDate() - a.date.toDate());
 
       for (let i = 0; i < userNotifys.length; i++) {
         getPicsLink(
@@ -491,8 +496,6 @@ export default createStore({
 
     //我的球隊撈資料
     setMyplayerTeam(state, payload) {
-      console.log(payload);
-
       state.myplayerTeam = { ...payload };
     },
 
@@ -643,7 +646,9 @@ export default createStore({
     // 撈招募文案資料
     async getCopywritings(context) {
       try {
-        const res = await getDocuments("COPYWRITINGS");
+        const res = await getDocuments("COPYWRITINGS", [
+          ["status", "==", true],
+        ]);
         if (!res) throw new Error("Cannot fetch response");
 
         const copywritings = [];
@@ -665,24 +670,13 @@ export default createStore({
     //撈我的球隊的資料
 
     async getMyplayerTeam(context, payload) {
-      const teamData = await getDocuments("TEAMS");
-      // console.log(teamData);
-
-      const teamGameData = await getSubCollectionDocuments({
-        collectionName: "TEAMS",
-        documentId: "5KhosRZOJ7TmLfECUb5D",
-        subCollectionName: "GAME",
-      });
-      // console.log(teamGameData);
-
-      //const picData=
+      const teamData = await getDocument("TEAMS", payload);
 
       const scheduleData = await getSubCollectionDocuments({
         collectionName: "TEAMS",
         documentId: "5KhosRZOJ7TmLfECUb5D",
         subCollectionName: "SCHEDULE",
       });
-      // console.log(scheduleData);
 
       const teamPostData = await getSubCollectionDocuments({
         collectionName: "TEAMS",
@@ -692,8 +686,8 @@ export default createStore({
       // console.log(teamPostData);
 
       const allTeamData = {
-        ...teamData[0],
-        teamGameData,
+        ...teamData,
+
         scheduleData,
         teamPostData,
       };

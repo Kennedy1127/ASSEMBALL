@@ -27,7 +27,7 @@
               >
             </li>
             <li>
-              <router-link :to="{ name: 'myplayerTeam', params: { id: 1 } }"
+              <router-link :to="goToTeam"
                 ><span
                   ><font-awesome-icon icon="fa-solid fa-user-group"
                 /></span>
@@ -67,6 +67,20 @@ export default {
       footerDetails:
         "若有抵觸有關著作權,或有第三人主張侵害智慧財產權等情事,均由學員負法律上責任,緯育公司概不負責，若有侵權疑慮，您可以私訊緯育Tibame，後續會由專人協助處理。",
     };
+  },
+  computed: {
+    goToTeam() {
+      if (!this.$store.state.user || !this.$store.state.user.team_id) {
+        return {
+          name: "Home",
+        };
+      }
+
+      return {
+        name: "myplayerTeam",
+        params: { id: this.$store.state.user.team_id },
+      };
+    },
   },
 };
 </script>

@@ -91,12 +91,18 @@
             :key="item.id"
             class="table_row"
           >
-            <td class="table_row_name">{{ convertFont( convertTeam(item.team_id)) }}</td>
+            <td class="table_row_name">
+              {{ convertFont(convertTeam(item.team_id)) }}
+            </td>
             <td class="table_row_area">
               {{ convertFont(item.area) }}
             </td>
-            <td class="table_row_position">{{ convertFont(convertRole(item.role)) }}</td>
-            <td class="table_row_date">{{convertDate(item.date.toDate()) }}</td>
+            <td class="table_row_position">
+              {{ convertFont(convertRole(item.role)) }}
+            </td>
+            <td class="table_row_date">
+              {{ convertDate(item.date.toDate()) }}
+            </td>
             <td class="table_row_focus">
               <input
                 v-if="item.focus"
@@ -120,7 +126,7 @@
         <button class="btn_down" @click="pagedown">
           <font-awesome-icon icon="fa-solid fa-angle-down" />
         </button>
-        <button class="btn_send">送出</button>
+        <button class="btn_send" @click="AddArticle">送出</button>
       </div>
     </div>
 
@@ -225,14 +231,14 @@
         <button class="btn_down" @click="TeamMessagePagedown">
           <font-awesome-icon icon="fa-solid fa-angle-down" />
         </button>
-        <button class="btn_send">送出</button>
+        <button class="btn_send" @click="AddTeamMessage">送出</button>
       </div>
     </div>
   </div>
 </template>
 <script>
 import { db } from "@/firebase/config"; //引入data base
-import { addDoc, doc, getDoc, addDocs } from "firebase/firestore";
+import { addDoc, doc, getDoc, addDocs ,updateDoc} from "firebase/firestore";
 import roles from "@/composables/tables/roles";
 import { collection, query, where, getDocs } from "firebase/firestore";
 export default {
@@ -244,7 +250,7 @@ export default {
       TeamMessagePerPage: 17,
       Article: [],
       TeamMessage: [],
-      Teams:[],
+      Teams: [],
       // Article: [
       //   {
       //     Id: "1",
@@ -371,30 +377,28 @@ export default {
   methods: {
     //球隊ID轉球隊名
     convertTeam(e) {
-        const index = this.Teams.findIndex((v) => v.id === e);
-        if(index==-1){
-          return "無"
-        }
-        return this.Teams[index]?.teamName
+      const index = this.Teams.findIndex((v) => v.id === e);
+      if (index == -1) {
+        return "無";
+      }
+      return this.Teams[index]?.teamName;
     },
-
-
 
     //球隊位置數字轉換成對應字串
     convertRole(role) {
       return roles[Number(role < 0 ? 0 : role) + 1].label;
     },
-    convertDate(inputDate) {//日期轉字串
-      console.log(inputDate)
+    convertDate(inputDate) {
+      //日期轉字串
+      console.log(inputDate);
       const date = new Date(inputDate);
-      console.log("日期",date)
+      console.log("日期", date);
       return `${date.getFullYear()} / ${String(date.getMonth() + 1).padStart(
         2,
         0
       )} / ${String(date.getDate()).padStart(2, 0)}`;
     },
 
-    
     handleFocusChange(focus, e) {
       e.preventDefault(); //阻止checkbox預設行為
       const index = this.Article.findIndex((v) => v.id === focus.id);
@@ -587,7 +591,6 @@ export default {
           this.TeamMessage.push(x.data()); // 物件轉陣列
         });
 
-
         const TeamsCollection = collection(db, "TEAMS"); // 取得球隊清單集合
         const TeamsDocuments = await getDocs(TeamsCollection); // 取得集合內的所有物件
         TeamsDocuments.forEach((x) => {
@@ -596,6 +599,25 @@ export default {
         });
       } catch (err) {
         alert(err);
+      }
+    },
+    //更動內容上傳資料庫
+    async AddArticle() {
+      for (let i = 0; i < this.Article.length; i++) {
+        // console.log("i在這", i, "陣列", this.Article[i].id);
+        const ArticleCollection = doc(db, "COPYWRITINGS",this.Article[i].id);
+        await updateDoc(ArticleCollection, {
+          focus: this.Article[i].focus,
+        });
+      }
+    },
+    async AddTeamMessage() {
+      for (let i = 0; i < this.TeamMessage.length; i++) {
+        // console.log("i在這", i, "陣列", this.Article[i].id);
+        const TeamMessageCollection = doc(db, "BACKSTAGETEAMMESSAGE",this.TeamMessage[i].Id);
+        await updateDoc(TeamMessageCollection, {
+          Focus: this.TeamMessage[i].Focus,
+        });
       }
     },
 
@@ -642,7 +664,7 @@ export default {
   &_window {
     //視窗
     width: 100%;
-    height: 853px;
+    // height: 853px;
     background-color: var();
     border: var(--primary-black) solid;
 

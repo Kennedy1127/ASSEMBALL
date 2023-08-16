@@ -128,7 +128,7 @@ import getData from "@/composables/data/getData";
 import useStorage from "@/composables/data/useStorage";
 import CopywritingSubmitApply from "@/components/recruitments/copywriting/CopywritingSubmitApply.vue";
 import CopywritingSwiper from "@/components/recruitments/copywriting/CopywritingSwiper.vue";
-import { watchEffect, ref } from "vue";
+import { watchEffect, ref, provide } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 
@@ -156,6 +156,7 @@ watchEffect(async () => {
 
     copywriting.value = {
       ...res,
+      team_user: team.user_id,
       team_name: team.teamName,
       team_intro: team.intro,
       team_pic: pics ? pics[0] : null,
@@ -190,6 +191,8 @@ const convertDate = (copywritingDate) => {
     "0"
   )}.${String(date.getDate()).padStart(2, "0")}`;
 };
+
+provide("data", copywriting);
 </script>
 
 <style scoped lang="scss">

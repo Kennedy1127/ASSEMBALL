@@ -107,7 +107,7 @@ import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useData from "@/composables/data/useData";
 import useStorage from "@/composables/data/useStorage";
-import { timestamp } from "@/firebase/config";
+import { timestamp, auth } from "@/firebase/config";
 
 const { getDocument, getUser } = getData();
 const { getPicsLink } = useStorage();
@@ -142,15 +142,17 @@ onMounted(async () => {
   // }
 
   const apply = await getDocument("APPLYS", route.query.id);
+  if (apply.status === -1) {
+    return router.go(-1);
+  }
   // console.log(apply);
   const user = await getDocument("MEMBERS", apply.user_id);
   const team = await getDocument("TEAMS", apply.team_id);
 
   // console.log(user);
   const res = await getPicsLink(1, `images/MEMBERS/${user.id}`, "member");
-  console.log(res);
 
-  picSrc.value = res[0];
+  picSrc.value = res ? res[0] : require("@/assets/images/icons/main-icon.png");
   applyData.value = { ...apply, user, team };
 
   // console.log(applyData.value);
@@ -210,10 +212,13 @@ const verifyPassStatus = () => {
     {
       date: timestamp,
       title: `${applyData.value.team.teamName}邀請您加入`,
-      team_id: applyData.value.team_id,
       read: false,
       status: true,
       type: 2,
+      team_id: applyData.value.team_id,
+      apply_id: applyData.value.id,
+      auth_id: auth.currentUser.uid,
+      copywriting_id: applyData.value.copywriting_id,
     }
   );
 
@@ -241,10 +246,13 @@ const verifyDeclineStatus = () => {
     {
       date: timestamp,
       title: `${applyData.value.team.teamName}拒絕您加入`,
-      team_id: applyData.value.team_id,
+      text: `非常抱歉，${applyData.value.team.teamName}拒絕您加入，您可以嘗試其他的隊伍！`,
       read: false,
       status: true,
       type: 0,
+      team_id: applyData.value.team_id,
+      apply_id: applyData.value.id,
+      auth_id: auth.currentUser.uid,
     }
   );
 

@@ -25,7 +25,6 @@ const routes = [
     name: "Register",
     component: () => import("@/views/authentications/RegisterView.vue"),
     beforeEnter: () => {
-      if (auth.currentUser) signout();
       if (store.state.isLoggedIn) return { name: "Home" };
     },
   },
@@ -78,7 +77,7 @@ const routes = [
     name: "ProductPost",
     component: () => import("@/views/products/ProductPost.vue"), // 檔名
     beforeEnter: () => {
-      // if (!store.state.isLoggedIn) return { name: "Home" };
+      if (!store.state.isLoggedIn && !auth.currentUser) return { name: "Home" };
     },
   },
   {
@@ -86,7 +85,7 @@ const routes = [
     name: "ProductsManage",
     component: () => import("@/views/products/ProductManageView.vue"),
     beforeEnter: () => {
-      // if (!store.state.isLoggedIn) return { name: "Home" };
+      if (!store.state.isLoggedIn && !auth.currentUser) return { name: "Home" };
     },
   },
   {
@@ -166,7 +165,7 @@ const routes = [
   },
   /////////////////////////////////////////
   {
-    path: "/myplayerTeam",
+    path: "/myplayerTeam/:id",
     name: "myplayerTeam",
     component: () => import("@/views/MyPlayerTeam.vue"),
   },
@@ -193,7 +192,7 @@ const routes = [
     component: () => import("@/views/Backstage.vue"),
   },
   {
-    path: "/MyplayerGallery",
+    path: "/MyplayerGallery/:id",
     name: "MyplayerGallery",
     component: () => import("@/views/MyPlayerGallery.vue"),
   },

@@ -12,6 +12,12 @@
     <slot v-if="type === 'RaceType'">
       <MyplayerRaceEdit @closeModal="closeOverlay" />
     </slot>
+    <slot v-if="type === 'msgPopups'">
+      <MyplayerPopups :msgData="props.msgData" @closeModal="closeOverlay" />
+    </slot>
+    <slot v-if="type === 'MsgAdd'">
+      <MyplayerMsgAdd @closeModal="closeOverlay" />
+    </slot>
 
     <slot v-if="type === 'apply'" name="apply">
       <CopywritingApplyModal @closeModal="closeOverlay" />
@@ -23,6 +29,8 @@
 import CopywritingApplyModal from "@/components/recruitments/copywriting/CopywritingApplyModal.vue";
 import MyplayerPhotoPopus from "@/components/MyplayerTeam/MyplayerPhotoPopus.vue";
 import MyplayerRaceEdit from "@/components/MyplayerTeam/MyplayerRaceEdit.vue";
+import MyplayerPopups from "../MyplayerTeam/MyplayerPopups.vue";
+import MyplayerMsgAdd from "../MyplayerTeam/MyplayerMsgAdd.vue";
 
 const props = defineProps({
   type: {
@@ -30,6 +38,7 @@ const props = defineProps({
   },
   sendPic: {},
   curIndex: {},
+  msgData: {},
 });
 
 const emit = defineEmits(["closeOverlay", "goToRight", "goToLeft"]);

@@ -76,10 +76,21 @@ const useStorage = () => {
     const storageRef = ref(storage, path);
     const res = await listAll(storageRef);
 
-    res.items.forEach(async (el) => {
-      const test = await getDownloadURL(el);
-      console.log(test);
-    });
+    const urls = [];
+
+    for (let i = 0; i < res.items.length; i++) {
+      const pic = await getDownloadURL(res.items[i]);
+      urls.push(pic);
+    }
+
+    // res.items.forEach(async (el) => {
+    //   const pic = await getDownloadURL(el);
+    //   console.log(pic);
+
+    //   urls.push(pic);
+    // });
+
+    return urls;
   };
 
   return { setPics, getPics, getPicsLink, getAllPics, uploadPic };

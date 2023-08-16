@@ -43,7 +43,7 @@
           <div class="manage_item_list manage_item_icon">商品修改</div>
         </div>
 
-        <div v-for="item in computedManage" class="manage_item">
+        <div v-for="item in computedManage" :key="item.id" class="manage_item">
           <div class="manage_item_list manage_checkbox">
             <input
               type="checkbox"

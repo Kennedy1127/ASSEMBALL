@@ -27,7 +27,7 @@
               >
             </li>
             <li>
-              <router-link :to="{ name: 'myplayerTeam', params: { id: 1 } }"
+              <router-link :to="goToTeam"
                 ><span
                   ><font-awesome-icon icon="fa-solid fa-user-group"
                 /></span>
@@ -126,6 +126,20 @@ export default {
     },
     toggleMobileMenu() {
       this.mobileMenuVisible = !this.mobileMenuVisible;
+    },
+  },
+  computed: {
+    goToTeam() {
+      if (!this.$store.state.user || !this.$store.state.user.team_id) {
+        return {
+          name: "Home",
+        };
+      }
+
+      return {
+        name: "myplayerTeam",
+        params: { id: this.$store.state.user.team_id },
+      };
     },
   },
 };
