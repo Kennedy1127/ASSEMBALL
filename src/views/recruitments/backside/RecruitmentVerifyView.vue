@@ -25,12 +25,15 @@
         <div style="font-weight: 600">審核應徵</div>
       </div>
 
-      <div class="recruitment_post_main_table">
+      <div class="recruitment_post_main_table" v-if="!isNoResults">
         <RecruitmentTable
           :tableData="computedRendergetApplyRecords"
           :tablekey="tablekey"
           :title="title"
         />
+      </div>
+      <div class="no-data" v-else>
+        <img src="~@/assets/images/recruitment/no-data.png" alt="no-data" />
       </div>
       <div class="recruitment_post_main_page">
         <PaginationComponent
@@ -45,7 +48,7 @@
 <script setup>
 import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
-import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
+
 import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";
 import PaginationComponent from "@/components/utilities/PaginationComponent.vue";
 import getData from "@/composables/data/getData";
@@ -55,6 +58,10 @@ import { computed, onMounted, ref } from "vue";
 const tablekey = ref(1);
 const title = ref("審核應徵");
 const { getUser } = getData();
+// 沒資料的畫面
+const isNoResults = computed(
+  () => store.getters.unVerifyApplyRecords.length === 0
+);
 
 //把抓到的內容放進表格內
 const store = useStore();
@@ -94,54 +101,6 @@ const computedTotalPages = computed(() => {
 </script>
 
 <style lang="scss">
-// .recruitment_post {
-//   margin-top: 6rem;
-//   display: flex;
-
-//   // &_aside{
-
-//   // }
-//   &_breadcrumb {
-//     margin-bottom: 4rem;
-//     display: flex;
-//     gap: 1.5rem;
-
-//     font-size: 1.25rem;
-
-//     span:first-child a {
-//       color: var(--primary-blue);
-//       text-decoration: underline;
-//       text-underline-offset: 4px;
-//       // text-decoration-thickness: 2px;
-//     }
-//   }
-//   &_main {
-//     width: 100%;
-//     padding: 2rem 5rem;
-//     // background-color: red;
-//     & > div {
-//       margin-bottom: 3rem;
-//     }
-//     &_title {
-//       display: flex;
-//       gap: 1.5rem;
-//       padding-bottom: 1rem;
-//       font-size: 2rem;
-//       color: var(--primary-blue);
-//       .block {
-//         width: 1rem;
-//         background-color: var(--primary-blue);
-//       }
-//     }
-//     &_filter {
-//       width: 50%;
-//     }
-//     &_page {
-//       margin-right: 0;
-//     }
-//   }
-// }
-
 .recruitment_post {
   margin-top: 6rem;
   display: flex;
@@ -192,6 +151,13 @@ const computedTotalPages = computed(() => {
         img {
           width: 100%;
         }
+      }
+    }
+    .no-data {
+      padding-top: 2rem;
+      img {
+        width: 100%;
+        height: auto;
       }
     }
   }
