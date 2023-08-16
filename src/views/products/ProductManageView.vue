@@ -100,7 +100,6 @@ import { auth } from "@/firebase/config";
 import getData from "@/composables/data/getData";
 import useData from "@/composables/data/useData";
 
-
 export default {
   components: {
     SelectorComponent,
@@ -445,7 +444,10 @@ button {
   margin-left: 2rem;
   margin-right: 2rem;
   font-size: 1.25rem;
-
+  input {
+    width: 20px;
+    height: 20px;
+  }
   @media all and (max-width: 420px) {
     margin: 0;
   }
@@ -482,6 +484,11 @@ button {
       &.manage_checkbox {
         grid-row: 1 / span 3;
         align-self: start;
+
+        input {
+          width: 20px;
+          height: 20px;
+        }
       }
 
       &.manage_item_title {
