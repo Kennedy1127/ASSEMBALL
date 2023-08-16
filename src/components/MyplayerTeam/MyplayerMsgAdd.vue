@@ -190,4 +190,9 @@ export default {
     }
   }
 }
+@media screen and (max-width: 767px) {
+  .myplayerMsgAdd {
+    width: 80%;
+  }
+}
 </style>

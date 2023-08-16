@@ -180,5 +180,8 @@ const attributes = computed(() => [
     height: 1rem;
     padding: 0.7rem;
   }
+  .myplayer_function_title_wrap {
+    padding-bottom: 5rem;
+  }
 }
 </style>

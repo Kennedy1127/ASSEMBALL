@@ -206,6 +206,9 @@ export default {
   .myplayer_group_card {
     width: 50%;
   }
+  .myplayer_group {
+    padding: 10rem 0rem 5rem 0rem;
+  }
   .myplayer_group_card_more {
     width: 50%;
   }
@@ -213,7 +216,7 @@ export default {
     font-size: 2rem;
   }
   .myplayer_group_card_name {
-    padding: 5rem 0rem 2rem 0.5rem;
+    padding: 4rem 0rem 2rem 0.5rem;
     font-size: 1rem;
   }
   .myplayer_group_card_more span {
@@ -221,6 +224,7 @@ export default {
   }
   .myplayer_title_wrap {
     width: 8rem;
+    padding-bottom: 4rem;
   }
 }
 </style>

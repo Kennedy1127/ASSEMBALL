@@ -553,7 +553,10 @@ h3 {
   }
   .myplayerRaceEdit {
     width: 80%;
-    margin: 1rem auto;
+    margin: 6rem auto;
+  }
+  .myplayer_function_title_wrap {
+    padding-bottom: 5rem;
   }
 }
 </style>
