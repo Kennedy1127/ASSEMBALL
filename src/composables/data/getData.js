@@ -117,7 +117,7 @@ const getData = () => {
           : query(q, ...orders.map((order) => orderBy(order)));
 
       const res = await getDocs(q2);
-      console.log(res.docs);
+
       return res.docs.map((doc) => doc.data());
     } catch (err) {
       console.error("Something went wrong!");
