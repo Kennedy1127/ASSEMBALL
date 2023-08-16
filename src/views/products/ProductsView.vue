@@ -103,7 +103,9 @@ onMounted(async () => {
       "member"
     );
 
-    product.seller_pic = seller_pics[0];
+    product.seller_pic = seller_pics
+      ? seller_pics[0]
+      : require("@/assets/images/icons/main-icon.png");
   });
 
   store.state.isPending = false;
