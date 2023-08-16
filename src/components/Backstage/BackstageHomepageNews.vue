@@ -44,7 +44,7 @@
         </div>
       </div>
     </div>
-     <!-- 首頁跑馬燈管理 -->
+    <!-- 首頁跑馬燈管理 -->
     <!-- <div class="homepage_marqueeKeyword">
       <div class="homepage_marqueeKeyword_title">跑馬燈關鍵字</div>
       <div class="homepage_marqueeKeyword_enter">
@@ -421,6 +421,7 @@ import {
   addDocs,
   deleteDoc,
   updateDoc,
+  setDoc,
   serverTimestamp,
   getStorage,
   ref,
@@ -526,13 +527,20 @@ export default {
           KeyWord: this.AddnewsText,
           link: this.AddnewsLink,
         });
+
         const NewsKeywordCollection = collection(db, "NEWSKEYWORD"); //新增至firebase
-        const NewKeyword = {
-          Id: v + 1,
+        // const NewKeyword = {
+        //   KeyWord: this.AddnewsText,
+        //   Link: this.AddnewsLink,
+        // };
+       
+        // addDoc(NewsKeywordCollection, NewKeyword);
+
+        NewsKeywordCollection.doc(v + 1).set({
           KeyWord: this.AddnewsText,
           Link: this.AddnewsLink,
-        };
-        addDoc(NewsKeywordCollection, NewKeyword);
+        });
+
         this.resetNewsInput();
       }
     },
@@ -567,9 +575,11 @@ export default {
     removeNews(e, id) {
       // console.log(id);
       //移除最新消息關鍵字
+      console.log("index", e);
+      // console.log(id)
       const NewsKeywordCollection = doc(db, "NEWSKEYWORD", id);
       this.NewsKeyword.splice(e, 1); //從NewsKeyword移除
-      deleteDoc(NewsKeywordCollection); //從資料庫移除
+      // deleteDoc(NewsKeywordCollection); //從資料庫移除
     },
     removeMarquee(e) {
       //移除跑馬燈關鍵字

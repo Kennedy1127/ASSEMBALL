@@ -184,7 +184,7 @@ export default {
       //     ProductsTop: false,
       //   },
       // ],
-      //Products: [],
+    
       PriceArray: [], //價格種類陣列(存放每一種價格並排除重複的)
       TypeArray: [], //商品類型陣列
       DateArray: [],
