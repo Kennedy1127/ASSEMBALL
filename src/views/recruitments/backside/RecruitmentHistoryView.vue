@@ -47,7 +47,7 @@
 <script setup>
 import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
-import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
+
 import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";
 import PaginationComponent from "@/components/utilities/PaginationComponent.vue";
 import { useStore } from "vuex";

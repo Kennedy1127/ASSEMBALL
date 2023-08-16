@@ -48,7 +48,7 @@
 <script setup>
 import GobackAndTitle from "@/components/recruitments/backside/GobackAndTitle";
 import RecruitmentPostAside from "@/components/recruitments/backside/RecruitmentPostAside";
-import RecruitmentSearchbar from "@/components/recruitments/backside/RecruitmentSearchbar";
+
 import RecruitmentTable from "@/components/recruitments/backside/RecruitmentTable";
 import PaginationComponent from "@/components/utilities/PaginationComponent.vue";
 import getData from "@/composables/data/getData";
@@ -60,7 +60,7 @@ const title = ref("審核應徵");
 const { getUser } = getData();
 // 沒資料的畫面
 const isNoResults = computed(
-  () => store.getters.VerifyApplyRecords.length === 0
+  () => store.getters.unVerifyApplyRecords.length === 0
 );
 
 //把抓到的內容放進表格內
