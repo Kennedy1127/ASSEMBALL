@@ -605,12 +605,14 @@ export default createStore({
       // console.log(memberDate);
       context.commit("setMemberCenter", memberDate);
 
+      // 獲取用戶的ID
+      const userId = context.state.user.id;
+
       const memberApplyDate = await getSubCollectionDocuments({
         collectionName: "MEMBERS",
-        documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
+        documentId: userId,
         subCollectionName: "APPLY",
       });
-      console.log(memberApplyDate);
 
       context.commit("setApplication", memberApplyDate);
       return memberApplyDate;
@@ -618,9 +620,12 @@ export default createStore({
 
     // 撈會員中心訂單管理
     async getOrderManage(context, payload) {
+      // 獲取用戶的ID
+      const userId = context.state.user.id;
+
       const orderManageDate = await getSubCollectionDocuments({
         collectionName: "MEMBERS",
-        documentId: "eyOD2XSBfUVTXMQRVIKFVQxbKqn2",
+        documentId: userId,
         subCollectionName: "ORDERMANAGE",
       });
       console.log(orderManageDate);
