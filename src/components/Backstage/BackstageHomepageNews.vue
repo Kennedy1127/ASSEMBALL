@@ -27,11 +27,11 @@
         <div class="homePage_newsKeyword_form_content">
           <div
             v-for="(item, index) in NewsKeyword"
-            :key="item.Id"
+            :key="item.id"
             class="newsKeyword_item"
           >
             <button
-              @click="removeNews(index, item.data_id)"
+              @click="removeNews(index, item)"
               class="newsKeyword_item_del"
             >
               <font-awesome-icon icon="fa-solid fa-trash-can" />
@@ -520,27 +520,34 @@ export default {
       if (this.AddnewsText === "") {
         alert("請輸入關鍵字");
       } else {
+        this.NewsKeyword.splice(0,this.NewsKeyword.length);//先將data內陣列清空
         //新增至NewsKeyword陣列內
-        let v = this.NewsKeyword.length;
-        this.NewsKeyword.push({
-          Id: v + 1,
-          KeyWord: this.AddnewsText,
-          link: this.AddnewsLink,
-        });
-
-        const NewsKeywordCollection = collection(db, "NEWSKEYWORD"); //新增至firebase
-        // const NewKeyword = {
+        // let v = this.NewsKeyword.length;
+        // this.NewsKeyword.push({
         //   KeyWord: this.AddnewsText,
-        //   Link: this.AddnewsLink,
-        // };
-       
-        // addDoc(NewsKeywordCollection, NewKeyword);
-
-        NewsKeywordCollection.doc(v + 1).set({
+        //   link: this.AddnewsLink,
+        //   id: NewsKeywordCollection.id,
+        //   order: v,
+        // });
+        const NewsKeywordCollection = doc(collection(db, "NEWSKEYWORD")); //新增至firebase
+        const NewKeyword = {
           KeyWord: this.AddnewsText,
           Link: this.AddnewsLink,
-        });
-
+          id: NewsKeywordCollection.id,
+    
+        };
+        // console.log("index", this.NewsKeyword.order);
+        console.log("id", this.NewsKeyword.id);
+        // this.NewsKeyword.sort(function (a, b) {
+        //     return a.order - b.order; // 升序排序
+        //   });
+        await setDoc(
+          NewsKeywordCollection, //選擇集合
+          NewKeyword, //新增資料
+          NewsKeywordCollection.id //該筆資料id
+        );
+     
+        this.GetData();//重新將firebase上的資料抓至陣列中
         this.resetNewsInput();
       }
     },
@@ -572,14 +579,17 @@ export default {
       //把input清空
       this.AddMarquee = "";
     },
-    removeNews(e, id) {
+    async removeNews(e, item) {
       // console.log(id);
       //移除最新消息關鍵字
+
+      const NewsKeywordCollection = doc(db, "NEWSKEYWORD", item.id);
       console.log("index", e);
-      // console.log(id)
-      const NewsKeywordCollection = doc(db, "NEWSKEYWORD", id);
+      console.log("item", item);
+
       this.NewsKeyword.splice(e, 1); //從NewsKeyword移除
-      // deleteDoc(NewsKeywordCollection); //從資料庫移除
+
+      await deleteDoc(NewsKeywordCollection); //從資料庫移除
     },
     removeMarquee(e) {
       //移除跑馬燈關鍵字
