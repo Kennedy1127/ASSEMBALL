@@ -214,7 +214,7 @@ export default {
       await updateData(
         {
           collectionName: "MEMBERS",
-          documentId: auth.currentUser.id,
+          documentId: this.$store.state.user.id,
         },
         teamdateID
       );
