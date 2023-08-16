@@ -4,8 +4,8 @@
       <div class="MemberCenter_Createteam_title">
         <div class="block">
           <span>創立球隊</span>
-          <span>( 注意：一位會員只能創立一個球隊 )</span>
         </div>
+        <div class="detailtext">( 注意：一位會員只能創立一個球隊 )</div>
       </div>
       <!-- //表單 -->
       <form
@@ -261,17 +261,23 @@ export default {
     color: var(--primary-blue);
     font-weight: 600;
     margin-bottom: 3rem;
-    & div {
+    @media all and (max-width: 420px) {
+      flex-direction: column;
+      gap: 1rem;
+      align-content: start;
+      align-items: start;
+    }
+    & div:nth-child(1) {
       border-left: 1rem solid var(--primary-blue);
-      & span:nth-child(1) {
+      & span {
         padding-left: 1.5rem;
       }
-      & span:nth-child(2) {
-        
-        color: var(--accent-red);
-        font-size: 1rem;
-      }
     }
+  }
+
+  .detailtext {
+    color: var(--accent-red);
+    font-size: 1rem;
   }
 
   &_form {

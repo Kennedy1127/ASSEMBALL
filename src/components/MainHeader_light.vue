@@ -64,7 +64,11 @@
             <div class="mobile_list_hamburger">
               <div class="mobile_list_hamburger_inner">
                 <label class="hamburger" for="hamburger">
-                  <input type="checkbox" id="hamburger" />
+                  <input
+                    type="checkbox"
+                    id="hamburger"
+                    @click="toggleMobileMenu"
+                  />
                   <span></span>
                   <span></span>
                   <span></span>
@@ -83,6 +87,23 @@
             </div>
           </div>
         </div>
+        <!-- //手機板 menu -->
+        <div class="mobileMenu" :class="{ active: mobileMenuVisible }">
+          <div class="mobileMenu_list">
+            <router-link :to="{ name: 'Recruitments' }"
+              ><span><font-awesome-icon icon="fa-solid fa-flag" /></span
+            ></router-link>
+            <router-link :to="{ name: 'Products' }"
+              ><span><font-awesome-icon icon="fa-solid fa-bag-shopping" /></span
+            ></router-link>
+            <router-link :to="{ name: 'myplayerTeam', params: { id: 1 } }"
+              ><span><font-awesome-icon icon="fa-solid fa-user-group" /></span>
+            </router-link>
+            <router-link :to="{ name: 'rookie' }"
+              ><span><font-awesome-icon icon="fa-solid fa-map" /></span
+            ></router-link>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
@@ -93,12 +114,7 @@ export default {
   data() {
     return {
       notify: "1",
-      navList: {
-        recruitment: "球隊徵人",
-        shopping: "拍賣專區",
-        team: "我的球隊",
-        novice: "新手上路",
-      },
+      mobileMenuVisible: false,
     };
   },
   methods: {
@@ -107,6 +123,9 @@ export default {
     },
     toggleMember() {
       this.$emit("toggle_member");
+    },
+    toggleMobileMenu() {
+      this.mobileMenuVisible = !this.mobileMenuVisible;
     },
   },
   computed: {
@@ -400,5 +419,52 @@ export default {
       background-color: var(--secondary-blue-3);
     }
   }
+}
+
+//手機板menu
+.mobileMenu {
+  display: none;
+  @media all and (max-width: 420px) {
+    position: fixed;
+    bottom: 0%;
+    width: 100%;
+    // height: 3rem;
+    background-color: var(--primary-blue);
+    box-shadow: var(--shadow-heavy);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+    transition: transform 0.3s ease-in-out;
+    transform: translateY(100%);
+  }
+  &_list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    padding: 0.5rem 0;
+    & a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      & span {
+        color: var(--pale-white);
+        font-size: 1.25rem;
+        padding-bottom: 0.35rem;
+      }
+    }
+    & a:active {
+      background-color: var(--secondary-blue-1);
+    }
+  }
+}
+
+.mobileMenu.active {
+  transform: translateY(-100%);
 }
 </style>
