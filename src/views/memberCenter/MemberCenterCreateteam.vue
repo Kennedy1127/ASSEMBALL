@@ -200,11 +200,11 @@ export default {
       // console.log("球隊隊徽：", this.avatar);
       // console.log("球隊簡介：", this.CreateteamIntroduction);
 
-      //提交後重置表單資料
-      this.teamName = "";
-      this.region = "";
-      this.avatar = require("@/assets/images/icons/default_avatar.svg");
-      this.CreateteamIntroduction = "";
+      // //提交後重置表單資料
+      // this.teamName = "";
+      // this.region = "";
+      // this.avatar = require("@/assets/images/icons/default_avatar.svg");
+      // this.CreateteamIntroduction = "";
 
       const teamdateID = {
         team_id: teamID,
@@ -444,6 +444,7 @@ export default {
         width: 150px;
         height: 150px;
         border-radius: 50%;
+        object-fit: cover;
         @media all and (max-width: 420px) {
           width: 100px;
           height: 100px;

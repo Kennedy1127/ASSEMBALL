@@ -96,7 +96,7 @@
             <router-link :to="{ name: 'Products' }"
               ><span><font-awesome-icon icon="fa-solid fa-bag-shopping" /></span
             ></router-link>
-            <router-link :to="{ name: 'myplayerTeam', params: { id: 1 } }"
+            <router-link :to="goToTeam"
               ><span><font-awesome-icon icon="fa-solid fa-user-group" /></span>
             </router-link>
             <router-link :to="{ name: 'rookie' }"
