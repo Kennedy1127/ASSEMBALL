@@ -217,8 +217,9 @@ const computedTotalPages = computed(() => {
         flex-direction: column;
       }
       & img {
-        width: 89px;
-        height: 101px;
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
       }
       &_price {
         font-weight: 600;

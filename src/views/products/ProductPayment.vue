@@ -486,9 +486,10 @@ export default {
         padding-bottom: 0rem;
       }
       & img {
-        width: 89px;
-        height: 101px;
+        width: 100px;
+        height: 100px;
         margin-left: 2rem;
+        object-fit: cover;
         @media all and (max-width: 420px) {
           margin-left: 0rem;
         }
