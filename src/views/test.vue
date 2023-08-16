@@ -36,9 +36,16 @@ export default {
   letter-spacing: 20px;
   padding-bottom: 4rem;
   color: var(--pale-white);
+  @media all and (max-width: 420px) {
+    font-size: 2.25rem;
+    letter-spacing: 5px;
+    position: absolute;
+    top: 3rem;
+  }
 }
 
 .test {
+  position: relative;
   width: 100%;
   height: 100vh;
   display: flex;
@@ -52,6 +59,9 @@ export default {
   background-repeat: no-repeat;
   position: relative;
   z-index: 1;
+  @media all and (max-width: 420px) {
+    // width: 100vw;
+  }
   .wrap {
     padding: 14rem 28rem;
     border-radius: 8px;
@@ -63,6 +73,9 @@ export default {
     position: relative;
     z-index: 1;
     opacity: 0.5;
+    @media all and (max-width: 420px) {
+      display: none;
+    }
   }
   .btn {
     display: flex;
@@ -73,6 +86,11 @@ export default {
     z-index: 10;
     opacity: 1;
     padding-top: 10rem;
+    @media all and (max-width: 420px) {
+      flex-direction: column;
+      gap: 5rem;
+      padding-bottom: 1rem;
+    }
     a:nth-child(1) {
       width: 300px;
       height: 300px;
@@ -81,10 +99,18 @@ export default {
       color: var(--primary-blue);
       text-align: center;
       line-height: 300px;
-
+      font-weight: 500;
       font-size: 3rem;
       transition: all 0.3s ease-in;
       opacity: 0.9;
+      @media all and (max-width: 420px) {
+        flex-direction: column;
+        gap: 2rem;
+        width: 200px;
+        height: 200px;
+        line-height: 200px;
+        font-size: 2rem;
+      }
     }
     a:nth-child(1):hover {
       background-color: var(--accent-pink);
@@ -103,10 +129,19 @@ export default {
       color: var(--primary-blue);
       text-align: center;
       line-height: 300px;
+      font-weight: 500;
       // color: var(--pale-white);
       font-size: 3rem;
       transition: all 0.3s ease-in;
       opacity: 0.9;
+      @media all and (max-width: 420px) {
+        flex-direction: column;
+        gap: 2rem;
+        width: 200px;
+        height: 200px;
+        line-height: 200px;
+        font-size: 2rem;
+      }
     }
     a:nth-child(2):hover {
       // background-color: var(--success-green);
@@ -130,7 +165,7 @@ export default {
   & div {
     @media all and (max-width: 420px) {
       text-align: left;
-      padding-bottom: 3rem;
+      padding-bottom: 0.5rem;
     }
   }
 }

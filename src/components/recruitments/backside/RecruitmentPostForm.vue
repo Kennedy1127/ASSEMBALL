@@ -361,6 +361,7 @@ const handleSubmit = async () => {
       margin-right: 1rem;
     }
     &_inputGroup {
+      width: 100%;
       position: relative;
       .text-count {
         position: absolute;
