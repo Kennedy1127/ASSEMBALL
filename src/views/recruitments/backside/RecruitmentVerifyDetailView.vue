@@ -119,52 +119,23 @@ const route = useRoute();
 const router = useRouter();
 const picSrc = ref("");
 
-// const computedRenderApply = ref([]);
+const isNoResults = computed(
+  () => store.getters.VerifyApplyRecords.length === 0
+);
 onMounted(async () => {
-  // const data = store.state.ApplyRecords.find(
-  //   (apply) => apply.id === route.query.id
-  // );
-
-  // if (!data) {
-  //   const apply = await getDocument("APPLYS", route.query.id);
-  //   // console.log(apply);
-  //   const user = await getDocument("MEMBERS", apply.user_id);
-
-  //   // console.log(user);
-  //   const res = await getPicsLink(
-  //     1,
-  //     `images/MEMBERS/${store.state.user?.id}`,
-  //     "member"
-  //   );
-  //   console.log(res);
-
-  //   return (applyData.value = { ...apply, user, res });
-  // }
-
   const apply = await getDocument("APPLYS", route.query.id);
   if (apply.status === -1) {
     return router.go(-1);
   }
-  // console.log(apply);
+
   const user = await getDocument("MEMBERS", apply.user_id);
   const team = await getDocument("TEAMS", apply.team_id);
 
-  // console.log(user);
+  // 帶入user的大頭貼
   const res = await getPicsLink(1, `images/MEMBERS/${user.id}`, "member");
 
   picSrc.value = res ? res[0] : require("@/assets/images/icons/main-icon.png");
   applyData.value = { ...apply, user, team };
-
-  // console.log(applyData.value);
-
-  // 帶入user的大頭貼
-
-  // if (!store.state.user?.id) {
-  //   user = await getUser();
-  // }
-  // console.log(applyData.user_id);
-
-  // console.log(picSrc.value);
 });
 
 const applyData = ref({});
