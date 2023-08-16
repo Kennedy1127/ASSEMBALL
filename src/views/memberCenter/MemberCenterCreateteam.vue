@@ -190,7 +190,9 @@ export default {
         user_id: auth.currentUser.uid,
       };
 
-      await setData("TEAMS", data, [this.pic], "team-pic");
+      const teamID = await setData("TEAMS", data, [this.pic], "team-pic");
+
+      console.log(teamID);
 
       // 檢查表單資料
       console.log("球隊名稱：", this.teamName);
@@ -203,6 +205,22 @@ export default {
       this.region = "";
       this.avatar = require("@/assets/images/icons/default_avatar.svg");
       this.CreateteamIntroduction = "";
+
+      // const teamData = {
+      //   status: false,
+      // };
+
+      // // 球隊ID更改
+      // await updateData(
+      //   {
+      //     collectionName: "PRODUCTS",
+      //     documentId: this.$store.state.user.id,
+      //   },
+      //   boughtData
+      // );
+
+      // // 跳轉頁面到首頁
+      // this.$router.push({ name: "Home" });
     },
   },
 };
