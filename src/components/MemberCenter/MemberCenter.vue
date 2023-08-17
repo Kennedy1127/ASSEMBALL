@@ -156,7 +156,10 @@ export default {
       margin: 0;
     }
     & img {
-      width: 60%;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
     }
     &_name {
       padding-top: 1rem;

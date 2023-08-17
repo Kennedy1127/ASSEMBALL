@@ -14,7 +14,7 @@
         <div
           class="MemberCenter_Application_template"
           v-for="(item, index) in template"
-          :key="item.id"
+          :key="index"
         >
           <div class="MemberCenter_Application_template_tick">
             <input
@@ -55,6 +55,23 @@
           </div>
         </div>
 
+        <!-- 沒有資料的提示 -->
+        <div
+          class="MemberCenter_Application_noResults"
+          v-if="template.length == 0"
+        >
+          <div class="MemberCenter_Application_noResults_img">
+            <img
+              src="~@/assets/images/recruitment/no-results.svg"
+              alt="no_results"
+            />
+          </div>
+          <p class="MemberCenter_Application_noResults_text">
+            目前沒有任何的模板紀錄哦！
+          </p>
+        </div>
+
+        <!-- //添加模板 -->
         <div class="MemberCenter_Application_adddescribe">添加模板</div>
         <div class="MemberCenter_Application_template">
           <div
@@ -86,7 +103,7 @@
           </div>
         </div>
         <div class="MemberCenter_Application_btn">
-          <input type="submit" value="儲存" />
+          <input type="submit" value="儲存" :disabled="isButtonDisabled" />
         </div>
       </form>
     </div>
@@ -120,8 +137,12 @@ export default {
     };
   },
 
-  //數量限制
   computed: {
+    // 根據陣列長度決定按鈕是否禁用
+    isButtonDisabled() {
+      return this.template.length === 0;
+    },
+    //數量限制
     remainingTemplates() {
       return 5 - this.template.length;
     },
@@ -151,21 +172,24 @@ export default {
         return;
       }
 
-      const newTemplateId =
-        this.template.length > 0
-          ? this.template[this.template.length - 1].templateID + 1
-          : 0;
+      let newTemplateId;
+
+      if (this.template.length > 0) {
+        newTemplateId = this.template[this.template.length - 1].templateID + 1;
+      } else {
+        newTemplateId = 0;
+      }
 
       this.template.push({
-        id: newTemplateId,
+        templateID: newTemplateId,
         inputValue: "",
         textareaValue: this.Introductionadd,
         disabled: false,
       });
       console.log(newTemplateId);
 
-      //把新模板上傳到資料庫
-      //模板資料確認
+      // 把新模板上傳到資料庫;
+      // 模板資料確認;
       const data = {
         inputValue: "",
         templateID: newTemplateId,
@@ -180,7 +204,7 @@ export default {
           subCollectionName: "APPLY",
         },
         data
-      ); //上傳新模板
+      );
     },
 
     updateCharacterCount(item) {
@@ -205,6 +229,8 @@ export default {
 
         const mergedDataObject = {}; // 儲存合併的資料
 
+        console.log(this.$refs.radioModel);
+
         this.$refs.radioModel.forEach((radioModel, index) => {
           const dataID = this.template.find(
             (template) => template.templateID == radioModel.id
@@ -215,7 +241,7 @@ export default {
             templateID: index,
           };
 
-          // console.log(dataID)
+          console.log(dataID);
 
           const inputData = inputDataArray[index] || { textareaValue: "" };
           // 如果資料不存在，使用默認
@@ -241,6 +267,7 @@ export default {
             },
             mergedDataObject[key]
           );
+          console.log(mergedDataObject[key].id);
         }
       } else {
         alert("請再次選擇一種模板。");
@@ -250,11 +277,26 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .MemberCenter_Application {
   background-color: var(--secondary-blue-4);
   padding: 4rem 0;
   padding-top: 8rem;
+
+  //無資料提示
+  &_noResults {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    &_text {
+      font-size: 1.5rem;
+      color: var(--secondary-gray-3);
+      @media all and (max-width: 420px) {
+        font-size: 1.25rem;
+      }
+    }
+  }
 
   .wrapper {
     background-color: #fff;

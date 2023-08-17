@@ -46,13 +46,7 @@
     >
       <div class="home_message_all_text_header">
         <h3>
-          <router-link
-            :to="{
-              name: 'myplayerTeam',
-              params: { id: '5KhosRZOJ7TmLfECUb5D' },
-            }"
-            >{{ item.title }}</router-link
-          >
+          <router-link :to="goToTeam">{{ item.title }}</router-link>
         </h3>
         <span class="home_message_all_text_header_date">
           {{ item.postdate }}
@@ -70,12 +64,12 @@
         <span class="home_message_all_text_section_text">
           {{ item.text }}
         </span>
-        <button
+        <!-- <button
           @click="goToMyPlayerTeam(item.id)"
           class="home_message_all_text_section_btn"
         >
           <Icon type="ios-arrow-dropright-circle" />更多
-        </button>
+        </button> -->
       </div>
     </div>
     <div class="home_message_all_btn">
@@ -111,15 +105,33 @@ export default {
       visibleMessageText: [],
     };
   },
+
+  computed: {
+    goToTeam() {
+      if (!this.$store.state.user || !this.$store.state.user.team_id) {
+        return {
+          name: "Home",
+        };
+      }
+
+      return {
+        name: "myplayerTeam",
+        params: { id: this.$store.state.user.team_id },
+      };
+    },
+  },
   methods: {
     // goToMyPlayerTeam(id) {
-    //   this.$router.push({ name: "myplayerTeam", params: { id } });
+    //   this.$router.push({
+    //     name: "myplayerTeam",
+    //     query: { scrollToComments: true },
+    //   });
     // },
     goToMyPlayerTeam(id) {
       // 使用 Vue Router 的 push 方法進行導航，並在回調函式中執行滾動操作
       this.$router.push({
         name: "myplayerTeam",
-        query: { scrollToComments: true },
+        params: { id }, // 使用 params 而不是 query
       });
     },
     toggleMessageText() {

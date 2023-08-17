@@ -194,33 +194,33 @@ export default {
 
       console.log(teamID);
 
-      // 檢查表單資料
-      console.log("球隊名稱：", this.teamName);
-      console.log("地區：", this.region);
-      console.log("球隊隊徽：", this.avatar);
-      console.log("球隊簡介：", this.CreateteamIntroduction);
+      // // 檢查表單資料
+      // console.log("球隊名稱：", this.teamName);
+      // console.log("地區：", this.region);
+      // console.log("球隊隊徽：", this.avatar);
+      // console.log("球隊簡介：", this.CreateteamIntroduction);
 
-      //提交後重置表單資料
-      this.teamName = "";
-      this.region = "";
-      this.avatar = require("@/assets/images/icons/default_avatar.svg");
-      this.CreateteamIntroduction = "";
+      // //提交後重置表單資料
+      // this.teamName = "";
+      // this.region = "";
+      // this.avatar = require("@/assets/images/icons/default_avatar.svg");
+      // this.CreateteamIntroduction = "";
 
-      // const teamData = {
-      //   status: false,
-      // };
+      const teamdateID = {
+        team_id: teamID,
+      };
 
-      // // 球隊ID更改
-      // await updateData(
-      //   {
-      //     collectionName: "PRODUCTS",
-      //     documentId: this.$store.state.user.id,
-      //   },
-      //   boughtData
-      // );
+      // 球隊ID更改
+      await updateData(
+        {
+          collectionName: "MEMBERS",
+          documentId: this.$store.state.user.id,
+        },
+        teamdateID
+      );
 
-      // // 跳轉頁面到首頁
-      // this.$router.push({ name: "Home" });
+      // 跳轉頁面到首頁
+      this.$router.push({ name: "Home" });
     },
   },
 };
@@ -444,6 +444,7 @@ export default {
         width: 150px;
         height: 150px;
         border-radius: 50%;
+        object-fit: cover;
         @media all and (max-width: 420px) {
           width: 100px;
           height: 100px;

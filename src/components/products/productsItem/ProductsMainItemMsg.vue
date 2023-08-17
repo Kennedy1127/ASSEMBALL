@@ -347,7 +347,10 @@ const submitUpdateComment = async (id) => {
         position: relative;
 
         &_user {
-          width: 100%;
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          object-fit: cover;
         }
 
         &_mark {
@@ -458,7 +461,10 @@ const submitUpdateComment = async (id) => {
       }
 
       & img {
-        width: 100%;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
       }
     }
 
