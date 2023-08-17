@@ -41,7 +41,7 @@ const useSignup = () => {
     } catch (err) {
       console.error("Something went wrong!");
       signupError.value = err.message;
-      // console.error(err);
+      console.error(err);
     }
   };
 
