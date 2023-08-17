@@ -8,17 +8,19 @@
       <div
         class="myplayer_group_card"
         id="cardContainer"
-        v-for="item in visibleCards"
+        v-for="(item, index) in $store.state.myplayer_card"
         :key="item.id"
       >
         <div
           class="myplayer_group_card_pic"
           v-bind:style="{
-            backgroundImage: `url('${item.img}')`,
+            backgroundImage: `url('${bgImg[index]}')`,
             display: item.isVisible ? 'flex' : 'block',
           }"
         >
-          <div class="myplayer_group_card_name">{{ item.name }}</div>
+          <div class="myplayer_group_card_name">
+            {{ item.lastname + item.firstname }}
+          </div>
         </div>
       </div>
       <div class="myplayer_group_card_more">
@@ -30,60 +32,106 @@
   </section>
 </template>
 <script>
+import useStorage from "@/composables/data/useStorage";
+import getData from "@/composables/data/getData";
+const { getDocuments, getDocument } = getData();
+const { getPicsLink } = useStorage();
 export default {
+  async mounted() {
+    this.$store.state.isPending = true;
+    const cardPic = await getDocuments(
+      "MEMBERS",
+      [["team_id", "==", this.$route.params.id]],
+      [],
+      true
+    );
+
+    for (let i = 0; i < cardPic.length; i++) {
+      const member = await getDocument("MEMBERS", cardPic[i].id);
+      cardPic[i].name = member.lastname + member.firstname;
+
+      const pics = await getPicsLink(
+        1,
+        `images/MEMBERS/${cardPic[i].id}`,
+        "member"
+      );
+      // console.log(pics[0]);
+      cardPic[i].avatar = pics
+        ? pics[0]
+        : require("@/assets/images/icons/main-icon.png");
+    }
+
+    this.$store.state.myplayer_card = [...cardPic];
+    console.log(this.$store.state.myplayer_card[0].avatar);
+    this.visibleCards = this.$store.state.myplayer_card.slice(0, 7);
+    this.hiddenCards = this.$store.state.myplayer_card
+      .slice(7)
+      .map((card) => ({ ...card, isVisible: false }));
+
+    // console.log(this.visibleCards);
+  },
   data() {
     return {
       myplayer_card: [
-        {
-          id: "1",
-          img: require("/src/assets/images/myplayer_team/myplayer_card/player_1.jpg"),
-          name: "米奇·哈特森",
-        },
-        {
-          id: "2",
-          img: require("/src/assets/images/myplayer_team/myplayer_card/player_2.jpg"),
-          name: "約翰·安德森",
-        },
-        {
-          id: "3",
-          img: require("/src/assets/images/myplayer_team/myplayer_card/player_3.jpg"),
-          name: "傑克·羅賓遜",
-        },
-        {
-          id: "4",
-          img: require("/src/assets/images/myplayer_team/myplayer_card/player_4.jpg"),
-          name: "賴安·莫里森",
-        },
-        {
-          id: "5",
-          img: require("/src/assets/images/myplayer_team/myplayer_card/player_5.jpg"),
-          name: "湯米·坎貝爾",
-        },
-        {
-          id: "6",
-          img: require("/src/assets/images/myplayer_team/myplayer_card/player_6.jpg"),
-          name: "奧斯汀·米勒",
-        },
-        {
-          id: "7",
-          img: require("/src/assets/images/myplayer_team/myplayer_card/player_7.jpg"),
-          name: "布蘭登·哈珀",
-        },
-        {
-          id: "5",
-          img: require("/src/assets/images/myplayer_team/myplayer_card/player_5.jpg"),
-          name: "湯米·坎貝爾",
-        },
-        {
-          id: "6",
-          img: require("/src/assets/images/myplayer_team/myplayer_card/player_6.jpg"),
-          name: "奧斯汀·米勒",
-        },
+        // {
+        //   id: "1",
+        //   img: require("/src/assets/images/myplayer_team/myplayer_card/player_1.jpg"),
+        //   name: "米奇·哈特森",
+        // },
+        // {
+        //   id: "2",
+        //   img: require("/src/assets/images/myplayer_team/myplayer_card/player_2.jpg"),
+        //   name: "約翰·安德森",
+        // },
+        // {
+        //   id: "3",
+        //   img: require("/src/assets/images/myplayer_team/myplayer_card/player_3.jpg"),
+        //   name: "傑克·羅賓遜",
+        // },
+        // {
+        //   id: "4",
+        //   img: require("/src/assets/images/myplayer_team/myplayer_card/player_4.jpg"),
+        //   name: "賴安·莫里森",
+        // },
+        // {
+        //   id: "5",
+        //   img: require("/src/assets/images/myplayer_team/myplayer_card/player_5.jpg"),
+        //   name: "湯米·坎貝爾",
+        // },
+        // {
+        //   id: "6",
+        //   img: require("/src/assets/images/myplayer_team/myplayer_card/player_6.jpg"),
+        //   name: "奧斯汀·米勒",
+        // },
+        // {
+        //   id: "7",
+        //   img: require("/src/assets/images/myplayer_team/myplayer_card/player_7.jpg"),
+        //   name: "布蘭登·哈珀",
+        // },
+        // {
+        //   id: "5",
+        //   img: require("/src/assets/images/myplayer_team/myplayer_card/player_5.jpg"),
+        //   name: "湯米·坎貝爾",
+        // },
+        // {
+        //   id: "6",
+        //   img: require("/src/assets/images/myplayer_team/myplayer_card/player_6.jpg"),
+        //   name: "奧斯汀·米勒",
+        // },
       ],
       visibleCards: [],
       hiddenCards: [],
       showMoreBtn: true,
     };
+  },
+  computed: {
+    bgImg() {
+      if (this.$store.state.myplayer_card.length === 0) {
+        return [];
+      }
+
+      return this.$store.state.myplayer_card.map((el) => el.avatar);
+    },
   },
   methods: {
     showMoreCards() {
@@ -103,12 +151,6 @@ export default {
         this.showMoreBtn = false;
       }
     },
-  },
-  mounted() {
-    this.visibleCards = this.myplayer_card.slice(0, 7);
-    this.hiddenCards = this.myplayer_card
-      .slice(7)
-      .map((card) => ({ ...card, isVisible: false }));
   },
 };
 </script>

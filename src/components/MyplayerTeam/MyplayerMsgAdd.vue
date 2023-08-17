@@ -119,7 +119,7 @@ export default {
   border: 1px solid var(--primary-blue);
   border-radius: 0.5rem;
   background-color: var(--pale-white);
-  margin: 10rem auto 0rem auto;
+  margin: 2rem auto 0rem auto;
   &_wrap {
     // width: 80%;
     margin: auto;
@@ -155,7 +155,7 @@ export default {
     border: 1px solid var(--primary-blue);
     margin-left: 1rem;
     padding: 0.5rem;
-    height: 400px;
+    height: 350px;
   }
   &_confirm {
     background-color: var(--primary-blue);
@@ -193,6 +193,18 @@ export default {
 @media screen and (max-width: 767px) {
   .myplayerMsgAdd {
     width: 80%;
+  }
+}
+@media screen and (min-width: 1024px) and (max-width: 1200px) {
+  .myplayerMsgAdd {
+    margin: 3rem auto 0rem auto;
+  }
+
+  .myplayerMsgAdd_textBox {
+    height: 300px;
+  }
+  .myplayerMsgAdd_wrap_item:nth-child(3) {
+    margin-top: 2rem;
   }
 }
 </style>
