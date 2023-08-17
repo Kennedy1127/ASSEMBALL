@@ -52,7 +52,7 @@ export default {
       ["status", "==", true],
       ["top", "==", true],
     ]);
-    console.log(productData);
+    // console.log(productData);
 
     for (let i = 0; i < productData.length; i++) {
       const res = await getPicsLink(

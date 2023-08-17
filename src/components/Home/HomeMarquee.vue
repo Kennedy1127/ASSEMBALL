@@ -53,7 +53,7 @@
 export default {
   async mounted() {
     const res = await this.$store.dispatch("getHomeMarquee");
-    console.log(res);
+    // console.log(res);
     this.homeMarqueeProduct = res[0];
     this.homeMarqueeCopywriting = res[1];
     this.homeMarqueeTeach = res[2];

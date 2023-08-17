@@ -79,7 +79,6 @@ export default defineComponent({
       ["status", "==", true],
       // ["top", "==", true],
     ]);
-
     for (let i = 0; i < teamData.length; i++) {
       const team = await getDocument("TEAMS", teamData[i].team_id);
       teamData[i].teamName = team.teamName;

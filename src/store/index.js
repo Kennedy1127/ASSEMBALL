@@ -572,6 +572,29 @@ export default createStore({
       }
     },
 
+    async getHomeTeamPosts(context) {
+      try {
+        const teams = await getDocuments("TEAMS");
+        let posts = [];
+
+        for (let i = 0; i < teams.length; i++) {
+          const teamPosts = await getSubCollectionDocuments({
+            collectionName: "TEAMS",
+            documentId: teams[i].id,
+            subCollectionName: "POST",
+          });
+
+          teamPosts.forEach((el) => (el.team_id = teams[i].id));
+
+          posts = [...posts, ...teamPosts];
+        }
+
+        return posts;
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
     ///////////////////////////////////////
     // 撈商品資料
     async getProducts(context) {

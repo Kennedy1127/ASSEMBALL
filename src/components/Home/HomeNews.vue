@@ -108,7 +108,7 @@
 export default {
   async mounted() {
     const res = await this.$store.dispatch("getHomeNews");
-    console.log(res);
+    // console.log(res);
     this.itemsData = res;
 
     const options = { year: "numeric", month: "numeric", day: "numeric" };

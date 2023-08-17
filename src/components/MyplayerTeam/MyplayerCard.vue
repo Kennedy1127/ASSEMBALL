@@ -62,7 +62,6 @@ export default {
     }
 
     this.$store.state.myplayer_card = [...cardPic];
-    console.log(this.$store.state.myplayer_card[0].avatar);
     this.visibleCards = this.$store.state.myplayer_card.slice(0, 7);
     this.hiddenCards = this.$store.state.myplayer_card
       .slice(7)
