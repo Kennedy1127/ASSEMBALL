@@ -209,6 +209,7 @@ export default {
       msgData: {},
     };
   },
+
   methods: {
     closeOverlay() {
       this.$store.state.myplayerEditOpen = false;

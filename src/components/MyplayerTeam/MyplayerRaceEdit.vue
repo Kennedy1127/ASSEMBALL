@@ -40,7 +40,7 @@
           class="myplayerRaceEdit_name_team_type"
           placeholder="請輸入名稱"
           oninput="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')"
-          maxlength="4"
+          maxlength="10"
           v-model="homename"
           required
         />
@@ -73,7 +73,7 @@
           class="myplayerRaceEdit_name_team_type"
           placeholder="請輸入名稱"
           oninput="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')"
-          maxlength="4"
+          maxlength="10"
           v-model="hostname"
           required
         />
@@ -213,7 +213,7 @@ export default {
 .myplayerRaceEdit {
   width: 30%;
   background-color: var(--pale-white);
-  margin: 12rem auto;
+  margin: 2rem auto;
 
   border: 1px solid var(--primary-blue);
   border-radius: 1rem;
@@ -274,7 +274,7 @@ export default {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin: 3rem 0rem 2rem 0rem;
+    margin: 1.5rem 0rem 1rem 0rem;
   }
   .myplayerRaceEdit_submit {
     width: 20%;
