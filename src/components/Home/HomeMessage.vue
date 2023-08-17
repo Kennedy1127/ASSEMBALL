@@ -123,6 +123,7 @@ export default {
       this.$router.push({
         name: "myplayerTeam",
         params: { id }, // 使用 params 而不是 query
+        query: { scrollToComments: true },
       });
     },
     toggleMessageText() {
