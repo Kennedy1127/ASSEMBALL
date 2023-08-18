@@ -23,12 +23,19 @@
       </div>
     </div>
     <div class="home_news_subscription_hashtag">
-      <div
+      <!-- <div
         class="home_news_subscription_hashtag_text"
         v-for="item in newsHashtag"
         :key="item"
       >
         <router-link :to="{ name: 'Recruitments' }">{{ item }}</router-link>
+      </div> -->
+      <div
+        class="home_news_subscription_hashtag_text"
+        v-for="item in newsHashtag"
+        :key="item"
+      >
+     <a :href="item.Link">{{ item.KeyWord }}</a>
       </div>
     </div>
   </div>
@@ -105,11 +112,32 @@
 </template>
 
 <script>
+import {
+  addDoc,
+  doc,
+  getDoc,
+  getDocs,
+  addDocs,
+  deleteDoc,
+  updateDoc,
+  setDoc,
+  serverTimestamp,
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  getBlob,
+  collection
+} from "firebase/firestore";
+import { db } from "@/firebase/config";
 export default {
   async mounted() {
     const res = await this.$store.dispatch("getHomeNews");
     // console.log(res);
     this.itemsData = res;
+    this.GetData();
+
+    
 
     const options = { year: "numeric", month: "numeric", day: "numeric" };
     for (const item of this.itemsData) {
@@ -129,18 +157,18 @@ export default {
       isValidEmail: false,
       attemptedToSubscribe: false,
       newsHashtag: [
-        "＃天龍國野馬",
-        "＃波士頓爆豪客",
-        "＃信義天使",
-        "＃中壢區勇士",
-        "＃大安藍鳥",
-        "＃敦化南路火箭",
-        "＃中山區鷹眼",
-        "＃密爾瓦基釀酒人",
-        "＃辛辛那提奪旗者",
-        "＃金山自由人",
-        "＃克里夫蘭閃電",
-        "＃吳興街紡織者",
+        // "＃天龍國野馬",
+        // "＃波士頓爆豪客",
+        // "＃信義天使",
+        // "＃中壢區勇士",
+        // "＃大安藍鳥",
+        // "＃敦化南路火箭",
+        // "＃中山區鷹眼",
+        // "＃密爾瓦基釀酒人",
+        // "＃辛辛那提奪旗者",
+        // "＃金山自由人",
+        // "＃克里夫蘭閃電",
+        // "＃吳興街紡織者",
       ],
       itemsData: [],
       modalData: {
@@ -164,6 +192,27 @@ export default {
   },
 
   methods: {
+     //從firebase引入NEWSKEYWORD資料
+     async GetData() {
+      const KeyWordCollection = collection(db, "NEWSKEYWORD"); // 取得集合
+        console.log(KeyWordCollection)
+
+      try {
+        const KeyWordCollection = collection(db, "NEWSKEYWORD"); // 取得集合
+        const KeyWordDocuments = await getDocs(KeyWordCollection); // 取得集合內的所有物件
+        KeyWordDocuments.forEach((x) => {
+          // console.log("x.data",x.data());//陣列內的某一物件
+          // console.log("x",x)
+          const data = { ...x.data(), data_id: x.id }; //將x.data()拆開並塞入新屬性data_id:x.id後重新組成物件
+          // console.log("data",data)
+          this.newsHashtag.push(data); // 物件轉陣列
+        });
+      } catch (err) {
+        alert(err);
+      }
+    },
+
+    
     clearEmailIfNeeded() {
       this.isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/.test(this.email);
       if (this.email.endsWith("@gmail.com") && !this.subscribed) {
