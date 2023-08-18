@@ -67,12 +67,13 @@ export default {
 
       try {
         const q = query(
-          collection(db, "ADMINS"),
+          collection(db, "BACKSTAGEMANAGER"),
           where("Account", "==", this.AccountText),
-          where("Password", "==", this.PasswordText)
+          where("Password", "==", this.PasswordText),
+          where("State", "==", true)
          
         );
-        console.log( "阿豪",collection(db, "ADMINS"))
+        // console.log( "阿豪",collection(db, "ADMINS"))
         const ADMINS = await getDocs(q);
         if (ADMINS.docs.length == 0) return alert("帳密錯誤");
         return this.$router.push("Backstage");
