@@ -58,7 +58,7 @@ export default {
       // console.log(pics[0]);
       cardPic[i].avatar = pics
         ? pics[0]
-        : require("@/assets/images/icons/main-icon.png");
+        : require("@/assets/images/icons/main-icon-sec.png");
     }
 
     this.$store.state.myplayer_card = [...cardPic];

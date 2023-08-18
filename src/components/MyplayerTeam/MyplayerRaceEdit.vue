@@ -39,8 +39,7 @@
           type="text"
           class="myplayerRaceEdit_name_team_type"
           placeholder="請輸入名稱"
-          oninput="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')"
-          maxlength="10"
+          maxlength="5"
           v-model="homename"
           required
         />
@@ -72,8 +71,7 @@
           type="text"
           class="myplayerRaceEdit_name_team_type"
           placeholder="請輸入名稱"
-          oninput="this.value=this.value.replace(/[^\u4e00-\u9fa5]/g,'')"
-          maxlength="10"
+          maxlength="5"
           v-model="hostname"
           required
         />
