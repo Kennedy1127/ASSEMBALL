@@ -79,7 +79,6 @@ export default defineComponent({
       ["status", "==", true],
       // ["top", "==", true],
     ]);
-
     for (let i = 0; i < teamData.length; i++) {
       const team = await getDocument("TEAMS", teamData[i].team_id);
       teamData[i].teamName = team.teamName;
@@ -203,7 +202,8 @@ export default defineComponent({
     border-right: 3px solid var(--primary-blue);
     color: var(--primary-blue);
     &_pic {
-      width: 40%;
+      width: 10rem;
+      height: 10rem;
       margin: auto;
       border-radius: 50%;
       border: 3px solid var(--primary-blue);
@@ -211,6 +211,7 @@ export default defineComponent({
       padding: 1.25rem;
       & img {
         width: 100%;
+        height: 100%;
         border-radius: 50%;
       }
     }
