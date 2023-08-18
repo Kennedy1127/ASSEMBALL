@@ -612,7 +612,7 @@ export default {
         // console.log("i在這", i, "陣列", this.Article[i].id);
         const ArticleCollection = doc(db, "COPYWRITINGS",this.Article[i].id);
         await updateDoc(ArticleCollection, {
-          focus: this.Article[i].focus,
+          focus: this.Article[i].focus||null,
         });
       }
     },
@@ -621,7 +621,7 @@ export default {
         // console.log("i在這", i, "陣列", this.Article[i].id);
         const TeamMessageCollection = doc(db, "BACKSTAGETEAMMESSAGE",this.TeamMessage[i].Id);
         await updateDoc(TeamMessageCollection, {
-          Focus: this.TeamMessage[i].Focus,
+          Focus: this.TeamMessage[i].Focus||null,
         });
       }
     },
