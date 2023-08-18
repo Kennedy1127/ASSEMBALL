@@ -392,12 +392,14 @@ export default {
     },
     //更動內容上傳資料庫
     async AddProducts() {
+
       for (let i = 0; i < this.Products.length; i++) {
         // console.log("i在這", i, "陣列", this.Products[i].id);
         const ProductsCollection = doc(db, "PRODUCTS", this.Products[i].id);
+ 
         await updateDoc(ProductsCollection, {
-          focus: this.Products[i].focus,
-          top: this.Products[i].top,
+          focus: this.Products[i].focus||null,
+          top: this.Products[i].top||null,
         });
       }
     },

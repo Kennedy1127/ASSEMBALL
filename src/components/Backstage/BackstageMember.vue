@@ -334,7 +334,7 @@ export default {
         // console.log("i在這", i, "陣列", this.Article[i].id);
         const MemberCollection = doc(db, "MEMBERS",this.Member[i].id);
         await updateDoc(MemberCollection, {
-          state: this.Member[i].state,
+          state: this.Member[i].state||null,
         });
       }
     },
