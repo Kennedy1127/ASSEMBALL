@@ -167,7 +167,7 @@ export default {
       editCommentId: null,
       editComment: null,
       isVisible: false,
-      authID: auth.currentUser.uid,
+      authID: auth.currentUser?.uid,
     };
   },
   methods: {

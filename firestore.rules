@@ -1,0 +1,107 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /MEMBERS/{document}{
+     allow read, update;
+     allow create;
+      
+       match /PRODUCTMANAGE/{document}{
+        allow create, read, update;
+      }
+      
+        match /ORDERMANAGE/{document}{
+        allow create, read, update;
+      }
+      
+       match /APPLY/{document}{
+        allow create, read, update;
+      }
+      
+       match /NOTIFY/{document}{
+        allow create, read, update;
+      }
+    }
+    
+    match /COPYWRITINGS/{document}{
+     allow read, create, update;
+    }
+    
+    match /APPLYS/{document}{
+     allow read, create, update;
+    }
+    
+    match /TEAMS/{document}{
+     allow read, create, update;
+     
+      match /POST/{document}{
+       allow read, create, update, delete;
+      }
+
+			match /PIC/{document}{
+       allow read, create, update;
+      }
+
+			match /SCHEDULE/{document}{
+       allow read, create, update;
+      }
+
+			match /GAME/{document}{
+       allow read, create, update, delete;
+      }
+    }
+    
+    match /PRODUCTS/{document}{
+     allow read, create, update;
+     
+     match /COMMENTS/{document}{
+     allow read, create, update;
+     }
+    }
+    
+    match /NEWS/{document}{
+     allow read, create, update;
+    }
+    
+    match /MARQUEE/{document}{
+     allow read, create, update;
+    }
+    
+    match /ADMINS/{document}{
+     allow read, create, update;
+    }
+    
+    match /REPORTS/{document}{
+     allow read, create, update;
+    }
+    
+    match /BACKSTAGEPRODUCTS/{document}{
+     allow read, create, update, delete;
+    }
+     match /BACKSTAGECREATE/{document}{
+     allow read, create, update, delete;
+    }
+      match /BACKSTAGEARTICLE/{document}{
+     allow read, create, update, delete;
+    }
+      match /BACKSTAGETEAMMESSAGE/{document}{
+     allow read, create, update, delete;
+    }
+      match /BACKSTAGEMEMBER/{document}{
+     allow read, create, update, delete;
+    }
+      match /BACKSTAGEREPORT/{document}{
+     allow read, create, update, delete;
+    }
+      match /BACKSTAGEMANAGER/{document}{
+     allow read, create, update, delete;
+    }
+    
+      match /NEWSKEYWORD/{document}{
+     allow read, create, update, delete;
+    }
+    
+    
+    
+  }
+}
