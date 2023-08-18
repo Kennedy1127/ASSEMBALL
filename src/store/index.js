@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 import axios from "axios";
 import getData from "@/composables/data/getData";
 import useStorage from "@/composables/data/useStorage";
+import { auth } from "@/firebase/config";
 
 const { getDocument, getDocuments, getSubCollectionDocuments } = getData();
 const { getPicsLink } = useStorage();
@@ -51,7 +52,7 @@ export default createStore({
     //////////////////////////////////////////////////////
     //會員中心區塊
     memberCenter: [],
-    // productManage: [],
+    productManage: [],
     orderManage: [],
     application: [],
 
@@ -572,6 +573,29 @@ export default createStore({
       }
     },
 
+    async getHomeTeamPosts(context) {
+      try {
+        const teams = await getDocuments("TEAMS");
+        let posts = [];
+
+        for (let i = 0; i < teams.length; i++) {
+          const teamPosts = await getSubCollectionDocuments({
+            collectionName: "TEAMS",
+            documentId: teams[i].id,
+            subCollectionName: "POST",
+          });
+
+          teamPosts.forEach((el) => (el.team_id = teams[i].id));
+
+          posts = [...posts, ...teamPosts];
+        }
+
+        return posts;
+      } catch (err) {
+        console.error(err);
+      }
+    },
+
     ///////////////////////////////////////
     // 撈商品資料
     async getProducts(context) {
@@ -606,7 +630,7 @@ export default createStore({
       context.commit("setMemberCenter", memberDate);
 
       // 獲取用戶的ID
-      const userId = context.state.user.id;
+      const userId = auth.currentUser.uid;
 
       const memberApplyDate = await getSubCollectionDocuments({
         collectionName: "MEMBERS",
@@ -621,7 +645,9 @@ export default createStore({
     // 撈會員中心訂單管理
     async getOrderManage(context, payload) {
       // 獲取用戶的ID
-      const userId = context.state.user.id;
+      const userId = auth.currentUser.uid;
+
+      console.log(userId);
 
       const orderManageDate = await getSubCollectionDocuments({
         collectionName: "MEMBERS",

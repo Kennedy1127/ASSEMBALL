@@ -219,6 +219,8 @@ export default {
         teamdateID
       );
 
+      this.$store.state.user.team_id = teamID;
+
       // 跳轉頁面到首頁
       this.$router.push({ name: "Home" });
     },

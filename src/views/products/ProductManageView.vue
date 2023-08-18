@@ -91,7 +91,7 @@
         </div>
       </section>
 
-      <div class="noResults" v-if="manage.length == 0">
+      <!-- <div class="noResults" v-if="manage.length == 0">
         <div class="noResults_img">
           <img
             src="~@/assets/images/recruitment/no-results.svg"
@@ -99,7 +99,7 @@
           />
         </div>
         <p class="noResults_text">目前沒有任何的商品紀錄哦！</p>
-      </div>
+      </div> -->
     </div>
   </main>
 </template>

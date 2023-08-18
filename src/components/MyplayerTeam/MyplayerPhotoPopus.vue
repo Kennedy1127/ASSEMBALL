@@ -2,7 +2,7 @@
   <div
     class="myplayer_photo"
     :style="{
-      backgroundImage: 'url(' + computedPic + ')',
+      backgroundImage: `url('${computedPic}')`,
     }"
   >
     <div class="myplayer_photo_rightArrow" @click="nextPhoto">
