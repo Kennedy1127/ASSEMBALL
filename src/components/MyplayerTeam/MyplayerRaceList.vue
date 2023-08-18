@@ -558,5 +558,8 @@ h3 {
   .myplayer_function_title_wrap {
     padding-bottom: 5rem;
   }
+  .myplayer_function_group {
+    padding-bottom: 0rem;
+  }
 }
 </style>
