@@ -17,3 +17,6 @@ npm run build
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Deploy
+ https://tibamef2e.com/chd102/g4/home
